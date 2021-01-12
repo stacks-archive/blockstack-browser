@@ -25,7 +25,7 @@ import {
 } from './selectors';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
-import { gaiaUrl } from '@common/constants';
+import { gaiaUrl, USERNAMES_ENABLED } from '@common/constants';
 import { doTrackScreenChange } from '@common/track';
 import { TransactionVersion } from '@blockstack/stacks-transactions';
 
@@ -162,7 +162,7 @@ export function doFinishSignIn(
     }
     const appURL = new URL(decodedAuthRequest.redirect_uri);
     const currentIdentity = identities[identityIndex];
-    await currentIdentity.refresh();
+    await currentIdentity.refresh({ fetchRemoteUsernames: USERNAMES_ENABLED });
     const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
     await wallet.getOrCreateConfig({ gaiaConfig, skipUpload: true });
     await wallet.updateConfigWithAuth({

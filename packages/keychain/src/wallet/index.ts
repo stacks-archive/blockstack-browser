@@ -126,7 +126,12 @@ export class Wallet {
     return await this.generateFactory(256)(password, chain);
   }
 
-  static async restore(password: string, seedPhrase: string, chain: ChainID) {
+  static async restore(
+    password: string,
+    seedPhrase: string,
+    chain: ChainID,
+    fetchRemoteUsernames: boolean
+  ) {
     const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
     const { encryptedMnemonicHex } = await encryptMnemonicFormatted(seedPhrase, password);
 
@@ -136,7 +141,11 @@ export class Wallet {
       chain,
     });
 
-    return await wallet.restoreIdentities({ rootNode, gaiaReadURL: DEFAULT_GAIA_HUB });
+    return await wallet.restoreIdentities({
+      rootNode,
+      gaiaReadURL: DEFAULT_GAIA_HUB,
+      fetchRemoteUsernames,
+    });
   }
 
   static async createAccount({
@@ -180,9 +189,11 @@ export class Wallet {
   async restoreIdentities({
     rootNode,
     gaiaReadURL,
+    fetchRemoteUsernames,
   }: {
     rootNode: bip32.BIP32Interface;
     gaiaReadURL: string;
+    fetchRemoteUsernames: boolean;
   }) {
     const gaiaConfig = makeReadOnlyGaiaConfig({
       readURL: gaiaReadURL,
@@ -205,8 +216,8 @@ export class Wallet {
       this.identities = identities;
       return this;
     }
-    await this.identities[0].refresh();
-    const newIdentities = await recursiveRestoreIdentities({ rootNode });
+    await this.identities[0].refresh({ fetchRemoteUsernames });
+    const newIdentities = await recursiveRestoreIdentities({ rootNode, fetchRemoteUsernames });
     this.identities = this.identities.concat(newIdentities);
     return this;
   }

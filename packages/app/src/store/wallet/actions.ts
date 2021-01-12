@@ -8,6 +8,7 @@ import {
   SIGN_OUT,
 } from './types';
 import { ChainID } from '@blockstack/stacks-transactions';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 export function didRestoreWallet(wallet: Wallet): WalletActions {
   return {
@@ -41,7 +42,7 @@ export function doStoreSeed(
 ): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
   return async dispatch => {
     dispatch(isRestoringWallet());
-    const wallet = await Wallet.restore(password, secretKey, ChainID.Mainnet);
+    const wallet = await Wallet.restore(password, secretKey, ChainID.Mainnet, USERNAMES_ENABLED);
     dispatch(didRestoreWallet(wallet));
     return wallet;
   };

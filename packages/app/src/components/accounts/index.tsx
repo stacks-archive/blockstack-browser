@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Identity } from '@stacks/keychain';
 import { Text, Flex, FlexProps, Spinner } from '@blockstack/ui';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths, DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
 import { useAnalytics } from '@common/hooks/use-analytics';
+import { useWallet } from '@common/hooks/use-wallet';
+import { useDispatch } from '@common/hooks/use-dispatch';
+import { didGenerateWallet } from '@store/wallet/actions';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -53,7 +57,9 @@ interface AccountsProps {
 
 export const Accounts = ({ identities, showAddAccount, identityIndex, next }: AccountsProps) => {
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
+  const { wallet } = useWallet();
   const { doChangeScreen } = useAnalytics();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (typeof identityIndex === 'undefined' && selectedAddress) {
@@ -89,9 +95,17 @@ export const Accounts = ({ identities, showAddAccount, identityIndex, next }: Ac
       })}
       {showAddAccount && (
         <ListItem
-          onClick={() => {
-            if (selectedAddress) return;
-            doChangeScreen(ScreenPaths.ADD_ACCOUNT);
+          onClick={async () => {
+            if (selectedAddress || !wallet || !next) return;
+            if (USERNAMES_ENABLED) {
+              doChangeScreen(ScreenPaths.ADD_ACCOUNT);
+              return;
+            }
+            setSelectedAddress('new');
+            await wallet.createNewIdentity(DEFAULT_PASSWORD);
+            identityIndex = wallet.identities.length - 1;
+            await dispatch(didGenerateWallet(wallet));
+            next(identityIndex);
           }}
           cursor={selectedAddress ? 'not-allowed' : 'pointer'}
           hasAction

@@ -23,7 +23,8 @@ interface IdentityConstructorOptions {
 }
 
 interface RefreshOptions {
-  gaiaUrl: string;
+  gaiaUrl?: string;
+  fetchRemoteUsernames: boolean;
 }
 
 export class Identity {
@@ -153,21 +154,23 @@ export class Identity {
   /**
    * Fetch existing information related to this identity, like username and profile information
    */
-  async refresh(opts: RefreshOptions = { gaiaUrl: DEFAULT_GAIA_HUB }) {
+  async refresh({ gaiaUrl = DEFAULT_GAIA_HUB, fetchRemoteUsernames }: RefreshOptions) {
     try {
-      const names = await this.fetchNames();
-      if (names) {
-        if (names[0] && !this.defaultUsername) {
-          this.defaultUsername = names[0];
-        }
-        names.forEach(name => {
-          const existingIndex = this.usernames.findIndex(u => u === name);
-          if (existingIndex === -1) {
-            this.usernames.push(name);
+      if (fetchRemoteUsernames) {
+        const names = await this.fetchNames();
+        if (names) {
+          if (names[0] && !this.defaultUsername) {
+            this.defaultUsername = names[0];
           }
-        });
+          names.forEach(name => {
+            const existingIndex = this.usernames.findIndex(u => u === name);
+            if (existingIndex === -1) {
+              this.usernames.push(name);
+            }
+          });
+        }
       }
-      const profileUrl = await this.profileUrl(opts.gaiaUrl);
+      const profileUrl = await this.profileUrl(gaiaUrl);
       const profile = await fetchProfile({ profileUrl });
       if (profile) {
         this.profile = profile;

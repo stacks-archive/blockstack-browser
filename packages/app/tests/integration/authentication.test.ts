@@ -38,13 +38,15 @@ const environments: [BrowserType<WebKitBrowser>, Device | undefined][] = [[chrom
 
 // jest.retryTimes(process.env.CI ? 1 : 0);
 environments.forEach(([browserType, deviceType]) => {
-  const deviceLabel = deviceType ? ` - ${deviceType.viewport.height}x${deviceType.viewport.width}` : '';
+  const deviceLabel = deviceType
+    ? ` - ${deviceType.viewport.height}x${deviceType.viewport.width}`
+    : '';
   describe(`Authentication integration tests - ${browserType.name()}${deviceLabel}`, () => {
     let browser: Browser;
     let context: BrowserContext;
     let demoPage: DemoPage;
     let consoleLogs: any[];
-  
+
     beforeAll(async () => {
       const launchArgs: string[] = [];
       if (browserType.name() === 'chromium') {
@@ -55,7 +57,7 @@ environments.forEach(([browserType, deviceType]) => {
       });
       console.log('[DEBUG]: Launched puppeteer browser');
     });
-  
+
     beforeEach(async () => {
       console.log('[DEBUG]: Starting new browser context.');
       if (deviceType) {
@@ -72,7 +74,7 @@ environments.forEach(([browserType, deviceType]) => {
         consoleLogs = consoleLogs.concat(event.text());
       });
     }, 10000);
-  
+
     afterAll(async () => {
       try {
         await browser.close();
@@ -80,28 +82,31 @@ environments.forEach(([browserType, deviceType]) => {
         // console.error(error);
       }
     });
-  
+
     it('creating a successful account', async () => {
       await demoPage.screenshot('home-page');
       await demoPage.openConnect();
       await demoPage.clickConnectGetStarted();
       const auth = await AuthPage.getAuthPage(context);
       const authPage = auth.page;
-  
+
       await authPage.waitForSelector(auth.$textareaReadOnlySeedPhrase);
-  
+
       wait(3000);
       await auth.screenshot('create-successful-account-secret-key');
-      const secretKey = (await authPage.$eval(auth.$textareaReadOnlySeedPhrase, (el: any) => el.value)) as string;
+      const secretKey = (await authPage.$eval(
+        auth.$textareaReadOnlySeedPhrase,
+        (el: any) => el.value
+      )) as string;
       console.log('Secret Key:', secretKey);
       expect(secretKey.split(' ').length).toEqual(SEED_PHRASE_LENGTH);
       expect(validateMnemonic(secretKey)).toBeTruthy();
-  
+
       await authPage.click(auth.$buttonCopySecretKey);
-  
+
       await authPage.waitForSelector(auth.$buttonHasSavedSeedPhrase);
       await authPage.click(auth.$buttonHasSavedSeedPhrase);
-  
+
       const $usernameInputElement = await authPage.$(auth.$inputUsername);
       if (!$usernameInputElement) {
         throw 'Could not find username field';
@@ -111,11 +116,11 @@ environments.forEach(([browserType, deviceType]) => {
         `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
       );
       await authPage.click(auth.$buttonUsernameContinue);
-  
+
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
     }, 120_000);
-  
+
     it('creating a successful local account', async () => {
       await demoPage.openConnect();
       await demoPage.clickConnectGetStarted();
@@ -130,7 +135,7 @@ environments.forEach(([browserType, deviceType]) => {
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
     }, 90000);
-  
+
     it('creating an account - negative scenarious', async () => {
       await demoPage.goToPage();
       await demoPage.openConnect();
@@ -139,7 +144,7 @@ environments.forEach(([browserType, deviceType]) => {
       await authPage.saveSecretPhrase();
       await authPage.clickIHaveSavedIt();
       await authPage.page.waitForSelector(authPage.$inputUsername);
-  
+
       //TEST1 less than 7
       await authPage.page.type(authPage.$inputUsername, randomString(7));
       await authPage.page.click(authPage.$buttonUsernameContinue);
@@ -149,7 +154,7 @@ environments.forEach(([browserType, deviceType]) => {
         const el = document.querySelector('[data-test="input-username"]') as HTMLInputElement;
         el.value = '';
       });
-  
+
       //TEST2 more than 37
       await authPage.page.type(authPage.$inputUsername, randomString(38));
       await authPage.page.click(authPage.$buttonUsernameContinue);
@@ -159,7 +164,7 @@ environments.forEach(([browserType, deviceType]) => {
         const el = document.querySelector('[data-test="input-username"]') as HTMLInputElement;
         el.value = '';
       });
-  
+
       //TEST3 specal symbols
       await authPage.page.type(authPage.$inputUsername, '!@#$%^&*()-=+/?.>,<`~');
       await authPage.page.click(authPage.$buttonUsernameContinue);
@@ -169,7 +174,7 @@ environments.forEach(([browserType, deviceType]) => {
         const el = document.querySelector('[data-test="input-username"]') as HTMLInputElement;
         el.value = '';
       });
-  
+
       //TEST4 UPPERCASE
       await authPage.page.type(
         authPage.$inputUsername,
@@ -182,7 +187,7 @@ environments.forEach(([browserType, deviceType]) => {
         const el = document.querySelector('[data-test="input-username"]') as HTMLInputElement;
         el.value = '';
       });
-  
+
       //TEST5 with spaces
       await authPage.page.type(
         authPage.$inputUsername,
@@ -199,7 +204,7 @@ environments.forEach(([browserType, deviceType]) => {
       await authPage.page.type(authPage.$inputUsername, 'test1234');
       await authPage.page.click(authPage.$buttonUsernameContinue);
       try {
-        await authPage.page.waitForSelector('text="This username is not available"')
+        await authPage.page.waitForSelector('text="This username is not available"');
       } catch (error) {
         await authPage.screenshot('username-not-available');
         throw '"Username not available" message not visible';
@@ -209,7 +214,7 @@ environments.forEach(([browserType, deviceType]) => {
         el.value = '';
       });
     }, 90000);
-  
+
     it('Sign in with existing key', async () => {
       //TEST #10,11
       await demoPage.openConnect();
@@ -221,7 +226,7 @@ environments.forEach(([browserType, deviceType]) => {
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
     }, 90000);
-  
+
     it('Sign in with the wrong key', async () => {
       //TEST #12
       await demoPage.openConnect();
@@ -232,7 +237,7 @@ environments.forEach(([browserType, deviceType]) => {
       expect(element).toBeTruthy();
       expect(await element.innerText()).toEqual("The Secret Key you've entered is invalid");
     }, 90000);
-  
+
     it('Sign in with the wrong magic recovery code', async () => {
       //TEST #13
       await demoPage.openConnect();
@@ -243,7 +248,7 @@ environments.forEach(([browserType, deviceType]) => {
       const element = await authPage.page.waitForSelector(authPage.incorrectPassword);
       expect(element).toBeTruthy();
     }, 90000);
-  
+
     it('Sign in with the correct magic recovery code', async () => {
       //TEST #13
       await demoPage.openConnect();
@@ -255,21 +260,21 @@ environments.forEach(([browserType, deviceType]) => {
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
     }, 90000);
-  
+
     it('generates the correct app private key', async () => {
       await demoPage.openConnect();
       await demoPage.clickAlreadyHaveSecretKey();
       const auth = await AuthPage.getAuthPage(context, false);
       const authPage = auth.page;
-  
+
       const seed = generateMnemonic();
-      const wallet = await Wallet.restore('password', seed, ChainID.Testnet);
+      const wallet = await Wallet.restore('password', seed, ChainID.Testnet, false);
       await auth.loginWithPreviousSecretKey(seed);
       await authPage.click(auth.$firstAccount);
-  
+
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
-  
+
       const appPrivateKeyEl = await demoPage.page.$('#app-private-key');
       const appPrivateKey = (await demoPage.page.evaluate(
         el => el?.getAttribute('value'),
@@ -279,5 +284,4 @@ environments.forEach(([browserType, deviceType]) => {
       expect(appPrivateKey).toEqual(wallet.identities[0].appPrivateKey(DemoPage.url));
     }, 60_000);
   });
-})
-
+});

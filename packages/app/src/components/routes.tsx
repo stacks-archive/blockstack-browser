@@ -20,6 +20,7 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { Routes as RoutesDom, Route, useLocation } from 'react-router-dom';
 import { Navigate } from '@components/navigate';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 export const Routes: React.FC = () => {
   const dispatch = useDispatch();
@@ -79,7 +80,11 @@ export const Routes: React.FC = () => {
         element={
           <SaveKey
             next={() => {
-              doChangeScreen(ScreenPaths.USERNAME);
+              if (USERNAMES_ENABLED) {
+                doChangeScreen(ScreenPaths.USERNAME);
+                return;
+              }
+              doFinishSignIn({ identityIndex: 0 });
             }}
           />
         }

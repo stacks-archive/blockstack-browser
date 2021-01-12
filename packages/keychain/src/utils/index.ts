@@ -195,6 +195,7 @@ interface RecursiveMakeIdentitiesOptions {
   rootNode: BIP32Interface;
   index?: number;
   identities?: Identity[];
+  fetchRemoteUsernames: boolean;
 }
 
 /**
@@ -206,12 +207,18 @@ export const recursiveRestoreIdentities = async ({
   rootNode,
   index = 1,
   identities = [],
+  fetchRemoteUsernames,
 }: RecursiveMakeIdentitiesOptions): Promise<Identity[]> => {
   const identity = await makeIdentity(rootNode, index);
-  await identity.refresh();
+  await identity.refresh({ fetchRemoteUsernames });
   if (identity.defaultUsername) {
     identities.push(identity);
-    return recursiveRestoreIdentities({ rootNode, index: index + 1, identities });
+    return recursiveRestoreIdentities({
+      rootNode,
+      index: index + 1,
+      identities,
+      fetchRemoteUsernames,
+    });
   }
   return identities;
 };

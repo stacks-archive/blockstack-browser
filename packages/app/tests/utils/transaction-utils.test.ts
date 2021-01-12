@@ -18,7 +18,7 @@ describe('generated transactions', () => {
       'sound idle panel often situate develop unit text design antenna ' +
       'vendor screen opinion balcony share trigger accuse scatter visa uniform brass ' +
       'update opinion media';
-    const wallet = await Wallet.restore('password', defaultSeed, ChainID.Mainnet);
+    const wallet = await Wallet.restore('password', defaultSeed, ChainID.Mainnet, false);
     const address = 'ST1EXHZSN8MJSJ9DSG994G1V8CNKYXGMK7Z4SA6DH';
     const assetAddress = 'ST34RKEJKQES7MXQFBT29KSJZD73QK3YNT5N56C6X';
     const assetContractName = 'test-asset-contract';
