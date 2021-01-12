@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Flex, Text, ArrowIcon, BoxProps } from '@stacks/ui';
-import { ConnectIcon } from '@components/icons/connect-icon';
+import { Box, Flex, Text, ArrowIcon, BoxProps, StxNexus } from '@stacks/ui';
 import styled from '@emotion/styled';
 import { EllipsisIcon } from '@components/icons/ellipsis-icon';
 import { SettingsPopover } from './settings-popover';
 import { useDrawers } from '@common/hooks/use-drawers';
+import { useAnalytics } from '@common/hooks/use-analytics';
+import { ScreenPaths } from '@store/onboarding/types';
 
 const CloseIconContainer = styled(Box)`
   svg {
@@ -13,6 +14,27 @@ const CloseIconContainer = styled(Box)`
     // margin-top: 10px;
   }
 `;
+
+const Header: React.FC<BoxProps> = props => {
+  const { doChangeScreen } = useAnalytics();
+
+  return (
+    <Box cursor="pointer" onClick={() => doChangeScreen(ScreenPaths.HOME)} {...props}>
+      <StxNexus height="20px" color="black" display="inline-block" />
+      <Text
+        fontFamily="heading"
+        color="ink.1000"
+        fontWeight="600"
+        position="relative"
+        top="-2px"
+        ml="base-tight"
+        fontSize={4}
+      >
+        Stacks Wallet
+      </Text>
+    </Box>
+  );
+};
 
 interface PopupHomeProps {
   title?: string;
@@ -26,6 +48,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
   hideActions,
 }) => {
   const { setShowSettings } = useDrawers();
+
   const isExtension = EXT_ENV !== 'web';
 
   const Settings: React.FC<BoxProps> = props => {
@@ -51,7 +74,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
         <SettingsPopover />
         <Flex width="100%" dir="row" display={['none', 'flex']}>
           <Box flexGrow={1}>
-            <ConnectIcon height="16px" />
+            <Header />
           </Box>
           <Settings />
         </Flex>
@@ -82,7 +105,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                     {title}
                   </Text>
                 ) : (
-                  <ConnectIcon height="16px" display={['flex', 'none']} />
+                  <Header display={['flex', 'none']} />
                 )}
               </Box>
               <Settings display={['flex', 'none']} />

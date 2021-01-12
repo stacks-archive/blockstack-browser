@@ -84,7 +84,6 @@ export const Routes: React.FC = () => {
     <RoutesDom>
       <Route path={ScreenPaths.HOME} element={getHomeComponent()} />
       {/* Installation */}
-      <Route path={ScreenPaths.INSTALLED} element={<Installed />} />
       <Route path={ScreenPaths.SIGN_IN_INSTALLED} element={<InstalledSignIn />} />
       <AccountGateRoute path={ScreenPaths.POPUP_HOME} element={<PopupHome />} />
       <AccountGateRoute path={ScreenPaths.POPUP_SEND} element={<PopupSend />} />

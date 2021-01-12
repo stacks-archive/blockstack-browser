@@ -16,7 +16,7 @@ const globalStyle = css`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
   @font-face {
     font-family: 'Open Sauce';
-    src: url('/assets/fonts/OpenSauceOne-Medium.woff2') format('woff2');
+    src: url('/assets/fonts/OpenSauceSans-Medium.ttf') format('ttf');
     font-weight: 500;
     font-display: swap;
     font-style: normal;
@@ -24,7 +24,7 @@ const globalStyle = css`
 
   @font-face {
     font-family: 'Open Sauce';
-    src: url('/assets/fonts/OpenSauceOne-Regular.woff2') format('woff2');
+    src: url('/assets/fonts/OpenSauceSans-Regular.ttf') format('ttf');
     font-weight: 400;
     font-weight: normal;
     font-style: normal;
@@ -32,7 +32,7 @@ const globalStyle = css`
 
   @font-face {
     font-family: 'Open Sauce';
-    src: url('/assets/fonts/OpenSauceOne-SemiBold.woff2') format('woff2');
+    src: url('/assets/fonts/OpenSauceSans-SemiBold.ttf') format('ttf');
     font-weight: 600;
     font-weight: normal;
     font-style: normal;

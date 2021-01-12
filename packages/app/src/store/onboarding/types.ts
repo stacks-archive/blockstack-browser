@@ -34,7 +34,7 @@ export enum ScreenPaths {
   CHOOSE_ACCOUNT = '/connect/choose-account',
   REGISTRY_ERROR = '/username-error',
   HOME = '/',
-  INSTALLED = '/installed',
+  INSTALLED = '/',
   SIGN_IN_INSTALLED = '/installed/sign-in',
   SIGN_UP_INSTALLED = '/installed/sign-up',
   SET_PASSWORD = '/set-password',

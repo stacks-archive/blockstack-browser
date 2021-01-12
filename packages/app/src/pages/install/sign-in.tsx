@@ -54,7 +54,7 @@ export const InstalledSignIn: React.FC = () => {
       </Box>
       <Box mt="base">
         <Text fontSize="base" color="ink.600">
-          Enter your Secret Key to sign in to Connect.
+          Enter your Secret Key to sign in to Stacks Wallet.
         </Text>
       </Box>
       <Box flexGrow={[1, 1, 0.5]} />
