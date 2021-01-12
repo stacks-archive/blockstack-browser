@@ -16,6 +16,7 @@ const SettingsItem: React.FC<BoxProps> = ({ onClick, children, ...props }) => (
     p="base-tight"
     color="ink.1000"
     _hover={{ backgroundColor: 'ink.150' }}
+    cursor="pointer"
     onClick={e => {
       onClick?.(e);
     }}
