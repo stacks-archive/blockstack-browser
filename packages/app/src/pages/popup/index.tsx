@@ -45,7 +45,7 @@ export const PopupHome: React.FC = () => {
   }
   return (
     <PopupContainer>
-      <Box width="100%" mt="loose">
+      <Box width="100%" mt="loose" data-test="home-page">
         <Text
           fontSize="24px"
           fontWeight="600"

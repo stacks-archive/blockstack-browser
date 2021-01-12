@@ -63,18 +63,18 @@ environments.forEach(([browserType, deviceType]) => {
 
     it('should be able to sign up from installation page', async () => {
       await installPage.clickSignUp();
-      await installPage.waitForFinishedPage();
-      await installPage.goToSecretKey();
       await installPage.saveKey();
+      await installPage.waitForHomePage();
+      await installPage.goToSecretKey();
       const secretKey = await installPage.getSecretKey();
       expect(secretKey).not.toBeFalsy();
-      expect(secretKey.split(' ').length).toEqual(12);
+      expect(secretKey.split(' ').length).toEqual(24);
     });
 
     it('should be able to login from installation page', async () => {
       await installPage.clickSignIn();
       await installPage.loginWithPreviousSecretKey(SECRET_KEY);
-      await installPage.waitForFinishedPage();
+      await installPage.waitForHomePage();
       const secretKey = await installPage.getSecretKey();
       expect(secretKey).toEqual(SECRET_KEY);
     });

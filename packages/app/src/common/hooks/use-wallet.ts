@@ -88,17 +88,15 @@ export const useWallet = () => {
     set(currentAccountIndexStore, 0);
   });
 
-  const doStoreSeed = useCallback(
-    async (secretKey: string, password?: string) => {
-      // TODO: restore existing accounts.
+  const doStoreSeed = useRecoilCallback(
+    ({ set }) => async (secretKey: string, password?: string) => {
       const wallet = await generateWallet({ secretKey, password: password || DEFAULT_PASSWORD });
-      setWallet(wallet);
-      setSecretKey(secretKey);
-      setEncryptedSecretKey(wallet.encryptedSecretKey);
-      setCurrentAccountIndex(0);
+      set(walletStore, wallet);
+      set(secretKeyStore, secretKey);
+      set(encryptedSecretKeyStore, wallet.encryptedSecretKey);
+      set(currentAccountIndexStore, 0);
       if (password !== undefined) setHasSetPassword(true);
-    },
-    [setWallet, setSecretKey, setEncryptedSecretKey, setHasSetPassword, setCurrentAccountIndex]
+    }
   );
 
   const doCreateNewAccount = useRecoilCallback(({ snapshot, set }) => async () => {
@@ -145,9 +143,15 @@ export const useWallet = () => {
     [chainInfo.value, setLatestNonces]
   );
 
-  const doFinishSignIn = useCallback(
-    async (accountIndex: number) => {
+  const doFinishSignInInner = useRecoilCallback(
+    ({ set, snapshot }) => async (
+      accountIndex: number,
+      decodedAuthRequest?: DecodedAuthRequest,
+      authRequest?: string
+    ) => {
+      const wallet = await snapshot.getPromise(walletStore);
       const account = wallet?.accounts[accountIndex];
+      console.log(decodedAuthRequest, authRequest, account, wallet);
       if (!decodedAuthRequest || !authRequest || !account || !wallet) {
         console.error('Uh oh! Finished onboarding without auth info.');
         return;
@@ -187,11 +191,17 @@ export const useWallet = () => {
       });
       account.username = username;
       finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
-      setWallet(wallet);
+      set(walletStore, wallet);
       dispatch(doSetOnboardingPath(undefined));
       dispatch(doSetOnboardingProgress(false));
+    }
+  );
+
+  const doFinishSignIn = useCallback(
+    async (accountIndex: number) => {
+      return doFinishSignInInner(accountIndex, decodedAuthRequest, authRequest);
     },
-    [appIcon, appName, dispatch, wallet, decodedAuthRequest, authRequest, setWallet]
+    [decodedAuthRequest, authRequest, doFinishSignInInner]
   );
 
   const doSaveAuthRequest = useCallback(

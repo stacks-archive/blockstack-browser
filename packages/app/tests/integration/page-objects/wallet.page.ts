@@ -8,7 +8,7 @@ export class WalletPage {
   $signUpButton = createTestSelector('sign-up');
   $signInButton = createTestSelector('sign-in');
   $firstAccount = createTestSelector('account-index-0');
-  $finishedPage = createTestSelector('install-finished');
+  homePage = createTestSelector('home-page');
   $textareaReadOnlySeedPhrase = `${createTestSelector('textarea-seed-phrase')}[data-loaded="true"]`;
   $buttonSignInKeyContinue = createTestSelector('sign-in-key-continue');
   setPasswordDone = createTestSelector('set-password-done');
@@ -22,7 +22,7 @@ export class WalletPage {
   lowerCharactersErrMsg =
     'text="You can only use lowercase letters (a–z), numbers (0–9), and underscores (_)."';
   signInKeyError = createTestSelector('sign-in-seed-error');
-  password = 'mysecretpassword';
+  password = 'mysecretreallylongpassword';
   page: Page;
 
   constructor(page: Page) {
@@ -69,8 +69,8 @@ export class WalletPage {
     await this.page.click(this.$signInButton);
   }
 
-  async waitForFinishedPage() {
-    await this.page.waitForSelector(this.$finishedPage, { timeout: 5000 });
+  async waitForHomePage() {
+    await this.page.waitForSelector(this.homePage, { timeout: 5000 });
   }
 
   async loginWithPreviousSecretKey(secretKey: string) {
@@ -91,10 +91,8 @@ export class WalletPage {
     if (!$secretKeyEl) {
       throw 'Could not find secret key field';
     }
-    const secretKey = (await this.page.$eval(
-      this.$textareaReadOnlySeedPhrase,
-      (el: HTMLTextAreaElement) => el.value
-    )) as string;
+    const secretKey = await $secretKeyEl.textContent();
+    if (!secretKey) throw 'No secret key content.';
     return secretKey;
   }
 

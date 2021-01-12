@@ -126,10 +126,7 @@ export const Routes: React.FC = () => {
       <Route path={ScreenPaths.USERNAME} element={<Username />} />
       {/*Sign In*/}
       <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />
-      <Route
-        path={ScreenPaths.RECOVERY_CODE}
-        element={<DecryptRecoveryCode next={() => doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT)} />}
-      />
+      <Route path={ScreenPaths.RECOVERY_CODE} element={<DecryptRecoveryCode />} />
       <Route path={ScreenPaths.ADD_ACCOUNT} element={<Username />} />;
       <Route
         path={ScreenPaths.CHOOSE_ACCOUNT}

@@ -18,18 +18,18 @@ import {
 import { decrypt } from '@stacks/wallet-sdk';
 import { ErrorLabel } from '@components/error-label';
 import { useAnalytics } from '@common/hooks/use-analytics';
+import { ScreenPaths } from '@store/onboarding/types';
+import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { USERNAMES_ENABLED } from '@common/constants';
 
-interface RecoveryProps {
-  next: () => void;
-}
-
-export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
+export const DecryptRecoveryCode: React.FC = () => {
   const title = 'Enter your password';
   const [passwordError, setPasswordError] = useState('');
-  const { doStoreSeed } = useWallet();
+  const { doStoreSeed, doFinishSignIn } = useWallet();
   const [password, setCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const { doTrack } = useAnalytics();
+  const { doTrack, doChangeScreen } = useAnalytics();
+  const { decodedAuthRequest } = useOnboardingState();
 
   const recoveryCode = useSelector((state: AppState) => selectMagicRecoveryCode(state) as string);
 
@@ -40,7 +40,17 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
       const seed = await decrypt(codeBuffer, password);
       await doStoreSeed(seed, password);
       doTrack(SIGN_IN_CORRECT);
-      next();
+      if (decodedAuthRequest) {
+        if (!USERNAMES_ENABLED) {
+          setTimeout(() => {
+            void doFinishSignIn(0);
+          }, 1000);
+        } else {
+          doChangeScreen(ScreenPaths.USERNAME);
+        }
+      } else {
+        doChangeScreen(ScreenPaths.HOME);
+      }
     } catch (error) {
       console.error(error);
       setPasswordError('Incorrect password');

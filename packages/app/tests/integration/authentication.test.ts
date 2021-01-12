@@ -13,9 +13,9 @@ const WRONG_MAGIC_RECOVERY_KEY =
   'KDR6O8gKXGmstxj4d2oQqCi806M/Cmrbiatc6g7MkQQLVreRA95IoPtvrI3N230jTTGb2XWT5joRFKPfY/2YlmRz1brxoaDJCNS4z18Iw5Y=';
 const WRONG_PASSWORD = 'sstest202020';
 const CORRECT_PASSWORD = 'test202020';
-const USERNAME = 'thisis45678';
+// const USERNAME = 'thisis45678';
 
-const SEED_PHRASE_LENGTH = 12;
+const SEED_PHRASE_LENGTH = 24;
 
 const getRandomWord = () => {
   const list = wordlists.EN;
@@ -143,7 +143,8 @@ environments.forEach(([browserType, deviceType]) => {
       await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
       await auth.loginWithPreviousSecretKey(SECRET_KEY);
-      await auth.chooseAccount(USERNAME);
+      // TODO: fix after 2.0 BNS
+      // await auth.chooseAccount(USERNAME);
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
     });
@@ -176,7 +177,8 @@ environments.forEach(([browserType, deviceType]) => {
       const auth = await WalletPage.getAuthPopup(context);
       await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
       await auth.decryptRecoveryCode(CORRECT_PASSWORD);
-      await auth.chooseAccount('thisisit202020');
+      // TODO: fix after 2.0 BNS
+      // await auth.chooseAccount('thisisit202020');
       const authResponse = await demoPage.waitForAuthResponse(browser);
       expect(authResponse).toBeTruthy();
     });
