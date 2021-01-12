@@ -50,7 +50,6 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
   const [step, setStep] = useState<Step>(Step.INITIAL);
   const { hasSetPassword, isSignedIn, secretKey, encryptedSecretKey } = useWallet();
   const { onCopy, hasCopied } = useClipboard(secretKey || '');
-  console.log(isSignedIn, hasSetPassword);
 
   if (isSignedIn && hasSetPassword) return <>{element}</>;
 

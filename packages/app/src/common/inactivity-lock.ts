@@ -17,6 +17,13 @@ export enum LockCheckResult {
   NOT_YET = 3,
 }
 
+/**
+ * After inactivity lock, delete all recoil state except these
+ */
+const inactivityLockAllowedKeys = [hasSetPasswordStore, encryptedSecretKeyStore].map(store =>
+  localStorageKey(store.key)
+);
+
 export const inactivityLockCheck = (): LockCheckResult => {
   lockoutLog('Checking to lockout.');
 
@@ -34,11 +41,11 @@ export const inactivityLockCheck = (): LockCheckResult => {
   const lastSeen = parseInt(timestampString, 10);
   lockoutLog(`User last seen ${Math.floor((now - lastSeen) / 1000)} seconds ago.`);
 
-  const encryptedStoreKey = localStorageKey(encryptedSecretKeyStore.key);
   if (now - lastSeen > LOCKOUT_AFTER_MS) {
     lockoutLog('Time to lockout!');
     Object.keys(localStorage).forEach(key => {
-      if (key.startsWith(ATOM_LOCALSTORAGE_PREFIX) && key !== encryptedStoreKey) {
+      const isAllowedKey = inactivityLockAllowedKeys.includes(key);
+      if (key.startsWith(ATOM_LOCALSTORAGE_PREFIX) && !isAllowedKey) {
         lockoutLog(`Deleting key: ${key}`);
         localStorage.removeItem(key);
       }

@@ -60,6 +60,7 @@ describe('Inactivity lock', () => {
 
     // The encrypted key and any other keys are not cleared
     expect(getItem(encryptedSecretKeyStore)).toEqual('key');
+    expect(getItem(hasSetPasswordStore)).toEqual(true);
     expect(localStorage.getItem('hello')).toEqual('world');
   });
 
