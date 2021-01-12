@@ -21,7 +21,7 @@ const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
         </Text>
       </Box>
       <Box px={10} py={5}>
-        <Text display="block">{children}</Text>
+        {children}
       </Box>
     </Box>
   );

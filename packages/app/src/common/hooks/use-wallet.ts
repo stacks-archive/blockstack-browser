@@ -79,7 +79,7 @@ export const useWallet = () => {
   const isSignedIn = !!wallet;
 
   const doMakeWallet = useRecoilCallback(({ set }) => async () => {
-    const secretKey = generateSecretKey(128);
+    const secretKey = generateSecretKey(256);
     const wallet = await generateWallet({ secretKey, password: DEFAULT_PASSWORD });
     dispatch(doSetOnboardingProgress(true));
     set(walletStore, wallet);

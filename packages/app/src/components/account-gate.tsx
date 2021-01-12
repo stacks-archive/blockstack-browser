@@ -3,7 +3,6 @@ import { Text, Button, Box, useClipboard } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Card } from '@components/card';
-import { SeedTextarea } from '@components/seed-textarea';
 import { Toast } from '@components/toast';
 import { SetPasswordPage } from '@pages/set-password';
 import { useAnalytics } from '@common/hooks/use-analytics';
@@ -83,15 +82,13 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
           </Box>
           <Box my="loose">
             <Card title="Your Secret Key">
-              <SeedTextarea
-                readOnly
-                spellCheck="false"
-                autoCapitalize="false"
-                value={secretKey}
-                className="hidden-secret-key"
+              <Text
+                display="block"
                 data-test="textarea-seed-phrase"
                 data-loaded={String(!!secretKey)}
-              />
+              >
+                {secretKey}
+              </Text>
             </Card>
           </Box>
           <Box flexGrow={1} />
