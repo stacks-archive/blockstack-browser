@@ -5,8 +5,8 @@ import { Box } from '@stacks/ui';
 import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
 import { useSelector } from 'react-redux';
-import { AppState, store } from '@store';
-import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
+import { AppState } from '@store';
+import { selectAppName } from '@store/onboarding/selectors';
 import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
 import { gaiaUrl } from '@common/constants';
 import {
@@ -27,6 +27,7 @@ import {
   WalletConfig,
   ConfigApp,
 } from '@stacks/wallet-sdk';
+import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 
 interface ChooseAccountProps {
   next: (accountIndex: number) => void;
@@ -39,6 +40,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   }));
   const { wallet, walletConfig } = useWallet();
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
+  const { decodedAuthRequest: authRequest } = useOnboardingState();
   const [accountIndex, setAccountIndex] = React.useState<number | undefined>();
   const { doTrack } = useAnalytics();
 
@@ -48,8 +50,6 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
 
   // TODO: refactor into util, create unit tests
   const didSelectAccount = ({ accountIndex }: { accountIndex: number }) => {
-    const state = store.getState();
-    const authRequest = selectDecodedAuthRequest(state);
     setAccountIndex(accountIndex);
     if (!authRequest) {
       console.error('No authRequest found when selecting account');

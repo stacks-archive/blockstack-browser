@@ -8,6 +8,7 @@ import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { TransactionVersion } from '@stacks/transactions';
+import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -22,8 +23,15 @@ interface AccountItemProps extends FlexProps {
   account: Account;
 }
 
-const AccountItem = ({ address, selectedAddress, account, ...rest }: AccountItemProps) => {
+const AccountItem: React.FC<AccountItemProps> = ({
+  address,
+  selectedAddress,
+  account,
+  ...rest
+}) => {
+  const { decodedAuthRequest } = useOnboardingState();
   const loading = address === selectedAddress;
+  const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   return (
     <Flex alignItems="center" maxWidth="100%" {...rest}>
       <Flex flex={1} maxWidth="100%" dir="column">
@@ -34,7 +42,7 @@ const AccountItem = ({ address, selectedAddress, account, ...rest }: AccountItem
           textStyle="body.small.medium"
           style={{ wordBreak: 'break-word' }}
           mb="extra-tight"
-          {...getLoadingProps(!!selectedAddress)}
+          {...getLoadingProps(showLoadingProps)}
         >
           {getAccountDisplayName(account)}
         </Text>
@@ -58,6 +66,7 @@ interface AccountsProps {
 export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) => {
   const { wallet } = useWallet();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
+  const { decodedAuthRequest } = useOnboardingState();
   const { doChangeScreen } = useAnalytics();
 
   useEffect(() => {
@@ -75,6 +84,8 @@ export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) 
     number: account.index + 1,
   }));
 
+  const disableSelect = !decodedAuthRequest || !!selectedAddress;
+
   return (
     <Flex flexDirection="column">
       {accounts.map((account, index) => {
@@ -82,7 +93,7 @@ export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) 
           <ListItem
             key={account.stxAddress}
             isFirst={index === 0}
-            cursor={selectedAddress ? 'not-allowed' : 'pointer'}
+            cursor={disableSelect ? 'not-allowed' : 'pointer'}
             iconComponent={() => <AccountAvatar username={account.number.toString()} mr={3} />}
             hasAction={!!next && selectedAddress === null}
             data-test={`account-${(account.username || account.stxAddress).split('.')[0]}`}

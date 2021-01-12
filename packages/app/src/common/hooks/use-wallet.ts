@@ -207,14 +207,6 @@ export const useWallet = () => {
         appIcon = appManifest.icons[0].src as string;
       }
 
-      const hasIdentities = wallet?.accounts && wallet.accounts.length;
-      if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
-        doTrackScreenChange(ScreenPaths.CHOOSE_ACCOUNT, decodedAuthRequest);
-        dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
-      } else {
-        doTrackScreenChange(screen, decodedAuthRequest);
-      }
-
       dispatch(
         saveAuthRequest({
           decodedAuthRequest,
@@ -224,6 +216,14 @@ export const useWallet = () => {
           appURL: new URL(decodedAuthRequest.redirect_uri),
         })
       );
+
+      const hasIdentities = wallet?.accounts && wallet.accounts.length;
+      if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
+        doTrackScreenChange(ScreenPaths.CHOOSE_ACCOUNT, decodedAuthRequest);
+        dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
+      } else {
+        doTrackScreenChange(screen, decodedAuthRequest);
+      }
     },
     [dispatch, wallet?.accounts, screen]
   );

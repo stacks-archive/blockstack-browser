@@ -2857,10 +2857,10 @@
     use-events "^1.4.1"
     use-onclickoutside "^0.3.1"
 
-"@stacks/wallet-sdk@1.0.0-wallet-sdk.2":
-  version "1.0.0-wallet-sdk.2"
-  resolved "https://registry.yarnpkg.com/@stacks/wallet-sdk/-/wallet-sdk-1.0.0-wallet-sdk.2.tgz#b3752d9044d855299dd3e86b8f11aa14438de8cd"
-  integrity sha512-hWdXB6MGuLZdQRMTCXv4mNb50NYnJ6gt7U/d8CBWJqJqziyrNLNwUtz9WSoRgTDx4vHL5fZpe33Ecsh+1mFm6A==
+"@stacks/wallet-sdk@1.0.0-wallet-sdk.3":
+  version "1.0.0-wallet-sdk.3"
+  resolved "https://registry.yarnpkg.com/@stacks/wallet-sdk/-/wallet-sdk-1.0.0-wallet-sdk.3.tgz#56fbb22e041de46694d9bb7dec1b868a5b75077c"
+  integrity sha512-KODvJgIP5pPU1zYs/rdeDu9SAE+KQkNj6i5/IF7x/9fCoUMUnWseHukZ0nFKGj7AbSTwrxfoiD5CSik9b44HKg==
   dependencies:
     "@stacks/encryption" "^1.0.0-beta.20"
     "@stacks/profile" "^1.0.0-beta.20"
