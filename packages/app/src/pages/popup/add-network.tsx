@@ -14,10 +14,11 @@ export const AddNetwork: React.FC = () => {
     <PopupContainer title="Add a network" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
       <Box mt="base">
         <Text fontSize={2}>
-          Enter an address from the{' '}
-          <a href="https://docs.blockstack.org/references/stacks-blockchain-api">Sidecar API</a>{' '}
-          that proxies a node. Before using a new node, Make sure you review and trust the host
-          before configuring a new Sidecar API.
+          Use this form to add a new instance of the{' '}
+          <a href="https://github.com/blockstack/stacks-blockchain-api" target="_blank">
+            Stacks Blockchain API
+          </a>
+          . Make sure you review and trust the host before you add it.
         </Text>
       </Box>
       <Formik
@@ -61,7 +62,14 @@ export const AddNetwork: React.FC = () => {
             </Box>
             <Box width="100%" mt="extra-loose">
               <InputGroup flexDirection="column">
-                <Text as="label" display="block" mb="tight" fontSize={1} fontWeight="500" for="url">
+                <Text
+                  as="label"
+                  display="block"
+                  mb="tight"
+                  fontSize={1}
+                  fontWeight="500"
+                  htmlFor="url"
+                >
                   Address
                 </Text>
                 <Input
@@ -75,7 +83,14 @@ export const AddNetwork: React.FC = () => {
             </Box>
             <Box width="100%" mt="extra-loose">
               <InputGroup flexDirection="column">
-                <Text as="label" display="block" mb="tight" fontSize={1} fontWeight="500" for="key">
+                <Text
+                  as="label"
+                  display="block"
+                  mb="tight"
+                  fontSize={1}
+                  fontWeight="500"
+                  htmlFor="key"
+                >
                   Key
                 </Text>
                 <Input
