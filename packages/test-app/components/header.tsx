@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Flex, Box, Text } from '@blockstack/ui';
-import { BlockstackIcon } from '@blockstack/ui';
+import { Flex, Box } from '@blockstack/ui';
+import { StacksLogo } from '@stacks/ui';
 import { AppContext } from '@common/context';
 import { Link } from '@components/link';
 
@@ -13,10 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ signOut }) => {
   return (
     <Flex as="nav" justifyContent="space-between" alignItems="center" height="64px" px={6}>
       <Box verticalAlign="center">
-        <BlockstackIcon maxHeight="26px" display="inline-block" ml="-10px" />
-        <Text display="inline-block" ml={1}>
-          Blockstack
-        </Text>
+        <StacksLogo color="black" maxHeight="26px" display="inline-block" ml="-10px" />
       </Box>
       {state.userData ? (
         <Box>
