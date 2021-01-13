@@ -618,7 +618,7 @@ class Onboarding extends React.Component {
       {
         show: VIEWS.INITIAL,
         props: {
-          next: () => this.updateView(VIEWS.USERNAME)
+          next: () => this.updateView(VIEWS.PASSWORD)
         }
       },
       {

@@ -100,7 +100,7 @@ const Navbar = withRouter(({ location }) => (
     borderBottom="1px solid #f0f0f0"
     bg="white"
     position="fixed"
-    top={0}
+    top="50px"
     width={1}
     zIndex={999}
   >

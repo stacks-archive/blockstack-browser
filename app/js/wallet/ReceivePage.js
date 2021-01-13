@@ -41,11 +41,6 @@ class ReceivePage extends Component {
         <Balance />
         {address ?
           <div>
-            <div className="qrcode-wallet">
-              <QRCode
-                value={address}
-              />
-            </div>
             <div className="highlight-wallet text-center">
               <pre>
                 <code>{address}</code>
