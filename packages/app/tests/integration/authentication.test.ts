@@ -74,7 +74,6 @@ environments.forEach(([browserType, deviceType]) => {
 
     it('creating an account successfully', async () => {
       await demoPage.openConnect();
-      await demoPage.clickConnectGetStarted();
       const auth = await WalletPage.getAuthPopup(context);
       await auth.clickSignUp();
       await auth.enterPassword();
@@ -140,8 +139,8 @@ environments.forEach(([browserType, deviceType]) => {
     it('Sign in with existing key', async () => {
       //TEST #10,11
       await demoPage.openConnect();
-      await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
+      await auth.clickSignIn();
       await auth.loginWithPreviousSecretKey(SECRET_KEY);
       await auth.chooseAccount(USERNAME);
       const authResponse = await demoPage.waitForAuthResponse(browser);
@@ -151,8 +150,8 @@ environments.forEach(([browserType, deviceType]) => {
     it('Sign in with the wrong key', async () => {
       //TEST #12
       await demoPage.openConnect();
-      await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
+      await auth.clickSignIn();
       await auth.enterSecretKey(WRONG_SECRET_KEY);
       const error = await auth.page.waitForSelector(auth.signInKeyError);
       expect(error).toBeTruthy();
@@ -162,8 +161,8 @@ environments.forEach(([browserType, deviceType]) => {
     it('Sign in with the wrong magic recovery code', async () => {
       //TEST #13
       await demoPage.openConnect();
-      await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
+      await auth.clickSignIn();
       await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
       await auth.decryptRecoveryCode(WRONG_PASSWORD);
       await auth.page.waitForSelector('text="Incorrect password"');
@@ -172,8 +171,8 @@ environments.forEach(([browserType, deviceType]) => {
     it('Sign in with the correct magic recovery code', async () => {
       //TEST #13
       await demoPage.openConnect();
-      await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
+      await auth.clickSignIn();
       await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
       await auth.decryptRecoveryCode(CORRECT_PASSWORD);
       const authResponse = await demoPage.waitForAuthResponse(browser);
@@ -182,9 +181,8 @@ environments.forEach(([browserType, deviceType]) => {
 
     it('generates the correct app private key', async () => {
       await demoPage.openConnect();
-      await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
-
+      await auth.clickSignIn();
       const secretKey = generateSecretKey();
       const wallet = await generateWallet({ secretKey, password: 'password' });
       await auth.loginWithPreviousSecretKey(secretKey);
