@@ -68,7 +68,7 @@ export const Routes: React.FC = () => {
     if (isSignedIn) {
       return (
         <Navigate
-          to={{ pathname: '/', hash: `${ScreenPaths.CHOOSE_ACCOUNT}?${search}` }}
+          to={`${ScreenPaths.CHOOSE_ACCOUNT}${search}`}
           screenPath={ScreenPaths.CHOOSE_ACCOUNT}
         />
       );
