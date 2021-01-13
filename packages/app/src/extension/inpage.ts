@@ -1,4 +1,4 @@
-import { BlockstackProvider } from '@stacks/connect';
+import { StacksProvider } from '@stacks/connect';
 
 interface Response {
   source: 'blockstack-extension';
@@ -34,11 +34,12 @@ const callAndReceive = async (methodName: string, opts: any = {}): Promise<Respo
   });
 };
 
-const provider: BlockstackProvider = {
+const provider: StacksProvider = {
   getURL: async () => {
     const { url } = await callAndReceive('getURL');
     return url;
   },
 };
 
+window.StacksProvider = provider;
 window.BlockstackProvider = provider;

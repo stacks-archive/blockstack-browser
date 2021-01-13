@@ -1,7 +1,11 @@
 import { authenticate, AuthOptions, FinishedData } from './auth';
 import { defineCustomElements } from '@stacks/connect-ui';
+import { getStacksProvider } from './utils';
 
 export const showConnect = (authOptions: AuthOptions) => {
+  if (getStacksProvider()) {
+    void authenticate(authOptions);
+  }
   defineCustomElements();
   const element = document.createElement('connect-modal');
   element.authOptions = authOptions;

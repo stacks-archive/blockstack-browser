@@ -1,6 +1,5 @@
 import { UserSession, AppConfig } from '@stacks/auth';
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
-import { defaultAuthURL } from '../auth';
 import { popupCenter, setupListener } from '../popup';
 import {
   ContractCallOptions,
@@ -16,6 +15,7 @@ import {
   TransactionTypes,
 } from './types';
 import { serializeCV } from '@stacks/transactions';
+import { getStacksProvider } from '../utils';
 
 export * from './types';
 
@@ -39,8 +39,12 @@ const signPayload = async (payload: TransactionPayload, privateKey: string) => {
 };
 
 const openTransactionPopup = async ({ token, options }: TransactionPopup) => {
-  const extensionURL = await window.BlockstackProvider?.getURL();
-  const authURL = new URL(extensionURL || options.authOrigin || defaultAuthURL);
+  const provider = getStacksProvider();
+  if (!provider) {
+    throw new Error('Stacks Wallet not installed.');
+  }
+  const extensionURL = await provider?.getURL();
+  const authURL = new URL(extensionURL);
   const urlParams = new URLSearchParams();
   urlParams.set('request', token);
 

@@ -11,7 +11,7 @@
     "build:test-app": "lerna run prod:web --scope test-app",
     "build:test": "lerna run build:test --parallel --stream",
     "build:test:watch": "lerna run build:test:watch --parallel --stream",
-    "build:extension": "lerna run prod:ext",
+    "build:extension": "lerna run prod:ext --stream",
     "deploy-contracts": "lerna run deploy-contracts --stream",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint \"packages/**/src/**/*.{ts,tsx}\"",

@@ -45,6 +45,10 @@ export interface ContractCallBase extends TxBase {
 }
 
 export interface ContractCallOptions extends ContractCallBase {
+  /**
+   * @deprecated Authentication is no longer supported through a hosted
+   * version. Users must install an extension.
+   */
   authOrigin?: string;
   userSession?: UserSession;
   /** @deprecated use `onFinish` */
@@ -72,6 +76,10 @@ export interface ContractDeployBase extends TxBase {
 }
 
 export interface ContractDeployOptions extends ContractDeployBase {
+  /**
+   * @deprecated Authentication is no longer supported through a hosted
+   * version. Users must install an extension.
+   */
   authOrigin?: string;
   userSession?: UserSession;
   /** @deprecated use `onFinish` */
@@ -95,6 +103,10 @@ export interface STXTransferBase extends TxBase {
 }
 
 export interface STXTransferOptions extends STXTransferBase {
+  /**
+   * @deprecated Authentication is no longer supported through a hosted
+   * version. Users must install an extension.
+   */
   authOrigin?: string;
   userSession?: UserSession;
   /** @deprecated use `onFinish` */

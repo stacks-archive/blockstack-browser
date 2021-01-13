@@ -3,7 +3,6 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['jest', 'react-hooks'],
   env: {
     browser: true,
     node: true,

@@ -1,7 +1,11 @@
-import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../../../../connect/src/types.d.ts" />
+
+import { Component, h, Prop, Event, EventEmitter, State } from '@stencil/core';
 import { CloseIcon } from './assets/close-icon';
-import { Intro } from './screens/screens-intro';
 import { AuthOptions } from '@stacks/connect/auth';
+import { getBrowser } from './extension-util';
+import { StacksIcon } from './assets/stacks-icon';
 
 @Component({
   tag: 'connect-modal',
@@ -20,7 +24,15 @@ export class Modal {
   @Event()
   onCloseModal: EventEmitter;
 
+  @State()
+  openedInstall: boolean;
+
+  handleOpenedInstall() {
+    this.openedInstall = true;
+  }
+
   render() {
+    const browser = getBrowser();
     const handleContainerClick = (event: MouseEvent) => {
       const target = event.target as HTMLDivElement;
       if (target.className?.includes && target.className.includes('modal-container')) {
@@ -34,7 +46,46 @@ export class Modal {
             <CloseIcon onClick={() => this.onCloseModal.emit()} />
           </div>
           <div class="modal-content">
-            <Intro authOptions={this.authOptions} signUp={this.onSignUp} signIn={this.onSignIn} />
+            <div>
+              <div class="hero-icon">
+                <StacksIcon />
+              </div>
+              <span class="modal-header pxl">
+                Use {this.authOptions.appDetails.name} with Stacks
+              </span>
+              <div class="intro-subtitle pxl">
+                Stacks Wallet gives you control over your digital assets and data in apps like{' '}
+                {this.authOptions.appDetails.name}.
+                {browser ? ` Add it to ${browser} to continue.` : ''}
+              </div>
+              {this.openedInstall ? (
+                <div class="intro-subtitle pxl">
+                  After installing Stacks Wallet, reload this page and sign in.
+                </div>
+              ) : (
+                <div class="button-container">
+                  <button
+                    class="button"
+                    onClick={() => {
+                      window.open('https://www.hiro.so/wallet/install-web', '_blank');
+                      this.openedInstall = true;
+                    }}
+                  >
+                    <span>Install Stacks Wallet</span>
+                  </button>
+                </div>
+              )}
+              <div class="modal-footer">
+                <span
+                  class="link"
+                  onClick={() =>
+                    window.open('https://www.hiro.so/questions/how-does-stacks-work', '_blank')
+                  }
+                >
+                  How it works
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { AppConfig, UserSession } from '@stacks/auth';
-import './types';
 import { popupCenter, setupListener } from './popup';
 import { version } from '../package.json';
+import { getStacksProvider } from './utils';
 
 export const defaultAuthURL = 'https://app.blockstack.org';
 
@@ -29,6 +29,10 @@ export interface AuthOptions {
   onFinish?: (payload: FinishedData) => void;
   /** This callback is fired if the user exits before finishing */
   onCancel?: () => void;
+  /**
+   * @deprecated Authentication is no longer supported through a hosted
+   * version. Users must install an extension.
+   */
   authOrigin?: string;
   /** If `sendToSignIn` is `true`, then the user will be sent through the sign in flow. */
   sendToSignIn?: boolean;
@@ -70,17 +74,34 @@ export const getOrCreateUserSession = (userSession?: UserSession): UserSession =
   return userSession;
 };
 
-export const authenticate = async ({
-  redirectTo = '/',
-  manifestPath,
-  finished,
-  onFinish,
-  onCancel,
-  authOrigin,
-  sendToSignIn = false,
-  userSession: _userSession,
-  appDetails,
-}: AuthOptions) => {
+export const authenticate = async (authOptions: AuthOptions) => {
+  const provider = getStacksProvider();
+
+  const extensionUrl = await provider?.getURL();
+  if (!extensionUrl) {
+    throw new Error('Unable to authenticate without Stacks Wallet extension');
+  }
+
+  authenticateWithExtensionUrl({ extensionUrl, authOptions });
+};
+
+export function authenticateWithExtensionUrl({
+  extensionUrl,
+  authOptions,
+}: {
+  extensionUrl: string;
+  authOptions: AuthOptions;
+}) {
+  const {
+    redirectTo = '/',
+    manifestPath,
+    finished,
+    onFinish,
+    onCancel,
+    sendToSignIn = false,
+    userSession: _userSession,
+    appDetails,
+  } = authOptions;
   const userSession = getOrCreateUserSession(_userSession);
   if (userSession.isUserSignedIn()) {
     userSession.signUserOut();
@@ -111,8 +132,7 @@ export const authenticate = async ({
 
   const path = sendToSignIn ? 'sign-in' : 'sign-up';
 
-  const extensionURL = await window.BlockstackProvider?.getURL();
-  const authURL = new URL(extensionURL || authOrigin || defaultAuthURL);
+  const authURL = new URL(extensionUrl);
 
   const url = `${authURL.origin}/index.html#/${path}?${urlParams.toString()}`;
   if (shouldUsePopup()) {
@@ -120,7 +140,7 @@ export const authenticate = async ({
       url,
       // If the extension is installed, dont worry about popup blocking
       // Otherwise, firefox will open the popup and a new tab.
-      skipPopupFallback: !!window.BlockstackProvider,
+      skipPopupFallback: true,
     });
 
     setupAuthListener({
@@ -135,7 +155,7 @@ export const authenticate = async ({
   }
 
   document.location.href = url;
-};
+}
 
 interface FinishedEventData {
   authResponse: string;

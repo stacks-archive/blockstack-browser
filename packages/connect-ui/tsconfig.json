@@ -15,7 +15,11 @@
     "noUnusedParameters": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": [
+      "node_modules/@types",
+      "../connect/src/types"
+    ],
+    "skipLibCheck": true,
     "baseUrl": "./",
     "resolveJsonModule": true,
     "paths": {

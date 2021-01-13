@@ -4,6 +4,7 @@ import { sass } from '@stencil/sass';
 export const config: Config = {
   namespace: 'connect-ui',
   taskQueue: 'async',
+  tsconfig: './tsconfig.json',
   outputTargets: [
     {
       type: 'dist',
