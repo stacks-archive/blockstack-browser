@@ -5,6 +5,7 @@ import { getStacksProvider } from './utils';
 export const showConnect = (authOptions: AuthOptions) => {
   if (getStacksProvider()) {
     void authenticate(authOptions);
+    return;
   }
   defineCustomElements();
   const element = document.createElement('connect-modal');
