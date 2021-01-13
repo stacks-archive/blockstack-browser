@@ -12,7 +12,6 @@ import { Route } from 'react-router-dom';
 import { ErrorBoundary } from './error-boundary';
 
 enum Step {
-  INITIAL = 0,
   VIEW_KEY = 1,
   SET_PASSWORD = 2,
 }
@@ -28,11 +27,7 @@ export const SignedOut = () => {
         <Button
           my="extra-loose"
           onClick={() => {
-            if (typeof chrome !== 'undefined' && chrome.runtime.getURL) {
-              window.open(chrome.runtime.getURL(`index.html#${ScreenPaths.INSTALLED}`));
-            } else {
-              doChangeScreen(ScreenPaths.INSTALLED);
-            }
+            doChangeScreen(ScreenPaths.INSTALLED);
           }}
         >
           Get started
@@ -46,38 +41,26 @@ interface AccountGateProps {
   element: React.ReactNode;
 }
 export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
-  const [step, setStep] = useState<Step>(Step.INITIAL);
+  const [step, setStep] = useState<Step>(Step.VIEW_KEY);
   const { hasSetPassword, isSignedIn, secretKey, encryptedSecretKey } = useWallet();
   const { onCopy, hasCopied } = useClipboard(secretKey || '');
 
   if (isSignedIn && hasSetPassword) return <>{element}</>;
 
   if ((isSignedIn || encryptedSecretKey) && !hasSetPassword) {
-    if (step === Step.INITIAL) {
+    if (step === Step.VIEW_KEY) {
+      const words = (secretKey || '').split(' ').length;
       return (
         <PopupContainer hideActions title="Save your Secret Key">
-          <Box my="loose">
-            <Text fontSize={2}>
-              Before adding tokens to your account, save your Secret Key. You’ll need your Secret
-              Key to access your account, its data and assets on a new device.
-            </Text>
-          </Box>
-          <Box flexGrow={1} />
-          <Box>
-            <Button width="100%" onClick={() => setStep(Step.VIEW_KEY)} data-test="save-key">
-              Save Secret Key
-            </Button>
-          </Box>
-        </PopupContainer>
-      );
-    } else if (step === Step.VIEW_KEY) {
-      return (
-        <PopupContainer hideActions title="Your Secret Key">
           <Toast show={hasCopied} />
           <Box mt="loose">
+            <Text fontSize={2} mb="base">
+              Before adding tokens to your account, save your Secret Key.
+            </Text>
             <Text fontSize={2}>
-              Here’s your Secret Key: 12 words that prove it’s you when you want to use {name} on a
-              new device. Once lost it’s lost forever, so save it somewhere you won’t forget.
+              Here’s your Secret Key: {words} words that prove it’s you when you want to use your
+              wallet on a new device. Once lost it’s lost forever, so save it somewhere you won’t
+              forget.
             </Text>
           </Box>
           <Box my="loose">

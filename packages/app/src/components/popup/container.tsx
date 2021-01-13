@@ -57,8 +57,6 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
 }) => {
   const { setShowSettings } = useDrawers();
 
-  const isExtension = EXT_ENV !== 'web';
-
   const Settings: React.FC<BoxProps> = props => {
     if (hideActions) return null;
     return (
@@ -71,8 +69,8 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
   return (
     <>
       <Flex
-        minHeight={`max(${isExtension ? '100vh' : '500px'}, 400px)`}
-        minWidth={isExtension ? '440px' : undefined}
+        minHeight={'500px'}
+        minWidth={'440px'}
         maxWidth="100vw"
         background="white"
         p="24px"
