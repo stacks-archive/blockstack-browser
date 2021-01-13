@@ -46,7 +46,7 @@ const AccountItem: React.FC<AccountItemProps> = ({
         >
           {getAccountDisplayName(account)}
         </Text>
-        <Text display="block" fontSize={1}>
+        <Text display="block" fontSize={1} {...getLoadingProps(showLoadingProps)}>
           {address}
         </Text>
       </Flex>

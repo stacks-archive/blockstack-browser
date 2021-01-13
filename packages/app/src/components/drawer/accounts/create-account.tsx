@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Box, Flex, Text, Button } from '@stacks/ui';
 import { useWallet } from '@common/hooks/use-wallet';
 
@@ -7,10 +7,15 @@ interface CreateAccountProps {
 }
 export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
   const { doCreateNewAccount } = useWallet();
+
+  const createAccount = useCallback(async () => {
+    await doCreateNewAccount();
+    setTimeout(() => close(), 3000);
+  }, [doCreateNewAccount, close]);
+
   useEffect(() => {
-    void doCreateNewAccount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    void createAccount();
+  }, [createAccount]);
   return (
     <Box width="100%" px={6}>
       <Box>

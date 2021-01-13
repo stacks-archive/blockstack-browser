@@ -2,7 +2,7 @@
   "name": "Stacks Wallet",
   "author": "Hiro PBC",
   "version": "<% VERSION %>",
-  "description": "The Blockstack app is all you need to access the new internet. Access privacy-friendly apps and keep data in your control.",
+  "description": "The Stacks Wallet is all you need to access the new internet. Use the Stacks blockchain, access privacy-friendly apps, and keep data in your control.",
   "icons": {
     "128": "assets/connect-logo/Stacks128w.png",
     "256": "assets/connect-logo/Stacks256w.png",
@@ -19,7 +19,7 @@
   },
   "web_accessible_resources": ["inpage.js", "index.html"],
   "browser_action": {
-    "default_title": "Blockstack",
+    "default_title": "Stacks",
     "default_icon": "assets/connect-logo/Stacks128w.png",
     "default_popup": "index.html"
   },

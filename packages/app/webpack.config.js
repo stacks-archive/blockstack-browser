@@ -226,7 +226,7 @@ module.exports = {
       template: path.join(sourceRootPath, '../', 'public', 'html', 'index.html'),
       inject: 'body',
       filename: 'index.html',
-      title: 'Blockstack',
+      title: 'Stacks Wallet',
       chunks: ['index', 'common'],
       ...hmtlProdOpts,
     }),

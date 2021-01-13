@@ -1,18 +1,22 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { ControlledDrawer } from '../controlled';
 import { SwitchAccounts } from './switch-accounts';
 import { CreateAccount } from './create-account';
 import { AddUsername } from './add-username';
 import { useDrawers } from '@common/hooks/use-drawers';
-import { AccountStep, showAccountsStore } from '@store/recoil/drawers';
+import { useRecoilCallback } from 'recoil';
+import { AccountStep, showAccountsStore, accountDrawerStep } from '@store/recoil/drawers';
 
 export const AccountsDrawer: React.FC = () => {
-  const { accountStep, setAccountStep, setShowAccounts } = useDrawers();
+  const { accountStep } = useDrawers();
 
-  const close = useCallback(() => {
-    setAccountStep(AccountStep.Switch);
-    setShowAccounts(false);
-  }, [setAccountStep, setShowAccounts]);
+  const close = useRecoilCallback(
+    ({ set }) => () => {
+      set(showAccountsStore, false);
+      setTimeout(() => set(accountDrawerStep, AccountStep.Switch), 200);
+    },
+    []
+  );
   return (
     <ControlledDrawer state={showAccountsStore} close={close}>
       {accountStep === AccountStep.Switch ? <SwitchAccounts close={close} /> : null}

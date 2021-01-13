@@ -10,6 +10,8 @@ import {
   decrypt,
   generateNewAccount,
   getStxAddress,
+  restoreWalletAccounts,
+  updateWalletConfig,
 } from '@stacks/wallet-sdk';
 import { useRecoilValue, useRecoilState, useSetRecoilState, useRecoilCallback } from 'recoil';
 import { useDispatch } from 'react-redux';
@@ -30,12 +32,7 @@ import { TransactionVersion, StacksTransaction } from '@stacks/transactions';
 import { DEFAULT_PASSWORD, ScreenPaths } from '@store/onboarding/types';
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
-import {
-  doSetOnboardingPath,
-  doSetOnboardingProgress,
-  doChangeScreen,
-  saveAuthRequest,
-} from '@store/onboarding/actions';
+import { doChangeScreen, saveAuthRequest } from '@store/onboarding/actions';
 import { doTrackScreenChange } from '@common/track';
 import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
 import { decodeToken } from 'jsontokens';
@@ -78,37 +75,58 @@ export const useWallet = () => {
 
   const isSignedIn = !!wallet;
 
-  const doMakeWallet = useRecoilCallback(({ set }) => async () => {
-    const secretKey = generateSecretKey(256);
-    const wallet = await generateWallet({ secretKey, password: DEFAULT_PASSWORD });
-    dispatch(doSetOnboardingProgress(true));
-    set(walletStore, wallet);
-    set(secretKeyStore, secretKey);
-    set(encryptedSecretKeyStore, wallet.encryptedSecretKey);
-    set(currentAccountIndexStore, 0);
-  });
-
-  const doStoreSeed = useRecoilCallback(
-    ({ set }) => async (secretKey: string, password?: string) => {
-      const wallet = await generateWallet({ secretKey, password: password || DEFAULT_PASSWORD });
+  const doMakeWallet = useRecoilCallback(
+    ({ set }) => async () => {
+      const secretKey = generateSecretKey(256);
+      const wallet = await generateWallet({ secretKey, password: DEFAULT_PASSWORD });
       set(walletStore, wallet);
       set(secretKeyStore, secretKey);
       set(encryptedSecretKeyStore, wallet.encryptedSecretKey);
       set(currentAccountIndexStore, 0);
-      if (password !== undefined) setHasSetPassword(true);
-    }
+    },
+    []
   );
 
-  const doCreateNewAccount = useRecoilCallback(({ snapshot, set }) => async () => {
-    const secretKey = await snapshot.getPromise(secretKeyStore);
-    const wallet = await snapshot.getPromise(walletStore);
-    if (!secretKey || !wallet) {
-      throw 'Unable to create a new account - not logged in.';
-    }
-    const newWallet = generateNewAccount(wallet);
-    // TODO: update wallet config
-    set(walletStore, newWallet);
-  });
+  const doStoreSeed = useRecoilCallback(
+    ({ set }) => async (secretKey: string, password?: string) => {
+      const generatedWallet = await generateWallet({
+        secretKey,
+        password: password || DEFAULT_PASSWORD,
+      });
+      const wallet = await restoreWalletAccounts({
+        wallet: generatedWallet,
+        gaiaHubUrl: gaiaUrl,
+      });
+      set(walletStore, wallet);
+      set(secretKeyStore, secretKey);
+      set(encryptedSecretKeyStore, wallet.encryptedSecretKey);
+      set(currentAccountIndexStore, 0);
+      if (password !== undefined) set(hasSetPasswordStore, true);
+    },
+    []
+  );
+
+  const doCreateNewAccount = useRecoilCallback(
+    ({ snapshot, set }) => async () => {
+      const secretKey = await snapshot.getPromise(secretKeyStore);
+      const wallet = await snapshot.getPromise(walletStore);
+      if (!secretKey || !wallet) {
+        throw 'Unable to create a new account - not logged in.';
+      }
+      const newWallet = generateNewAccount(wallet);
+      set(walletStore, newWallet);
+      set(currentAccountIndexStore, newWallet.accounts.length - 1);
+      const updateConfig = async () => {
+        const gaiaHubConfig = await createWalletGaiaConfig({ gaiaHubUrl: gaiaUrl, wallet });
+        await updateWalletConfig({
+          wallet: newWallet,
+          gaiaHubConfig,
+        });
+      };
+      void updateConfig();
+    },
+    []
+  );
 
   const doSignOut = useCallback(() => {
     setWallet(undefined);
@@ -143,22 +161,15 @@ export const useWallet = () => {
     [chainInfo.value, setLatestNonces]
   );
 
-  const doFinishSignInInner = useRecoilCallback(
-    ({ set, snapshot }) => async (
-      accountIndex: number,
-      decodedAuthRequest?: DecodedAuthRequest,
-      authRequest?: string
-    ) => {
+  const doFinishSignIn = useRecoilCallback(
+    ({ set, snapshot }) => async (accountIndex: number) => {
       const wallet = await snapshot.getPromise(walletStore);
       const account = wallet?.accounts[accountIndex];
-      console.log(decodedAuthRequest, authRequest, account, wallet);
       if (!decodedAuthRequest || !authRequest || !account || !wallet) {
         console.error('Uh oh! Finished onboarding without auth info.');
         return;
       }
       const appURL = new URL(decodedAuthRequest.redirect_uri);
-      // TODO: refresh account
-      // await currentIdentity.refresh();
       const gaiaHubConfig = await createWalletGaiaConfig({ gaiaHubUrl: gaiaUrl, wallet });
       const walletConfig = await getOrCreateWalletConfig({
         wallet,
@@ -190,18 +201,10 @@ export const useWallet = () => {
         account,
       });
       account.username = username;
+      set(currentAccountIndexStore, accountIndex);
       finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
-      set(walletStore, wallet);
-      dispatch(doSetOnboardingPath(undefined));
-      dispatch(doSetOnboardingProgress(false));
-    }
-  );
-
-  const doFinishSignIn = useCallback(
-    async (accountIndex: number) => {
-      return doFinishSignInInner(accountIndex, decodedAuthRequest, authRequest);
     },
-    [decodedAuthRequest, authRequest, doFinishSignInInner]
+    [decodedAuthRequest, authRequest, appName, appIcon]
   );
 
   const doSaveAuthRequest = useCallback(
@@ -250,10 +253,13 @@ export const useWallet = () => {
     [encryptedSecretKey, doStoreSeed, setHasSetPassword]
   );
 
-  const doLockWallet = useRecoilCallback(({ set }) => () => {
-    set(walletStore, undefined);
-    set(secretKeyStore, undefined);
-  });
+  const doLockWallet = useRecoilCallback(
+    ({ set }) => () => {
+      set(walletStore, undefined);
+      set(secretKeyStore, undefined);
+    },
+    []
+  );
 
   return {
     wallet,

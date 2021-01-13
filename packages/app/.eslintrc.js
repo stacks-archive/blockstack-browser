@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['jest'],
+  plugins: ['jest', 'react-hooks'],
   env: {
     browser: true,
     node: true,
@@ -27,8 +27,8 @@ module.exports = {
     "no-warning-comments": [1],
     "react-hooks/exhaustive-deps": [
       "warn", {
-        "additionalHooks": "useRecoilCallback"
-      }
+        additionalHooks: "useRecoilCallback",
+      },
     ]
   },
 };
