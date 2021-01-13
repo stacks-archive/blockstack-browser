@@ -57,14 +57,14 @@ export const Debugger = () => {
     });
   };
 
-  const stxTransfer = async () => {
+  const stxTransfer = async (amount: string) => {
     clearState();
     const authOrigin = getAuthOrigin();
     const network = new StacksTestnet();
     await doSTXTransfer({
       network,
       authOrigin,
-      amount: '102',
+      amount,
       recipient: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       finished: data => {
         console.log('finished stx transfer!', data);
@@ -142,9 +142,12 @@ export const Debugger = () => {
           <Button mt={3} onClick={callFaker}>
             Contract call
           </Button>
-          <Button mt={3} onClick={stxTransfer}>
+          <Button mt={3} onClick={() => stxTransfer('102')}>
             STX transfer
           </Button>
+          {/* <Button mt={3} onClick={() => stxTransfer((1000000 * 1000000).toString())}>
+            Big STX transfer
+          </Button> */}
           <Button mt={3} onClick={deployContract}>
             Contract deploy
           </Button>

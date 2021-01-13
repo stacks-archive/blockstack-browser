@@ -42,7 +42,9 @@ export const DecryptRecoveryCode: React.FC = () => {
       doTrack(SIGN_IN_CORRECT);
       if (decodedAuthRequest) {
         if (!USERNAMES_ENABLED) {
-          void doFinishSignIn(0);
+          setTimeout(() => {
+            void doFinishSignIn(0);
+          }, 1000);
         } else {
           doChangeScreen(ScreenPaths.USERNAME);
         }

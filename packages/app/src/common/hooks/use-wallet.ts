@@ -12,6 +12,7 @@ import {
   getStxAddress,
   restoreWalletAccounts,
   updateWalletConfig,
+  getAccountDisplayName,
 } from '@stacks/wallet-sdk';
 import { useRecoilValue, useRecoilState, useSetRecoilState, useRecoilCallback } from 'recoil';
 import { useDispatch } from 'react-redux';
@@ -59,12 +60,14 @@ export const useWallet = () => {
   const walletConfig = useLoadable(walletConfigStore);
 
   let currentAccountStxAddress = undefined;
+  let currentAccountDisplayName = undefined;
   if (currentAccount) {
     // TODO: use version from current network
     currentAccountStxAddress = getStxAddress({
       account: currentAccount,
       transactionVersion: TransactionVersion.Testnet,
     });
+    currentAccountDisplayName = getAccountDisplayName(currentAccount);
   }
 
   const setLatestNonces = useSetRecoilState(
@@ -268,6 +271,7 @@ export const useWallet = () => {
     currentAccount,
     currentAccountIndex,
     currentAccountStxAddress,
+    currentAccountDisplayName,
     walletConfig,
     networks,
     currentNetwork,

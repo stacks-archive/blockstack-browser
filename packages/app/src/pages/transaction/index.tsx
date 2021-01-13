@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { Box, Button, Flex, Text } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { LoadingRectangle } from '@components/loading-rectangle';
@@ -11,6 +11,11 @@ import { PostConditions } from '@components/transactions/post-conditions/list';
 import { showTxDetails } from '@store/recoil/transaction';
 import { useRecoilValue } from 'recoil';
 import { TransactionTypes } from '@stacks/connect';
+import { getAccountDisplayName } from '@stacks/wallet-sdk';
+import { useWallet } from '@common/hooks/use-wallet';
+import { useFetchBalances } from '@common/hooks/use-account-info';
+import { TransactionError, TransactionErrorReason } from './transaction-error';
+import BigNumber from 'bignumber.js';
 
 export const TxLoading: React.FC = () => {
   return (
@@ -26,17 +31,9 @@ export const TxLoading: React.FC = () => {
 };
 
 export const TransactionPage: React.FC = () => {
-  return (
-    <PopupContainer>
-      <Suspense fallback={<TxLoading />}>
-        <TransactionPageContent />
-      </Suspense>
-    </PopupContainer>
-  );
-};
-
-export const TransactionPageContent: React.FC = () => {
   const { pendingTransaction, signedTransaction, doSubmitPendingTransaction } = useTxState();
+  const { currentAccount, currentAccountStxAddress } = useWallet();
+  const balances = useFetchBalances();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const showDetails = useRecoilValue(showTxDetails);
   const txType = pendingTransaction?.txType;
@@ -54,9 +51,61 @@ export const TransactionPageContent: React.FC = () => {
     await doSubmitPendingTransaction();
     setIsSubmitting(false);
   }, [doSubmitPendingTransaction]);
+
+  const error = useMemo<TransactionErrorReason | void>(() => {
+    if (!pendingTransaction || balances.errorMaybe() || !currentAccount) {
+      return TransactionErrorReason.Generic;
+    }
+    if (balances.value) {
+      const stxBalance = new BigNumber(balances.value.stx.balance);
+      if (pendingTransaction.txType === TransactionTypes.STXTransfer) {
+        const transferAmount = new BigNumber(pendingTransaction.amount);
+        if (transferAmount.gte(stxBalance)) {
+          return TransactionErrorReason.StxTransferInsufficientFunds;
+        }
+      }
+    }
+    return;
+  }, [balances, currentAccount, pendingTransaction]);
+
+  if (error !== undefined) {
+    return <TransactionError reason={error} />;
+  }
+
+  if (!currentAccount || !pendingTransaction) throw new Error('Invalid code path.');
+
+  const appName = pendingTransaction?.appDetails?.name;
+
   return (
-    <>
-      <Box mt="extra-loose">
+    <PopupContainer>
+      <Box width="100%" mt="loose" data-test="home-page">
+        <Flex dir="row" width="100%">
+          <Box flexGrow={1}>
+            <Text
+              fontSize={2}
+              fontWeight="600"
+              fontFamily="heading"
+              color="ink.1000"
+              display="block"
+            >
+              {getAccountDisplayName(currentAccount)}
+            </Text>
+          </Box>
+          <Box>
+            {balances.state === 'hasValue' ? (
+              <Text textStyle="body.small" color="ink.600" fontSize={1}>
+                {stacksValue({ value: balances.contents.stx.balance, withTicker: true })}
+              </Text>
+            ) : (
+              <LoadingRectangle height="16px" width="50px" />
+            )}
+          </Box>
+        </Flex>
+        <Text textStyle="body.small" color="ink.600" fontSize={1}>
+          {currentAccountStxAddress}
+        </Text>
+      </Box>
+      <Box mt="base">
         <Text
           display="block"
           fontFamily="heading"
@@ -67,7 +116,7 @@ export const TransactionPageContent: React.FC = () => {
           {pageTitle}
         </Text>
         <Text textStyle="caption" color="ink.600">
-          {pendingTransaction?.appDetails?.name}
+          {appName ? `with ${appName}` : ''}
         </Text>
       </Box>
       <PostConditions />
@@ -110,6 +159,6 @@ export const TransactionPageContent: React.FC = () => {
           Confirm
         </Button>
       </Box>
-    </>
+    </PopupContainer>
   );
 };
