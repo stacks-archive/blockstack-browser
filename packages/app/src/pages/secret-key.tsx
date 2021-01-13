@@ -15,7 +15,7 @@ export const SecretKey: React.FC = () => {
   const words = (secretKey || '').split(' ').length;
 
   return (
-    <PopupContainer title="Your secret key">
+    <PopupContainer title="Your Secret Key">
       <Toast show={hasCopied} />
       <Text my="base" display="block">
         Here’s your Secret Key: {words} words that prove it’s you when you want to use {name} on a
