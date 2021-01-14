@@ -71,9 +71,7 @@ export const latestNonceStore = selector({
     const network = get(currentNetworkStore);
     const account = get(currentAccountStore);
     const transactionVersion = get(currentTransactionVersion);
-    const address = account
-      ? getStxAddress({ account, transactionVersion })
-      : '';
+    const address = account ? getStxAddress({ account, transactionVersion }) : '';
     const nonce = get(latestNoncesStore([network.url, address]));
     return nonce;
   },
