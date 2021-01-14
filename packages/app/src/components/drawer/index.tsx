@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex } from '@stacks/ui';
+import { Box, Flex, CloseIcon } from '@stacks/ui';
 import useOnClickOutside from 'use-onclickoutside';
 
 const transition = '0.2s all ease-in-out';
@@ -45,8 +45,12 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children
         py={6}
         borderTopLeftRadius="24px"
         borderTopRightRadius="24px"
-        overflowY="scroll"
+        overflowY="auto"
+        position="relative"
       >
+        <Box position="absolute" top="15px" right="20px">
+          <CloseIcon size="12px" onClick={close} cursor="pointer" />
+        </Box>
         {children}
       </Box>
     </Flex>
