@@ -23,7 +23,7 @@ export const Installed: React.FC = () => {
   }, [doMakeWallet, doChangeScreen, decodedAuthRequest]);
 
   return (
-    <PopupContainer>
+    <PopupContainer hideActions>
       <Box width="100%" textAlign="center">
         <Box mt="extra-loose">
           <Text fontSize="32px" lineHeight="48px" fontWeight="500">

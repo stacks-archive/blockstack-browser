@@ -46,7 +46,7 @@ export const InstalledSignIn: React.FC = () => {
   }, [seed, dispatch, doStoreSeed, doChangeScreen, doTrack]);
 
   return (
-    <PopupContainer>
+    <PopupContainer hideActions>
       <Box mt="extra-loose">
         <Text fontSize={['32px', '24px']} lineHeight="48px" fontWeight="500">
           Continue with Secret Key
