@@ -1,6 +1,6 @@
 import { AtomEffect, DefaultValue } from 'recoil';
 
-export const ATOM_LOCALSTORAGE_PREFIX = '__hiro-recoil__';
+export const ATOM_LOCALSTORAGE_PREFIX = '__hiro-recoil-v2__';
 
 export const localStorageKey = (atomKey: string): string => {
   return `${ATOM_LOCALSTORAGE_PREFIX}${atomKey}`;
@@ -10,6 +10,13 @@ interface LocalStorageTransformer<T> {
   serialize: (atom: T | DefaultValue) => string;
   deserialize: (serialized: string) => T;
 }
+
+export const guardRecoilDefaultValue = <T>(
+  candidate: DefaultValue | T
+): candidate is DefaultValue => {
+  if (candidate instanceof DefaultValue) return true;
+  return false;
+};
 
 interface LocalStorageEffectOptions<T> {
   transformer?: LocalStorageTransformer<T>;
@@ -46,10 +53,12 @@ export const localStorageEffect = <T>({
           localStorage.removeItem(key);
         }
       } else {
-        if (newValue !== null && newValue !== undefined) {
-          localStorage.setItem(key, JSON.stringify(newValue));
-        } else {
+        const doClear =
+          guardRecoilDefaultValue(newValue) || newValue === null || newValue === undefined;
+        if (doClear) {
           localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, JSON.stringify(newValue));
         }
       }
     });
