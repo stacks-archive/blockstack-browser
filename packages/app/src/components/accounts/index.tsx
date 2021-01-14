@@ -7,7 +7,6 @@ import { AccountAvatar } from './account-avatar';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
-import { TransactionVersion } from '@stacks/transactions';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 
 const loadingProps = { color: '#A1A7B3' };
@@ -64,7 +63,7 @@ interface AccountsProps {
 }
 
 export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) => {
-  const { wallet } = useWallet();
+  const { wallet, transactionVersion } = useWallet();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { decodedAuthRequest } = useOnboardingState();
   const { doChangeScreen } = useAnalytics();
@@ -79,7 +78,7 @@ export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) 
 
   const accounts = wallet.accounts.map(account => ({
     ...account,
-    stxAddress: getStxAddress({ account, transactionVersion: TransactionVersion.Mainnet }),
+    stxAddress: getStxAddress({ account, transactionVersion }),
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     number: account.index + 1,
   }));

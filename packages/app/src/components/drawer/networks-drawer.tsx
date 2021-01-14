@@ -49,7 +49,7 @@ export const NetworksDrawer: React.FC = () => {
   });
   return (
     <ControlledDrawer state={showNetworksStore}>
-      <Box width="100%" px={6}>
+      <Box width="100%" px={6} mt="base">
         <Text fontSize={4} fontWeight="600">
           Select Network
         </Text>
@@ -57,7 +57,7 @@ export const NetworksDrawer: React.FC = () => {
       <Flex flexWrap="wrap" flexDirection="column">
         {networkRows}
       </Flex>
-      <Box width="100%" px={6}>
+      <Box width="100%" px={6} mt="base">
         <Button
           onClick={() => {
             setShowNetworks(false);

@@ -1,11 +1,24 @@
 import React from 'react';
-import { Box, Flex, Text, ArrowIcon, BoxProps, FlexProps, StxNexus } from '@stacks/ui';
+import {
+  Box,
+  Flex,
+  Text,
+  ArrowIcon,
+  BoxProps,
+  FlexProps,
+  StxNexus,
+  IconButton,
+  color,
+} from '@stacks/ui';
 import styled from '@emotion/styled';
-import { EllipsisIcon } from '@components/icons/ellipsis-icon';
 import { SettingsPopover } from './settings-popover';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
+import { IconMenu2, IconFlask } from '@tabler/icons';
+import { useRecoilValue } from 'recoil';
+import { currentNetworkStore } from '@store/recoil/networks';
+import { ChainID } from '@stacks/transactions';
 
 const CloseIconContainer = styled(Box)`
   svg {
@@ -22,7 +35,7 @@ const Header: React.FC<FlexProps> = props => {
     <Flex
       cursor="pointer"
       flexDirection="row"
-      width="200px"
+      width="190px"
       onClick={() => doChangeScreen(ScreenPaths.HOME)}
       {...props}
     >
@@ -44,6 +57,28 @@ const Header: React.FC<FlexProps> = props => {
   );
 };
 
+const ModeBadge: React.FC<FlexProps> = props => {
+  const { chainId } = useRecoilValue(currentNetworkStore);
+  const mode = chainId === ChainID.Mainnet ? 'Mainnet' : 'Testnet';
+  return (
+    <Flex
+      mr="base"
+      borderWidth="1px"
+      borderColor="ink.300"
+      borderRadius="12px"
+      height="24px"
+      alignItems="center"
+      px="12px"
+      {...props}
+    >
+      <Box as={IconFlask} mr="extra-tight" color={color('brand')} size="16px" />
+      <Text fontSize="11px" fontWeight="500">
+        {mode} mode
+      </Text>
+    </Flex>
+  );
+};
+
 interface PopupHomeProps {
   title?: string;
   onClose?: () => void;
@@ -60,9 +95,14 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
   const Settings: React.FC<BoxProps> = props => {
     if (hideActions) return null;
     return (
-      <Box cursor="pointer" position="relative" {...props}>
-        <EllipsisIcon onClick={() => setShowSettings(true)} />
-      </Box>
+      <IconButton
+        size="42px"
+        iconSize="24px"
+        onClick={() => setShowSettings(true)}
+        color="black"
+        icon={IconMenu2}
+        {...props}
+      />
     );
   };
 
@@ -79,9 +119,10 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
       >
         <SettingsPopover />
         <Flex width="100%" dir="row" display={['none', 'flex']}>
-          <Header />
+          <Header position="relative" top="-5px" />
           <Box flexGrow={1} />
-          <Settings />
+          <ModeBadge />
+          <Settings position="relative" top="-9px" />
         </Flex>
         <Flex width="100%" justifyContent="center" flexGrow={1}>
           <Flex dir="column" maxWidth="512px" minWidth="min(100%, 512px)">
@@ -110,10 +151,13 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                     {title}
                   </Text>
                 ) : (
-                  <Header display={['flex', 'none']} />
+                  <Header display={['flex', 'none']} position="relative" top="-1px" />
                 )}
               </Box>
-              <Settings display={['flex', 'none']} />
+              <Box display={['flex', 'none']}>
+                <ModeBadge position="relative" top="5px" />
+                <Settings position="relative" top="-4px" />
+              </Box>
             </Flex>
             {children}
           </Flex>

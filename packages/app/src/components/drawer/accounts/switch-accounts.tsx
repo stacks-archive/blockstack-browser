@@ -2,20 +2,20 @@ import React from 'react';
 import { Box, Flex, Text, Button } from '@stacks/ui';
 import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { accountDrawerStep, AccountStep } from '@store/recoil/drawers';
 import { currentAccountIndexStore } from '@store/recoil/wallet';
 import { getAccountDisplayName, getStxAddress } from '@stacks/wallet-sdk';
-import { TransactionVersion } from '@stacks/transactions';
+import { currentTransactionVersion } from '@store/recoil/networks';
 
 interface SwitchAccountProps {
   close: () => void;
 }
 export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
-  const { currentAccount, wallet, currentAccountIndex } = useWallet();
+  const { wallet, currentAccountIndex } = useWallet();
   const setAccountDrawerStep = useSetRecoilState(accountDrawerStep);
   const setCurrentAccountIndex = useSetRecoilState(currentAccountIndexStore);
-  if (!currentAccount) return null;
+  const transactionVersion = useRecoilValue(currentTransactionVersion);
   const accountRows = (wallet?.accounts || []).map((account, index) => {
     return (
       <Box
@@ -41,7 +41,7 @@ export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
             <Text fontSize={1} color="gray">
               {getStxAddress({
                 account: account,
-                transactionVersion: TransactionVersion.Testnet,
+                transactionVersion,
               })}
             </Text>
           </Box>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Flex, CloseIcon } from '@stacks/ui';
+import { Box, Flex, useEventListener, IconButton } from '@stacks/ui';
+import { IconX } from '@tabler/icons';
 import useOnClickOutside from 'use-onclickoutside';
 
 const transition = '0.2s all ease-in-out';
@@ -15,6 +16,17 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children
       close();
     }
   });
+
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent) => {
+      if (showing && e.key === 'Escape') {
+        close();
+      }
+    },
+    [close, showing]
+  );
+
+  useEventListener('keydown', handleKeyDown);
 
   return (
     <Flex
@@ -49,7 +61,7 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children
         position="relative"
       >
         <Box position="absolute" top="15px" right="20px">
-          <CloseIcon size="12px" onClick={close} cursor="pointer" />
+          <IconButton size="42px" iconSize="24px" onClick={close} color="ink.900" icon={IconX} />
         </Box>
         {children}
       </Box>

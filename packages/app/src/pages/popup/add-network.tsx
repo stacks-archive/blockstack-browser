@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Text, Input, InputGroup, Button } from '@stacks/ui';
 import { Formik } from 'formik';
 import { useSetRecoilState } from 'recoil';
-import { networksStore } from '@store/recoil/networks';
+import { currentNetworkKeyStore, networksStore } from '@store/recoil/networks';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
+import { isValidUrl } from '@common/validate-url';
+import { ChainID, fetchPrivate } from '@stacks/transactions';
+import { ErrorLabel } from '@components/error-label';
 
 export const AddNetwork: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const { doChangeScreen } = useAnalytics();
   const setNetworks = useSetRecoilState(networksStore);
+  const setNetworkKey = useSetRecoilState(currentNetworkKeyStore);
+
   return (
     <PopupContainer title="Add a network" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
       <Box mt="base">
@@ -23,18 +30,39 @@ export const AddNetwork: React.FC = () => {
       </Box>
       <Formik
         initialValues={{ name: '', url: '', key: '' }}
-        onSubmit={values => {
+        onSubmit={async values => {
           const { name, url, key } = values;
-          setNetworks(networks => {
-            return {
-              ...networks,
-              [key]: {
-                url,
-                name,
-              },
-            };
-          });
-          doChangeScreen(ScreenPaths.POPUP_HOME);
+          if (!isValidUrl(url)) {
+            setError('Please enter a valid URL');
+            return;
+          }
+          setLoading(true);
+          setError('');
+          try {
+            const origin = new URL(url).origin;
+            const response = await fetchPrivate(`${origin}/v2/info`);
+            const chainInfo = await response.json();
+            const networkId = chainInfo?.network_id && parseInt(chainInfo?.network_id);
+            if (networkId === ChainID.Mainnet || networkId === ChainID.Testnet) {
+              setNetworks(networks => {
+                return {
+                  ...networks,
+                  [key]: {
+                    url: origin,
+                    name,
+                    chainId: networkId,
+                  },
+                };
+              });
+              setNetworkKey(key);
+              doChangeScreen(ScreenPaths.POPUP_HOME);
+              return;
+            }
+            setError('Unable to determine chainID from node.');
+          } catch (error) {
+            setError('Unable to fetch info from node.');
+          }
+          setLoading(false);
         }}
       >
         {({ handleSubmit, values, handleChange }) => (
@@ -102,8 +130,15 @@ export const AddNetwork: React.FC = () => {
                 />
               </InputGroup>
             </Box>
+            {error ? (
+              <ErrorLabel>
+                <Text textStyle="caption">{error}</Text>
+              </ErrorLabel>
+            ) : null}
             <Box mt="loose">
-              <Button width="100%">Add network</Button>
+              <Button width="100%" isDisabled={loading} isLoading={loading}>
+                Add network
+              </Button>
             </Box>
           </form>
         )}

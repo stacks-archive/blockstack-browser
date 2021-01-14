@@ -8,9 +8,8 @@ import {
   createWalletGaiaConfig,
   getStxAddress,
 } from '@stacks/wallet-sdk';
-import { currentNetworkKeyStore } from './networks';
+import { currentNetworkStore, currentTransactionVersion } from './networks';
 import { gaiaUrl } from '@common/constants';
-import { TransactionVersion } from '@stacks/transactions';
 
 export const secretKeyStore = atom<string | undefined>({
   key: 'wallet.secret-key',
@@ -69,12 +68,13 @@ export const latestNoncesStore = atomFamily<
 export const latestNonceStore = selector({
   key: 'wallet.latest-nonce',
   get: ({ get }) => {
-    const network = get(currentNetworkKeyStore);
+    const network = get(currentNetworkStore);
     const account = get(currentAccountStore);
+    const transactionVersion = get(currentTransactionVersion);
     const address = account
-      ? getStxAddress({ account, transactionVersion: TransactionVersion.Testnet })
+      ? getStxAddress({ account, transactionVersion })
       : '';
-    const nonce = get(latestNoncesStore([network, address]));
+    const nonce = get(latestNoncesStore([network.url, address]));
     return nonce;
   },
 });
@@ -102,6 +102,17 @@ export const currentAccountStore = selector({
     return wallet.accounts[accountIndex];
   },
   dangerouslyAllowMutability: true,
+});
+
+export const currentAccountStxAddressStore = selector({
+  key: 'wallet.current-stx-address',
+  get: ({ get }) => {
+    const account = get(currentAccountStore);
+    if (!account) return undefined;
+    const transactionVersion = get(currentTransactionVersion);
+    const address = getStxAddress({ account, transactionVersion });
+    return address;
+  },
 });
 
 export const lastSeenStore = atom<number>({

@@ -1,10 +1,8 @@
 import { selector, atom, atomFamily } from 'recoil';
-import { latestNonceStore, currentAccountStore } from './wallet';
+import { latestNonceStore, currentAccountStxAddressStore } from './wallet';
 import { rpcClientStore, currentNetworkStore } from './networks';
 import type { CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
 import { fetchAllAccountData } from '@common/api/accounts';
-import { getStxAddress } from '@stacks/wallet-sdk';
-import { TransactionVersion } from '@stacks/transactions';
 
 export const apiRevalidation = atom({
   key: 'api.revalidation',
@@ -37,14 +35,12 @@ export const accountInfoStore = selector({
   get: async ({ get }) => {
     get(apiRevalidation);
     get(intervalStore(15000));
-    const account = get(currentAccountStore);
     const rpcClient = get(rpcClientStore);
-    if (!account) {
+    const address = get(currentAccountStxAddressStore);
+    if (!address) {
       throw new Error('Cannot get account info when logged out.');
     }
-    const info = await rpcClient.fetchAccount(
-      getStxAddress({ account, transactionVersion: TransactionVersion.Testnet })
-    );
+    const info = await rpcClient.fetchAccount(address);
     return info;
   },
 });
@@ -100,13 +96,12 @@ export const accountDataStore = selector({
     get(apiRevalidation);
     get(intervalStore(15000));
     const { url } = get(currentNetworkStore);
-    const account = get(currentAccountStore);
-    if (!account) {
-      throw 'Unable to get account info when logged out.';
+    const address = get(currentAccountStxAddressStore);
+    if (!address) {
+      throw new Error('Cannot get account info when logged out.');
     }
-    const principal = getStxAddress({ account, transactionVersion: TransactionVersion.Testnet });
     try {
-      const accountData = await fetchAllAccountData(url)(principal);
+      const accountData = await fetchAllAccountData(url)(address);
       return accountData;
     } catch (error) {
       throw `Unable to fetch account data from ${url}`;

@@ -72,20 +72,20 @@ export const SettingsPopover: React.FC = () => {
     <Box
       ref={ref}
       position="absolute"
-      top="44px"
-      right="26px"
+      top="50px"
+      right="30px"
       borderRadius="8px"
       width="296px"
       boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
       zIndex={2000}
       background="white"
       display={showing ? 'block' : 'none'}
+      pt="tight"
     >
       {isSignedIn ? (
         <>
           {wallet && wallet.accounts.length > 1 ? (
             <SettingsItem
-              mt="tight"
               onClick={wrappedCloseCallback(() => {
                 setAccountStep(AccountStep.Switch);
                 setShowAccounts(true);

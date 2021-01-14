@@ -9,7 +9,6 @@ import {
   encrypt,
   decrypt,
   generateNewAccount,
-  getStxAddress,
   restoreWalletAccounts,
   updateWalletConfig,
   getAccountDisplayName,
@@ -17,7 +16,12 @@ import {
 import { useRecoilValue, useRecoilState, useSetRecoilState, useRecoilCallback } from 'recoil';
 import { useDispatch } from 'react-redux';
 import { gaiaUrl } from '@common/constants';
-import { currentNetworkKeyStore, currentNetworkStore, networksStore } from '@store/recoil/networks';
+import {
+  currentNetworkKeyStore,
+  currentNetworkStore,
+  networksStore,
+  currentTransactionVersion,
+} from '@store/recoil/networks';
 import {
   walletStore,
   encryptedSecretKeyStore,
@@ -27,8 +31,9 @@ import {
   currentAccountIndexStore,
   currentAccountStore,
   walletConfigStore,
+  currentAccountStxAddressStore,
 } from '@store/recoil/wallet';
-import { TransactionVersion, StacksTransaction } from '@stacks/transactions';
+import { StacksTransaction } from '@stacks/transactions';
 
 import { DEFAULT_PASSWORD, ScreenPaths } from '@store/onboarding/types';
 import { useOnboardingState } from './use-onboarding-state';
@@ -39,6 +44,7 @@ import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
 import { decodeToken } from 'jsontokens';
 import { chainInfoStore } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
+import { ATOM_LOCALSTORAGE_PREFIX } from '@store/recoil';
 
 const loadManifest = async (decodedAuthRequest: DecodedAuthRequest) => {
   const res = await fetch(decodedAuthRequest.manifest_uri);
@@ -48,30 +54,26 @@ const loadManifest = async (decodedAuthRequest: DecodedAuthRequest) => {
 
 export const useWallet = () => {
   const [wallet, setWallet] = useRecoilState(walletStore);
-  const [secretKey, setSecretKey] = useRecoilState(secretKeyStore);
+  const secretKey = useRecoilValue(secretKeyStore);
   const [encryptedSecretKey, setEncryptedSecretKey] = useRecoilState(encryptedSecretKeyStore);
-  const [currentAccountIndex, setCurrentAccountIndex] = useRecoilState(currentAccountIndexStore);
+  const currentAccountIndex = useRecoilValue(currentAccountIndexStore);
   const [hasSetPassword, setHasSetPassword] = useRecoilState(hasSetPasswordStore); // 🧐 setHasSetPassword 🤮
   const currentAccount = useRecoilValue(currentAccountStore);
+  const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressStore);
+  const transactionVersion = useRecoilValue(currentTransactionVersion);
   const networks = useRecoilValue(networksStore);
   const currentNetwork = useRecoilValue(currentNetworkStore);
   const currentNetworkKey = useRecoilValue(currentNetworkKeyStore);
   const chainInfo = useLoadable(chainInfoStore);
   const walletConfig = useLoadable(walletConfigStore);
 
-  let currentAccountStxAddress = undefined;
   let currentAccountDisplayName = undefined;
   if (currentAccount) {
-    // TODO: use version from current network
-    currentAccountStxAddress = getStxAddress({
-      account: currentAccount,
-      transactionVersion: TransactionVersion.Testnet,
-    });
     currentAccountDisplayName = getAccountDisplayName(currentAccount);
   }
 
   const setLatestNonces = useSetRecoilState(
-    latestNoncesStore([currentNetworkKey, currentAccountStxAddress || ''])
+    latestNoncesStore([currentNetwork.url, currentAccountStxAddress || ''])
   );
   const dispatch = useDispatch();
   const { decodedAuthRequest, authRequest, appName, appIcon, screen } = useOnboardingState();
@@ -131,13 +133,20 @@ export const useWallet = () => {
     []
   );
 
-  const doSignOut = useCallback(() => {
-    setWallet(undefined);
-    setCurrentAccountIndex(undefined);
-    setSecretKey(undefined);
-    setEncryptedSecretKey(undefined);
-    setHasSetPassword(false);
-  }, [setWallet, setCurrentAccountIndex, setSecretKey, setEncryptedSecretKey, setHasSetPassword]);
+  const doSignOut = useRecoilCallback(({ reset }) => () => {
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith(ATOM_LOCALSTORAGE_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+    reset(walletStore);
+    reset(currentAccountIndexStore);
+    reset(secretKeyStore);
+    reset(encryptedSecretKeyStore);
+    reset(hasSetPasswordStore);
+    reset(networksStore);
+    reset(currentNetworkKeyStore);
+  });
 
   const doSetPassword = useCallback(
     async (password: string) => {
@@ -272,6 +281,7 @@ export const useWallet = () => {
     currentAccountIndex,
     currentAccountStxAddress,
     currentAccountDisplayName,
+    transactionVersion,
     walletConfig,
     networks,
     currentNetwork,
