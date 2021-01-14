@@ -8,7 +8,7 @@ jobs:
   deploy-contracts:
     runs-on: ubuntu-latest
     env:
-      API_SERVER: https://stacks-node-api.blockstack.org
+      API_SERVER: https://stacks-node-api.xenon.blockstack.org
       CONTRACT_PRIVATE_KEY: ${{ secrets.CONTRACT_PRIVATE_KEY }}
     steps:
       - name: Checkout
