@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { QRCode } from 'react-qr-svg'
 
 import { AccountActions } from '../account/store/account'
 import Balance            from './components/Balance'
