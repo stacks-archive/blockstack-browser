@@ -56,7 +56,7 @@ export const PopupHome: React.FC = () => {
         >
           {getAccountDisplayName(currentAccount)}
         </Text>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color="ink.600" fontSize={['11px', 1]}>
           {currentAccountStxAddress}
         </Text>
       </Box>

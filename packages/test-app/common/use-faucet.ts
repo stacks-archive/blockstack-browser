@@ -34,7 +34,7 @@ export const useFaucet = () => {
         return;
       }
       setTimeout(() => {
-        waitForBalance(currentBalance, attempts + 1);
+        void waitForBalance(currentBalance, attempts + 1);
       }, 10000);
     };
     try {

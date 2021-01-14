@@ -12,14 +12,13 @@ interface Networks {
 }
 
 export const defaultNetworks: Networks = {
-  // mainnet: {
-  //   url: 'stacks-node-api.mainnet.stacks.co',
-  //   name: 'Mainnet',
-  //   chainId: ChainID.Mainnet,
-  // },
+  mainnet: {
+    url: 'https://stacks-node-api.mainnet.stacks.co',
+    name: 'Mainnet',
+    chainId: ChainID.Mainnet,
+  },
   testnet: {
-    url: 'https://stacks-node-api.blockstack.org',
-    // url: 'stacks-node-api.testnet.stacks.co'
+    url: 'https://stacks-node-api.testnet.stacks.co',
     name: 'Testnet',
     chainId: ChainID.Testnet,
   },

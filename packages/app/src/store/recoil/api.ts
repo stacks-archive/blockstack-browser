@@ -4,6 +4,8 @@ import { rpcClientStore, currentNetworkStore } from './networks';
 import type { CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
 import { fetchAllAccountData } from '@common/api/accounts';
 
+const DEFAULT_POLL_RATE = 15000;
+
 export const apiRevalidation = atom({
   key: 'api.revalidation',
   default: 0,
@@ -34,7 +36,7 @@ export const accountInfoStore = selector({
   key: 'wallet.account-info',
   get: async ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(15000));
+    get(intervalStore(DEFAULT_POLL_RATE));
     const rpcClient = get(rpcClientStore);
     const address = get(currentAccountStxAddressStore);
     if (!address) {
@@ -49,7 +51,7 @@ export const chainInfoStore = selector({
   key: 'api.chain-info',
   get: async ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(15000));
+    get(intervalStore(DEFAULT_POLL_RATE));
     const { url } = get(currentNetworkStore);
     const infoUrl = `${url}/v2/info`;
     try {
@@ -66,7 +68,7 @@ export const correctNonceStore = selector({
   key: 'api.correct-nonce',
   get: ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(15000));
+    get(intervalStore(DEFAULT_POLL_RATE));
     try {
       const chainInfo = get(chainInfoStore);
       const account = get(accountInfoStore);
@@ -94,7 +96,7 @@ export const accountDataStore = selector({
   key: 'api.account-data',
   get: async ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(15000));
+    get(intervalStore(DEFAULT_POLL_RATE));
     const { url } = get(currentNetworkStore);
     const address = get(currentAccountStxAddressStore);
     if (!address) {

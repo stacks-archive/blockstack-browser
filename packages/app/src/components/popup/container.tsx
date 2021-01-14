@@ -35,7 +35,6 @@ const Header: React.FC<FlexProps> = props => {
     <Flex
       cursor="pointer"
       flexDirection="row"
-      width="190px"
       onClick={() => doChangeScreen(ScreenPaths.HOME)}
       {...props}
     >
@@ -49,7 +48,14 @@ const Header: React.FC<FlexProps> = props => {
         />
       </Box>
       <Box>
-        <Text fontFamily="heading" color="ink.1000" fontWeight="600" ml="base-tight" fontSize={4}>
+        <Text
+          fontFamily="heading"
+          color="ink.1000"
+          fontWeight="600"
+          ml="base-tight"
+          // fontSize={[2, 4]}
+          fontSize={4}
+        >
           Stacks Wallet
         </Text>
       </Box>
@@ -62,7 +68,6 @@ const ModeBadge: React.FC<FlexProps> = props => {
   const mode = chainId === ChainID.Mainnet ? 'Mainnet' : 'Testnet';
   return (
     <Flex
-      mr="base"
       borderWidth="1px"
       borderColor="ink.300"
       borderRadius="12px"
@@ -74,6 +79,23 @@ const ModeBadge: React.FC<FlexProps> = props => {
       <Box as={IconFlask} mr="extra-tight" color={color('brand')} size="16px" />
       <Text fontSize="11px" fontWeight="500">
         {mode} mode
+      </Text>
+    </Flex>
+  );
+};
+
+const Warning: React.FC = () => {
+  return (
+    <Flex
+      width="100vw"
+      backgroundColor="rgba(249, 161, 77, 0.2)"
+      textAlign="center"
+      py="base"
+      borderBottomWidth="2px"
+      borderBottomColor={color('feedback-alert')}
+    >
+      <Text display="block" width="100%" fontSize={['12px', 1]} fontWeight="500">
+        Stacks Wallet for Web is in alpha and has not been audited yet
       </Text>
     </Flex>
   );
@@ -108,6 +130,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
 
   return (
     <>
+      <Warning />
       <Flex
         minHeight={'500px'}
         minWidth={'440px'}
@@ -121,7 +144,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
         <Flex width="100%" dir="row" display={['none', 'flex']}>
           <Header position="relative" top="-5px" />
           <Box flexGrow={1} />
-          <ModeBadge />
+          <ModeBadge mr="base" />
           <Settings position="relative" top="-9px" />
         </Flex>
         <Flex width="100%" justifyContent="center" flexGrow={1}>
@@ -142,9 +165,9 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                 )}
                 {title ? (
                   <Text
-                    fontSize={4}
                     fontWeight="600"
                     textStyle="display.large"
+                    fontSize={[2, 2, 4]}
                     fontFamily="heading"
                     color="ink.1000"
                   >
@@ -154,10 +177,13 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                   <Header display={['flex', 'none']} position="relative" top="-1px" />
                 )}
               </Box>
-              <Box display={['flex', 'none']}>
+              <Flex display={['flex', 'none']} flexGrow={1}>
+                <Box flexGrow={1} />
                 <ModeBadge position="relative" top="5px" />
+              </Flex>
+              <Flex display={['flex', 'none']}>
                 <Settings position="relative" top="-4px" />
-              </Box>
+              </Flex>
             </Flex>
             {children}
           </Flex>

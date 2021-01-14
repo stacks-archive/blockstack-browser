@@ -16,7 +16,7 @@ export const getRPCClient = () => {
   const { origin } = location;
   const url = origin.includes('localhost')
     ? 'http://localhost:3999'
-    : 'https://stacks-node-api.blockstack.org';
+    : 'https://stacks-node-api.testnet.stacks.co';
   return new RPCClient(url);
 };
 
