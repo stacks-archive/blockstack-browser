@@ -65,7 +65,7 @@ describe('<IdentityItem />', () => {
     })
   }
 
-  describe('when allowed to register a username', () => {
+  describe.skip('when allowed to register a username', () => {
     const mockEvent = {
       preventDefault: () => { return true },
       stopPropagation: () => { return true },

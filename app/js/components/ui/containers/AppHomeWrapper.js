@@ -22,7 +22,7 @@ const StyledAppHomeWrapper = styled.div.attrs({
     }
   }
   .home-screen {
-    padding-top: 100px;
+    padding-top: 135px;
   }
   * {
     pointer-events: none !important;

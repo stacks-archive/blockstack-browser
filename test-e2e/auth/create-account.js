@@ -24,13 +24,13 @@ createTestSuites('account-creation', ({driver, browserHostUrl}) => {
     await driver.click(By.xpath('//div[text()="Create new ID"]'));
   });
 
-  let randomUsername
-  step('enter unique username', async () => {
-    randomUsername = `test_e2e_${Date.now() / 100000 | 0}_${helpers.getRandomInt(100000, 999999)}`;
-    await driver.setText(By.css('input[type="text"][name="username"]'), randomUsername);
-    await driver.click(By.xpath('//button[contains(., "Check Availability")]'));
-    await driver.click(By.xpath('//button[contains(., "Continue")]'));
-  });
+  let randomUsername = 'notreal';
+  // step('enter unique username', async () => {
+  //   randomUsername = `test_e2e_${Date.now() / 100000 | 0}_${helpers.getRandomInt(100000, 999999)}`;
+  //   await driver.setText(By.css('input[type="text"][name="username"]'), randomUsername);
+  //   await driver.click(By.xpath('//button[contains(., "Check Availability")]'));
+  //   await driver.click(By.xpath('//button[contains(., "Continue")]'));
+  // });
 
   step('enter password', async () => {
     const randomPassword = helpers.getRandomString();
