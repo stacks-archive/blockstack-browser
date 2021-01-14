@@ -14,7 +14,6 @@ import {
   PostCondition,
   createAssetInfo,
 } from '@stacks/transactions';
-import { StacksTestnet } from '@stacks/network';
 import { useWallet } from '@common/hooks/use-wallet';
 import BN from 'bn.js';
 import { stacksValue, stxToMicroStx } from '@common/stacks-utils';
@@ -24,7 +23,7 @@ import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { currentAccountStore } from '@store/recoil/wallet';
-import { currentNetworkStore } from '@store/recoil/networks';
+import { stacksNetworkStore } from '@store/recoil/networks';
 import { accountBalancesStore, apiRevalidation } from '@store/recoil/api';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
@@ -40,9 +39,10 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   recipient,
 }) => {
   const [tx, setTx] = useState<StacksTransaction | undefined>();
-  const { doSetLatestNonce, currentAccountStxAddress, currentNetwork } = useWallet();
+  const { doSetLatestNonce, currentAccountStxAddress } = useWallet();
   const [loading, setLoading] = useState(false);
   const asset = useRecoilValue(selectedAssetStore);
+  const stacksNetwork = useRecoilValue(stacksNetworkStore);
   const setApiRevalidation = useSetRecoilState(apiRevalidation);
   const { doChangeScreen } = useAnalytics();
 
@@ -50,11 +50,9 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
     ({ snapshot }) => async () => {
       const asset = await snapshot.getPromise(selectedAssetStore);
       const currentAccount = await snapshot.getPromise(currentAccountStore);
-      const currentNetwork = await snapshot.getPromise(currentNetworkStore);
+      const network = await snapshot.getPromise(stacksNetworkStore);
       const balances = await snapshot.getPromise(accountBalancesStore);
       if (!asset || !currentAccount || !currentAccountStxAddress) return;
-      const network = new StacksTestnet();
-      network.coreApiUrl = currentNetwork.url;
       setLoading(true);
       if (asset.type === 'stx') {
         const mStx = stxToMicroStx(amount);
@@ -109,18 +107,17 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
 
   const submit = useCallback(async () => {
     setLoading(true);
-    const network = new StacksTestnet();
-    network.coreApiUrl = currentNetwork.url;
+
     if (!tx) {
       return;
     }
-    await broadcastTransaction(tx, network);
+    await broadcastTransaction(tx, stacksNetwork);
     doSetLatestNonce(tx);
     setApiRevalidation(current => (current as number) + 1);
     setLoading(false);
     close();
     doChangeScreen(ScreenPaths.POPUP_HOME);
-  }, [tx, currentNetwork.url, close, doChangeScreen, doSetLatestNonce, setApiRevalidation]);
+  }, [tx, close, doChangeScreen, doSetLatestNonce, setApiRevalidation, stacksNetwork]);
 
   return (
     <BaseDrawer showing={showing} close={close}>

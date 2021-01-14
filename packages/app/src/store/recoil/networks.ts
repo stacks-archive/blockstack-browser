@@ -2,13 +2,16 @@ import { atom, selector } from 'recoil';
 import { localStorageEffect } from './index';
 import RPCClient from '@stacks/rpc-client';
 import { ChainID, TransactionVersion } from '@stacks/transactions';
+import { StacksNetwork, StacksTestnet, StacksMainnet } from '@stacks/network';
+
+export interface Network {
+  url: string;
+  name: string;
+  chainId: ChainID;
+}
 
 interface Networks {
-  [key: string]: {
-    url: string;
-    name: string;
-    chainId: ChainID;
-  };
+  [key: string]: Network;
 }
 
 export const defaultNetworks: Networks = {
@@ -18,7 +21,8 @@ export const defaultNetworks: Networks = {
     chainId: ChainID.Mainnet,
   },
   testnet: {
-    url: 'https://stacks-node-api.testnet.stacks.co',
+    // url: 'https://stacks-node-api.testnet.stacks.co',
+    url: 'https://stacks-node-api.xenon.blockstack.org',
     name: 'Testnet',
     chainId: ChainID.Testnet,
   },
@@ -36,7 +40,7 @@ export const currentNetworkKeyStore = atom({
 });
 
 export const networksStore = atom<Networks>({
-  key: 'networks.networks-v2',
+  key: 'networks.networks-v3',
   default: defaultNetworks,
   effects_UNSTABLE: [localStorageEffect()],
 });
@@ -65,5 +69,16 @@ export const rpcClientStore = selector({
   get: ({ get }) => {
     const network = get(currentNetworkStore);
     return new RPCClient(network.url);
+  },
+});
+
+export const stacksNetworkStore = selector<StacksNetwork>({
+  key: 'networks.stacks-network',
+  get: ({ get }) => {
+    const network = get(currentNetworkStore);
+    const stacksNetwork =
+      network.chainId === ChainID.Testnet ? new StacksTestnet() : new StacksMainnet();
+    stacksNetwork.coreApiUrl = network.url;
+    return stacksNetwork;
   },
 });

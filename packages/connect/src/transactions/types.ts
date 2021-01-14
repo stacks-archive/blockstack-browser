@@ -1,6 +1,12 @@
 import { UserSession } from '@stacks/auth';
 import { AuthOptions } from '../auth';
-import { PostConditionMode, PostCondition, AnchorMode, ClarityValue } from '@stacks/transactions';
+import {
+  PostConditionMode,
+  PostCondition,
+  AnchorMode,
+  ClarityValue,
+  StacksTransaction,
+} from '@stacks/transactions';
 import { StacksNetwork } from '@stacks/network';
 import BN from 'bn.js';
 
@@ -14,9 +20,15 @@ export interface TxBase {
   nonce?: number;
 }
 
-export interface FinishedTxData {
+export interface FinishedTxPayload {
   txId: string;
   txRaw: string;
+}
+
+export interface FinishedTxData extends FinishedTxPayload {
+  txId: string;
+  txRaw: string;
+  stacksTransaction: StacksTransaction;
 }
 
 export enum TransactionTypes {

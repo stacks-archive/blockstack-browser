@@ -13,6 +13,7 @@ import {
   STXTransferPayload,
   TransactionPayload,
   TransactionTypes,
+  FinishedTxPayload,
 } from '@stacks/connect';
 import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@common/track';
 import RPCClient from '@stacks/rpc-client';
@@ -145,7 +146,7 @@ export const finishTransaction = async ({
   tx: StacksTransaction;
   pendingTransaction: TransactionPayload;
   nodeUrl: string;
-}) => {
+}): Promise<FinishedTxPayload> => {
   const serialized = tx.serialize();
   const rpcClient = new RPCClient(nodeUrl);
   const res = await rpcClient.broadcastTX(serialized);

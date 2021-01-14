@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { space, Box, Text, Button, ButtonGroup } from '@blockstack/ui';
-import { getAuthOrigin } from '@common/utils';
+import { getAuthOrigin, stacksNetwork as network } from '@common/utils';
 import { demoTokenContract } from '@common/contracts';
 import { useConnect } from '@stacks/connect-react';
 import {
@@ -12,7 +12,6 @@ import {
   standardPrincipalCV,
   trueCV,
 } from '@stacks/transactions';
-import { StacksTestnet } from '@stacks/network';
 import { ExplorerLink } from './explorer-link';
 
 export const Debugger = () => {
@@ -33,7 +32,6 @@ export const Debugger = () => {
   const callFaker = async () => {
     clearState();
     const authOrigin = getAuthOrigin();
-    const network = new StacksTestnet();
     const args = [
       uintCV(1234),
       intCV(-234),
@@ -52,6 +50,7 @@ export const Debugger = () => {
       functionArgs: args,
       finished: data => {
         console.log('finished faker!', data);
+        console.log(data.stacksTransaction.auth.spendingCondition?.nonce.toNumber());
         setState('Contract Call', data.txId);
       },
     });
@@ -60,7 +59,6 @@ export const Debugger = () => {
   const stxTransfer = async (amount: string) => {
     clearState();
     const authOrigin = getAuthOrigin();
-    const network = new StacksTestnet();
     await doSTXTransfer({
       network,
       authOrigin,
@@ -76,7 +74,6 @@ export const Debugger = () => {
   const deployContract = async () => {
     clearState();
     const authOrigin = getAuthOrigin();
-    const network = new StacksTestnet();
     await doContractDeploy({
       network,
       authOrigin,
@@ -92,7 +89,6 @@ export const Debugger = () => {
   const callNullContract = async () => {
     clearState();
     const authOrigin = getAuthOrigin();
-    const network = new StacksTestnet();
     await doContractCall({
       network,
       authOrigin,
@@ -106,7 +102,6 @@ export const Debugger = () => {
   const getFaucetTokens = async () => {
     clearState();
     const authOrigin = getAuthOrigin();
-    const network = new StacksTestnet();
     await doContractCall({
       network,
       authOrigin,

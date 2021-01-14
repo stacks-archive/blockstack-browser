@@ -1,6 +1,6 @@
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
-import { FinishedTxData, shouldUsePopup } from '@stacks/connect';
+import { FinishedTxPayload, shouldUsePopup } from '@stacks/connect';
 import { isValidUrl } from './validate-url';
 
 export const getAuthRequestParam = () => {
@@ -92,7 +92,7 @@ export const finalizeAuthResponse = ({
   return;
 };
 
-export const finalizeTxSignature = (data: FinishedTxData) => {
+export const finalizeTxSignature = (data: FinishedTxPayload) => {
   window.addEventListener('message', event => {
     const source = getEventSourceWindow(event);
     if (source) {

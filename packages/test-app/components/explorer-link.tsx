@@ -13,7 +13,9 @@ export const ExplorerLink: React.FC<LinkProps> = ({ txId, text }) => {
   if (!id.startsWith('0x') && !id.includes('.')) {
     id = `0x${id}`;
   }
-  const url = `https://testnet-explorer.blockstack.org/txid/${id}`;
+  const url = location.origin.includes('localhost')
+    ? `http://localhost:3999/extended/v1/tx/${id}`
+    : `https://testnet-explorer.blockstack.org/txid/${id}`;
   return (
     <Box>
       <Link onClick={() => window.open(url, '_blank')} color="blue" display="inline-block" my={3}>

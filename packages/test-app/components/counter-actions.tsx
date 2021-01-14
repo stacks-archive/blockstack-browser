@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, ButtonGroup, Box, Text } from '@blockstack/ui';
 import { AppContext } from '@common/context';
-import { getAuthOrigin, getRPCClient } from '@common/utils';
-import { deserializeCV, IntCV, StacksTestnet } from '@blockstack/stacks-transactions';
+import { getAuthOrigin, getRPCClient, stacksNetwork as network } from '@common/utils';
+import { deserializeCV, IntCV } from '@blockstack/stacks-transactions';
 import { useConnect } from '@stacks/connect-react';
 import { ExplorerLink } from '@components/explorer-link';
 
@@ -18,10 +18,9 @@ export const CounterActions: React.FC = () => {
     setError('');
     setLoading(true);
     const authOrigin = getAuthOrigin();
-    const network = new StacksTestnet();
-    network.coreApiUrl = 'https://stacks-node-api.blockstack.org';
     await doContractCall({
       authOrigin,
+      network,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       functionName: method,
       functionArgs: [],

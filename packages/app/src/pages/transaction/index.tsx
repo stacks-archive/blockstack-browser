@@ -98,9 +98,9 @@ export const TransactionPage: React.FC = () => {
             </Text>
           </Box>
           <Box>
-            {balances.state === 'hasValue' ? (
+            {balances.value ? (
               <Text textStyle="body.small" color="ink.600" fontSize={1}>
-                {stacksValue({ value: balances.contents.stx.balance, withTicker: true })}
+                {stacksValue({ value: balances.value.stx.balance, withTicker: true })}
               </Text>
             ) : (
               <LoadingRectangle height="16px" width="50px" />

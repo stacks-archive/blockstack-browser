@@ -10,7 +10,7 @@ import {
   ClarityType,
   bufferCV,
 } from '@blockstack/stacks-transactions';
-import { getAuthOrigin, getRPCClient } from '@common/utils';
+import { getAuthOrigin, getRPCClient, stacksNetwork as network } from '@common/utils';
 import { ContractCallTransaction } from '@blockstack/stacks-blockchain-sidecar-types';
 import { TxCard } from '@components/tx-card';
 import { useSTXAddress } from '@common/use-stx-address';
@@ -86,6 +86,7 @@ export const Status = () => {
       authOrigin,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       functionName: 'write-status!',
+      network,
       functionArgs: [statusArg],
       contractName: 'status',
       finished: data => {
@@ -147,7 +148,7 @@ export const Status = () => {
           maxWidth="300px"
           onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'enter') {
-              onSubmitWrite();
+              void onSubmitWrite();
             }
           }}
         />
@@ -178,7 +179,7 @@ export const Status = () => {
           maxWidth="300px"
           onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'enter') {
-              onSubmitRead();
+              void onSubmitRead();
             }
           }}
         />

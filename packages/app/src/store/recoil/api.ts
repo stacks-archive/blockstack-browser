@@ -69,26 +69,23 @@ export const correctNonceStore = selector({
   get: ({ get }) => {
     get(apiRevalidation);
     get(intervalStore(DEFAULT_POLL_RATE));
-    try {
-      const chainInfo = get(chainInfoStore);
-      const account = get(accountInfoStore);
-      const lastTx = get(latestNonceStore);
+    const chainInfo = get(chainInfoStore);
+    const account = get(accountInfoStore);
+    const lastTx = get(latestNonceStore);
 
-      // Blocks have been mined since the last TX from this user.
-      // This is the most likely scenario.
-      if (account.nonce > lastTx.nonce) {
-        return account.nonce;
-      }
-      // The current stacks chain has been reset since the user's last TX.
-      // In this case, use the remote nonce.
-      if (chainInfo.stacks_tip_height < lastTx.blockHeight) {
-        return account.nonce;
-      }
-      // No blocks have been mined since the latest transaction from this user.
-      return lastTx.nonce + 1;
-    } catch {
-      return 0;
+    // Blocks have been mined since the last TX from this user.
+    // This is the most likely scenario.
+    if (account.nonce > lastTx.nonce) {
+      return account.nonce;
     }
+    // The current stacks chain has been reset or advanced since the last tx
+    if (chainInfo.stacks_tip_height !== lastTx.blockHeight) {
+      return account.nonce;
+    }
+
+    // No blocks have been mined since the latest transaction from this user.
+    if (lastTx) return lastTx.nonce + 1;
+    return account.nonce;
   },
 });
 

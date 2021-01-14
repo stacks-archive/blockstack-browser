@@ -6,16 +6,17 @@ import {
   ContractCallPayload,
   ContractDeployOptions,
   ContractDeployPayload,
-  FinishedTxData,
   TransactionPopup,
   TransactionOptions,
   STXTransferOptions,
   STXTransferPayload,
   TransactionPayload,
   TransactionTypes,
+  FinishedTxPayload,
 } from './types';
 import { serializeCV } from '@stacks/transactions';
 import { getStacksProvider } from '../utils';
+import { deserializeTransaction, BufferReader } from '@stacks/transactions';
 
 export * from './types';
 
@@ -53,12 +54,18 @@ const openTransactionPopup = async ({ token, options }: TransactionPopup) => {
     h: 560,
   });
 
-  setupListener<FinishedTxData>({
+  setupListener<FinishedTxPayload>({
     popup,
     authURL,
     onFinish: data => {
       const finishedCallback = options.finished || options.onFinish;
-      finishedCallback?.(data);
+      const { txRaw } = data;
+      const txBuffer = Buffer.from(txRaw.replace(/^0x/, ''), 'hex');
+      const stacksTransaction = deserializeTransaction(new BufferReader(txBuffer));
+      finishedCallback?.({
+        ...data,
+        stacksTransaction,
+      });
     },
     messageParams: {},
   });

@@ -1,14 +1,13 @@
-import { TransactionVersion, PostCondition } from '@stacks/transactions';
-import { StacksMainnet, StacksTestnet } from '@stacks/network';
+import { PostCondition } from '@stacks/transactions';
 import { TransactionPayload, TransactionTypes } from '@stacks/connect';
 import { decodeToken } from 'jsontokens';
 import { atom, selector } from 'recoil';
 import { generateTransaction } from '@common/transaction-utils';
 import { currentAccountStore } from '@store/recoil/wallet';
-import { rpcClientStore, currentNetworkStore } from '@store/recoil/networks';
+import { rpcClientStore, stacksNetworkStore } from '@store/recoil/networks';
 import { correctNonceStore } from './api';
 
-/** Transaction signing popup */
+/** Transaction signing popup store */
 
 export const showTxDetails = atom<boolean>({
   key: 'transaction.show-details',
@@ -32,22 +31,31 @@ export const requestTokenStore = atom<string>({
   ],
 });
 
+const getPayload = (requestToken: string) => {
+  if (!requestToken) return undefined;
+  const token = decodeToken(requestToken);
+  const tx = (token.payload as unknown) as TransactionPayload;
+  return tx;
+};
+
+export const transactionPayloadStore = selector({
+  key: 'transaction.payload',
+  get: ({ get }) => {
+    const requestToken = get(requestTokenStore);
+    return getPayload(requestToken);
+  },
+});
+
 export const pendingTransactionStore = selector({
   key: 'transaction.pending-transaction',
   get: ({ get }) => {
     const requestToken = get(requestTokenStore);
-    if (!requestToken) return undefined;
-    const token = decodeToken(requestToken);
-    const currentNetwork = get(currentNetworkStore);
-    const tx = (token.payload as unknown) as TransactionPayload;
+    const tx = getPayload(requestToken);
+    if (!tx) return undefined;
+    const stacksNetwork = get(stacksNetworkStore);
     const postConditions = get(postConditionsStore);
     tx.postConditions = [...postConditions];
-    const network =
-      tx.network?.version === TransactionVersion.Mainnet
-        ? new StacksMainnet()
-        : new StacksTestnet();
-    network.coreApiUrl = currentNetwork.url;
-    tx.network = network;
+    tx.network = stacksNetwork;
     return tx;
   },
 });
