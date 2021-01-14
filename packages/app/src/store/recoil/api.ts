@@ -97,6 +97,8 @@ export const correctNonceStore = selector({
 export const accountDataStore = selector({
   key: 'api.account-data',
   get: async ({ get }) => {
+    get(apiRevalidation);
+    get(intervalStore(15000));
     const { url } = get(currentNetworkStore);
     const account = get(currentAccountStore);
     if (!account) {

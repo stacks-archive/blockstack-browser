@@ -43,7 +43,7 @@ export const ContractDeployDetails: React.FC = () => {
               </Box>
               <Box>
                 <Text fontSize={1} color="ink.600" title={pendingTransaction.contractName}>
-                  {truncateMiddle(pendingTransaction.contractName)}
+                  {pendingTransaction.contractName}
                 </Text>
               </Box>
             </Flex>
@@ -51,7 +51,12 @@ export const ContractDeployDetails: React.FC = () => {
               <Box mb="base" width="100%">
                 <Text display="block">Contract Code</Text>
               </Box>
-              <CodeBlock width="100%" code={pendingTransaction.codeBody} Prism={Prism as any} />
+              <CodeBlock
+                backgroundColor="ink.1000"
+                width="100%"
+                code={pendingTransaction.codeBody}
+                Prism={Prism as any}
+              />
             </Flex>
           </Box>
         </Flex>

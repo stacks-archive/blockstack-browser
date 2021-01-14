@@ -31,7 +31,12 @@ export const TxLoading: React.FC = () => {
 };
 
 export const TransactionPage: React.FC = () => {
-  const { pendingTransaction, signedTransaction, doSubmitPendingTransaction } = useTxState();
+  const {
+    pendingTransaction,
+    signedTransaction,
+    doSubmitPendingTransaction,
+    broadcastError,
+  } = useTxState();
   const { currentAccount, currentAccountStxAddress } = useWallet();
   const balances = useFetchBalances();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,6 +61,7 @@ export const TransactionPage: React.FC = () => {
     if (!pendingTransaction || balances.errorMaybe() || !currentAccount) {
       return TransactionErrorReason.Generic;
     }
+    if (broadcastError) return TransactionErrorReason.BroadcastError;
     if (balances.value) {
       const stxBalance = new BigNumber(balances.value.stx.balance);
       if (pendingTransaction.txType === TransactionTypes.STXTransfer) {
@@ -66,7 +72,7 @@ export const TransactionPage: React.FC = () => {
       }
     }
     return;
-  }, [balances, currentAccount, pendingTransaction]);
+  }, [balances, currentAccount, pendingTransaction, broadcastError]);
 
   if (error !== undefined) {
     return <TransactionError reason={error} />;

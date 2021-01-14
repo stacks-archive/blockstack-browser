@@ -3,7 +3,7 @@ import { Flex, Text, Box, BoxProps } from '@stacks/ui';
 import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { stacksValue } from '@common/stacks-utils';
 import { useWallet } from '@common/hooks/use-wallet';
-import { AssetRow } from './asset-row';
+import { AssetRow } from '../asset-row';
 
 const NoTokens: React.FC<BoxProps> = props => {
   const { currentNetworkKey } = useWallet();

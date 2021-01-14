@@ -8,16 +8,19 @@ import {
   signedTransactionStore,
   requestTokenStore,
   pendingTransactionFunctionSelector,
+  transactionBroadcastErrorStore,
 } from '@store/recoil/transaction';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentNetworkStore } from '@store/recoil/networks';
 import { finishTransaction } from '@common/transaction-utils';
 import { useLoadable } from '@common/hooks/use-loadable';
+import { finalizeTxSignature } from '@common/utils';
 
 export const useTxState = () => {
   const location = useLocation();
   const { currentAccount, doSetLatestNonce } = useWallet();
   const [error, setError] = useState<string | null>(null);
+  const broadcastError = useRecoilValue(transactionBroadcastErrorStore);
   const pendingTransaction = useRecoilValue(pendingTransactionStore);
   const contractSource = useLoadable(contractSourceStore);
   const contractInterface = useLoadable(contractInterfaceStore);
@@ -25,7 +28,6 @@ export const useTxState = () => {
   const signedTransaction = useLoadable(signedTransactionStore);
   const requestToken = useRecoilValue(requestTokenStore);
   const setRequestToken = useSetRecoilState(requestTokenStore);
-  const currentNetwork = useRecoilValue(currentNetworkStore);
 
   if (!currentAccount) {
     throw new Error('User must be logged in.');
@@ -42,12 +44,29 @@ export const useTxState = () => {
     }
   }, [location.search, setRequestToken, requestToken]);
 
-  const doSubmitPendingTransaction = useCallback(async () => {
-    if (!pendingTransaction || signedTransaction.state !== 'hasValue') return;
-    const tx = signedTransaction.contents;
-    await finishTransaction({ tx, pendingTransaction, nodeUrl: currentNetwork.url });
-    doSetLatestNonce(tx);
-  }, [pendingTransaction, signedTransaction, currentNetwork.url, doSetLatestNonce]);
+  const doSubmitPendingTransaction = useRecoilCallback(
+    ({ snapshot, set }) => async () => {
+      const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
+      if (!pendingTransaction) {
+        set(transactionBroadcastErrorStore, 'No pending transaction found.');
+        return;
+      }
+      const tx = await snapshot.getPromise(signedTransactionStore);
+      const currentNetwork = await snapshot.getPromise(currentNetworkStore);
+      try {
+        const result = await finishTransaction({
+          tx,
+          pendingTransaction,
+          nodeUrl: currentNetwork.url,
+        });
+        doSetLatestNonce(tx);
+        finalizeTxSignature(result);
+      } catch (error) {
+        set(transactionBroadcastErrorStore, error.message);
+      }
+    },
+    [doSetLatestNonce]
+  );
 
   useEffect(() => {
     decodeRequest();
@@ -61,5 +80,6 @@ export const useTxState = () => {
     contractInterface,
     pendingTransactionFunction,
     doSubmitPendingTransaction,
+    broadcastError,
   };
 };

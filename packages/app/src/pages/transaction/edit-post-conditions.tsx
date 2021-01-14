@@ -11,7 +11,7 @@ import {
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { selectedAssetStore } from '@store/recoil/asset-search';
-import { AssetSearch } from '@components/asset-search';
+import { AssetSearch } from '@components/asset-search/asset-search';
 import { object, string, number } from 'yup';
 import {
   makeStandardSTXPostCondition,

@@ -164,3 +164,8 @@ export const currentPostConditionStore = selector<PostCondition | undefined>({
     return postConditions[index];
   },
 });
+
+export const transactionBroadcastErrorStore = atom<string | null>({
+  key: 'transaction.broadcast-error',
+  default: null,
+});

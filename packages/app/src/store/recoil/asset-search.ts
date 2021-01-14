@@ -12,3 +12,8 @@ export const selectedAssetStore = atom<Asset | undefined>({
   key: 'asset-search.asset',
   default: undefined,
 });
+
+export const searchInputStore = atom<string>({
+  key: 'asset-search.input',
+  default: '',
+});

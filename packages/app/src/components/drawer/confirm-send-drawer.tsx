@@ -20,89 +20,85 @@ import BN from 'bn.js';
 import { stacksValue, stxToMicroStx } from '@common/stacks-utils';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
-import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { useRecoilValue } from 'recoil';
+import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 import { getAssetStringParts } from '@stacks/ui-utils';
+import { currentAccountStore } from '@store/recoil/wallet';
+import { currentNetworkStore } from '@store/recoil/networks';
+import { accountBalancesStore, apiRevalidation } from '@store/recoil/api';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
 
 interface ConfirmSendDrawerProps extends BaseDrawerProps {
   amount: number;
   recipient: string;
-  balances: AddressBalanceResponse | undefined;
 }
 export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   showing,
   close,
   amount,
   recipient,
-  balances,
 }) => {
   const [tx, setTx] = useState<StacksTransaction | undefined>();
-  const {
-    currentAccount,
-    currentNetwork,
-    doSetLatestNonce,
-    currentAccountStxAddress,
-  } = useWallet();
-  const asset = useRecoilValue(selectedAssetStore);
+  const { doSetLatestNonce, currentAccountStxAddress, currentNetwork } = useWallet();
   const [loading, setLoading] = useState(false);
+  const asset = useRecoilValue(selectedAssetStore);
+  const setApiRevalidation = useSetRecoilState(apiRevalidation);
   const { doChangeScreen } = useAnalytics();
-  const getTx = useCallback(async () => {
-    if (!asset || !currentAccount || !currentAccountStxAddress) return;
-    const network = new StacksTestnet();
-    network.coreApiUrl = currentNetwork.url;
-    setLoading(true);
-    if (asset.type === 'stx') {
-      const mStx = stxToMicroStx(amount);
-      const _tx = await makeSTXTokenTransfer({
-        recipient,
-        amount: new BN(mStx.toString(), 10),
-        senderKey: currentAccount.stxPrivateKey,
-        network,
-      });
-      setTx(_tx);
-    } else {
-      const { address: contractAddress, contractName, assetName } = getAssetStringParts(
-        asset.contractAddress
-      );
-      const functionName = 'transfer';
-      const postConditions: PostCondition[] = [];
-      const tokenBalanceKey = Object.keys(balances?.fungible_tokens || {}).find(contract => {
-        return contract.startsWith(asset?.contractAddress);
-      });
-      if (tokenBalanceKey) {
-        const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
-        const pc = makeStandardFungiblePostCondition(
-          currentAccountStxAddress,
-          FungibleConditionCode.Equal,
-          new BN(amount, 10),
-          assetInfo
+
+  const getTx = useRecoilCallback(
+    ({ snapshot }) => async () => {
+      const asset = await snapshot.getPromise(selectedAssetStore);
+      const currentAccount = await snapshot.getPromise(currentAccountStore);
+      const currentNetwork = await snapshot.getPromise(currentNetworkStore);
+      const balances = await snapshot.getPromise(accountBalancesStore);
+      if (!asset || !currentAccount || !currentAccountStxAddress) return;
+      const network = new StacksTestnet();
+      network.coreApiUrl = currentNetwork.url;
+      setLoading(true);
+      if (asset.type === 'stx') {
+        const mStx = stxToMicroStx(amount);
+        const _tx = await makeSTXTokenTransfer({
+          recipient,
+          amount: new BN(mStx.toString(), 10),
+          senderKey: currentAccount.stxPrivateKey,
+          network,
+        });
+        setTx(_tx);
+      } else {
+        const { address: contractAddress, contractName, assetName } = getAssetStringParts(
+          asset.contractAddress
         );
-        postConditions.push(pc);
+        const functionName = 'transfer';
+        const postConditions: PostCondition[] = [];
+        const tokenBalanceKey = Object.keys(balances?.fungible_tokens || {}).find(contract => {
+          return contract.startsWith(asset?.contractAddress);
+        });
+        if (tokenBalanceKey) {
+          const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
+          const pc = makeStandardFungiblePostCondition(
+            currentAccountStxAddress,
+            FungibleConditionCode.Equal,
+            new BN(amount, 10),
+            assetInfo
+          );
+          postConditions.push(pc);
+        }
+        const _tx = await makeContractCall({
+          network,
+          functionName,
+          functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
+          senderKey: currentAccount.stxPrivateKey,
+          contractAddress,
+          contractName,
+          postConditions,
+        });
+        setTx(_tx);
       }
-      const _tx = await makeContractCall({
-        network,
-        functionName,
-        functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
-        senderKey: currentAccount.stxPrivateKey,
-        contractAddress,
-        contractName,
-        postConditions,
-      });
-      setTx(_tx);
-    }
-    setLoading(false);
-  }, [
-    amount,
-    recipient,
-    currentAccount,
-    currentNetwork.url,
-    balances,
-    asset,
-    currentAccountStxAddress,
-  ]);
+      setLoading(false);
+    },
+    [amount, recipient, currentAccountStxAddress]
+  );
 
   useEffect(() => {
     if (!showing) {
@@ -120,10 +116,11 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
     }
     await broadcastTransaction(tx, network);
     doSetLatestNonce(tx);
+    setApiRevalidation(current => (current as number) + 1);
+    setLoading(false);
     close();
     doChangeScreen(ScreenPaths.POPUP_HOME);
-    setLoading(false);
-  }, [tx, currentNetwork.url, close, doChangeScreen, doSetLatestNonce]);
+  }, [tx, currentNetwork.url, close, doChangeScreen, doSetLatestNonce, setApiRevalidation]);
 
   return (
     <BaseDrawer showing={showing} close={close}>
@@ -139,7 +136,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
         </Text>
         <Text fontSize={2}>
           {amount}
-          {asset?.type === 'stx' ? ' Stacks Token' : ''}
+          {asset?.type === 'stx' ? ' STX' : ''}
         </Text>
       </Box>
       <Box width="100%" px={6} mt="base">

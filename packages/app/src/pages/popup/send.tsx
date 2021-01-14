@@ -9,7 +9,7 @@ import { Link } from '@components/link';
 import BigNumber from 'bignumber.js';
 import { microStxToStx, validateStacksAddress } from '@common/stacks-utils';
 import { ErrorLabel } from '@components/error-label';
-import { AssetSearch } from '@components/asset-search';
+import { AssetSearch } from '@components/asset-search/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { RPCClient } from '@stacks/rpc-client';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -24,7 +24,7 @@ interface FormValues {
 
 export const PopupSend: React.FC = () => {
   const { doChangeScreen } = useAnalytics();
-  const { currentNetwork } = useWallet();
+  const { currentNetwork, currentAccountStxAddress } = useWallet();
   const [isShowing, setShowing] = useState(false);
   const [assetError, setAssetError] = useState<string | undefined>();
   const balances = useFetchBalances();
@@ -45,6 +45,12 @@ export const PopupSend: React.FC = () => {
         if (!validateStacksAddress(recipient)) {
           errors.recipient = 'The address you provided is not valid.';
         }
+        if (recipient === currentAccountStxAddress) {
+          errors.recipient = 'Cannot send to yourself.';
+        }
+        if (amount <= 0) {
+          errors.amount = 'Must be more than zero.';
+        }
         if (selectedAsset) {
           if (balances.value) {
             const amountBN = new BigNumber(amount);
@@ -57,6 +63,9 @@ export const PopupSend: React.FC = () => {
           }
           if (selectedAsset.type === 'ft') {
             const { address, contractName } = getAssetStringParts(selectedAsset.contractAddress);
+            if (amount.toString().includes('.')) {
+              errors.amount = 'When sending a fungible token, amount must be an integer.';
+            }
             try {
               const rpcClient = new RPCClient(currentNetwork.url);
               const contractInterface = await rpcClient.fetchContractInterface({
@@ -67,14 +76,15 @@ export const PopupSend: React.FC = () => {
                 const correctName = func.name === 'transfer';
                 const [recipientArg, amountArg] = func.args;
                 const correctRecipient =
-                  recipientArg.name === 'recipient' && recipientArg.type === 'principal';
-                const correctAmount = amountArg.name === 'amount' && amountArg.type === 'uint128';
+                  recipientArg?.name === 'recipient' && recipientArg?.type === 'principal';
+                const correctAmount = amountArg?.name === 'amount' && amountArg?.type === 'uint128';
                 return correctName && correctRecipient && correctAmount && func.args.length === 2;
               });
               if (!transferFunction) {
                 setAssetError('The contract you specified does not have a `transfer` function.');
               }
             } catch (error) {
+              console.error(error);
               setAssetError('Unable to fetch contract details.');
             }
           }
@@ -91,16 +101,17 @@ export const PopupSend: React.FC = () => {
         setFieldValue,
         errors,
         isSubmitting,
+        setSubmitting,
         isValidating,
       }) => (
         <>
           <ConfirmSendDrawer
             close={() => {
               setShowing(false);
+              setSubmitting(false);
             }}
             {...values}
             showing={isShowing}
-            balances={balances.value}
           />
           <PopupContainer title="Send" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
             <form onSubmit={handleSubmit}>
@@ -127,6 +138,7 @@ export const PopupSend: React.FC = () => {
                     type="number"
                     width="100%"
                     placeholder="0.0 STX"
+                    min="0"
                     value={values.amount}
                     onChange={handleChange}
                     name="amount"
@@ -168,7 +180,7 @@ export const PopupSend: React.FC = () => {
                     mb="tight"
                     fontSize={1}
                     fontWeight="500"
-                    htmlFor="amount"
+                    htmlFor="recipient"
                   >
                     Recipient
                   </Text>

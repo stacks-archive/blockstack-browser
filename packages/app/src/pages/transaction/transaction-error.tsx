@@ -12,21 +12,23 @@ export enum TransactionErrorReason {
   StxTransferInsufficientFunds = 0,
   FeeInsufficientFunds = 1,
   Generic = 2,
+  BroadcastError = 3,
 }
 
 interface TransactionErrorProps {
   reason: TransactionErrorReason;
 }
 export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) => {
-  const { pendingTransaction } = useTxState();
+  const { pendingTransaction, broadcastError } = useTxState();
   const { currentAccountDisplayName, currentAccountStxAddress, currentNetwork } = useWallet();
   const balances = useFetchBalances();
 
   return (
     <PopupContainer title="Unable to sign transaction.">
+      <Box mt="loose" />
       {reason === TransactionErrorReason.StxTransferInsufficientFunds ? (
-        <Box mt="loose">
-          <Text display="block">
+        <Box>
+          <Text display="block" fontSize={2}>
             You don't have enough STX to make this transfer. Try switching accounts, switching
             networks, or adding STX to this account.
           </Text>
@@ -52,6 +54,18 @@ export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) =>
             ) : (
               <LoadingRectangle height="16px" width="50px" />
             )}
+          </Box>
+        </Box>
+      ) : null}
+      {reason === TransactionErrorReason.BroadcastError ? (
+        <Box>
+          <Text display="block" fontSize={2}>
+            There was an error when broadcasting this transaction:
+          </Text>
+          <Box my="base">
+            <Text fontSize={2} fontFamily="mono">
+              {broadcastError}
+            </Text>
           </Box>
         </Box>
       ) : null}

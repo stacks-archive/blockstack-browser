@@ -8,15 +8,10 @@ interface AssetRowProps extends BoxProps {
   value: string;
   subtitle: string;
 }
-export const AssetRow: React.FC<AssetRowProps> = ({
-  name,
-  friendlyName,
-  value,
-  subtitle,
-  ...props
-}) => {
+export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, ref) => {
+  const { name, friendlyName, value, subtitle, ...otherProps } = props;
   return (
-    <Box width="100%" mb="base" {...props}>
+    <Box width="100%" mb="base" {...otherProps} ref={ref}>
       <Flex flexWrap="wrap" flexDirection="row" cursor="pointer">
         <Box width="32px" py="tight" mr="base">
           <AssetAvatar
@@ -29,7 +24,7 @@ export const AssetRow: React.FC<AssetRowProps> = ({
           </AssetAvatar>
         </Box>
         <Box flexGrow={1}>
-          <Text display="block" fontWeight="400" color="ink.1000">
+          <Text display="block" fontSize={2} fontWeight="400" color="ink.1000">
             {friendlyName}
           </Text>
           <Text fontSize={1} color="ink.400">
@@ -44,4 +39,4 @@ export const AssetRow: React.FC<AssetRowProps> = ({
       </Flex>
     </Box>
   );
-};
+});

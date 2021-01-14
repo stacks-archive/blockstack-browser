@@ -15,7 +15,6 @@ import {
   TransactionTypes,
 } from '@stacks/connect';
 import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@common/track';
-import { finalizeTxSignature } from './utils';
 import RPCClient from '@stacks/rpc-client';
 import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
@@ -157,9 +156,12 @@ export const finishTransaction = async ({
       appName: pendingTransaction?.appDetails?.name,
     });
     const txIdJson: string = await res.json();
-    const txId = `0x${txIdJson}`;
+    const txId = `0x${txIdJson.replace('"', '')}`;
     const txRaw = `0x${serialized.toString('hex')}`;
-    finalizeTxSignature({ txId, txRaw });
+    return {
+      txId,
+      txRaw,
+    };
   } else {
     const response = await res.json();
     if (response.error) {
@@ -173,5 +175,6 @@ export const finishTransaction = async ({
       console.error(response.reason);
       throw new Error(error);
     }
+    throw new Error('Unable to submit transaction');
   }
 };

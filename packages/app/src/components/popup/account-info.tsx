@@ -22,7 +22,7 @@ const HomeLoading: React.FC = () => {
 
 export const AccountInfo: React.FC = () => {
   const accountData = useFetchAccountData();
-  if (accountData.state === 'loading') {
+  if (accountData.state === 'loading' && !accountData.value) {
     return <HomeLoading />;
   }
   const data = accountData.value;

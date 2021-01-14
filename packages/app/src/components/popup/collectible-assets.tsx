@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Box, BoxProps, Flex } from '@stacks/ui';
 import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { AssetRow } from './asset-row';
+import { AssetRow } from '../asset-row';
 
 const NoCollectibles: React.FC<BoxProps> = props => (
   <Box width="100%" py="extra-loose" my="extra-loose" textAlign="center" {...props}>
