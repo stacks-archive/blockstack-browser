@@ -97,7 +97,6 @@ export class WalletPage {
   }
 
   async saveKey() {
-    await this.page.click(this.saveKeyButton);
     await this.page.click(this.confirmSavedKey);
     await this.enterPassword();
     await wait(1000);
