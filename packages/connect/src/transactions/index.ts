@@ -17,6 +17,7 @@ import {
 import { serializeCV } from '@stacks/transactions';
 import { getStacksProvider } from '../utils';
 import { deserializeTransaction, BufferReader } from '@stacks/transactions';
+import { StacksTestnet } from '@stacks/network';
 
 export * from './types';
 
@@ -36,7 +37,10 @@ const getKeys = (_userSession?: UserSession) => {
 
 const signPayload = async (payload: TransactionPayload, privateKey: string) => {
   const tokenSigner = new TokenSigner('ES256k', privateKey);
-  return tokenSigner.signAsync(payload as any);
+  return tokenSigner.signAsync({
+    network: new StacksTestnet(),
+    ...payload,
+  } as any);
 };
 
 const openTransactionPopup = async ({ token, options }: TransactionPopup) => {
