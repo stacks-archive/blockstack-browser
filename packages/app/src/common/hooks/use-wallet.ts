@@ -13,7 +13,7 @@ import {
   updateWalletConfig,
   getAccountDisplayName,
 } from '@stacks/wallet-sdk';
-import { useRecoilValue, useRecoilState, useSetRecoilState, useRecoilCallback } from 'recoil';
+import { useRecoilValue, useRecoilState, useRecoilCallback } from 'recoil';
 import { useDispatch } from 'react-redux';
 import { gaiaUrl } from '@common/constants';
 import {
@@ -42,7 +42,7 @@ import { doChangeScreen, saveAuthRequest } from '@store/onboarding/actions';
 import { doTrackScreenChange } from '@common/track';
 import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
 import { decodeToken } from 'jsontokens';
-import { chainInfoStore } from '@store/recoil/api';
+import { latestBlockHeightStore } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { ATOM_LOCALSTORAGE_PREFIX } from '@store/recoil';
 
@@ -64,7 +64,6 @@ export const useWallet = () => {
   const networks = useRecoilValue(networksStore);
   const currentNetwork = useRecoilValue(currentNetworkStore);
   const currentNetworkKey = useRecoilValue(currentNetworkKeyStore);
-  const chainInfo = useLoadable(chainInfoStore);
   const walletConfig = useLoadable(walletConfigStore);
 
   let currentAccountDisplayName = undefined;
@@ -72,9 +71,6 @@ export const useWallet = () => {
     currentAccountDisplayName = getAccountDisplayName(currentAccount);
   }
 
-  const setLatestNonces = useSetRecoilState(
-    latestNoncesStore([currentNetwork.url, currentAccountStxAddress || ''])
-  );
   const dispatch = useDispatch();
   const { decodedAuthRequest, authRequest, appName, appIcon, screen } = useOnboardingState();
 
@@ -160,17 +156,20 @@ export const useWallet = () => {
     [secretKey, setEncryptedSecretKey, setHasSetPassword]
   );
 
-  const doSetLatestNonce = useCallback(
-    (tx: StacksTransaction) => {
+  const doSetLatestNonce = useRecoilCallback(
+    ({ snapshot, set }) => async (tx: StacksTransaction) => {
       const newNonce = tx.auth.spendingCondition?.nonce.toNumber();
-      if (newNonce && chainInfo.value) {
-        setLatestNonces({
-          blockHeight: chainInfo.value.stacks_tip_height,
+      const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
+      const network = await snapshot.getPromise(currentNetworkStore);
+      const address = await snapshot.getPromise(currentAccountStxAddressStore);
+      if (newNonce) {
+        set(latestNoncesStore([network.url, address || '']), {
+          blockHeight: blockHeight,
           nonce: newNonce,
         });
       }
     },
-    [chainInfo.value, setLatestNonces]
+    []
   );
 
   const doFinishSignIn = useRecoilCallback(

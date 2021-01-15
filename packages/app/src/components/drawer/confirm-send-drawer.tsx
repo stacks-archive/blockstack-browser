@@ -24,7 +24,7 @@ import { selectedAssetStore } from '@store/recoil/asset-search';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { currentAccountStore } from '@store/recoil/wallet';
 import { stacksNetworkStore } from '@store/recoil/networks';
-import { accountBalancesStore, apiRevalidation } from '@store/recoil/api';
+import { accountBalancesStore, apiRevalidation, correctNonceStore } from '@store/recoil/api';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
 
@@ -50,9 +50,10 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
     ({ snapshot }) => async () => {
       const asset = await snapshot.getPromise(selectedAssetStore);
       const currentAccount = await snapshot.getPromise(currentAccountStore);
+      if (!asset || !currentAccount || !currentAccountStxAddress) return;
       const network = await snapshot.getPromise(stacksNetworkStore);
       const balances = await snapshot.getPromise(accountBalancesStore);
-      if (!asset || !currentAccount || !currentAccountStxAddress) return;
+      const nonce = await snapshot.getPromise(correctNonceStore);
       setLoading(true);
       if (asset.type === 'stx') {
         const mStx = stxToMicroStx(amount);
@@ -61,6 +62,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
           amount: new BN(mStx.toString(), 10),
           senderKey: currentAccount.stxPrivateKey,
           network,
+          nonce: new BN(nonce, 10),
         });
         setTx(_tx);
       } else {
@@ -90,6 +92,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
           contractAddress,
           contractName,
           postConditions,
+          nonce: new BN(nonce, 10),
         });
         setTx(_tx);
       }
@@ -112,7 +115,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
       return;
     }
     await broadcastTransaction(tx, stacksNetwork);
-    doSetLatestNonce(tx);
+    await doSetLatestNonce(tx);
     setApiRevalidation(current => (current as number) + 1);
     setLoading(false);
     close();

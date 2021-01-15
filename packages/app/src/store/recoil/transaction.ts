@@ -133,14 +133,14 @@ export const signedTransactionStore = selector({
   key: 'transaction.signedTransaction',
   get: async ({ get }) => {
     const account = get(currentAccountStore);
-    const pendingTransaction = get(pendingTransactionStore);
-    const nonce = get(correctNonceStore);
     if (!account) {
       throw new Error('Unable to sign transaction when logged out.');
     }
+    const pendingTransaction = get(pendingTransactionStore);
     if (!pendingTransaction) {
       throw new Error('Unable to get signed transaction - no pending transaction found.');
     }
+    const nonce = get(correctNonceStore);
     const tx = await generateTransaction({
       senderKey: account.stxPrivateKey,
       nonce,

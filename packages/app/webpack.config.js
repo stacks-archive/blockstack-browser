@@ -288,8 +288,10 @@ if (process.env.EXT_ENV === 'watch') {
   );
 }
 
-if (nodeEnv === 'production') {
-  module.exports.plugins.push(new CleanWebpackPlugin({ verbose: true, dry: false }));
+if (nodeEnv === 'production' || extEnv !== 'web') {
+  module.exports.plugins.push(
+    new CleanWebpackPlugin({ verbose: true, dry: false, cleanStaleWebpackAssets: false })
+  );
 }
 if (analyzeBundle) {
   module.exports.plugins.push(new BundleAnalyzerPlugin());

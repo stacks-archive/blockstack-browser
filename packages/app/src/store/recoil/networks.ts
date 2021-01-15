@@ -34,8 +34,8 @@ export const defaultNetworks: Networks = {
 };
 
 export const currentNetworkKeyStore = atom({
-  key: 'networks.current-key',
-  default: 'testnet',
+  key: 'networks.current-key-v2',
+  default: 'mainnet',
   effects_UNSTABLE: [localStorageEffect()],
 });
 

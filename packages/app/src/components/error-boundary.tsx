@@ -9,7 +9,7 @@ import {
   signedTransactionStore,
   pendingTransactionStore,
 } from '@store/recoil/transaction';
-import { accountDataStore, chainInfoStore, correctNonceStore } from '@store/recoil/api';
+import { accountDataStore } from '@store/recoil/api';
 import { walletStore } from '@store/recoil/wallet';
 import { useRecoilValue } from 'recoil';
 
@@ -59,11 +59,8 @@ type Loadables = ReturnType<typeof useLoadable>[];
 export const ErrorBoundary: React.FC = ({ children }) => {
   const pendingTransaction = useRecoilValue(pendingTransactionStore);
   const wallet = useRecoilValue(walletStore);
-  let loadables: Loadables = [useLoadable(chainInfoStore)];
-  const walletLoadables: Loadables = [
-    useLoadable(accountDataStore),
-    useLoadable(correctNonceStore),
-  ];
+  let loadables: Loadables = [];
+  const walletLoadables: Loadables = [useLoadable(accountDataStore)];
   const txLoadables: Loadables = [
     useLoadable(contractSourceStore),
     useLoadable(contractInterfaceStore),
@@ -79,7 +76,7 @@ export const ErrorBoundary: React.FC = ({ children }) => {
     loadables = loadables.concat(txLoadables);
   }
 
-  const errorLoadables = loadables.filter(loadable => loadable.errorMaybe());
+  const errorLoadables = loadables.filter(loadable => !!loadable.errorMaybe());
 
   if (errorLoadables.length > 0) {
     const [loadable] = errorLoadables;

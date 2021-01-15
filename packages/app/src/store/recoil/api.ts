@@ -1,8 +1,13 @@
 import { selector, atom, atomFamily } from 'recoil';
 import { latestNonceStore, currentAccountStxAddressStore } from './wallet';
-import { rpcClientStore, currentNetworkStore } from './networks';
-import type { CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
+import { currentNetworkStore } from './networks';
+import type {
+  CoreNodeInfoResponse,
+  BlockListResponse,
+} from '@blockstack/stacks-blockchain-api-types';
 import { fetchAllAccountData } from '@common/api/accounts';
+import BN from 'bn.js';
+import { fetchFromSidecar } from '@common/api/fetch';
 
 const DEFAULT_POLL_RATE = 60000;
 
@@ -32,18 +37,26 @@ export const intervalStore = atomFamily<number, number>({
   ],
 });
 
-export const accountInfoStore = selector({
+export const accountInfoStore = selector<{ balance: BN; nonce: number }>({
   key: 'wallet.account-info',
   get: async ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(DEFAULT_POLL_RATE));
-    const rpcClient = get(rpcClientStore);
     const address = get(currentAccountStxAddressStore);
     if (!address) {
       throw new Error('Cannot get account info when logged out.');
     }
-    const info = await rpcClient.fetchAccount(address);
-    return info;
+    const network = get(currentNetworkStore);
+    const url = `${network.url}/v2/accounts/${address}`;
+    const error = new Error(`Unable to fetch account info from ${url}`);
+    const response = await fetch(url, {
+      credentials: 'omit',
+    });
+    if (!response.ok) throw error;
+    const data = await response.json();
+    return {
+      balance: new BN(data.balance.slice(2), 16),
+      nonce: data.nonce,
+    };
   },
 });
 
@@ -51,7 +64,6 @@ export const chainInfoStore = selector({
   key: 'api.chain-info',
   get: async ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(DEFAULT_POLL_RATE));
     const { url } = get(currentNetworkStore);
     const infoUrl = `${url}/v2/info`;
     try {
@@ -65,12 +77,21 @@ export const chainInfoStore = selector({
   },
 });
 
+export const latestBlockHeightStore = selector({
+  key: 'api.latest-block-height',
+  get: async ({ get }) => {
+    const { url } = get(currentNetworkStore);
+    const blocksResponse: BlockListResponse = await fetchFromSidecar(url)('/block');
+    const [block] = blocksResponse.results;
+    return block.height;
+  },
+});
+
 export const correctNonceStore = selector({
   key: 'api.correct-nonce',
   get: ({ get }) => {
     get(apiRevalidation);
-    get(intervalStore(DEFAULT_POLL_RATE));
-    const chainInfo = get(chainInfoStore);
+    const blockHeight = get(latestBlockHeightStore);
     const account = get(accountInfoStore);
     const lastTx = get(latestNonceStore);
 
@@ -80,7 +101,7 @@ export const correctNonceStore = selector({
       return account.nonce;
     }
     // The current stacks chain has been reset or advanced since the last tx
-    if (chainInfo.stacks_tip_height !== lastTx.blockHeight) {
+    if (blockHeight !== lastTx.blockHeight) {
       return account.nonce;
     }
 
