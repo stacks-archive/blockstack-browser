@@ -4,7 +4,7 @@ import { rpcClientStore, currentNetworkStore } from './networks';
 import type { CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
 import { fetchAllAccountData } from '@common/api/accounts';
 
-const DEFAULT_POLL_RATE = 15000;
+const DEFAULT_POLL_RATE = 60000;
 
 export const apiRevalidation = atom({
   key: 'api.revalidation',
@@ -56,6 +56,7 @@ export const chainInfoStore = selector({
     const infoUrl = `${url}/v2/info`;
     try {
       const res = await fetch(infoUrl);
+      if (!res.ok) throw `Unable to fetch chain data from ${infoUrl}`;
       const info: CoreNodeInfoResponse = await res.json();
       return info;
     } catch (error) {
