@@ -103,7 +103,7 @@ export const useTxState = () => {
           pendingTransaction,
           nodeUrl: currentNetwork.url,
         });
-        doSetLatestNonce(tx);
+        await doSetLatestNonce(tx);
         finalizeTxSignature(result);
       } catch (error) {
         set(transactionBroadcastErrorStore, error.message);
