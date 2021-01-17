@@ -8,7 +8,7 @@ jobs:
     name: Check Issue Title
     runs-on: ubuntu-latest
     steps:
-      - if: contains(github.event.issue.title, '<decribe issue>')
+      - if: contains(github.event.issue.title, '<describe issue>')
         name: Close Issue
         uses: peter-evans/close-issue@v1
         with:
