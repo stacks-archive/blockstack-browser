@@ -95,7 +95,6 @@ export const useConnect = () => {
     isAuthenticating,
     authData,
     authOptions,
-    screen,
     userSession,
     doOpenAuth,
     doAuth,
