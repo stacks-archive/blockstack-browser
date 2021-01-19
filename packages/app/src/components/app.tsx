@@ -51,6 +51,7 @@ const globalStyle = css`
       sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     -webkit-font-smoothing: antialiased;
     background-color: white;
+    font-size: 100%;
   }
 
   h1,

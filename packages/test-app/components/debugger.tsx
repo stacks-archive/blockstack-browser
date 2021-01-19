@@ -63,6 +63,7 @@ export const Debugger = () => {
       network,
       authOrigin,
       amount,
+      memo: 'From demo app',
       recipient: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       finished: data => {
         console.log('finished stx transfer!', data);
