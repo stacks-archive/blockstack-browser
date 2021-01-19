@@ -163,10 +163,10 @@ export const useWallet = () => {
       const network = await snapshot.getPromise(currentNetworkStore);
       const address = await snapshot.getPromise(currentAccountStxAddressStore);
       if (newNonce) {
-        set(latestNoncesStore([network.url, address || '']), {
-          blockHeight: blockHeight,
+        set(latestNoncesStore([network.url, address || '']), () => ({
+          blockHeight,
           nonce: newNonce,
-        });
+        }));
       }
     },
     []

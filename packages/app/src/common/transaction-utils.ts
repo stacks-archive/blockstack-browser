@@ -112,7 +112,7 @@ export const generateTransaction = async ({
   txData: TransactionPayload;
 }) => {
   let tx: StacksTransaction | null = null;
-  if (!txData.network?.transferFeeEstimateEndpoint) {
+  if (!txData.network?.getTransferFeeEstimateApiUrl) {
     const network =
       txData.network?.version === TransactionVersion.Mainnet
         ? new StacksMainnet()

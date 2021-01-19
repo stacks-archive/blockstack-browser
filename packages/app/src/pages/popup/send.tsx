@@ -17,8 +17,10 @@ import { getAssetStringParts } from '@stacks/ui-utils';
 import { useRecoilValue } from 'recoil';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 
+type Amount = number | '';
+
 interface FormValues {
-  amount: number;
+  amount: Amount;
   recipient: string;
 }
 
@@ -30,7 +32,7 @@ export const PopupSend: React.FC = () => {
   const balances = useFetchBalances();
   const selectedAsset = useRecoilValue(selectedAssetStore);
   const initialValues: FormValues = {
-    amount: 0,
+    amount: '',
     recipient: '',
   };
   return (
@@ -47,6 +49,9 @@ export const PopupSend: React.FC = () => {
         }
         if (recipient === currentAccountStxAddress) {
           errors.recipient = 'Cannot send to yourself.';
+        }
+        if (amount === '') {
+          errors.amount = 'You must specify an amount.';
         }
         if (amount <= 0) {
           errors.amount = 'Must be more than zero.';
@@ -111,6 +116,7 @@ export const PopupSend: React.FC = () => {
               setSubmitting(false);
             }}
             {...values}
+            amount={values.amount || 0}
             showing={isShowing}
           />
           <PopupContainer title="Send" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>

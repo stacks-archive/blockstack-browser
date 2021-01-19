@@ -25,6 +25,7 @@ import { getAssetStringParts } from '@stacks/ui-utils';
 import { currentAccountStore } from '@store/recoil/wallet';
 import { stacksNetworkStore } from '@store/recoil/networks';
 import { accountBalancesStore, apiRevalidation, correctNonceStore } from '@store/recoil/api';
+import { LoadingRectangle } from '@components/loading-rectangle';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
 
@@ -134,7 +135,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
         <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
           Amount
         </Text>
-        <Text fontSize={2}>
+        <Text fontSize={1}>
           {amount}
           {asset?.type === 'stx' ? ' STX' : ''}
         </Text>
@@ -148,19 +149,32 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
           {recipient}
         </Text>
       </Box>
-      {tx ? (
-        <Box width="100%" px={6} mt="base">
-          <Divider />
-          <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
-            Fee
-          </Text>
-          <Text fontSize={2}>
+      <Box width="100%" px={6} mt="base">
+        <Divider />
+        <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
+          Nonce
+        </Text>
+        {tx ? (
+          <Text fontSize={1}>{tx.auth.spendingCondition?.nonce.toNumber()}</Text>
+        ) : (
+          <LoadingRectangle height="14px" width="80px" />
+        )}
+      </Box>
+      <Box width="100%" px={6} mt="base">
+        <Divider />
+        <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
+          Fee
+        </Text>
+        {tx ? (
+          <Text fontSize={1}>
             {stacksValue({
               value: tx.auth.spendingCondition?.fee?.toNumber() || 0,
             })}
           </Text>
-        </Box>
-      ) : null}
+        ) : (
+          <LoadingRectangle height="14px" width="80px" />
+        )}
+      </Box>
       <Flex width="100%" px="6" flexGrow={1} mt="base">
         <Button width="50%" mode="secondary" mr={2} onClick={close}>
           Cancel
@@ -171,7 +185,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
           ml={2}
           isDisabled={!tx || loading}
           onClick={submit}
-          isLoading={loading}
+          isLoading={!tx || loading}
         >
           Send
         </Button>

@@ -51,17 +51,10 @@ export const latestNoncesStore = atomFamily<
   [string, string]
 >({
   key: 'wallet.latest-nonces',
-  default: args => {
-    const key = `wallet.latest-nonces__${JSON.stringify(args)}`;
-    const current = localStorage.getItem(key);
-    if (current) {
-      return JSON.parse(current);
-    }
-    return {
-      nonce: 0,
-      blockHeight: 0,
-    };
-  },
+  default: () => ({
+    nonce: 0,
+    blockHeight: 0,
+  }),
   effects_UNSTABLE: [localStorageEffect()],
 });
 
@@ -69,10 +62,8 @@ export const latestNonceStore = selector({
   key: 'wallet.latest-nonce',
   get: ({ get }) => {
     const network = get(currentNetworkStore);
-    const account = get(currentAccountStore);
-    const transactionVersion = get(currentTransactionVersion);
-    const address = account ? getStxAddress({ account, transactionVersion }) : '';
-    const nonce = get(latestNoncesStore([network.url, address]));
+    const address = get(currentAccountStxAddressStore);
+    const nonce = get(latestNoncesStore([network.url, address || '']));
     return nonce;
   },
 });
