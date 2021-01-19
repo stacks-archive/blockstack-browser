@@ -5,6 +5,7 @@ import { Divider } from '@components/divider';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { deserializeCV, cvToString, ClarityType, getCVTypeString } from '@stacks/transactions';
 import { LoadingRectangle } from '@components/loading-rectangle';
+import { NonceRow } from './nonce-row';
 
 interface ArgumentProps {
   arg: string;
@@ -29,11 +30,13 @@ const Argument: React.FC<ArgumentProps> = ({ arg, index }) => {
       <Flex>
         <Box flexGrow={1}>
           {name ? (
-            <Text display="block">{name}</Text>
+            <Text display="block" fontSize={1}>
+              {name}
+            </Text>
           ) : (
             <LoadingRectangle width="100px" height="14px" />
           )}
-          <Text textStyle="caption" color="ink.600">
+          <Text textStyle="caption" color="ink.600" fontSize={0}>
             {getCVTypeString(argCV)}
           </Text>
         </Box>
@@ -59,7 +62,7 @@ export const ContractCallDetails: React.FC = () => {
   return (
     <>
       <Box my="base">
-        <Text fontWeight="500" display="block">
+        <Text fontWeight="500" display="block" fontSize={2}>
           Contract
         </Text>
         <Text fontSize={1} color="blue">
@@ -68,14 +71,14 @@ export const ContractCallDetails: React.FC = () => {
       </Box>
       <Divider />
       <Box my="base">
-        <Text fontWeight="500" display="block">
+        <Text fontWeight="500" display="block" fontSize={2}>
           Function
         </Text>
         <Text fontSize={1}>{pendingTransaction.functionName}</Text>
       </Box>
       <Divider />
       <Box mt="base">
-        <Text fontWeight="500" display="block">
+        <Text fontWeight="500" display="block" fontSize={2}>
           {pendingTransaction.functionArgs.length > 0 ? 'Arguments' : 'No arguments provided'}
         </Text>
       </Box>
@@ -84,6 +87,7 @@ export const ContractCallDetails: React.FC = () => {
           {args}
         </Flex>
       </Box>
+      <NonceRow />
     </>
   );
 };

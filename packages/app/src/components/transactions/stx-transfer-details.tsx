@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTxState } from '@common/hooks/use-tx-state';
 import { Box, Text, Flex } from '@stacks/ui';
-import { truncateMiddle } from '@stacks/ui-utils';
+import { NonceRow } from './nonce-row';
 
 export const StxTransferDetails: React.FC = () => {
   const { pendingTransaction } = useTxState();
@@ -11,41 +11,46 @@ export const StxTransferDetails: React.FC = () => {
   return (
     <>
       <Box mt="base">
-        <Text fontWeight="500" display="block">
+        <Text fontWeight="500" display="block" fontSize={2}>
           Stacks Transfer Details
         </Text>
       </Box>
       <Box>
         <Flex dir="column" flexWrap="wrap" width="100%">
           <Box mt="base" width="100%">
-            <Flex>
+            <Flex my="base">
               <Box flexGrow={1}>
-                <Text display="block">Recipient</Text>
-                <Text textStyle="caption" color="ink.600">
-                  Principal
+                <Text display="block" fontSize={1}>
+                  Recipient
+                </Text>
+                <Text textStyle="caption" color="ink.600" fontSize={0}>
+                  principal
                 </Text>
               </Box>
               <Box>
-                <Text fontSize={1} color="ink.600" title={pendingTransaction.recipient}>
-                  {truncateMiddle(pendingTransaction.recipient)}
+                <Text fontSize={0} color="ink.600" title={pendingTransaction.recipient} mt="2px">
+                  {pendingTransaction.recipient}
                 </Text>
               </Box>
-              {pendingTransaction.memo && (
-                <>
-                  <Box flexGrow={1}>
-                    <Text display="block">Recipient</Text>
-                    <Text textStyle="caption" color="ink.600">
-                      Memo
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize={1} color="ink.600" title={pendingTransaction.memo}>
-                      {truncateMiddle(pendingTransaction.memo, 10)}
-                    </Text>
-                  </Box>
-                </>
-              )}
             </Flex>
+            {pendingTransaction.memo && (
+              <Flex my="base">
+                <Box flexGrow={1}>
+                  <Text display="block" fontSize={1}>
+                    Memo
+                  </Text>
+                  <Text textStyle="caption" color="ink.600" fontSize={0}>
+                    string
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize={1} color="ink.600" title={pendingTransaction.memo}>
+                    {pendingTransaction.memo}
+                  </Text>
+                </Box>
+              </Flex>
+            )}
+            <NonceRow />
           </Box>
         </Flex>
       </Box>

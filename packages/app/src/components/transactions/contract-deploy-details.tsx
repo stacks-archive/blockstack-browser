@@ -4,6 +4,7 @@ import { Box, Text, Flex, CodeBlock } from '@stacks/ui';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Prism } from '@common/clarity-prism';
+import { NonceRow } from './nonce-row';
 
 export const ContractDeployDetails: React.FC = () => {
   const { pendingTransaction } = useTxState();
@@ -14,7 +15,7 @@ export const ContractDeployDetails: React.FC = () => {
   return (
     <>
       <Box mt="base">
-        <Text fontWeight="500" display="block">
+        <Text fontWeight="500" display="block" fontSize={2}>
           Contract Deploy Details
         </Text>
       </Box>
@@ -23,8 +24,10 @@ export const ContractDeployDetails: React.FC = () => {
           <Box mt="base" width="100%">
             <Flex my="base">
               <Box flexGrow={1}>
-                <Text display="block">Contract Address</Text>
-                <Text textStyle="caption" color="ink.600">
+                <Text display="block" fontSize={1}>
+                  Contract Address
+                </Text>
+                <Text textStyle="caption" color="ink.600" fontSize={0}>
                   Principal
                 </Text>
               </Box>
@@ -36,8 +39,10 @@ export const ContractDeployDetails: React.FC = () => {
             </Flex>
             <Flex my="base">
               <Box flexGrow={1}>
-                <Text display="block">Contract Name</Text>
-                <Text textStyle="caption" color="ink.600">
+                <Text display="block" fontSize={1}>
+                  Contract Name
+                </Text>
+                <Text textStyle="caption" color="ink.600" fontSize={0}>
                   String
                 </Text>
               </Box>
@@ -48,7 +53,7 @@ export const ContractDeployDetails: React.FC = () => {
               </Box>
             </Flex>
             <Flex my="base" dir="column">
-              <Box mb="base" width="100%">
+              <Box mb="base" width="100%" fontSize={1}>
                 <Text display="block">Contract Code</Text>
               </Box>
               <CodeBlock
@@ -58,6 +63,7 @@ export const ContractDeployDetails: React.FC = () => {
                 Prism={Prism as any}
               />
             </Flex>
+            <NonceRow />
           </Box>
         </Flex>
       </Box>

@@ -35,10 +35,14 @@ export const PostConditionBase: React.FC<PostConditionBaseProps> = props => {
               </DynamicColorCircle>
             </Box>
             <Box pt="extra-tight" flexGrow={1}>
-              <Text fontWeight="600">{props.amount}</Text>
+              <Text fontWeight="600" fontSize={2}>
+                {props.amount}
+              </Text>
             </Box>
             <Box pt="extra-tight">
-              <Text fontWeight="500">{props.ticker}</Text>
+              <Text fontWeight="500" fontSize={2}>
+                {props.ticker}
+              </Text>
             </Box>
           </Flex>
         </Box>

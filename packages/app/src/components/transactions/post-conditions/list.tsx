@@ -12,6 +12,7 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 import { PostConditionComponent, PostConditionBase } from './single';
 import { TransactionTypes } from '@stacks/connect';
+import { stacksValue } from '@common/stacks-utils';
 
 export const PostConditions: React.FC = () => {
   const showDetails = useRecoilValue(showTxDetails);
@@ -33,7 +34,7 @@ export const PostConditions: React.FC = () => {
           title="transfer exactly"
           iconChar="S"
           iconString="STX"
-          amount={pendingTransaction.amount}
+          amount={stacksValue({ value: pendingTransaction.amount, withTicker: false })}
           ticker="STX"
         />
       );
