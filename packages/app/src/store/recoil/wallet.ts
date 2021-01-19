@@ -14,7 +14,7 @@ import { gaiaUrl } from '@common/constants';
 export const secretKeyStore = atom<string | undefined>({
   key: 'wallet.secret-key',
   default: undefined,
-  effects_UNSTABLE: [localStorageEffect({ onlyExtension: true })],
+  effects_UNSTABLE: [localStorageEffect()],
 });
 
 export const hasSetPasswordStore = atom<boolean>({
@@ -26,11 +26,7 @@ export const hasSetPasswordStore = atom<boolean>({
 export const walletStore = atom<Wallet | undefined>({
   key: 'wallet.wallet-v2',
   default: undefined,
-  effects_UNSTABLE: [
-    localStorageEffect({
-      onlyExtension: true,
-    }),
-  ],
+  effects_UNSTABLE: [localStorageEffect()],
   dangerouslyAllowMutability: true,
 });
 

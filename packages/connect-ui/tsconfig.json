@@ -23,7 +23,7 @@
     "baseUrl": "./",
     "resolveJsonModule": true,
     "paths": {
-      "@stacks/connect/auth": ["../connect/src/auth"],
+      "@stacks/connect/*": ["../connect/src/*"],
     }
   },
   "include": [

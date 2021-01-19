@@ -1,6 +1,5 @@
 import { UserSession, AppConfig } from '@stacks/auth';
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
-import { popupCenter, setupListener } from '../popup';
 import {
   ContractCallOptions,
   ContractCallPayload,
@@ -12,14 +11,11 @@ import {
   STXTransferPayload,
   TransactionPayload,
   TransactionTypes,
-  FinishedTxPayload,
-} from './types';
-import { ChainID, serializeCV } from '@stacks/transactions';
+} from '../types/transactions';
+import { serializeCV, ChainID } from '@stacks/transactions';
 import { getStacksProvider } from '../utils';
 import { deserializeTransaction, BufferReader } from '@stacks/transactions';
 import { StacksTestnet } from '@stacks/network';
-
-export * from './types';
 
 const getUserSession = (_userSession?: UserSession) => {
   let userSession = _userSession;
@@ -74,37 +70,23 @@ const signPayload = async (payload: TransactionPayload, privateKey: string) => {
   } as any);
 };
 
-const openTransactionPopup = async ({ token, options }: TransactionPopup) => {
+const openTransactionPopup = ({ token, options }: TransactionPopup) => {
   const provider = getStacksProvider();
   if (!provider) {
     throw new Error('Stacks Wallet not installed.');
   }
-  const extensionURL = await provider?.getURL();
-  const authURL = new URL(extensionURL);
-  const urlParams = new URLSearchParams();
-  urlParams.set('request', token);
-
-  const popup = popupCenter({
-    url: `${authURL.origin}/index.html#/transaction?${urlParams.toString()}`,
-    h: 560,
+  void provider.transactionRequest(token).then(data => {
+    const finishedCallback = options.finished || options.onFinish;
+    const { txRaw } = data;
+    const txBuffer = Buffer.from(txRaw.replace(/^0x/, ''), 'hex');
+    const stacksTransaction = deserializeTransaction(new BufferReader(txBuffer));
+    finishedCallback?.({
+      ...data,
+      stacksTransaction,
+    });
   });
 
-  setupListener<FinishedTxPayload>({
-    popup,
-    authURL,
-    onFinish: data => {
-      const finishedCallback = options.finished || options.onFinish;
-      const { txRaw } = data;
-      const txBuffer = Buffer.from(txRaw.replace(/^0x/, ''), 'hex');
-      const stacksTransaction = deserializeTransaction(new BufferReader(txBuffer));
-      finishedCallback?.({
-        ...data,
-        stacksTransaction,
-      });
-    },
-    messageParams: {},
-  });
-  return popup;
+  if (true) return;
 };
 
 export const makeContractCallToken = async (options: ContractCallOptions) => {

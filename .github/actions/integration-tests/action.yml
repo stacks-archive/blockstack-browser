@@ -17,4 +17,4 @@ runs:
       run: |
         yarn serve:test &
         cd packages/app &&
-        yarn test:integration
+        xvfb-run --auto-servernum -- yarn test:integration

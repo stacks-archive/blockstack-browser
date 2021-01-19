@@ -1,7 +1,14 @@
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
-import { FinishedTxPayload, shouldUsePopup } from '@stacks/connect';
+import { FinishedTxPayload } from '@stacks/connect';
 import { isValidUrl } from './validate-url';
+import { getTab, deleteTabForRequest, StorageKey } from '@extension/storage';
+import {
+  AuthenticationResponseMessage,
+  MESSAGE_SOURCE,
+  Methods,
+  TransactionResponseMessage,
+} from '@extension/message-types';
 
 export const getAuthRequestParam = () => {
   const { hash } = document.location;
@@ -35,115 +42,62 @@ interface FinalizeAuthParams {
 /**
  * Call this function at the end of onboarding.
  *
- * It works by waiting for a cross-origin message from the origin app. It has to wait
- * for this message, because that origin created the popup originally, which is why it's allowed
- * to make the cross-origin message. Once we get that message, we are allowed to send a
- * message back to that origin.
- *
- * Using cross-origin messaging allows for a better UX, because the origin app can receive a callback
- * when authentication is done.
- *
- * If the cross-origin messaging fails for any reason, just fall back to the usual redirect method,
- * but using a new tab.
+ * We fetch the ID of the tab that originated this request from a data store.
+ * Then, we send a message back to that tab, which is handled by the content script
+ * of the extension.
  *
  */
-export const finalizeAuthResponse = ({
+export const finalizeAuthResponse = async ({
   decodedAuthRequest,
   authRequest,
   authResponse,
 }: FinalizeAuthParams) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
   if (!isValidUrl(dangerousUri)) {
-    throw new Error('Cannot proceed auth with malformed url');
+    throw new Error('Cannot proceed with malicious url');
   }
-  const redirect = `${dangerousUri}?authResponse=${authResponse}`;
-  if (!shouldUsePopup()) {
-    document.location.href = redirect;
-    return;
+  try {
+    const tabId = await getTab(StorageKey.authenticationRequests, authRequest);
+    const responseMessage: AuthenticationResponseMessage = {
+      source: MESSAGE_SOURCE,
+      payload: {
+        authenticationRequest: authRequest,
+        authenticationResponse: authResponse,
+      },
+      method: Methods.authenticationResponse,
+    };
+    chrome.tabs.sendMessage(tabId, responseMessage);
+    await deleteTabForRequest(StorageKey.authenticationRequests, authRequest);
+    window.close();
+  } catch (error) {
+    console.debug('Failed to get Tab ID for authentication request:', authRequest);
+    throw new Error(
+      'Your transaction was broadcasted, but we lost communication with the app you started with.'
+    );
   }
-  let didSendMessageBack = false;
-  setTimeout(() => {
-    if (!didSendMessageBack) {
-      const { client } = decodedAuthRequest;
-      if (client === 'ios' || client === 'android') {
-        document.location.href = redirect;
-      } else {
-        window.open(redirect);
-      }
-    }
+};
+
+export const finalizeTxSignature = async (requestPayload: string, data: FinishedTxPayload) => {
+  console.log(requestPayload, data);
+  try {
+    const tabId = await getTab(StorageKey.transactionRequests, requestPayload);
+    const responseMessage: TransactionResponseMessage = {
+      source: MESSAGE_SOURCE,
+      method: Methods.transactionResponse,
+      payload: {
+        transactionRequest: requestPayload,
+        transactionResponse: data,
+      },
+    };
+    chrome.tabs.sendMessage(tabId, responseMessage);
+    await deleteTabForRequest(StorageKey.transactionRequests, requestPayload);
     window.close();
-  }, 500);
-  window.addEventListener('message', event => {
-    if (authRequest && event.data.authRequest === authRequest) {
-      const source = getEventSourceWindow(event);
-      if (source) {
-        source.postMessage(
-          {
-            authRequest,
-            authResponse,
-            source: 'blockstack-app',
-          },
-          event.origin
-        );
-        didSendMessageBack = true;
-      }
-    }
-  });
-  return;
-};
-
-export const finalizeTxSignature = (data: FinishedTxPayload) => {
-  window.addEventListener('message', event => {
-    const source = getEventSourceWindow(event);
-    if (source) {
-      source.postMessage(
-        {
-          ...data,
-          source: 'blockstack-app',
-        },
-        event.origin
-      );
-    }
-    window.close();
-  });
-};
-
-export const openPopup = (actionsUrl: string) => {
-  // window.open(actionsUrl, 'Blockstack', 'scrollbars=no,status=no,menubar=no,width=300px,height=200px,left=0,top=0')
-  const height = 584;
-  const width = 440;
-  // width=440,height=584
-  popupCenter(actionsUrl, 'Blockstack', width, height);
-};
-
-// open a popup, centered on the screen, with logic to handle dual-monitor setups
-export const popupCenter = (url: string, title: string, w: number, h: number) => {
-  const dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
-  const dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
-
-  const width = window.innerWidth
-    ? window.innerWidth
-    : document.documentElement.clientWidth
-    ? document.documentElement.clientWidth
-    : screen.width;
-  const height = window.innerHeight
-    ? window.innerHeight
-    : document.documentElement.clientHeight
-    ? document.documentElement.clientHeight
-    : screen.height;
-
-  const systemZoom = width / window.screen.availWidth;
-  const left = (width - w) / 2 / systemZoom + dualScreenLeft;
-  const top = (height - h) / 2 / systemZoom + dualScreenTop;
-  const newWindow = window.open(
-    url,
-    title,
-    // 'scrollbars=no, width=' + w / systemZoom + ', height=' + h / systemZoom + ', top=' + top + ', left=' + left
-    `scrollbars=no, width=${w / systemZoom}, height=${h / systemZoom}, top=${top}, left=${left}`
-  );
-
-  // Puts focus on the newWindow
-  if (newWindow && window.focus) newWindow.focus();
+  } catch (error) {
+    console.debug('Failed to get Tab ID for transaction request:', requestPayload);
+    throw new Error(
+      'Your transaction was broadcasted, but we lost communication with the app you started with.'
+    );
+  }
 };
 
 export const getRandomWord = () => {

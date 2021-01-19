@@ -27,7 +27,7 @@
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {
-    "tsdx": "^0.12.3",
+    "tsdx": "^0.14.1",
     "tslib": "^1.10.0"
   },
   "files": [

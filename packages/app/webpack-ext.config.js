@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const baseWebpack = require('./webpack.config');
 
 // Basically, disable any code splitting stuff

@@ -1,9 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../../../connect/src/types.d.ts" />
-
 import { Component, h, Prop, Event, EventEmitter, State } from '@stencil/core';
 import { CloseIcon } from './assets/close-icon';
-import { AuthOptions } from '@stacks/connect/auth';
+import type { AuthOptions } from '@stacks/connect/types/auth';
 import { getBrowser } from './extension-util';
 import { StacksIcon } from './assets/stacks-icon';
 

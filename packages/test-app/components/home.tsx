@@ -23,7 +23,7 @@ const Container: React.FC<BoxProps> = ({ children, ...props }) => {
 
 export const Home: React.FC = () => {
   const state = useContext(AppContext);
-  const [tab, setTab] = useState<Tabs>('status');
+  const [tab, setTab] = useState<Tabs>('debug');
   const faucet = useFaucet();
 
   const Page: React.FC = () => {
@@ -41,14 +41,14 @@ export const Home: React.FC = () => {
             ) : null}
           </Box>
           <Flex>
+            <Tab active={tab === 'debug'}>
+              <Text onClick={() => setTab('debug')}>Dubugger</Text>
+            </Tab>
             <Tab active={tab === 'status'}>
               <Text onClick={() => setTab('status')}>Status smart contract</Text>
             </Tab>
             <Tab active={tab === 'counter'}>
               <Text onClick={() => setTab('counter')}>Counter smart contract</Text>
-            </Tab>
-            <Tab active={tab === 'debug'}>
-              <Text onClick={() => setTab('debug')}>Dubugger</Text>
             </Tab>
           </Flex>
         </Container>

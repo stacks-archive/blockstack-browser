@@ -10,7 +10,8 @@
   },
   "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src 'self'; frame-src 'none';",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "manifest_version": 2,
   "background": {

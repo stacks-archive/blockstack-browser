@@ -1,4 +1,5 @@
 import { AppConfig, UserSession } from '@stacks/auth';
+import type { FinishedData, AuthOptions } from './types/auth';
 import { popupCenter, setupListener } from './popup';
 import { version } from '../package.json';
 import { getStacksProvider } from './utils';
@@ -7,42 +8,6 @@ export const defaultAuthURL = 'https://app.blockstack.org';
 
 if (typeof window !== 'undefined') {
   (window as any).__CONNECT_VERSION__ = version;
-}
-
-export interface FinishedData {
-  authResponse: string;
-  userSession: UserSession;
-}
-
-export interface AuthOptions {
-  /** The URL you want the user to be redirected to after authentication. */
-  redirectTo?: string;
-  manifestPath?: string;
-  /** @deprecated use `onFinish` */
-  finished?: (payload: FinishedData) => void;
-  /**
-   * This callback is fired after authentication is finished.
-   * The callback is called with a single object argument, with two keys:
-   * `userSession`: a UserSession object with `userData` included
-   * `authResponse`: the raw `authResponse` string that is returned from authentication
-   * */
-  onFinish?: (payload: FinishedData) => void;
-  /** This callback is fired if the user exits before finishing */
-  onCancel?: () => void;
-  /**
-   * @deprecated Authentication is no longer supported through a hosted
-   * version. Users must install an extension.
-   */
-  authOrigin?: string;
-  /** If `sendToSignIn` is `true`, then the user will be sent through the sign in flow. */
-  sendToSignIn?: boolean;
-  userSession?: UserSession;
-  appDetails: {
-    /** A human-readable name for your application */
-    name: string;
-    /** A full URL that resolves to an image icon for your application */
-    icon: string;
-  };
 }
 
 export const isMobile = () => {
@@ -74,15 +39,53 @@ export const getOrCreateUserSession = (userSession?: UserSession): UserSession =
   return userSession;
 };
 
-export const authenticate = async (authOptions: AuthOptions) => {
+export const authenticate = (authOptions: AuthOptions) => {
   const provider = getStacksProvider();
-
-  const extensionUrl = await provider?.getURL();
-  if (!extensionUrl) {
+  if (!provider) {
     throw new Error('Unable to authenticate without Stacks Wallet extension');
   }
 
-  authenticateWithExtensionUrl({ extensionUrl, authOptions });
+  const {
+    redirectTo = '/',
+    manifestPath,
+    finished,
+    onFinish,
+    onCancel,
+    sendToSignIn = false,
+    userSession: _userSession,
+    appDetails,
+  } = authOptions;
+  const userSession = getOrCreateUserSession(_userSession);
+  if (userSession.isUserSignedIn()) {
+    userSession.signUserOut();
+  }
+  const transitKey = userSession.generateAndStoreTransitKey();
+  const authRequest = userSession.makeAuthRequest(
+    transitKey,
+    `${document.location.origin}${redirectTo}`,
+    `${document.location.origin}${manifestPath}`,
+    userSession.appConfig.scopes,
+    undefined,
+    undefined,
+    {
+      sendToSignIn,
+      appDetails,
+      connectVersion: version,
+    }
+  );
+
+  try {
+    void provider.authenticationRequest(authRequest).then(async authResponse => {
+      await userSession.handlePendingSignIn(authResponse);
+      const success = onFinish || finished;
+      success?.({
+        authResponse,
+        userSession,
+      });
+    });
+  } catch (error) {
+    onCancel?.(error);
+  }
 };
 
 export function authenticateWithExtensionUrl({

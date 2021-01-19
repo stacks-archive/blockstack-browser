@@ -1,21 +1,13 @@
-export { Browser } from 'playwright-core';
+import { chromium, ChromiumBrowserContext } from 'playwright';
 import { Page } from 'playwright-core';
-import { BrowserType, WebKitBrowser } from 'playwright-core/types/types';
-import { devices, chromium } from 'playwright';
+import { join } from 'path';
+import { mkdtemp } from 'fs';
+import { tmpdir } from 'os';
+import { promisify } from 'util';
+import { setupMocks } from './mocks';
+import { DemoPage } from './page-objects/demo.page';
 
-type Device = typeof devices['iPhone 11 Pro'];
-
-export const environments: [BrowserType<WebKitBrowser>, Device | undefined][] = [
-  [chromium, undefined],
-];
-
-if (process.env.CI) {
-  // environments.push([webkit, undefined]);
-  // environments.push([webkit, devices['iPhone 11 Pro']]);
-  // environments.push([chromium, devices['Pixel 2']]);
-  // Playwright has issues with Firefox and multi-page
-  // environments.push([firefox, undefined]);
-}
+const makeTmpDir = promisify(mkdtemp);
 
 export const SECRET_KEY =
   'invite helmet save lion indicate chuckle world pride afford hard broom draft';
@@ -42,8 +34,68 @@ export const wait = async (ms: number) => {
   });
 };
 
+async function getBackgroundPage(context: ChromiumBrowserContext) {
+  const existing = context.backgroundPages();
+  if (existing.length) return existing[0];
+  const page = await context.waitForEvent('backgroundpage');
+  return page;
+}
+
+export async function setupBrowser(verbose?: boolean) {
+  const extPath = join(__dirname, '../../dist');
+  const launchArgs: string[] = [
+    `--disable-extensions-except=${extPath}`,
+    `--load-extensions=${extPath}`,
+    `--no-sandbox`,
+  ];
+  const tmpDir = await makeTmpDir(join(tmpdir(), 'wallet-data-'));
+  const context = (await chromium.launchPersistentContext(tmpDir, {
+    args: launchArgs,
+    headless: false,
+  })) as ChromiumBrowserContext;
+  const backgroundPage = await getBackgroundPage(context);
+  backgroundPage.on('pageerror', event => {
+    console.error('Error in background script of extension.');
+    console.error(event);
+  });
+  const backgroundPageLogs: string[] = [];
+  backgroundPage.on('console', e => {
+    backgroundPageLogs.push(e.text());
+    if (verbose) {
+      console.log('Background console.log:', e.text());
+    }
+  });
+  if (process.env.CI) {
+    console.log('[DEBUG]: Launched playwright browser');
+  }
+  await setupMocks(context);
+  const demoPageConsoleLogs: string[] = [];
+  const demoPage = await DemoPage.init(context);
+  demoPage.page.on('pageerror', event => {
+    if (verbose) {
+      console.log('Demo page error:', event.message);
+    }
+  });
+  demoPage.page.on('console', event => {
+    if (verbose) {
+      console.log('Test app console.log', event.text());
+    }
+    demoPageConsoleLogs.push(event.text());
+  });
+  return {
+    demoPageConsoleLogs,
+    demoPage,
+    backgroundPage,
+    context,
+  };
+}
+
+type Await<T> = T extends PromiseLike<infer U> ? U : T;
+
+export type BrowserDriver = Await<ReturnType<typeof setupBrowser>>;
+
 export const debug = async (page: Page) => {
-  // this.setTimeout(345600000);
+  jest.setTimeout(345600000);
   // Run a debugger (in case Playwright has been launched with `{ devtools: true }`)
   await page.evaluate(() => {
     // eslint-disable-next-line no-debugger

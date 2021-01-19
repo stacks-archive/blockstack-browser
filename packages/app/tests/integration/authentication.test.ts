@@ -1,7 +1,5 @@
 import { validateMnemonic, wordlists } from 'bip39';
-import { BrowserContext } from 'playwright-core';
-import { randomString, Browser, environments, SECRET_KEY } from './utils';
-import { setupMocks } from './mocks';
+import { randomString, SECRET_KEY, setupBrowser, BrowserDriver } from './utils';
 import { DemoPage } from './page-objects/demo.page';
 import { WalletPage } from './page-objects/wallet.page';
 import { USERNAMES_ENABLED } from '@common/constants';
@@ -25,182 +23,151 @@ const getRandomWord = () => {
 
 jest.retryTimes(process.env.CI ? 2 : 0);
 jest.setTimeout(20_000);
-environments.forEach(([browserType, deviceType]) => {
-  const deviceLabel = deviceType
-    ? ` - ${deviceType.viewport.height}x${deviceType.viewport.width}`
-    : '';
-  describe(`Authentication integration tests - ${browserType.name()}${deviceLabel}`, () => {
-    let browser: Browser;
-    let context: BrowserContext;
-    let demoPage: DemoPage;
-    let consoleLogs: string[];
+describe(`Authentication integration tests`, () => {
+  let browser: BrowserDriver;
 
-    beforeAll(async () => {
-      const launchArgs: string[] = [];
-      if (browserType.name() === 'chromium') {
-        launchArgs.push('--no-sandbox');
-      }
-      browser = await browserType.launch({
-        args: launchArgs,
-      });
-      console.log('[DEBUG]: Launched puppeteer browser');
-    });
+  beforeEach(async () => {
+    browser = await setupBrowser();
+  }, 10000);
 
-    beforeEach(async () => {
-      console.log('[DEBUG]: Starting new browser context.');
-      if (deviceType) {
-        context = await browser.newContext({
-          viewport: deviceType.viewport,
-          userAgent: deviceType.userAgent,
-        });
-      } else {
-        context = await browser.newContext();
-      }
-      await setupMocks(context);
-      consoleLogs = [];
-      demoPage = await DemoPage.init(context);
-      demoPage.page.on('console', event => {
-        consoleLogs = consoleLogs.concat(event.text());
-      });
-    }, 10000);
+  afterEach(async () => {
+    try {
+      await browser.context.close();
+    } catch (error) {
+      // console.error(error);
+    }
+  });
 
-    afterAll(async () => {
-      try {
-        await browser.close();
-      } catch (error) {
-        // console.error(error);
-      }
-    });
+  it('creating an account successfully', async () => {
+    await browser.demoPage.openConnect();
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignUp();
+    await auth.enterPassword();
 
-    it('creating an account successfully', async () => {
-      await demoPage.openConnect();
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignUp();
-      await auth.enterPassword();
+    const username = `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`;
+    await auth.enterUsername(username);
 
-      const username = `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`;
-      await auth.enterUsername(username);
+    const authResponse = await browser.demoPage.waitForAuthResponse();
+    expect(authResponse).toBeTruthy();
 
-      const authResponse = await demoPage.waitForAuthResponse(browser);
-      expect(authResponse).toBeTruthy();
+    const homePage = await WalletPage.init(browser);
+    const secretKey = await homePage.getSecretKey();
+    expect(secretKey.split(' ').length).toEqual(SEED_PHRASE_LENGTH);
+    expect(validateMnemonic(secretKey)).toBeTruthy();
+  });
 
-      const homePage = await WalletPage.init(context);
-      await homePage.enterPassword();
-      const secretKey = await homePage.getSecretKey();
-      expect(secretKey.split(' ').length).toEqual(SEED_PHRASE_LENGTH);
-      expect(validateMnemonic(secretKey)).toBeTruthy();
-    });
-
-    it('creating an account - negative scenarious', async () => {
-      if (!USERNAMES_ENABLED) {
+  it('creating an account - negative scenarious', async () => {
+    if (!USERNAMES_ENABLED) {
+      if (process.env.CI) {
         console.log(
           'Skipping username validation tests, because subdomain registration is disabled.'
         );
-        return;
       }
-      await demoPage.goToPage();
-      await demoPage.openConnect();
-      await demoPage.clickConnectGetStarted();
+      return;
+    }
+    await browser.demoPage.goToPage();
+    await browser.demoPage.openConnect();
+    await browser.demoPage.clickConnectGetStarted();
 
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignUp();
-      await auth.enterPassword();
-      await auth.page.waitForSelector(auth.usernameInput);
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignUp();
+    await auth.enterPassword();
+    await auth.page.waitForSelector(auth.usernameInput);
 
-      //TEST1 less than 7
-      await auth.enterUsername(randomString(7));
-      await auth.page.waitForSelector(auth.eightCharactersErrMsg);
+    //TEST1 less than 7
+    await auth.enterUsername(randomString(7));
+    await auth.page.waitForSelector(auth.eightCharactersErrMsg);
 
-      //TEST2 more than 37
-      await auth.enterUsername(randomString(38));
-      await auth.page.waitForSelector(auth.eightCharactersErrMsg);
+    //TEST2 more than 37
+    await auth.enterUsername(randomString(38));
+    await auth.page.waitForSelector(auth.eightCharactersErrMsg);
 
-      //TEST3 specal symbols
-      await auth.enterUsername('!@#$%^&*()-=+/?.>,<`~');
-      await auth.page.waitForSelector(auth.lowerCharactersErrMsg);
+    //TEST3 specal symbols
+    await auth.enterUsername('!@#$%^&*()-=+/?.>,<`~');
+    await auth.page.waitForSelector(auth.lowerCharactersErrMsg);
 
-      //TEST4 UPPERCASE
-      await auth.enterUsername(
-        `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`.toUpperCase()
-      );
-      await auth.page.waitForSelector(auth.lowerCharactersErrMsg);
+    //TEST4 UPPERCASE
+    await auth.enterUsername(
+      `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`.toUpperCase()
+    );
+    await auth.page.waitForSelector(auth.lowerCharactersErrMsg);
 
-      //TEST5 with spaces
-      await auth.enterUsername(
-        `${getRandomWord()} ${getRandomWord()} ${getRandomWord()}_${getRandomWord()}`
-      );
-      await auth.page.waitForSelector(auth.lowerCharactersErrMsg);
+    //TEST5 with spaces
+    await auth.enterUsername(
+      `${getRandomWord()} ${getRandomWord()} ${getRandomWord()}_${getRandomWord()}`
+    );
+    await auth.page.waitForSelector(auth.lowerCharactersErrMsg);
 
-      //TEST6 Name already taken
-      await auth.enterUsername('test1234');
-      await auth.page.waitForSelector('text="This username is not available"');
-    });
+    //TEST6 Name already taken
+    await auth.enterUsername('test1234');
+    await auth.page.waitForSelector('text="This username is not available"');
+  });
 
-    it('Sign in with existing key', async () => {
-      //TEST #10,11
-      await demoPage.openConnect();
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignIn();
-      await auth.loginWithPreviousSecretKey(SECRET_KEY);
-      await auth.chooseAccount(USERNAME);
-      const authResponse = await demoPage.waitForAuthResponse(browser);
-      expect(authResponse).toBeTruthy();
-    });
+  it('Sign in with existing key', async () => {
+    //TEST #10,11
+    await browser.demoPage.openConnect();
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignIn();
+    await auth.loginWithPreviousSecretKey(SECRET_KEY);
+    await auth.chooseAccount(USERNAME);
+    const authResponse = await browser.demoPage.waitForAuthResponse();
+    expect(authResponse).toBeTruthy();
+  });
 
-    it('Sign in with the wrong key', async () => {
-      //TEST #12
-      await demoPage.openConnect();
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignIn();
-      await auth.enterSecretKey(WRONG_SECRET_KEY);
-      const error = await auth.page.waitForSelector(auth.signInKeyError);
-      expect(error).toBeTruthy();
-      expect(await error.innerText()).toEqual("The Secret Key you've entered is invalid");
-    });
+  it('Sign in with the wrong key', async () => {
+    //TEST #12
+    await browser.demoPage.openConnect();
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignIn();
+    await auth.enterSecretKey(WRONG_SECRET_KEY);
+    const error = await auth.page.waitForSelector(auth.signInKeyError);
+    expect(error).toBeTruthy();
+    expect(await error.innerText()).toEqual("The Secret Key you've entered is invalid");
+  });
 
-    it('Sign in with the wrong magic recovery code', async () => {
-      //TEST #13
-      await demoPage.openConnect();
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignIn();
-      await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
-      await auth.decryptRecoveryCode(WRONG_PASSWORD);
-      await auth.page.waitForSelector('text="Incorrect password"');
-    });
+  it('Sign in with the wrong magic recovery code', async () => {
+    //TEST #13
+    await browser.demoPage.openConnect();
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignIn();
+    await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
+    await auth.decryptRecoveryCode(WRONG_PASSWORD);
+    await auth.page.waitForSelector('text="Incorrect password"');
+  });
 
-    it('Sign in with the correct magic recovery code', async () => {
-      //TEST #13
-      await demoPage.openConnect();
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignIn();
-      await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
-      await auth.decryptRecoveryCode(CORRECT_PASSWORD);
-      const authResponse = await demoPage.waitForAuthResponse(browser);
-      expect(authResponse).toBeTruthy();
-    });
+  it('Sign in with the correct magic recovery code', async () => {
+    //TEST #13
+    await browser.demoPage.openConnect();
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignIn();
+    await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
+    await auth.decryptRecoveryCode(CORRECT_PASSWORD);
+    const authResponse = await browser.demoPage.waitForAuthResponse();
+    expect(authResponse).toBeTruthy();
+  });
 
-    it('generates the correct app private key', async () => {
-      await demoPage.openConnect();
-      const auth = await WalletPage.getAuthPopup(context);
-      await auth.clickSignIn();
-      const secretKey = generateSecretKey();
-      const wallet = await generateWallet({ secretKey, password: 'password' });
-      await auth.loginWithPreviousSecretKey(secretKey);
-      const username = `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`;
-      await auth.enterUsername(username);
+  it('generates the correct app private key', async () => {
+    await browser.demoPage.openConnect();
+    const auth = await WalletPage.getAuthPopup(browser);
+    await auth.clickSignIn();
+    const secretKey = generateSecretKey();
+    const wallet = await generateWallet({ secretKey, password: 'password' });
+    await auth.loginWithPreviousSecretKey(secretKey);
+    const username = `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`;
+    await auth.enterUsername(username);
 
-      const authResponse = await demoPage.waitForAuthResponse(browser);
-      expect(authResponse).toBeTruthy();
+    const authResponse = await browser.demoPage.waitForAuthResponse();
+    expect(authResponse).toBeTruthy();
 
-      const appPrivateKeyEl = await demoPage.page.$('#app-private-key');
-      const appPrivateKey = (await demoPage.page.evaluate(
-        el => el?.getAttribute('value'),
-        appPrivateKeyEl
-      )) as string;
-      expect(appPrivateKey).toBeTruthy();
-      expect(appPrivateKey).toEqual(
-        getAppPrivateKey({ account: wallet.accounts[0], appDomain: DemoPage.url })
-      );
-    });
+    const appPrivateKeyEl = await browser.demoPage.page.$('#app-private-key');
+    const appPrivateKey = (await browser.demoPage.page.evaluate(
+      el => el?.getAttribute('value'),
+      appPrivateKeyEl
+    )) as string;
+    expect(appPrivateKey).toBeTruthy();
+    expect(appPrivateKey).toEqual(
+      getAppPrivateKey({ account: wallet.accounts[0], appDomain: DemoPage.url })
+    );
   });
 });
+// });

@@ -1,4 +1,5 @@
-import { authenticate, AuthOptions, FinishedData } from './auth';
+import { authenticate } from './auth';
+import type { AuthOptions, FinishedData } from './types/auth';
 import { defineCustomElements } from '@stacks/connect-ui';
 import { getStacksProvider } from './utils';
 

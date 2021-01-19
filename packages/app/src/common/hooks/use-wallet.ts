@@ -201,10 +201,6 @@ export const useWallet = () => {
           name: appName as string,
         },
       });
-      const { username } = account;
-      if (NODE_ENV === 'test') {
-        account.username = '';
-      }
       const authResponse = await makeAuthResponse({
         gaiaHubUrl: gaiaUrl,
         appDomain: appURL.origin,
@@ -212,9 +208,8 @@ export const useWallet = () => {
         scopes: decodedAuthRequest.scopes,
         account,
       });
-      account.username = username;
       set(currentAccountIndexStore, accountIndex);
-      finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
+      await finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
     },
     [decodedAuthRequest, authRequest, appName, appIcon]
   );

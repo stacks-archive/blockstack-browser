@@ -1,6 +1,6 @@
 import { ScreenPaths } from '@store/onboarding/types';
-import { Page, BrowserContext } from 'playwright-core';
-import { createTestSelector, wait } from '../utils';
+import { Page } from 'playwright-core';
+import { createTestSelector, wait, BrowserDriver } from '../utils';
 import { USERNAMES_ENABLED } from '@common/constants';
 
 export class WalletPage {
@@ -29,10 +29,12 @@ export class WalletPage {
     this.page = page;
   }
 
-  static async getAuthPopup(context: BrowserContext) {
-    const page = await this.recursiveGetAuthPopup(context);
+  static async getAuthPopup(browser: BrowserDriver) {
+    const page = await this.recursiveGetAuthPopup(browser);
     if (!page) {
-      await context.pages()[0].screenshot({ path: `tests/screenshots/no-auth-page-found.png` });
+      await browser.context
+        .pages()[0]
+        .screenshot({ path: `tests/screenshots/no-auth-page-found.png` });
       throw new Error('Unable to get auth page popup');
     }
     const installPage = new this(page);
@@ -42,22 +44,30 @@ export class WalletPage {
   /**
    * Due to flakiness of getting the pop-up page, this has some 'retry' logic
    */
-  static async recursiveGetAuthPopup(context: BrowserContext, attempt = 1): Promise<Page> {
-    const pages = context.pages();
-    const page = pages.find(p => p.url().includes(this.url));
+  static async recursiveGetAuthPopup(browser: BrowserDriver, attempt = 1): Promise<Page> {
+    const pages = browser.context.pages();
+    const page = pages.find(p => p.url().startsWith('chrome-extension://'));
     if (!page) {
       if (attempt > 3) {
         throw new Error('Unable to get auth page popup');
       }
       await wait(50);
-      return this.recursiveGetAuthPopup(context, attempt + 1);
+      return this.recursiveGetAuthPopup(browser, attempt + 1);
     }
     return page;
   }
 
-  static async init(context: BrowserContext, path?: ScreenPaths) {
-    const page = await context.newPage();
-    await page.goto(`${this.url}${path || ''}`);
+  static async init(browser: BrowserDriver, path?: ScreenPaths) {
+    const background = browser.context.backgroundPages()[0];
+    await background.evaluate(`openOptionsPage("${path || ''}")`);
+    await wait(500);
+    const page = browser.context.pages().find(p => {
+      const url = p.url();
+      return url.startsWith('chrome-extension://') && url.endsWith(`index.html#${path || ''}`);
+    });
+    if (!page) {
+      throw 'Could not find Wallet page.';
+    }
     return new this(page);
   }
 

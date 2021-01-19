@@ -30,6 +30,7 @@
       "@screen": ["components/screen/index"],
       "@stacks/connect": ["../../connect/src"],
       "@stacks/rpc-client": ["../../rpc-client/src"],
+      "@extension/*": ["extension/*"],
       "@pages/*": ["pages/*"]
     },
     "baseUrl": "src",

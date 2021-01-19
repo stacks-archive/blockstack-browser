@@ -6,6 +6,7 @@ import {
   signedTransactionStore,
   pendingTransactionFunctionSelector,
   transactionBroadcastErrorStore,
+  requestTokenStore,
 } from '@store/recoil/transaction';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { currentNetworkStore } from '@store/recoil/networks';
@@ -25,6 +26,7 @@ export const useTxState = () => {
   const doSubmitPendingTransaction = useRecoilCallback(
     ({ snapshot, set }) => async () => {
       const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
+      const requestPayload = await snapshot.getPromise(requestTokenStore);
       if (!pendingTransaction) {
         set(transactionBroadcastErrorStore, 'No pending transaction found.');
         return;
@@ -38,7 +40,7 @@ export const useTxState = () => {
           nodeUrl: currentNetwork.url,
         });
         await doSetLatestNonce(tx);
-        finalizeTxSignature(result);
+        await finalizeTxSignature(requestPayload, result);
       } catch (error) {
         set(transactionBroadcastErrorStore, error.message);
       }

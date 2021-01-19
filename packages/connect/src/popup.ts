@@ -11,7 +11,7 @@ interface PopupOptions {
 // does not leave slightly blurry underlap
 const defaultWidth = 442;
 const defaultHeight = 580;
-const defaultTitle = 'Continue with Secret Key';
+const defaultTitle = 'Stacks Wallet';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 export const popupCenter = ({
@@ -19,7 +19,7 @@ export const popupCenter = ({
   title = defaultTitle,
   w = defaultWidth,
   h = defaultHeight,
-  skipPopupFallback,
+  skipPopupFallback = true,
 }: PopupOptions) => {
   const win = window;
   // Safari reports an incorrect browser height
@@ -27,8 +27,9 @@ export const popupCenter = ({
 
   const browserViewport = {
     width: win.innerWidth,
-    height: win.innerHeight,
+    height: win.outerHeight,
   };
+  console.log('browser viewport', browserViewport);
   const browserToolbarHeight = win.outerHeight - win.innerHeight;
   const browserSidepanelWidth = win.outerWidth - win.innerWidth;
 
@@ -42,6 +43,8 @@ export const popupCenter = ({
     x: removeUnusableSpaceX(win.screenX),
     y: removeUnusableSpaceY(win.screenY),
   };
+
+  console.log('browserPosition', browserPosition);
 
   const left = browserPosition.x + browserSidepanelWidth + (browserViewport.width - w) / 2;
   const top =
@@ -68,6 +71,7 @@ export const popupCenter = ({
   }
 
   // no popup options, just open the auth page
+
   if (skipPopupFallback) {
     return newWindow;
   }
@@ -96,7 +100,9 @@ export const setupListener = <T>({
   // Send a message to the authenticator popup at a consistent interval. This allows
   // the authenticator to 'respond'.
   const pingInterval = 250;
-  const interval = setInterval(() => {
+  let interval: number | undefined = undefined;
+  const sendPing = () => {
+    console.log('sending ping', popup?.origin);
     if (popup) {
       try {
         popup.postMessage(
@@ -120,10 +126,14 @@ export const setupListener = <T>({
       onCancel && onCancel();
       clearInterval(interval);
     }
-  }, pingInterval);
+  };
+  interval = window.setInterval(sendPing, pingInterval);
+  // sendPing();
 
   const receiveMessage = async (event: MessageEvent) => {
+    console.log('received a message');
     if (event.data.method === 'pong') {
+      console.log('got pong!');
       lastPong = new Date().getTime();
       return;
     }

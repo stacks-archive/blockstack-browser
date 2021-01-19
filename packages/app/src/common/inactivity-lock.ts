@@ -2,8 +2,8 @@ import { lastSeenStore, encryptedSecretKeyStore, hasSetPasswordStore } from '@st
 import { localStorageKey, ATOM_LOCALSTORAGE_PREFIX } from '@store/recoil';
 
 const lockoutLog = (msg: string) => {
-  if (process.env.NODE_ENV !== 'test') {
-    console.log(`[LOCKOUT]: ${msg}`);
+  if (typeof NODE_ENV !== 'undefined' && NODE_ENV !== 'test') {
+    console.debug(`[LOCKOUT]: ${msg}`);
   }
 };
 

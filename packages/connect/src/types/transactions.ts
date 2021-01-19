@@ -1,5 +1,5 @@
 import { UserSession } from '@stacks/auth';
-import { AuthOptions } from '../auth';
+import type { AuthOptions } from '../types/auth';
 import {
   PostConditionMode,
   PostCondition,

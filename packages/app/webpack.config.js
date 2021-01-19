@@ -50,16 +50,17 @@ const branch = getBranch();
 
 const sourceRootPath = path.join(__dirname, 'src');
 const distRootPath = path.join(__dirname, 'dist');
-const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+const nodeEnv = process.env.NODE_ENV || 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
-const isDevelopment = nodeEnv === 'development';
+const isDevelopment = nodeEnv === 'development' || nodeEnv === 'test';
 const analyzeBundle = process.env.ANALYZE === 'true';
 const segmentKey = process.env.SEGMENT_KEY || getSegmentKey();
 const statsURL = process.env.STATS_URL || 'https://stats.blockstack.xyz';
 const extEnv = process.env.EXT_ENV || 'web';
 
-const hmtlProdOpts = !isDevelopment
-  ? {
+const hmtlProdOpts = isDevelopment
+  ? {}
+  : {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -72,15 +73,7 @@ const hmtlProdOpts = !isDevelopment
         minifyCSS: true,
         minifyURLs: true,
       },
-    }
-  : {};
-
-const getSourceMap = () => {
-  if (extEnv === 'web') {
-    return 'cheap-module-source-map';
-  }
-  return 'none';
-};
+    };
 
 const aliases =
   nodeEnv === 'development'
@@ -216,7 +209,7 @@ module.exports = {
     Buffer: true,
     BufferReader: true,
   },
-  devtool: getSourceMap(),
+  devtool: 'cheap-module-source-map',
   watch: false,
   plugins: [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
@@ -266,6 +259,7 @@ module.exports = {
       COMMIT_SHA: JSON.stringify(commit),
       BRANCH: JSON.stringify(branch),
       'process.env.USERNAMES_ENABLED': JSON.stringify(process.env.USERNAMES_ENABLED || 'false'),
+      'process.env.NODE_ENV': `'${nodeEnv}'`,
     }),
     isDevelopment &&
       extEnv === 'web' &&
@@ -275,17 +269,19 @@ module.exports = {
 
 if (process.env.EXT_ENV === 'watch') {
   module.exports.watch = true;
-  module.exports.plugins.push(
-    new ExtensionReloader({
-      port: 9128,
-      reloadPage: true,
-      entries: {
-        background: 'background',
-        options: 'index',
-        contentScript: ['message-bus'],
-      },
-    })
-  );
+  if (nodeEnv !== 'test') {
+    module.exports.plugins.push(
+      new ExtensionReloader({
+        port: 9128,
+        reloadPage: true,
+        entries: {
+          background: 'background',
+          options: 'index',
+          contentScript: ['message-bus'],
+        },
+      })
+    );
+  }
 }
 
 if (nodeEnv === 'production' || extEnv !== 'web') {
