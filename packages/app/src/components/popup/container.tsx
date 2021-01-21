@@ -87,12 +87,13 @@ const ModeBadge: React.FC<FlexProps> = props => {
 const Warning: React.FC = () => {
   return (
     <Flex
-      width="100vw"
+      width="100%"
       backgroundColor="rgba(249, 161, 77, 0.2)"
       textAlign="center"
       py="base"
       borderBottomWidth="2px"
       borderBottomColor={color('feedback-alert')}
+      data-test="warning-banner"
     >
       <Text display="block" width="100%" fontSize={['12px', 1]} fontWeight="500">
         Stacks Wallet for Web is in alpha and has not been audited yet
@@ -132,13 +133,13 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
     <>
       <Warning />
       <Flex
-        minHeight={'500px'}
-        minWidth={'440px'}
-        maxWidth="100vw"
+        minHeight={'min(600px, 100vh)'}
+        minWidth={'min(512px, 100vw)'}
         background="white"
         p="24px"
         flexWrap="wrap"
         flexDirection="column"
+        data-test="container-outer"
       >
         <SettingsPopover />
         <Flex width="100%" dir="row" display={['none', 'flex']}>

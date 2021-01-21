@@ -53,11 +53,11 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
       return (
         <PopupContainer hideActions title="Save your Secret Key">
           <Toast show={hasCopied} />
-          <Box mt="loose">
-            <Text fontSize={2} mb="base">
+          <Box mt={['base', 'base', 'loose']}>
+            <Text fontSize={[1, 1, 2]} mb="base">
               Before adding tokens to your account, save your Secret Key.
             </Text>
-            <Text fontSize={2}>
+            <Text fontSize={[1, 1, 2]}>
               Here’s your Secret Key: {words} words that prove it’s you when you want to use your
               wallet on a new device. Once lost it’s lost forever, so save it somewhere you won’t
               forget.
@@ -75,7 +75,6 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
               </Text>
             </Card>
           </Box>
-          <Box flexGrow={1} />
           <Box>
             <Button mb="base" width="100%" mode="secondary" onClick={onCopy}>
               Copy to clipboard
