@@ -8,7 +8,7 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { Asset, selectedAssetStore } from '@store/recoil/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';
-import { getPostConditionTitle } from '@common/stacks-utils';
+import { getPostConditionTitle, stacksValue } from '@common/stacks-utils';
 
 interface PostConditionBaseProps {
   title: string;
@@ -99,11 +99,11 @@ const pcIconChar = (pc: PostCondition) => {
 };
 
 const pcAmount = (pc: PostCondition) => {
-  if (
-    pc.conditionType === PostConditionType.Fungible ||
-    pc.conditionType === PostConditionType.STX
-  ) {
+  if (pc.conditionType === PostConditionType.Fungible) {
     return pc.amount.toString();
+  }
+  if (pc.conditionType === PostConditionType.STX) {
+    return stacksValue({ value: pc.amount.toString(), withTicker: false });
   }
   return '';
 };

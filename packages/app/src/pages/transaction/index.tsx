@@ -3,6 +3,8 @@ import { Box, Button, Flex, Text } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { useTxState } from '@common/hooks/use-tx-state';
+import { useFetchBalances } from '@common/hooks/use-account-info';
+import { useSetupTx } from '@common/hooks/use-setup-tx';
 import { stacksValue } from '@common/stacks-utils';
 import { ContractCallDetails } from '@components/transactions/contract-call-details';
 import { StxTransferDetails } from '@components/transactions/stx-transfer-details';
@@ -13,7 +15,6 @@ import { useRecoilValue } from 'recoil';
 import { TransactionTypes } from '@stacks/connect';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useWallet } from '@common/hooks/use-wallet';
-import { useFetchBalances } from '@common/hooks/use-account-info';
 import { TransactionError, TransactionErrorReason } from './transaction-error';
 import BigNumber from 'bignumber.js';
 
@@ -31,6 +32,7 @@ export const TxLoading: React.FC = () => {
 };
 
 export const TransactionPage: React.FC = () => {
+  useSetupTx();
   const {
     pendingTransaction,
     signedTransaction,

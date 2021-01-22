@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { space, Box, Text, Button, ButtonGroup } from '@blockstack/ui';
 import { getAuthOrigin, stacksNetwork as network } from '@common/utils';
 import { demoTokenContract } from '@common/contracts';
+import { useSTXAddress } from '@common/use-stx-address';
 import { useConnect } from '@stacks/connect-react';
 import {
   uintCV,
@@ -11,11 +12,15 @@ import {
   stringUtf8CV,
   standardPrincipalCV,
   trueCV,
+  makeStandardSTXPostCondition,
+  FungibleConditionCode,
 } from '@stacks/transactions';
 import { ExplorerLink } from './explorer-link';
+import BN from 'bn.js';
 
 export const Debugger = () => {
   const { doContractCall, doSTXTransfer, doContractDeploy } = useConnect();
+  const address = useSTXAddress();
   const [txId, setTxId] = useState<string>('');
   const [txType, setTxType] = useState<string>('');
 
@@ -48,6 +53,13 @@ export const Debugger = () => {
       contractName: 'faker',
       functionName: 'rawr',
       functionArgs: args,
+      postConditions: [
+        makeStandardSTXPostCondition(
+          address || '',
+          FungibleConditionCode.LessEqual,
+          new BN('100', 10)
+        ),
+      ],
       finished: data => {
         console.log('finished faker!', data);
         console.log(data.stacksTransaction.auth.spendingCondition?.nonce.toNumber());
