@@ -316,6 +316,11 @@ class AuthPage extends React.Component {
             apps = profile.apps
           }
 
+          let appsMeta = {}
+          if (profile.hasOwnProperty('appsMeta')) {
+            appsMeta = profile.appsMeta
+          }
+
           if (storageConnected) {
             const hubUrl = this.props.api.gaiaHubUrl
             await getAppBucketUrl(hubUrl, appPrivateKey)
@@ -324,12 +329,22 @@ class AuthPage extends React.Component {
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
                 )
                 apps[appDomain] = appBucketUrl
+                const metaForDomain = {
+                  publicKey: getPublicKeyFromPrivate(appPrivateKey),
+                  storage: appBucketUrl
+                }
+                if (appsMeta.hasOwnProperty(appDomain)) {
+                  appsMeta[appDomain] = { ...appsMeta[appDomain], ...metaForDomain }
+                } else {
+                  appsMeta[appDomain] = { ...metaForDomain }
+                }
                 logger.debug(
                   `componentWillReceiveProps: new apps array ${JSON.stringify(
                     apps
                   )}`
                 )
                 profile.apps = apps
+                profile.appsMeta = appsMeta
                 const signedProfileTokenData = signProfileForUpload(
                   profile,
                   nextProps.identityKeypairs[identityIndex],
