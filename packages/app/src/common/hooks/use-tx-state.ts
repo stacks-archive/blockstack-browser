@@ -21,6 +21,8 @@ import {
 import { finishTransaction } from '@common/transaction-utils';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { finalizeTxSignature } from '@common/utils';
+import { currentAccountIndexStore, walletStore } from '@store/recoil/wallet';
+import { getStxAddress } from '@stacks/wallet-sdk';
 
 export const useTxState = () => {
   const location = useLocation();
@@ -84,9 +86,42 @@ export const useTxState = () => {
     []
   );
 
+  /**
+   * Apps can specify a `stxAddress` in a transaction request.
+   * If the user has a matching account, use that account by default.
+   */
+  const handleAccountSwitch = useRecoilCallback(
+    ({ snapshot, set }) => async () => {
+      const payload = await snapshot.getPromise(transactionPayloadStore);
+      console.log('payload', payload);
+      if (!payload?.stxAddress || !payload.network) return;
+      const wallet = await snapshot.getPromise(walletStore);
+      if (!wallet) return;
+      const transactionVersion = payload.network.version;
+      let foundIndex: number | undefined = undefined;
+      wallet.accounts.forEach((account, index) => {
+        const address = getStxAddress({ account, transactionVersion });
+        if (address === payload.stxAddress) {
+          foundIndex = index;
+        }
+      });
+      if (foundIndex !== undefined) {
+        console.log('switching to index', foundIndex);
+        set(currentAccountIndexStore, foundIndex);
+      } else {
+        console.warn(
+          'No account matches the STX address provided in transaction request:',
+          payload.stxAddress
+        );
+      }
+    },
+    []
+  );
+
   useEffect(() => {
     void handleNetworkSwitch();
-  }, [transactionPayload, handleNetworkSwitch]);
+    void handleAccountSwitch();
+  }, [transactionPayload, handleNetworkSwitch, handleAccountSwitch]);
 
   const doSubmitPendingTransaction = useRecoilCallback(
     ({ snapshot, set }) => async () => {

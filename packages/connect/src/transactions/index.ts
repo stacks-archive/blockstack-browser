@@ -14,31 +14,62 @@ import {
   TransactionTypes,
   FinishedTxPayload,
 } from './types';
-import { serializeCV } from '@stacks/transactions';
+import { ChainID, serializeCV } from '@stacks/transactions';
 import { getStacksProvider } from '../utils';
 import { deserializeTransaction, BufferReader } from '@stacks/transactions';
 import { StacksTestnet } from '@stacks/network';
 
 export * from './types';
 
-const getKeys = (_userSession?: UserSession) => {
+const getUserSession = (_userSession?: UserSession) => {
   let userSession = _userSession;
 
   if (!userSession) {
     const appConfig = new AppConfig(['store_write'], document.location.href);
     userSession = new UserSession({ appConfig });
   }
+  return userSession;
+};
 
+const getKeys = (_userSession?: UserSession) => {
+  const userSession = getUserSession(_userSession);
   const privateKey = userSession.loadUserData().appPrivateKey;
   const publicKey = SECP256K1Client.derivePublicKey(privateKey);
 
   return { privateKey, publicKey };
 };
 
+function getStxAddress(options: TransactionOptions) {
+  const { stxAddress, userSession, network } = options;
+
+  if (stxAddress) return stxAddress;
+  if (!userSession || !network) return undefined;
+  const stxAddresses = userSession?.loadUserData().profile?.stxAddress;
+  const chainIdToKey = {
+    [ChainID.Mainnet]: 'mainnet',
+    [ChainID.Testnet]: 'testnet',
+  };
+  const address: string | undefined = stxAddresses?.[chainIdToKey[network.chainId]];
+  return address;
+}
+
+function getDefaults(options: TransactionOptions) {
+  const network = options.network || new StacksTestnet();
+  const userSession = getUserSession(options.userSession);
+  const defaults: TransactionOptions = {
+    ...options,
+    network,
+    userSession,
+  };
+  return {
+    stxAddress: getStxAddress(defaults),
+    ...defaults,
+  };
+}
+
 const signPayload = async (payload: TransactionPayload, privateKey: string) => {
   const tokenSigner = new TokenSigner('ES256k', privateKey);
   return tokenSigner.signAsync({
-    network: new StacksTestnet(),
     ...payload,
   } as any);
 };
@@ -140,7 +171,10 @@ async function generateTokenAndOpenPopup<T extends TransactionOptions>(
   options: T,
   makeTokenFn: (options: T) => Promise<string>
 ) {
-  const token = await makeTokenFn(options);
+  const token = await makeTokenFn({
+    ...getDefaults(options),
+    ...options,
+  });
   return openTransactionPopup({ token, options });
 }
 
