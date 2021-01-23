@@ -36,7 +36,9 @@ export const localStorageEffect = <T>({
         if (transformer) {
           setSelf(transformer.deserialize(savedValue));
         } else {
-          setSelf(JSON.parse(savedValue));
+          window.requestAnimationFrame(() => {
+            setSelf(JSON.parse(savedValue));
+          });
         }
       } catch (error) {
         console.error(`Error when saving the recoil state ${key}.`, error);
