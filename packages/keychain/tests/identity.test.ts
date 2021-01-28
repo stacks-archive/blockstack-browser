@@ -59,7 +59,7 @@ test('adds to apps in profile if publish_data scope', async () => {
   const decoded = decodeToken(authResponse);
   const { payload } = decoded as Decoded;
   expect(payload.profile.apps['https://banter.pub']).not.toBeFalsy();
-  const profile = JSON.parse(fetchMock.mock.calls[7][1].body);
+  const profile = JSON.parse(fetchMock.mock.calls[5][1].body);
   const { apps, appsMeta } = profile[0].decodedToken.payload.claim;
   expect(apps[appDomain]).not.toBeFalsy();
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key);
@@ -134,7 +134,7 @@ describe('refresh', () => {
     fetchMock.once(JSON.stringify(nameInfoResponse));
     fetchMock.once(JSON.stringify(profileResponse));
 
-    await identity.refresh();
+    await identity.refresh({ fetchRemoteUsernames: true });
     expect(identity.defaultUsername).toEqual('myname.id');
     expect(identity.usernames).toEqual(['myname.id']);
     expect(identity.profile).toBeTruthy();
@@ -146,7 +146,7 @@ describe('refresh', () => {
     fetchMock.once(JSON.stringify({ names: ['myname.id', 'second.id'] }));
     fetchMock.once(JSON.stringify(profileResponse));
 
-    await identity.refresh();
+    await identity.refresh({ fetchRemoteUsernames: true });
     expect(identity.defaultUsername).toEqual('myname.id');
     expect(identity.usernames).toEqual(['myname.id', 'second.id']);
   });
@@ -157,7 +157,7 @@ describe('refresh', () => {
     fetchMock.once(JSON.stringify({ error: 'Invalid address' }));
     fetchMock.once(JSON.stringify(profileResponse));
 
-    await identity.refresh();
+    await identity.refresh({ fetchRemoteUsernames: true });
     expect(identity.defaultUsername).toEqual(undefined);
   });
 
@@ -167,7 +167,7 @@ describe('refresh', () => {
     fetchMock.once(JSON.stringify({ error: 'Invalid address' }));
     fetchMock.once(JSON.stringify(profileResponse));
 
-    await identity.refresh();
+    await identity.refresh({ fetchRemoteUsernames: true });
     expect(identity.profile).toBeTruthy();
     expect(identity.profile?.apps).toBeTruthy();
     expect(identity.profile?.name).toBeFalsy();

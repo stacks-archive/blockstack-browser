@@ -112,7 +112,7 @@ test('recursively makes identities', async () => {
     .once(JSON.stringify({ names: [] }))
     .once('', { status: 404 })
     .once(JSON.stringify(profileResponse));
-  const identities = await recursiveRestoreIdentities({ rootNode });
+  const identities = await recursiveRestoreIdentities({ rootNode, fetchRemoteUsernames: true });
   expect(identities[0].defaultUsername).toEqual('myname.id');
   expect(identities[1].defaultUsername).toEqual('myname2.id');
   expect(identities[2].defaultUsername).toEqual('myname3.id');

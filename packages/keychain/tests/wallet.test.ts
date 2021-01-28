@@ -38,7 +38,7 @@ describe('Restoring a wallet', () => {
       },
     ];
 
-    const wallet = await Wallet.restore(password, backupPhrase, ChainID.Mainnet);
+    const wallet = await Wallet.restore(password, backupPhrase, ChainID.Mainnet, false);
     expect(wallet.bitcoinPublicKeychain).toEqual(bitcoinPublicKeychain);
     expect(wallet.identityPublicKeychain).toEqual(identityPublicKeychain);
     expect(wallet.firstBitcoinAddress).toEqual(firstBitcoinAddress);
@@ -60,7 +60,7 @@ describe('Restoring a wallet', () => {
 
     const backupPhrase = plainTextBuffer.toString();
 
-    const restored = await Wallet.restore(password, backupPhrase, ChainID.Mainnet);
+    const restored = await Wallet.restore(password, backupPhrase, ChainID.Mainnet, false);
 
     expect(restored.identityPublicKeychain).toEqual(generated.identityPublicKeychain);
   });
@@ -264,7 +264,7 @@ test('restoreIdentities', async () => {
   );
   const seed = await mnemonicToSeed(plainTextBuffer);
   const rootNode = bip32.fromSeed(seed);
-  await wallet.restoreIdentities({ gaiaReadURL: DEFAULT_GAIA_HUB, rootNode });
+  await wallet.restoreIdentities({ gaiaReadURL: DEFAULT_GAIA_HUB, rootNode, fetchRemoteUsernames: false });
   expect(wallet.identities.length).toEqual(3);
   expect(wallet.identities[0].defaultUsername).toEqual('hankstoever.id');
   expect(wallet.identities[1].defaultUsername).toEqual('hankstoever2.id');

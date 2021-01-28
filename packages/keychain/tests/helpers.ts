@@ -1,18 +1,18 @@
 import Wallet from '../src/wallet';
 import { ChainID } from '@blockstack/stacks-transactions';
 
-const defaultSeed =
+export const defaultSeed =
   'sound idle panel often situate develop unit text design antenna ' +
   'vendor screen opinion balcony share trigger accuse scatter visa uniform brass ' +
   'update opinion media';
 
-export const getWallet = async (seed: string = defaultSeed) => {
-  const wallet = await Wallet.restore('password', seed, ChainID.Mainnet);
+export const getWallet = async (seed: string = defaultSeed, fetchRemoteUsernames: boolean = false) => {
+  const wallet = await Wallet.restore('password', seed, ChainID.Mainnet, false);
   return wallet;
 };
 
-export const getIdentity = async (seed: string = defaultSeed) => {
-  const wallet = await getWallet(seed);
+export const getIdentity = async (seed: string = defaultSeed, fetchRemoteUsernames: boolean = false) => {
+  const wallet = await getWallet(seed, fetchRemoteUsernames);
   const [identity] = wallet.identities;
   return identity;
 };
