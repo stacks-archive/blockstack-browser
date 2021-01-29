@@ -21,8 +21,7 @@ export const defaultNetworks: Networks = {
     chainId: ChainID.Mainnet,
   },
   testnet: {
-    // url: 'https://stacks-node-api.testnet.stacks.co',
-    url: 'https://stacks-node-api.xenon.blockstack.org',
+    url: 'https://stacks-node-api.testnet.stacks.co',
     name: 'Testnet',
     chainId: ChainID.Testnet,
   },
