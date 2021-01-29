@@ -19,12 +19,12 @@ import BN from 'bn.js';
 import { stacksValue, stxToMicroStx } from '@common/stacks-utils';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
-import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { currentAccountStore } from '@store/recoil/wallet';
 import { stacksNetworkStore } from '@store/recoil/networks';
-import { accountBalancesStore, apiRevalidation, correctNonceStore } from '@store/recoil/api';
+import { accountBalancesStore, correctNonceStore } from '@store/recoil/api';
 import { LoadingRectangle } from '@components/loading-rectangle';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
@@ -44,7 +44,6 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   const [loading, setLoading] = useState(false);
   const asset = useRecoilValue(selectedAssetStore);
   const stacksNetwork = useRecoilValue(stacksNetworkStore);
-  const setApiRevalidation = useSetRecoilState(apiRevalidation);
   const { doChangeScreen } = useAnalytics();
 
   const getTx = useRecoilCallback(
@@ -117,11 +116,10 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
     }
     await broadcastTransaction(tx, stacksNetwork);
     await doSetLatestNonce(tx);
-    setApiRevalidation(current => (current as number) + 1);
     setLoading(false);
     close();
     doChangeScreen(ScreenPaths.POPUP_HOME);
-  }, [tx, close, doChangeScreen, doSetLatestNonce, setApiRevalidation, stacksNetwork]);
+  }, [tx, close, doChangeScreen, doSetLatestNonce, stacksNetwork]);
 
   return (
     <BaseDrawer showing={showing} close={close}>

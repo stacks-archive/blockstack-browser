@@ -42,7 +42,7 @@ import { doChangeScreen, saveAuthRequest } from '@store/onboarding/actions';
 import { doTrackScreenChange } from '@common/track';
 import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
 import { decodeToken } from 'jsontokens';
-import { latestBlockHeightStore } from '@store/recoil/api';
+import { latestBlockHeightStore, apiRevalidation } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { ATOM_LOCALSTORAGE_PREFIX } from '@store/recoil';
 
@@ -159,10 +159,11 @@ export const useWallet = () => {
   const doSetLatestNonce = useRecoilCallback(
     ({ snapshot, set }) => async (tx: StacksTransaction) => {
       const newNonce = tx.auth.spendingCondition?.nonce.toNumber();
-      const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
-      const network = await snapshot.getPromise(currentNetworkStore);
-      const address = await snapshot.getPromise(currentAccountStxAddressStore);
       if (newNonce !== undefined) {
+        set(apiRevalidation, current => (current as number) + 1);
+        const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
+        const network = await snapshot.getPromise(currentNetworkStore);
+        const address = await snapshot.getPromise(currentAccountStxAddressStore);
         set(latestNoncesStore([network.url, address || '']), () => ({
           blockHeight,
           nonce: newNonce,
