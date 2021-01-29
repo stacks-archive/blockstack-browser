@@ -1,0 +1,20 @@
+name: Issue Check
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  checkIssueTitle:
+    name: Check Issue Title
+    runs-on: ubuntu-latest
+    steps:
+      - if: contains(github.event.issue.title, '<describe issue>')
+        name: Close Issue
+        uses: peter-evans/close-issue@v1
+        with:
+          comment: |
+            First, check to make sure you're using the latest version of Stacks Wallet for Web,
+            which can be found at https://www.hiro.so/wallet/install-web
+
+            If you're using the latest version, please make sure to include more relevant information about
+            your bug in the issue title and description. Once you've updated your issue, feel free to re-open it.
