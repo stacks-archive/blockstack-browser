@@ -19,9 +19,9 @@
   "typings": "dist/connect/src/index.d.ts",
   "unpkg": "dist/bundle.js",
   "dependencies": {
-    "@stacks/auth": "^1.0.0-beta.20",
-    "@stacks/network": "^1.0.0-beta.20",
-    "@stacks/transactions": "^1.0.0-beta.20",
+    "@stacks/auth": "^1.0.2",
+    "@stacks/network": "^1.0.2",
+    "@stacks/transactions": "^1.0.2",
     "@stacks/connect-ui": "^2.17.16",
     "buffer": "5.6.0",
     "jsontokens": "^3.0.0"
