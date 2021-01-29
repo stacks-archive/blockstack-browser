@@ -141,11 +141,32 @@ export const PopupSend: React.FC = () => {
                   </Text>
                   <Input
                     display="block"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     width="100%"
                     placeholder="0.0 STX"
                     min="0"
                     value={values.amount}
+                    onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                      const { key } = event;
+                      if (key.length > 1) {
+                        return;
+                      }
+                      // no leading zeros
+                      if (key === '0' && event.currentTarget.value.length === 0)
+                        return event.preventDefault();
+                      // only allow decimal if STX
+                      if (key === '.') {
+                        if (selectedAsset?.type !== 'stx') return event.preventDefault();
+                        const hasPeriod = event.currentTarget.value.includes('.');
+                        if (hasPeriod && key === '.') {
+                          return event.preventDefault();
+                        }
+                      }
+                      if (!/^[0-9]|\.+$/.test(key)) {
+                        return event.preventDefault();
+                      }
+                    }}
                     onChange={handleChange}
                     name="amount"
                   />
