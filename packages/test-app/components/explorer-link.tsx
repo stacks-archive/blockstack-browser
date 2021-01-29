@@ -15,7 +15,7 @@ export const ExplorerLink: React.FC<LinkProps> = ({ txId, text }) => {
   }
   const url = location.origin.includes('localhost')
     ? `http://localhost:3999/extended/v1/tx/${id}`
-    : `https://testnet-explorer.blockstack.org/txid/${id}`;
+    : `https://explorer.stacks.co/txid/${id}?chain=testnet`;
   return (
     <Box>
       <Link onClick={() => window.open(url, '_blank')} color="blue" display="inline-block" my={3}>

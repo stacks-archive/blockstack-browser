@@ -12,13 +12,17 @@ export const Counter = () => {
 
   useEffect(() => {
     const getTransactions = async () => {
-      const transactions = await client.fetchAddressTransactions({
-        address: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6.counter',
-      });
-      const filtered = transactions.filter(t => {
-        return t.tx_type === 'contract_call';
-      });
-      setTransactions(filtered as ContractCallTransaction[]);
+      try {
+        const transactions = await client.fetchAddressTransactions({
+          address: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6.counter',
+        });
+        const filtered = transactions.filter(t => {
+          return t.tx_type === 'contract_call';
+        });
+        setTransactions(filtered as ContractCallTransaction[]);
+      } catch (error) {
+        console.error('Unable to get recent transactions for counter contract');
+      }
     };
     void getTransactions();
   }, []);

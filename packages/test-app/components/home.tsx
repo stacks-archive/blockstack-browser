@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '@common/context';
-import { Box, Spinner, Text, Flex, space, BoxProps, FailedIcon } from '@blockstack/ui';
+import { Box, Text, Flex, space, BoxProps } from '@blockstack/ui';
 import { Auth } from './auth';
 import { Tab } from './tab';
 import { Status } from './status';
@@ -27,42 +27,19 @@ export const Home: React.FC = () => {
   const faucet = useFaucet();
 
   const Page: React.FC = () => {
-    if (faucet.loading) {
-      return (
-        <Container px={6} width="100%">
-          <Spinner mr={4} />
-          <Text textStyle="body.large">Setting up...</Text>
-        </Container>
-      );
-    }
-    if (faucet.balance === 0) {
-      return (
-        <Container px={6} width="100%">
-          <Spinner mr={4} />
-          <Text textStyle="body.large" display="block">
-            Please wait while we get you some Stacks tokens to test with
-          </Text>
-          <ExplorerLink txId={faucet.txId} />
-        </Container>
-      );
-    }
-    if (faucet.error) {
-      return (
-        <Container px={6} width="100%">
-          {/* <Spinner mr={4} /> */}
-          <Flex>
-            <FailedIcon size={32} width={32} maxWidth="32px" maxHeight="32px" mb={3} />
-          </Flex>
-          <Text textStyle="body.large" display="block">
-            {faucet.error}
-          </Text>
-        </Container>
-      );
-    }
-
     return (
       <>
         <Container borderColor="#F0F0F5" borderWidth={0} borderBottomWidth="1px">
+          <Box>
+            {faucet.txId ? (
+              <>
+                <Text textStyle="body.large" display="block">
+                  We've requested some testnet STX from the faucet for you.
+                </Text>
+                <ExplorerLink txId={faucet.txId} />
+              </>
+            ) : null}
+          </Box>
           <Flex>
             <Tab active={tab === 'status'}>
               <Text onClick={() => setTab('status')}>Status smart contract</Text>
