@@ -139,17 +139,18 @@ export const useSetupTx = () => {
       } else if (payload.postConditions?.length) {
         console.debug('Setting up post conditions for transaction request');
         const newConditions: PostCondition[] = payload.postConditions.map(postCondition => {
+          let newCondition: PostCondition;
           if (typeof postCondition === 'string') {
             const reader = BufferReader.fromBuffer(Buffer.from(postCondition, 'hex'));
-            return deserializePostCondition(reader);
+            newCondition = deserializePostCondition(reader);
+          } else {
+            newCondition = { ...postCondition };
           }
-          const newCondition = {
-            ...postCondition,
+          // override principal with current user
+          newCondition = {
+            ...newCondition,
             principal: parsePrincipalString(currentAddress),
           };
-          if ('amount' in newCondition) {
-            newCondition.amount = new BN(newCondition.amount, 'hex');
-          }
           return newCondition;
         });
         set(postConditionsStore, newConditions);
