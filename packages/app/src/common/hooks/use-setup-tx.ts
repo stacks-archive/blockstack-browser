@@ -24,7 +24,6 @@ import {
   deserializePostCondition,
   BufferReader,
 } from '@stacks/transactions';
-import BN from 'bn.js';
 
 export const useSetupTx = () => {
   const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressStore);
