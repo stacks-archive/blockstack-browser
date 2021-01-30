@@ -13,7 +13,7 @@ import BN from 'bn.js';
 export interface TxBase {
   appDetails?: AuthOptions['appDetails'];
   postConditionMode?: PostConditionMode;
-  postConditions?: PostCondition[];
+  postConditions?: (string | PostCondition)[];
   network?: StacksNetwork;
   anchorMode?: AnchorMode;
   /**

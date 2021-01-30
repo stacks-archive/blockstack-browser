@@ -119,8 +119,8 @@ export const getPostConditionTitle = (pc: PostCondition) => {
   ) {
     return getFungibleTitle(pc.conditionCode);
   } else {
-    if (pc.conditionCode === NonFungibleConditionCode.DoesNotOwn) return 'own';
-    if (pc.conditionCode === NonFungibleConditionCode.Owns) return 'do not own';
+    if (pc.conditionCode === NonFungibleConditionCode.DoesNotOwn) return 'do not own';
+    if (pc.conditionCode === NonFungibleConditionCode.Owns) return 'own';
   }
   return '';
 };

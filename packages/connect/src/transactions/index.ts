@@ -12,9 +12,15 @@ import {
   TransactionPayload,
   TransactionTypes,
 } from '../types/transactions';
-import { serializeCV, ChainID } from '@stacks/transactions';
+import {
+  serializeCV,
+  ChainID,
+  deserializeTransaction,
+  BufferReader,
+  serializePostCondition,
+  PostCondition,
+} from '@stacks/transactions';
 import { getStacksProvider } from '../utils';
-import { deserializeTransaction, BufferReader } from '@stacks/transactions';
 import { StacksTestnet } from '@stacks/network';
 
 const getUserSession = (_userSession?: UserSession) => {
@@ -64,9 +70,16 @@ function getDefaults(options: TransactionOptions) {
 }
 
 const signPayload = async (payload: TransactionPayload, privateKey: string) => {
+  let { postConditions } = payload;
+  if (postConditions && typeof postConditions[0] !== 'string') {
+    postConditions = (postConditions as PostCondition[]).map(pc =>
+      serializePostCondition(pc).toString('hex')
+    );
+  }
   const tokenSigner = new TokenSigner('ES256k', privateKey);
   return tokenSigner.signAsync({
     ...payload,
+    postConditions,
   } as any);
 };
 

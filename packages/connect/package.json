@@ -21,7 +21,7 @@
   "dependencies": {
     "@stacks/auth": "^1.0.2",
     "@stacks/network": "^1.0.2",
-    "@stacks/transactions": "^1.0.2",
+    "@stacks/transactions": "^1.1.1-alpha.0",
     "@stacks/connect-ui": "^2.17.16",
     "buffer": "5.6.0",
     "jsontokens": "^3.0.0"

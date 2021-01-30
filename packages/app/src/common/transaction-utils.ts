@@ -6,6 +6,8 @@ import {
   makeContractDeploy,
   makeSTXTokenTransfer,
   TransactionVersion,
+  BufferReader,
+  deserializePostCondition,
 } from '@stacks/transactions';
 import {
   ContractDeployPayload,
@@ -20,8 +22,14 @@ import RPCClient from '@stacks/rpc-client';
 import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
 
-const getPostConditions = (postConditions?: PostCondition[]): PostCondition[] | undefined => {
+const getPostConditions = (
+  postConditions?: (PostCondition | string)[]
+): PostCondition[] | undefined => {
   return postConditions?.map(postCondition => {
+    if (typeof postCondition === 'string') {
+      const reader = BufferReader.fromBuffer(Buffer.from(postCondition, 'hex'));
+      return deserializePostCondition(reader);
+    }
     if ('amount' in postCondition && postCondition.amount) {
       return {
         ...postCondition,

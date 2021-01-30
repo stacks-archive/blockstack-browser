@@ -18,7 +18,12 @@ import {
   currentAccountStxAddressStore,
 } from '@store/recoil/wallet';
 import { getStxAddress } from '@stacks/wallet-sdk';
-import { PostCondition, parsePrincipalString } from '@stacks/transactions';
+import {
+  PostCondition,
+  parsePrincipalString,
+  deserializePostCondition,
+  BufferReader,
+} from '@stacks/transactions';
 import BN from 'bn.js';
 
 export const useSetupTx = () => {
@@ -134,6 +139,10 @@ export const useSetupTx = () => {
       } else if (payload.postConditions?.length) {
         console.debug('Setting up post conditions for transaction request');
         const newConditions: PostCondition[] = payload.postConditions.map(postCondition => {
+          if (typeof postCondition === 'string') {
+            const reader = BufferReader.fromBuffer(Buffer.from(postCondition, 'hex'));
+            return deserializePostCondition(reader);
+          }
           const newCondition = {
             ...postCondition,
             principal: parsePrincipalString(currentAddress),

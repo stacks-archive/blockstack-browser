@@ -3404,6 +3404,13 @@
   dependencies:
     "@stacks/common" "^1.0.1"
 
+"@stacks/network@^1.1.1-alpha.0":
+  version "1.1.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.1.1-alpha.0.tgz#c37d04daf4672bd488044565e5cb722011a8cac2"
+  integrity sha512-y96qXO8Lne3PpSGJj8C6NLu6Ns27uPj7pqvjYewy8aIuFx0tfq/kwuOQNgCFqrLqThorMFGamFJhcG8in4Eh4A==
+  dependencies:
+    "@stacks/common" "^1.0.1"
+
 "@stacks/profile@^1.0.0-beta.20":
   version "1.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@stacks/profile/-/profile-1.0.0-beta.20.tgz#1404dfe877acb3cdd58de1d46aa91798b6d3d89d"
@@ -3439,13 +3446,13 @@
     "@stacks/common" "^1.0.0-beta.20"
     "@stacks/encryption" "^1.0.0-beta.20"
 
-"@stacks/transactions@1.0.2", "@stacks/transactions@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.2.tgz#bc2c06a21e0fa69a1f03f3762cc34f9c1163000e"
-  integrity sha512-F/JclYj+POwugwfpEXy4t/2NmoIAI7DdCDJkNy1clWXVfL9v0Re74vKNrSZ9yiNO30rJL5q6Px8nhrOjpLHEhw==
+"@stacks/transactions@1.1.1-alpha.0", "@stacks/transactions@^1.1.1-alpha.0":
+  version "1.1.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.1.1-alpha.0.tgz#e714e60719ddc7024a32aac301a53afdd7df30e5"
+  integrity sha512-iagBEiabTj+9U6ZcmxoaztJwSie1AK8ZbQYQdOC6V94niQ9BVwxs+/v7qgqifgeHVMKgaVzGa2/YT1I1FGkqyA==
   dependencies:
     "@stacks/common" "^1.0.1"
-    "@stacks/network" "^1.0.2"
+    "@stacks/network" "^1.1.1-alpha.0"
     "@types/bn.js" "^4.11.6"
     "@types/elliptic" "^6.4.12"
     "@types/randombytes" "^2.0.0"
@@ -3455,6 +3462,7 @@
     cross-fetch "^3.0.5"
     elliptic "^6.5.3"
     lodash "^4.17.20"
+    lodash-es "4.17.20"
     randombytes "^2.1.0"
     ripemd160-min "^0.0.6"
     sha.js "^2.4.11"
@@ -11139,6 +11147,11 @@ locate-path@^5.0.0:
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-5.0.0.tgz#1afba396afd676a6d42504d0a67a3a7eb9f62aa0"
   dependencies:
     p-locate "^4.1.0"
+
+lodash-es@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.20.tgz#29f6332eefc60e849f869c264bc71126ad61e8f7"
+  integrity sha512-JD1COMZsq8maT6mnuz1UMV0jvYD0E0aUsSOdrr1/nAG3dhqQXwRRgeW0cSqH1U43INKcqxaiVIQNOUDld7gRDA==
 
 lodash-es@^4.17.11, lodash-es@^4.17.14, lodash-es@^4.2.1:
   version "4.17.15"

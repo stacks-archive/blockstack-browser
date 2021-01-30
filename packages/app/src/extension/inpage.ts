@@ -91,8 +91,12 @@ const provider: StacksProvider = {
   },
   getProductInfo() {
     return {
-      version: chrome.runtime.getManifest().version,
+      version: VERSION,
       name: 'Stacks Wallet for Web',
+      meta: {
+        tag: BRANCH,
+        commit: COMMIT_SHA,
+      },
     };
   },
 };
