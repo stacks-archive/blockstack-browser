@@ -2080,14 +2080,6 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@extend-chrome/storage@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@extend-chrome/storage/-/storage-1.4.3.tgz#4c930411782b8e5b7825de5632c97e2bdb21f3ae"
-  integrity sha512-7EpS3raroZ8FvwJJjTBson10CalOoGWZ2CtZO278ncfb7m67LnwYhhZfvSfTvkYlZRyWjdtjQXrlNj7QThpyHw==
-  dependencies:
-    chrome-promise "^3.0.5"
-    rxjs "^6.5.5"
-
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -6015,11 +6007,6 @@ chrome-launcher@0.13.4:
     lighthouse-logger "^1.0.0"
     mkdirp "^0.5.3"
     rimraf "^3.0.2"
-
-chrome-promise@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/chrome-promise/-/chrome-promise-3.0.5.tgz#47132edf44d9cc12a768d72f6064a6b083d77b00"
-  integrity sha512-ekIevrJOO5S6ezSzl5TdaLhlQkovY5nVaNSgA2XyhuNtlGniUvTbf7rzH95alh1OajArwoP2xVGYUJbpVLmZYA==
 
 chrome-trace-event@^1.0.2:
   version "1.0.2"
@@ -14228,13 +14215,6 @@ rx@^4.1.0:
 rxjs@^6.4.0, rxjs@^6.5.3:
   version "6.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
-  dependencies:
-    tslib "^1.9.0"
-
-rxjs@^6.5.5:
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
-  integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==
   dependencies:
     tslib "^1.9.0"
 

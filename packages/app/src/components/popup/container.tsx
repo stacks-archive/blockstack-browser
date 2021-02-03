@@ -18,6 +18,7 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { IconMenu2, IconFlask } from '@tabler/icons';
 import { useRecoilValue } from 'recoil';
 import { currentNetworkStore } from '@store/recoil/networks';
+import { hasRehydratedVaultStore } from '@store/recoil/wallet';
 import { ChainID } from '@stacks/transactions';
 
 const CloseIconContainer = styled(Box)`
@@ -114,6 +115,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
   hideActions,
 }) => {
   const { setShowSettings } = useDrawers();
+  const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
 
   const Settings: React.FC<BoxProps> = props => {
     if (hideActions) return null;
@@ -186,7 +188,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                 <Settings position="relative" top="-4px" />
               </Flex>
             </Flex>
-            {children}
+            {hasRehydratedVault ? children : null}
           </Flex>
         </Flex>
       </Flex>

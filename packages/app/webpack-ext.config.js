@@ -6,6 +6,7 @@ baseWebpack.optimization = {
   flagIncludedChunks: false,
   occurrenceOrder: false,
   concatenateModules: false,
+  minimize: process.env.NODE_ENV !== 'test',
   splitChunks: {
     hidePathInfo: false,
     minSize: 10000,

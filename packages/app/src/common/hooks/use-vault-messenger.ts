@@ -6,7 +6,7 @@ import {
   UnlockWallet,
   SwitchAccount,
 } from '@extension/message-types';
-import { Vault } from '@extension/background/vault-manager';
+import type { Vault } from '@extension/background/vault-manager';
 import { RecoilState, useRecoilCallback } from 'recoil';
 import {
   hasSetPasswordStore,
@@ -14,6 +14,7 @@ import {
   secretKeyStore,
   currentAccountIndexStore,
   encryptedSecretKeyStore,
+  hasRehydratedVaultStore,
 } from '@store/recoil/wallet';
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
@@ -23,6 +24,7 @@ const innerMessageWrapper = (message: MessageFromApp, set: Set) => {
     chrome.runtime.sendMessage(message, (vaultOrError: Vault | Error) => {
       if ('hasSetPassword' in vaultOrError) {
         const vault = vaultOrError;
+        set(hasRehydratedVaultStore, true);
         set(hasSetPasswordStore, vault.hasSetPassword);
         set(walletStore, vault.wallet);
         set(secretKeyStore, vault.secretKey);

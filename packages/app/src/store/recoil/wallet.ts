@@ -113,3 +113,8 @@ export const walletConfigStore = selector<WalletConfig | null>({
     return walletConfig;
   },
 });
+
+export const hasRehydratedVaultStore = atom({
+  key: 'wallet.has-rehydrated',
+  default: false,
+});

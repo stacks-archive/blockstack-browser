@@ -35,7 +35,6 @@
     "@emotion/css": "^11.0.0",
     "@emotion/react": "^11.1.1",
     "@emotion/styled": "^11.0.0",
-    "@extend-chrome/storage": "^1.4.3",
     "@rehooks/document-title": "^1.0.1",
     "@stacks/auth": "^1.0.2",
     "@stacks/connect": "^4.3.15",
