@@ -12,52 +12,42 @@ import {
   Wallet as SDKWallet,
 } from '@stacks/wallet-sdk';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
-import { WalletStore, walletStore } from '../storage';
+// import { WalletStore, walletStore } from '../storage';
 
 /**
  * Manage a wallet instance, stored in memory in the background script
  */
-
-/**
- * Default wallet
- */
-const defaultVault: WalletStore = {
-  hasSetPassword: false,
-  encryptedSecretKey: undefined,
-} as const;
-
-export interface Vault extends WalletStore {
+export interface Vault {
+  encryptedSecretKey?: string;
   secretKey?: string;
   wallet?: SDKWallet;
   currentAccountIndex?: number;
+  hasSetPassword: boolean;
 }
+
+const encryptedKeyIdentifier = 'stacks-wallet-encrypted-key' as const;
+
+const defaultVault: Vault = {
+  encryptedSecretKey: undefined,
+  hasSetPassword: false,
+} as const;
 
 let vault: Vault = {
   ...defaultVault,
+  encryptedSecretKey: localStorage.getItem(encryptedKeyIdentifier) || undefined,
 };
 
-const persistedKeys: (keyof WalletStore)[] = ['hasSetPassword', 'encryptedSecretKey'];
-
-void walletStore.get().then(persistedWallet => {
-  vault = {
-    ...vault,
-    ...persistedWallet,
-  };
-});
-
-export const getWallet = () => {
+export const getVault = () => {
   return vault;
 };
 
-function pick<T extends object, K extends keyof T>(base: T, ...keys: K[]): Pick<T, K> {
-  const entries = keys.map(key => [key, base[key]]);
-  return Object.fromEntries(entries);
-}
-
 export const vaultMessageHandler = async (message: MessageFromApp) => {
   vault = await vaultReducer(message);
-  const dataToPersist: WalletStore = pick(vault, ...persistedKeys);
-  await walletStore.set(dataToPersist);
+  if (vault.encryptedSecretKey) {
+    localStorage.setItem(encryptedKeyIdentifier, vault.encryptedSecretKey);
+  } else {
+    localStorage.removeItem(encryptedKeyIdentifier);
+  }
   return vault;
 };
 
@@ -129,7 +119,6 @@ export const vaultReducer = async (message: MessageFromApp): Promise<Vault> => {
       };
     }
     case Methods.signOut: {
-      await walletStore.clear();
       return {
         ...defaultVault,
       };

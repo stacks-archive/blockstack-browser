@@ -123,7 +123,7 @@ export const useWallet = () => {
         account,
       });
       set(currentAccountIndexStore, accountIndex);
-      await finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
+      finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
     },
     [decodedAuthRequest, authRequest, appName, appIcon]
   );

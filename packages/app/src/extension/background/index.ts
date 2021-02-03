@@ -52,7 +52,6 @@ if (NODE_ENV === 'test') {
   // expose a helper function to open a new tab with the wallet from tests
   (window as any).openOptionsPage = function (page: string) {
     const url = chrome.runtime.getURL(`index.html#${page}`);
-    console.log('opening options', url);
-    window.open(url, '_blank');
+    return url;
   };
 }

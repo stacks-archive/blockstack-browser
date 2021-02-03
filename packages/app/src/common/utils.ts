@@ -47,7 +47,7 @@ interface FinalizeAuthParams {
  * of the extension.
  *
  */
-export const finalizeAuthResponse = async ({
+export const finalizeAuthResponse = ({
   decodedAuthRequest,
   authRequest,
   authResponse,
@@ -57,7 +57,7 @@ export const finalizeAuthResponse = async ({
     throw new Error('Cannot proceed with malicious url');
   }
   try {
-    const tabId = await getTab(StorageKey.authenticationRequests, authRequest);
+    const tabId = getTab(StorageKey.authenticationRequests, authRequest);
     const responseMessage: AuthenticationResponseMessage = {
       source: MESSAGE_SOURCE,
       payload: {
@@ -67,7 +67,7 @@ export const finalizeAuthResponse = async ({
       method: Methods.authenticationResponse,
     };
     chrome.tabs.sendMessage(tabId, responseMessage);
-    await deleteTabForRequest(StorageKey.authenticationRequests, authRequest);
+    deleteTabForRequest(StorageKey.authenticationRequests, authRequest);
     window.close();
   } catch (error) {
     console.debug('Failed to get Tab ID for authentication request:', authRequest);
@@ -77,10 +77,10 @@ export const finalizeAuthResponse = async ({
   }
 };
 
-export const finalizeTxSignature = async (requestPayload: string, data: FinishedTxPayload) => {
+export const finalizeTxSignature = (requestPayload: string, data: FinishedTxPayload) => {
   console.log(requestPayload, data);
   try {
-    const tabId = await getTab(StorageKey.transactionRequests, requestPayload);
+    const tabId = getTab(StorageKey.transactionRequests, requestPayload);
     const responseMessage: TransactionResponseMessage = {
       source: MESSAGE_SOURCE,
       method: Methods.transactionResponse,
@@ -90,7 +90,7 @@ export const finalizeTxSignature = async (requestPayload: string, data: Finished
       },
     };
     chrome.tabs.sendMessage(tabId, responseMessage);
-    await deleteTabForRequest(StorageKey.transactionRequests, requestPayload);
+    deleteTabForRequest(StorageKey.transactionRequests, requestPayload);
     window.close();
   } catch (error) {
     console.debug('Failed to get Tab ID for transaction request:', requestPayload);

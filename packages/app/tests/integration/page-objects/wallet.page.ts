@@ -59,15 +59,12 @@ export class WalletPage {
 
   static async init(browser: BrowserDriver, path?: ScreenPaths) {
     const background = browser.context.backgroundPages()[0];
-    await background.evaluate(`openOptionsPage("${path || ''}")`);
-    await wait(500);
-    const page = browser.context.pages().find(p => {
-      const url = p.url();
-      return url.startsWith('chrome-extension://') && url.endsWith(`index.html#${path || ''}`);
+    const pageUrl: string = await background.evaluate(`openOptionsPage("${path || ''}")`);
+    const page = await browser.context.newPage();
+    await page.goto(pageUrl);
+    page.on('pageerror', event => {
+      console.log('Error in wallet:', event.message);
     });
-    if (!page) {
-      throw 'Could not find Wallet page.';
-    }
     return new this(page);
   }
 

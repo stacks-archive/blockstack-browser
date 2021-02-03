@@ -40,7 +40,7 @@ export const useTxState = () => {
           nodeUrl: currentNetwork.url,
         });
         await doSetLatestNonce(tx);
-        await finalizeTxSignature(requestPayload, result);
+        finalizeTxSignature(requestPayload, result);
       } catch (error) {
         set(transactionBroadcastErrorStore, error.message);
       }
