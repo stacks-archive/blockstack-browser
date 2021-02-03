@@ -12,10 +12,12 @@ import {
   PostCondition,
   FungibleConditionCode,
   NonFungibleConditionCode,
+  ChainID,
 } from '@stacks/transactions';
 import BigNumber from 'bignumber.js';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
+import { Network } from '@store/recoil/networks';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
   switch (type) {
@@ -132,3 +134,14 @@ export const makeAssetInfo = (assetIdentifier: string) => {
   const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
   return assetInfo;
 };
+
+export function validateAddressChain(address: string, currentNetwork: Network) {
+  const prefix = address.substr(0, 2);
+  if (currentNetwork.chainId === ChainID.Testnet) {
+    return prefix === 'SN' || prefix === 'ST';
+  }
+  if (currentNetwork.chainId === ChainID.Mainnet) {
+    return prefix === 'SM' || prefix === 'SP';
+  }
+  return false;
+}

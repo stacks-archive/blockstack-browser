@@ -7,7 +7,7 @@ import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { Link } from '@components/link';
 import BigNumber from 'bignumber.js';
-import { microStxToStx, validateStacksAddress } from '@common/stacks-utils';
+import { microStxToStx, validateAddressChain, validateStacksAddress } from '@common/stacks-utils';
 import { ErrorLabel } from '@components/error-label';
 import { AssetSearch } from '@components/asset-search/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
@@ -44,6 +44,9 @@ export const PopupSend: React.FC = () => {
       validateOnChange={false}
       validate={async ({ recipient, amount }) => {
         const errors: FormikErrors<FormValues> = {};
+        if (!validateAddressChain(recipient, currentNetwork)) {
+          errors.recipient = 'The address is for the incorrect Stacks network';
+        }
         if (!validateStacksAddress(recipient)) {
           errors.recipient = 'The address you provided is not valid.';
         }
