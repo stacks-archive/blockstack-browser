@@ -10,6 +10,11 @@ import { makeContractCallToken, TransactionPayload } from '../../../connect/src/
 import BN from 'bn.js';
 import { decodeToken } from 'jsontokens';
 
+(window as any).fetch = jest.fn(() => ({
+  text: () => Promise.resolve(1),
+  ok: true,
+}));
+
 describe('generated transactions', () => {
   test('can handle encoded payload', async () => {
     const address = 'ST1EXHZSN8MJSJ9DSG994G1V8CNKYXGMK7Z4SA6DH';
