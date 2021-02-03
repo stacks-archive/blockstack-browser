@@ -14,19 +14,16 @@ import { gaiaUrl } from '@common/constants';
 export const secretKeyStore = atom<string | undefined>({
   key: 'wallet.secret-key',
   default: undefined,
-  effects_UNSTABLE: [localStorageEffect()],
 });
 
 export const hasSetPasswordStore = atom<boolean>({
   key: 'wallet.has-set-password',
   default: false,
-  effects_UNSTABLE: [localStorageEffect()],
 });
 
 export const walletStore = atom<Wallet | undefined>({
   key: 'wallet.wallet-v2',
   default: undefined,
-  effects_UNSTABLE: [localStorageEffect()],
   dangerouslyAllowMutability: true,
 });
 
@@ -67,13 +64,11 @@ export const latestNonceStore = selector({
 export const currentAccountIndexStore = atom<number | undefined>({
   key: 'wallet.current-account-index',
   default: undefined,
-  effects_UNSTABLE: [localStorageEffect()],
 });
 
 export const encryptedSecretKeyStore = atom<string | undefined>({
   key: 'wallet.encrypted-key',
   default: undefined,
-  effects_UNSTABLE: [localStorageEffect()],
 });
 
 export const currentAccountStore = selector({

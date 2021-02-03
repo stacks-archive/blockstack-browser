@@ -9,6 +9,7 @@ import { version } from '../../package.json';
 
 import { css, Global } from '@emotion/react';
 import { CssReset } from '@components/css-reset';
+import { VaultLoader } from '@components/vault-loader';
 import { AccountsDrawer } from './drawer/accounts';
 import { NetworksDrawer } from './drawer/networks-drawer';
 
@@ -76,6 +77,7 @@ export const App: React.FC = () => {
         <ColorModeProvider defaultMode="light">
           <React.Fragment>
             <CssReset />
+            <VaultLoader />
             <Global styles={globalStyle} />
             <Router>
               <AccountsDrawer />

@@ -4,7 +4,6 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { accountDrawerStep, AccountStep } from '@store/recoil/drawers';
-import { currentAccountIndexStore } from '@store/recoil/wallet';
 import { getAccountDisplayName, getStxAddress } from '@stacks/wallet-sdk';
 import { currentTransactionVersion } from '@store/recoil/networks';
 
@@ -12,9 +11,8 @@ interface SwitchAccountProps {
   close: () => void;
 }
 export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
-  const { wallet, currentAccountIndex } = useWallet();
+  const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
   const setAccountDrawerStep = useSetRecoilState(accountDrawerStep);
-  const setCurrentAccountIndex = useSetRecoilState(currentAccountIndexStore);
   const transactionVersion = useRecoilValue(currentTransactionVersion);
   const accountRows = (wallet?.accounts || []).map((account, index) => {
     return (
@@ -28,8 +26,8 @@ export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
         cursor="pointer"
         // px={6}
         py="base"
-        onClick={() => {
-          setCurrentAccountIndex(index);
+        onClick={async () => {
+          await doSwitchAccount(index);
           close();
         }}
       >

@@ -88,7 +88,7 @@ const aliases =
 
 module.exports = {
   entry: {
-    background: path.join(sourceRootPath, 'extension', 'background.ts'),
+    background: path.join(sourceRootPath, 'extension', 'background', 'index.ts'),
     inpage: path.join(sourceRootPath, 'extension', 'inpage.ts'),
     'message-bus': path.join(sourceRootPath, 'extension', 'content-scripts', 'message-bus.ts'),
     index: path.join(sourceRootPath, 'index.tsx'),

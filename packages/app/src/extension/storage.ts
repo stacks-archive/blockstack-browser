@@ -1,3 +1,16 @@
+import { getBucket } from '@extend-chrome/storage';
+
+export interface WalletStore {
+  hasSetPassword: boolean;
+  encryptedSecretKey?: string;
+}
+
+export const walletStore = getBucket<WalletStore>('wallet');
+
+/**
+ * Authentication and Transaction Requests
+ */
+
 export enum StorageKey {
   'authenticationRequests',
   'transactionRequests',
@@ -7,13 +20,17 @@ interface RequestInfo {
   tabId: number;
 }
 
-type RequestResult = RequestInfo | undefined;
+interface RequestsBucket {
+  [key: string]: RequestInfo;
+}
+
+export const requestStore = getBucket<RequestsBucket>('requests');
 
 function getKeyForRequest(storageKey: StorageKey, request: string) {
   return `${storageKey}-${request}`;
 }
 
-export function storePayload({
+export async function storePayload({
   payload,
   storageKey,
   port,
@@ -25,31 +42,19 @@ export function storePayload({
   const tab = port.sender?.tab;
   if (!tab?.id) return;
   const key = getKeyForRequest(storageKey, payload);
-  chrome.storage.local.set({
-    [key]: {
-      tabId: tab.id,
-    },
-  });
+  await requestStore.set({ [key]: { tabId: tab.id } });
 }
 
 export async function getTab(storageKey: StorageKey, request: string): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const key = getKeyForRequest(storageKey, request);
-    chrome.storage.local.get([key], storage => {
-      const store: RequestResult = storage[key];
-      if (!store?.tabId) {
-        return reject(`Unable to get tab ID for request: ${request}`);
-      }
-      resolve(store.tabId);
-    });
-  });
+  const key = getKeyForRequest(storageKey, request);
+  const existing = (await requestStore.get(key))[key];
+  if (!existing?.tabId) {
+    throw new Error(`Unable to get tab ID for request: ${request}`);
+  }
+  return existing.tabId;
 }
 
 export async function deleteTabForRequest(storageKey: StorageKey, request: string): Promise<void> {
-  return new Promise(resolve => {
-    const key = getKeyForRequest(storageKey, request);
-    chrome.storage.local.remove(key, () => {
-      return resolve();
-    });
-  });
+  const key = getKeyForRequest(storageKey, request);
+  await requestStore.remove(key);
 }

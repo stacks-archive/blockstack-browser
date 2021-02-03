@@ -8,10 +8,11 @@ import {
   TransactionRequestEvent,
   MessageToContentScript,
   MESSAGE_SOURCE,
+  CONTENT_SCRIPT_PORT,
 } from '../message-types';
 import { ScreenPaths } from '@store/onboarding/types';
 
-const backgroundPort = chrome.runtime.connect();
+const backgroundPort = chrome.runtime.connect({ name: CONTENT_SCRIPT_PORT });
 
 /**
  * Legacy messaging to work with older versions of connect
@@ -82,10 +83,7 @@ document.addEventListener(DomEventName.transactionRequest, ((event: TransactionR
   });
 }) as EventListener);
 
-chrome.runtime.onMessage.addListener((message: MessageToContentScript, sender) => {
-  console.log('got a response via runtime');
-  console.log('message', message);
-  console.log('sender', sender);
+chrome.runtime.onMessage.addListener((message: MessageToContentScript) => {
   if (message.source === MESSAGE_SOURCE) {
     window.postMessage(message, window.location.origin);
   }

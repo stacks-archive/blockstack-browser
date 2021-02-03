@@ -4,9 +4,7 @@ import { useEffect, useCallback } from 'react';
 import { getEventSourceWindow } from '@common/utils';
 
 export const useMessagePong = () => {
-  // const authRequest = useSelector(selectAuthRequest);
   const sendMessage = useCallback((event: MessageEvent) => {
-    console.log('got a message', event.origin, event.data);
     if (event.data.method === 'ping') {
       console.log('ping!');
       const source = getEventSourceWindow(event);
