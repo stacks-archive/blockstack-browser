@@ -1,5 +1,4 @@
 import { ScreenPaths } from '@store/onboarding/types';
-import { inactivityLockCheck } from '@common/inactivity-lock';
 import {
   CONTENT_SCRIPT_PORT,
   MessageFromApp,
@@ -57,8 +56,3 @@ if (NODE_ENV === 'test') {
     window.open(url, '_blank');
   };
 }
-
-// Set an interval to run a check to see if the wallet state needs to be locked.
-setInterval(() => {
-  inactivityLockCheck();
-}, 5000);
