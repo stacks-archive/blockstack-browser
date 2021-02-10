@@ -73,7 +73,6 @@ jobs:
           path: ./stacks-wallet-chromium.zip
           destination: wallet-extensions
 
-
   integration_tests:
     name: Integration tests
     runs-on: ubuntu-latest
@@ -100,7 +99,6 @@ jobs:
         with:
           name: integration-test-screenshots
           path: packages/app/tests/screenshots/
-        
 
   publish_npm_betas:
     name: Publish NPM beta versions
@@ -125,6 +123,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
+      - name: Bootstrap
+        run: yarn lerna bootstrap
       - name: Setup .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -149,7 +149,7 @@ jobs:
           BRANCH: ${{ steps.git-branch.outputs.branch }}
           SHA: ${{ steps.git-commit.outputs.sha }}
         run: yarn lerna publish prepatch --preid alpha.$SHA --dist-tag $BRANCH --yes --no-push
-  
+
   publish_beta_web_apps:
     name: Publich beta hosted versions
     runs-on: ubuntu-latest
