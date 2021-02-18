@@ -1,9 +1,11 @@
 import React from 'react';
 import { Flex, Text, Box, BoxProps } from '@stacks/ui';
 import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { stacksValue } from '@common/stacks-utils';
+import { getTicker, stacksValue } from '@common/stacks-utils';
 import { useWallet } from '@common/hooks/use-wallet';
 import { AssetRow } from '../asset-row';
+import { STACKS_MARKETS_URL } from '@common/constants';
+import { getAssetStringParts } from '@stacks/ui-utils';
 
 const NoTokens: React.FC<BoxProps> = props => {
   const { currentNetworkKey } = useWallet();
@@ -15,7 +17,7 @@ const NoTokens: React.FC<BoxProps> = props => {
       {currentNetworkKey === 'mainnet' ? (
         <Text
           as="a"
-          href="https://coinmarketcap.com/currencies/blockstack/markets/"
+          href={STACKS_MARKETS_URL}
           target="_blank"
           rel="noreferrer noopener"
           fontSize={2}
@@ -42,14 +44,14 @@ export const TokenAssets: React.FC<TokenAssetProps> = ({ balances, ...props }) =
 
   const fungibleTokens = Object.keys(balances.fungible_tokens).map(key => {
     const token = balances.fungible_tokens[key];
-    const friendlyName = key.split('::')[1];
+    const { assetName } = getAssetStringParts(key);
     return (
       <AssetRow
         name={key}
-        friendlyName={friendlyName}
+        friendlyName={assetName}
         key={key}
         value={token.balance}
-        subtitle={friendlyName.slice(0, 3).toUpperCase()}
+        subtitle={getTicker(assetName)}
       />
     );
   });

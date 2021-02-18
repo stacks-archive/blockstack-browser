@@ -24,7 +24,6 @@ export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
         }}
         transition="100ms letter-spacing"
         cursor="pointer"
-        // px={6}
         py="base"
         onClick={async () => {
           await doSwitchAccount(index);

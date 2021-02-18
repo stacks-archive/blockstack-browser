@@ -1,12 +1,9 @@
 import { useEffect, useCallback } from 'react';
-// import { useSelector } from 'react-redux';
-// import { selectAuthRequest } from '@store/onboarding/selectors';
 import { getEventSourceWindow } from '@common/utils';
 
 export const useMessagePong = () => {
   const sendMessage = useCallback((event: MessageEvent) => {
     if (event.data.method === 'ping') {
-      console.log('ping!');
       const source = getEventSourceWindow(event);
       source?.postMessage(
         {

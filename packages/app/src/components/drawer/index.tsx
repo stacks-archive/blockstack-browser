@@ -37,7 +37,7 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children
       pt="loose"
       width="100%"
       alignItems="flex-end"
-      dir="column"
+      flexDirection="column"
       zIndex={1000}
       style={{
         pointerEvents: !showing ? 'none' : 'unset',

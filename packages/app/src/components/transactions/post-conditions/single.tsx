@@ -23,12 +23,12 @@ export const PostConditionBase: React.FC<PostConditionBaseProps> = props => {
   const { edit, remove } = props;
   return (
     <Box mb="base">
-      <Flex dir="column">
+      <Flex flexDirection="column">
         <Box mb="base">
           <Text fontSize={2}>You {props.title}</Text>
         </Box>
         <Box>
-          <Flex dir="row">
+          <Flex flexDirection="row">
             <Box>
               <DynamicColorCircle mr="base" size="32px" string={props.iconString}>
                 {props.iconChar}

@@ -87,7 +87,7 @@ export const TransactionPage: React.FC = () => {
   return (
     <PopupContainer>
       <Box width="100%" mt="loose" data-test="home-page">
-        <Flex dir="row" width="100%">
+        <Flex flexDirection="row" width="100%">
           <Box flexGrow={1}>
             <Text
               fontSize={2}

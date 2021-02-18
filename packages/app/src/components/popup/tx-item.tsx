@@ -5,25 +5,26 @@ import type {
   TransactionEventFungibleAsset,
 } from '@blockstack/stacks-blockchain-api-types';
 import { Box, Flex, Text } from '@stacks/ui';
-import { truncateMiddle, stacksValue } from '@common/stacks-utils';
+import { stacksValue } from '@common/stacks-utils';
 import BigNumber from 'bignumber.js';
+import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
 
 type Tx = MempoolTransaction | Transaction;
 
-const getAssetTransfer = (tx: Tx): TransactionEventFungibleAsset | undefined => {
-  if (tx.tx_type !== 'contract_call') return;
-  if (tx.tx_status !== 'success') return;
+const getAssetTransfer = (tx: Tx): TransactionEventFungibleAsset | null => {
+  if (tx.tx_type !== 'contract_call') return null;
+  if (tx.tx_status !== 'success') return null;
   const transfer = tx.events.find(event => event.event_type === 'fungible_token_asset');
-  if (transfer?.event_type !== 'fungible_token_asset') return;
+  if (transfer?.event_type !== 'fungible_token_asset') return null;
   return transfer;
 };
 
 const getTxLabel = (tx: Tx): string => {
-  if (tx.tx_type === 'token_transfer') return 'Stacks Transfer';
   if (tx.tx_status === 'pending') return 'Pending Transaction';
+  if (tx.tx_type === 'token_transfer') return 'Stacks Transfer';
   if (tx.tx_type === 'contract_call') {
     const transfer = getAssetTransfer(tx);
-    if (transfer) return transfer.asset.asset_id.split('::')[1];
+    if (transfer) return getAssetStringParts(transfer.asset.asset_id).assetName;
   }
   return tx.tx_type;
 };
@@ -49,7 +50,7 @@ export const TxItem: React.FC<TxItemProps> = ({ transaction }) => {
       <Text display="block" color="ink.600" fontSize={1} mb="tight">
         Latest Transaction
       </Text>
-      <Flex dir="row">
+      <Flex flexDirection="row">
         <Box flexGrow={1}>
           <Text display="block" fontWeight="400" fontSize={2} color="ink.1000">
             {getTxLabel(transaction)}

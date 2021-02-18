@@ -1,31 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Box, Flex, Button, Text } from '@stacks/ui';
 import { BaseDrawer, BaseDrawerProps } from './index';
-import {
-  StacksTransaction,
-  makeSTXTokenTransfer,
-  broadcastTransaction,
-  makeContractCall,
-  standardPrincipalCVFromAddress,
-  uintCV,
-  createAddress,
-  makeStandardFungiblePostCondition,
-  FungibleConditionCode,
-  PostCondition,
-  createAssetInfo,
-} from '@stacks/transactions';
+import { StacksTransaction, broadcastTransaction } from '@stacks/transactions';
 import { useWallet } from '@common/hooks/use-wallet';
-import BN from 'bn.js';
-import { stacksValue, stxToMicroStx } from '@common/stacks-utils';
+import { stacksValue } from '@common/stacks-utils';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { selectedAssetStore } from '@store/recoil/asset-search';
-import { getAssetStringParts } from '@stacks/ui-utils';
-import { currentAccountStore } from '@store/recoil/wallet';
 import { stacksNetworkStore } from '@store/recoil/networks';
-import { accountBalancesStore, correctNonceStore } from '@store/recoil/api';
 import { LoadingRectangle } from '@components/loading-rectangle';
+import { internalTransactionStore } from '@store/recoil/transaction';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
 
@@ -40,7 +25,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   recipient,
 }) => {
   const [tx, setTx] = useState<StacksTransaction | undefined>();
-  const { doSetLatestNonce, currentAccountStxAddress } = useWallet();
+  const { doSetLatestNonce } = useWallet();
   const [loading, setLoading] = useState(false);
   const asset = useRecoilValue(selectedAssetStore);
   const stacksNetwork = useRecoilValue(stacksNetworkStore);
@@ -48,72 +33,22 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
 
   const getTx = useRecoilCallback(
     ({ snapshot }) => async () => {
-      const asset = await snapshot.getPromise(selectedAssetStore);
-      const currentAccount = await snapshot.getPromise(currentAccountStore);
-      if (!asset || !currentAccount || !currentAccountStxAddress) return;
-      const network = await snapshot.getPromise(stacksNetworkStore);
-      const balances = await snapshot.getPromise(accountBalancesStore);
-      const nonce = await snapshot.getPromise(correctNonceStore);
-      setLoading(true);
-      if (asset.type === 'stx') {
-        const mStx = stxToMicroStx(amount);
-        const _tx = await makeSTXTokenTransfer({
-          recipient,
-          amount: new BN(mStx.toString(), 10),
-          senderKey: currentAccount.stxPrivateKey,
-          network,
-          nonce: new BN(nonce, 10),
-        });
-        setTx(_tx);
-      } else {
-        const { address: contractAddress, contractName, assetName } = getAssetStringParts(
-          asset.contractAddress
-        );
-        const functionName = 'transfer';
-        const postConditions: PostCondition[] = [];
-        const tokenBalanceKey = Object.keys(balances?.fungible_tokens || {}).find(contract => {
-          return contract.startsWith(asset?.contractAddress);
-        });
-        if (tokenBalanceKey) {
-          const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
-          const pc = makeStandardFungiblePostCondition(
-            currentAccountStxAddress,
-            FungibleConditionCode.Equal,
-            new BN(amount, 10),
-            assetInfo
-          );
-          postConditions.push(pc);
-        }
-        const _tx = await makeContractCall({
-          network,
-          functionName,
-          functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
-          senderKey: currentAccount.stxPrivateKey,
-          contractAddress,
-          contractName,
-          postConditions,
-          nonce: new BN(nonce, 10),
-        });
-        setTx(_tx);
-      }
+      const _tx = await snapshot.getPromise(internalTransactionStore([amount, recipient]));
+      if (_tx) setTx(_tx);
       setLoading(false);
     },
-    [amount, recipient, currentAccountStxAddress]
+    [amount, recipient]
   );
 
   useEffect(() => {
-    if (!showing) {
-      return;
-    }
+    if (!showing) return;
     void getTx();
   }, [getTx, showing]);
 
   const submit = useCallback(async () => {
     setLoading(true);
 
-    if (!tx) {
-      return;
-    }
+    if (!tx) return;
     await broadcastTransaction(tx, stacksNetwork);
     await doSetLatestNonce(tx);
     setLoading(false);

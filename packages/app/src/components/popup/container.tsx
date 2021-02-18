@@ -25,7 +25,6 @@ const CloseIconContainer = styled(Box)`
   svg {
     height: 14px;
     opacity: 50%;
-    // margin-top: 10px;
   }
 `;
 
@@ -49,14 +48,7 @@ const Header: React.FC<FlexProps> = props => {
         />
       </Box>
       <Box>
-        <Text
-          fontFamily="heading"
-          color="ink.1000"
-          fontWeight="600"
-          ml="base-tight"
-          // fontSize={[2, 4]}
-          fontSize={4}
-        >
+        <Text fontFamily="heading" color="ink.1000" fontWeight="600" ml="base-tight" fontSize={4}>
           Stacks Wallet
         </Text>
       </Box>
@@ -103,6 +95,20 @@ const Warning: React.FC = () => {
   );
 };
 
+const Settings: React.FC<BoxProps> = props => {
+  const { setShowSettings } = useDrawers();
+  return (
+    <IconButton
+      size="42px"
+      iconSize="24px"
+      onClick={() => setShowSettings(true)}
+      color="black"
+      icon={IconMenu2}
+      {...props}
+    />
+  );
+};
+
 interface PopupHomeProps {
   title?: string;
   onClose?: () => void;
@@ -114,22 +120,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
   onClose,
   hideActions,
 }) => {
-  const { setShowSettings } = useDrawers();
   const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
-
-  const Settings: React.FC<BoxProps> = props => {
-    if (hideActions) return null;
-    return (
-      <IconButton
-        size="42px"
-        iconSize="24px"
-        onClick={() => setShowSettings(true)}
-        color="black"
-        icon={IconMenu2}
-        {...props}
-      />
-    );
-  };
 
   return (
     <>
@@ -144,15 +135,15 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
         data-test="container-outer"
       >
         <SettingsPopover />
-        <Flex width="100%" dir="row" display={['none', 'flex']}>
+        <Flex width="100%" flexDirection="row" display={['none', 'flex']}>
           <Header position="relative" top="-5px" />
           <Box flexGrow={1} />
           <ModeBadge mr="base" />
-          <Settings position="relative" top="-9px" />
+          {hideActions ? <Settings position="relative" top="-9px" /> : null}
         </Flex>
         <Flex width="100%" justifyContent="center" flexGrow={1}>
-          <Flex dir="column" maxWidth="512px" minWidth="min(100%, 512px)">
-            <Flex width="100%" dir="row">
+          <Flex flexDirection="column" maxWidth="512px" minWidth="min(100%, 512px)">
+            <Flex width="100%" flexDirection="row">
               <Box flexGrow={1}>
                 {onClose && (
                   <Box width="100%" mb="tight">
@@ -185,7 +176,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                 <ModeBadge position="relative" top="5px" />
               </Flex>
               <Flex display={['flex', 'none']}>
-                <Settings position="relative" top="-4px" />
+                {hideActions ? <Settings position="relative" top="-4px" /> : null}
               </Flex>
             </Flex>
             {hasRehydratedVault ? children : null}

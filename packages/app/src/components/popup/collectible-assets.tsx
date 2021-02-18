@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, Box, BoxProps, Flex } from '@stacks/ui';
 import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { AssetRow } from '../asset-row';
+import { getAssetStringParts } from '@stacks/ui-utils';
+import { getTicker } from '@common/stacks-utils';
 
 const NoCollectibles: React.FC<BoxProps> = props => (
   <Box width="100%" py="extra-loose" my="extra-loose" textAlign="center" {...props}>
@@ -22,14 +24,14 @@ export const CollectibleAssets: React.FC<CollectibleAssetProps> = ({ balances, .
 
   const collectibles = Object.keys(balances.non_fungible_tokens).map(key => {
     const collectible = balances.non_fungible_tokens[key];
-    const friendlyName = key.split('::')[1];
+    const { assetName } = getAssetStringParts(key);
     return (
       <AssetRow
         name={key}
-        friendlyName={friendlyName}
+        friendlyName={assetName}
         key={key}
         value={collectible.count}
-        subtitle={friendlyName.slice(0, 3).toUpperCase()}
+        subtitle={getTicker(assetName)}
       />
     );
   });

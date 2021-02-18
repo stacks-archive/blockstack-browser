@@ -115,8 +115,7 @@ export const useSetupTx = () => {
   useEffect(() => {
     void handleNetworkSwitch();
     void handleAccountSwitch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestToken]);
+  }, [requestToken, handleNetworkSwitch, handleAccountSwitch]);
 
   const handlePostConditions = useRecoilCallback(
     ({ snapshot, set }) => async (currentAddress?: string) => {
@@ -138,16 +137,16 @@ export const useSetupTx = () => {
       } else if (payload.postConditions?.length) {
         console.debug('Setting up post conditions for transaction request');
         const newConditions: PostCondition[] = payload.postConditions.map(postCondition => {
-          let newCondition: PostCondition;
+          let payloadCondition: PostCondition;
           if (typeof postCondition === 'string') {
             const reader = BufferReader.fromBuffer(Buffer.from(postCondition, 'hex'));
-            newCondition = deserializePostCondition(reader);
+            payloadCondition = deserializePostCondition(reader);
           } else {
-            newCondition = { ...postCondition };
+            payloadCondition = { ...postCondition };
           }
           // override principal with current user
-          newCondition = {
-            ...newCondition,
+          const newCondition = {
+            ...payloadCondition,
             principal: parsePrincipalString(currentAddress),
           };
           return newCondition;
@@ -160,6 +159,5 @@ export const useSetupTx = () => {
 
   useEffect(() => {
     void handlePostConditions(currentAccountStxAddress);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestToken, currentAccountStxAddress]);
+  }, [requestToken, currentAccountStxAddress, handlePostConditions]);
 };

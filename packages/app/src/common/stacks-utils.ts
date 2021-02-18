@@ -18,6 +18,7 @@ import BigNumber from 'bignumber.js';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { Network } from '@store/recoil/networks';
+import { STX_DECIMALS } from './constants';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
   switch (type) {
@@ -53,39 +54,22 @@ export const stacksValue = ({
   withTicker?: boolean;
 }) => {
   const stacks = microStxToStx(value);
-  const stxString = fixedDecimals ? stacks.toFormat(6) : stacks.decimalPlaces(6).toFormat();
+  const stxString = fixedDecimals
+    ? stacks.toFormat(STX_DECIMALS)
+    : stacks.decimalPlaces(STX_DECIMALS).toFormat();
   return `${stxString}${withTicker ? ' STX' : ''}`;
 };
 
 export const microStxToStx = (mStx: number | string) => {
   const microStacks = new BigNumber(mStx);
-  const stacks = microStacks.shiftedBy(-6);
+  const stacks = microStacks.shiftedBy(-STX_DECIMALS);
   return stacks;
 };
 
 export const stxToMicroStx = (stx: number | string) => {
   const stxBN = new BigNumber(stx);
-  const micro = stxBN.shiftedBy(6);
+  const micro = stxBN.shiftedBy(STX_DECIMALS);
   return micro;
-};
-
-export function shortenHex(hex: string, length = 4) {
-  return `${hex.substring(0, length + 2)}…${hex.substring(hex.length - length)}`;
-}
-
-/**
- * truncateMiddle
- *
- * @param {string} input - the string to truncate
- * @param {number} offset - the number of chars to keep on either end
- */
-export const truncateMiddle = (input: string, offset = 5): string => {
-  if (input.startsWith('0x')) {
-    return shortenHex(input, offset);
-  }
-  const start = input?.substr(0, offset);
-  const end = input?.substr(input.length - offset, input.length);
-  return `${start}…${end}`;
 };
 
 export const validateStacksAddress = (stacksAddress: string): boolean => {
@@ -145,3 +129,7 @@ export function validateAddressChain(address: string, currentNetwork: Network) {
   }
   return false;
 }
+
+export const getTicker = (assetName: string) => {
+  return assetName.slice(0, 3).toUpperCase();
+};

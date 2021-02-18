@@ -91,7 +91,7 @@ export const AssetSearchField: React.FC = () => {
   });
 
   return (
-    <Flex dir="column" mt="loose" width="100%" position="relative" overflow="visible">
+    <Flex flexDirection="column" mt="loose" width="100%" position="relative" overflow="visible">
       <Box width="100%">
         <Text
           as="label"
@@ -124,7 +124,7 @@ export const AssetSearchField: React.FC = () => {
         />
       </Box>
       <Flex
-        dir="column"
+        flexDirection="column"
         {...getMenuProps()}
         boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
         borderRadius="6px"

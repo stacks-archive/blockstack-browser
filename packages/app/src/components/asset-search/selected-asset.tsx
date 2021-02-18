@@ -2,7 +2,7 @@ import { useFetchBalances } from '@common/hooks/use-account-info';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { AssetAvatar } from '@components/stx-avatar';
 import { Flex, Box, ChevronIcon, Text } from '@stacks/ui';
-import { microStxToStx } from '@common/stacks-utils';
+import { stacksValue } from '@common/stacks-utils';
 import { selectedAssetStore, searchInputStore } from '@store/recoil/asset-search';
 import BigNumber from 'bignumber.js';
 import React, { useMemo } from 'react';
@@ -18,8 +18,7 @@ export const SelectedAsset: React.FC = () => {
     const balances = balancesLoadable.value;
     if (!selectedAsset || !balances) return;
     if (selectedAsset.type === 'stx') {
-      const stx = microStxToStx(balances.stx.balance);
-      return stx.decimalPlaces(6).toFormat();
+      return stacksValue({ value: balances.stx.balance });
     } else {
       const token = Object.keys(balances.fungible_tokens).find(contract => {
         return contract.startsWith(selectedAsset.contractAddress);
@@ -37,7 +36,7 @@ export const SelectedAsset: React.FC = () => {
   }
   const { name } = selectedAsset;
   return (
-    <Flex dir="column" mt="loose">
+    <Flex flexDirection="column" mt="loose">
       <Box>
         <Text display="block" fontSize={1} fontWeight="500" mb="tight">
           Token

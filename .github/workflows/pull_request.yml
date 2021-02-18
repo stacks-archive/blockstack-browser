@@ -67,7 +67,7 @@ jobs:
         run: echo "${{ steps.git-branch.outputs.branch }}"
       - name: Upload chromium extension to GCS
         if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == 'canary'
-        uses: google-github-actions/upload-cloud-storage@864317d
+        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
         with:
           credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
           path: ./stacks-wallet-chromium.zip
@@ -264,7 +264,7 @@ jobs:
       # TODO: move this action to the `publish` workflow after Stacks Wallet is released
       - name: Upload chromium extension to GCS
         if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == 'canary'
-        uses: google-github-actions/upload-cloud-storage@864317d
+        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
         with:
           credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
           path: ./stacks-wallet-firefox.xpi

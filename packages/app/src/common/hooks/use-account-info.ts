@@ -2,11 +2,9 @@ import { accountBalancesStore, accountDataStore } from '@store/recoil/api';
 import { useLoadable } from './use-loadable';
 
 export const useFetchAccountData = () => {
-  const accountData = useLoadable(accountDataStore);
-  return accountData;
+  return useLoadable(accountDataStore);
 };
 
 export const useFetchBalances = () => {
-  const accountBalances = useLoadable(accountBalancesStore);
-  return accountBalances;
+  return useLoadable(accountBalancesStore);
 };

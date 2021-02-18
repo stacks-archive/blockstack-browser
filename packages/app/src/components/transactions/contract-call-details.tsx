@@ -83,7 +83,7 @@ export const ContractCallDetails: React.FC = () => {
         </Text>
       </Box>
       <Box>
-        <Flex dir="column" flexWrap="wrap" width="100%">
+        <Flex flexDirection="column" flexWrap="wrap" width="100%">
           {args}
         </Flex>
       </Box>

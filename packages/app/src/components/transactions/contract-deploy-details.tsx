@@ -20,7 +20,7 @@ export const ContractDeployDetails: React.FC = () => {
         </Text>
       </Box>
       <Box maxWidth="100%">
-        <Flex dir="column" flexWrap="wrap" width="100%">
+        <Flex flexDirection="column" flexWrap="wrap" width="100%">
           <Box mt="base" width="100%">
             <Flex my="base">
               <Box flexGrow={1}>
@@ -52,7 +52,7 @@ export const ContractDeployDetails: React.FC = () => {
                 </Text>
               </Box>
             </Flex>
-            <Flex my="base" dir="column">
+            <Flex my="base" flexDirection="column">
               <Box mb="base" width="100%" fontSize={1}>
                 <Text display="block">Contract Code</Text>
               </Box>

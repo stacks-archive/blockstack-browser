@@ -33,7 +33,7 @@ const AccountItem: React.FC<AccountItemProps> = ({
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   return (
     <Flex alignItems="center" maxWidth="100%" {...rest}>
-      <Flex flex={1} maxWidth="100%" dir="column">
+      <Flex flex={1} maxWidth="100%" flexDirection="column">
         <Text
           display="block"
           maxWidth="100%"

@@ -49,7 +49,7 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
 
   if ((isSignedIn || encryptedSecretKey) && !hasSetPassword) {
     if (step === Step.VIEW_KEY) {
-      const words = (secretKey || '').split(' ').length;
+      const wordCount = (secretKey || '').split(' ').length;
       return (
         <PopupContainer hideActions title="Save your Secret Key">
           <Toast show={hasCopied} />
@@ -58,9 +58,9 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
               Before adding tokens to your account, save your Secret Key.
             </Text>
             <Text fontSize={[1, 1, 2]}>
-              Here’s your Secret Key: {words} words that prove it’s you when you want to use your
-              wallet on a new device. Once lost it’s lost forever, so save it somewhere you won’t
-              forget.
+              Here’s your Secret Key: {wordCount} words that prove it’s you when you want to use
+              your wallet on a new device. Once lost it’s lost forever, so save it somewhere you
+              won’t forget.
             </Text>
           </Box>
           <Box my="loose">

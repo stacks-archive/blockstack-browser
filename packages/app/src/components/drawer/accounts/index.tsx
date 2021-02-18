@@ -13,7 +13,8 @@ export const AccountsDrawer: React.FC = () => {
   const close = useRecoilCallback(
     ({ set }) => () => {
       set(showAccountsStore, false);
-      setTimeout(() => set(accountDrawerStep, AccountStep.Switch), 200);
+      const drawerAnimationTime = 200;
+      setTimeout(() => set(accountDrawerStep, AccountStep.Switch), drawerAnimationTime);
     },
     []
   );

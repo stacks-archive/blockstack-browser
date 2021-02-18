@@ -69,7 +69,7 @@ export const PostConditions: React.FC = () => {
     };
   };
   return (
-    <Flex width="100%" dir="column" my="loose">
+    <Flex width="100%" flexDirection="column" my="loose">
       <Box
         borderColor="ink.150"
         borderWidth="1px"

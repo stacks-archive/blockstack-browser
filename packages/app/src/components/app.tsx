@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider, ColorModeProvider } from '@stacks/ui';
+import { ThemeProvider, ColorModeProvider, CSSReset } from '@stacks/ui';
 import { RecoilRoot } from 'recoil';
 import { theme } from '@common/theme';
 import { Routes } from '@components/routes';
@@ -8,10 +8,11 @@ import { useMessagePong } from '@common/hooks/use-message-pong';
 import { version } from '../../package.json';
 
 import { css, Global } from '@emotion/react';
-import { CssReset } from '@components/css-reset';
 import { VaultLoader } from '@components/vault-loader';
 import { AccountsDrawer } from './drawer/accounts';
 import { NetworksDrawer } from './drawer/networks-drawer';
+
+const CssReset = () => CSSReset;
 
 const globalStyle = css`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');

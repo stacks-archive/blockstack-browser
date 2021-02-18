@@ -1,11 +1,25 @@
-import { PostCondition } from '@stacks/transactions';
+import {
+  createAddress,
+  createAssetInfo,
+  FungibleConditionCode,
+  makeContractCall,
+  makeStandardFungiblePostCondition,
+  makeSTXTokenTransfer,
+  PostCondition,
+  standardPrincipalCVFromAddress,
+  uintCV,
+} from '@stacks/transactions';
 import { TransactionPayload, TransactionTypes } from '@stacks/connect';
 import { decodeToken } from 'jsontokens';
-import { atom, selector } from 'recoil';
+import { atom, selector, selectorFamily } from 'recoil';
 import { generateTransaction } from '@common/transaction-utils';
-import { currentAccountStore } from '@store/recoil/wallet';
+import { currentAccountStore, currentAccountStxAddressStore } from '@store/recoil/wallet';
 import { rpcClientStore, stacksNetworkStore } from '@store/recoil/networks';
-import { correctNonceStore } from './api';
+import { accountBalancesStore, correctNonceStore } from './api';
+import { selectedAssetStore } from './asset-search';
+import BN from 'bn.js';
+import { stxToMicroStx } from '@common/stacks-utils';
+import { getAssetStringParts } from '@stacks/ui-utils';
 
 /** Transaction signing popup store */
 
@@ -176,4 +190,59 @@ export const currentPostConditionStore = selector<PostCondition | undefined>({
 export const transactionBroadcastErrorStore = atom<string | null>({
   key: 'transaction.broadcast-error',
   default: null,
+});
+
+// A recoil selector used for creating internal transactions
+export const internalTransactionStore = selectorFamily({
+  key: 'transaction.internal-transaction',
+  get: ([amount, recipient]: [number, string]) => async ({ get }) => {
+    const asset = get(selectedAssetStore);
+    const currentAccount = get(currentAccountStore);
+    const currentAccountStxAddress = get(currentAccountStxAddressStore);
+    if (!asset || !currentAccount || !currentAccountStxAddress) return null;
+    const network = get(stacksNetworkStore);
+    const balances = get(accountBalancesStore);
+    const nonce = get(correctNonceStore);
+    if (asset.type === 'stx') {
+      const mStx = stxToMicroStx(amount);
+      const _tx = await makeSTXTokenTransfer({
+        recipient,
+        amount: new BN(mStx.toString(), 10),
+        senderKey: currentAccount.stxPrivateKey,
+        network,
+        nonce: new BN(nonce, 10),
+      });
+      return _tx;
+    } else {
+      const { address: contractAddress, contractName, assetName } = getAssetStringParts(
+        asset.contractAddress
+      );
+      const functionName = 'transfer';
+      const postConditions: PostCondition[] = [];
+      const tokenBalanceKey = Object.keys(balances?.fungible_tokens || {}).find(contract => {
+        return contract.startsWith(asset?.contractAddress);
+      });
+      if (tokenBalanceKey) {
+        const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
+        const pc = makeStandardFungiblePostCondition(
+          currentAccountStxAddress,
+          FungibleConditionCode.Equal,
+          new BN(amount, 10),
+          assetInfo
+        );
+        postConditions.push(pc);
+      }
+      const _tx = await makeContractCall({
+        network,
+        functionName,
+        functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
+        senderKey: currentAccount.stxPrivateKey,
+        contractAddress,
+        contractName,
+        postConditions,
+        nonce: new BN(nonce, 10),
+      });
+      return _tx;
+    }
+  },
 });

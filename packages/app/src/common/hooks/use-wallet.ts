@@ -38,6 +38,7 @@ import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
 import { decodeToken } from 'jsontokens';
 import { latestBlockHeightStore, apiRevalidation } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
+import { isValidUrl } from '@common/validate-url';
 
 const loadManifest = async (decodedAuthRequest: DecodedAuthRequest) => {
   const res = await fetch(decodedAuthRequest.manifest_uri);
@@ -60,10 +61,9 @@ export const useWallet = () => {
   const walletConfig = useLoadable(walletConfigStore);
   const vaultMessenger = useVaultMessenger();
 
-  let currentAccountDisplayName = undefined;
-  if (currentAccount) {
-    currentAccountDisplayName = getAccountDisplayName(currentAccount);
-  }
+  const currentAccountDisplayName = currentAccount
+    ? getAccountDisplayName(currentAccount)
+    : undefined;
 
   const dispatch = useDispatch();
   const { decodedAuthRequest, authRequest, appName, appIcon, screen } = useOnboardingState();
@@ -132,6 +132,10 @@ export const useWallet = () => {
     async (authRequest: string) => {
       const { payload } = decodeToken(authRequest);
       const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
+      const dangerousUri = decodedAuthRequest.redirect_uri;
+      if (!isValidUrl(dangerousUri)) {
+        throw new Error('Cannot proceed with malicious url');
+      }
       let appName = decodedAuthRequest.appDetails?.name;
       let appIcon = decodedAuthRequest.appDetails?.icon;
 

@@ -16,7 +16,7 @@ export const StxTransferDetails: React.FC = () => {
         </Text>
       </Box>
       <Box>
-        <Flex dir="column" flexWrap="wrap" width="100%">
+        <Flex flexDirection="column" flexWrap="wrap" width="100%">
           <Box mt="base" width="100%">
             <Flex my="base">
               <Box flexGrow={1}>

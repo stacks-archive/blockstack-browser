@@ -25,7 +25,7 @@ export const useColorMode = (): [ColorModeString, () => void, (mode: 'dark' | 'l
     document.documentElement.classList.add('dark');
     document.documentElement.classList.remove('light');
     setHtmlBackgroundColor();
-  }, []);
+  }, [setHtmlBackgroundColor]);
 
   const setLightMode = React.useCallback(() => {
     localStorage.setItem(THEME_STORAGE_KEY, 'light');
@@ -33,7 +33,7 @@ export const useColorMode = (): [ColorModeString, () => void, (mode: 'dark' | 'l
     document.documentElement.classList.add('light');
     document.documentElement.classList.remove('dark');
     setHtmlBackgroundColor();
-  }, []);
+  }, [setHtmlBackgroundColor]);
 
   React.useEffect(() => {
     if (setMode) {
@@ -51,7 +51,7 @@ export const useColorMode = (): [ColorModeString, () => void, (mode: 'dark' | 'l
         setLightMode();
       }
     }
-  }, [setMode, lightmode, darkmode]);
+  }, [setMode, lightmode, darkmode, setDarkMode, setLightMode]);
 
   const toggleColorMode = React.useCallback(() => {
     if (typeof document !== 'undefined') {
@@ -67,7 +67,7 @@ export const useColorMode = (): [ColorModeString, () => void, (mode: 'dark' | 'l
         setDarkMode();
       }
     }
-  }, [darkmode, lightmode, setMode, colorMode]);
+  }, [darkmode, setMode, setDarkMode, setLightMode]);
 
   return [colorMode, toggleColorMode, setColorMode];
 };
