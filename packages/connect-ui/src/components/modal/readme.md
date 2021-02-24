@@ -14,11 +14,11 @@
 
 ## Events
 
-| Event          | Description | Type               |
-| -------------- | ----------- | ------------------ |
-| `onCloseModal` |             | `CustomEvent<any>` |
-| `onSignIn`     |             | `CustomEvent<any>` |
-| `onSignUp`     |             | `CustomEvent<any>` |
+| Event              | Description | Type               |
+| ------------------ | ----------- | ------------------ |
+| `handleCloseModal` |             | `CustomEvent<any>` |
+| `handleSignIn`     |             | `CustomEvent<any>` |
+| `handleSignUp`     |             | `CustomEvent<any>` |
 
 
 ----------------------------------------------

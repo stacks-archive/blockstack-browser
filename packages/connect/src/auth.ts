@@ -1,13 +1,12 @@
 import { AppConfig, UserSession } from '@stacks/auth';
-import type { FinishedData, AuthOptions } from './types/auth';
-import { popupCenter, setupListener } from './popup';
-import { version } from '../package.json';
+import type { AuthOptions } from './types';
+import packageJson from '../package.json';
 import { getStacksProvider } from './utils';
 
 export const defaultAuthURL = 'https://app.blockstack.org';
 
 if (typeof window !== 'undefined') {
-  (window as any).__CONNECT_VERSION__ = version;
+  (window as any).__CONNECT_VERSION__ = packageJson.version;
 }
 
 export const isMobile = () => {
@@ -70,7 +69,7 @@ export const authenticate = (authOptions: AuthOptions) => {
     {
       sendToSignIn,
       appDetails,
-      connectVersion: version,
+      connectVersion: packageJson.version,
     }
   );
 
@@ -86,123 +85,6 @@ export const authenticate = (authOptions: AuthOptions) => {
   } catch (error) {
     onCancel?.(error);
   }
-};
-
-export function authenticateWithExtensionUrl({
-  extensionUrl,
-  authOptions,
-}: {
-  extensionUrl: string;
-  authOptions: AuthOptions;
-}) {
-  const {
-    redirectTo = '/',
-    manifestPath,
-    finished,
-    onFinish,
-    onCancel,
-    sendToSignIn = false,
-    userSession: _userSession,
-    appDetails,
-  } = authOptions;
-  const userSession = getOrCreateUserSession(_userSession);
-  if (userSession.isUserSignedIn()) {
-    userSession.signUserOut();
-  }
-  const transitKey = userSession.generateAndStoreTransitKey();
-  const authRequest = userSession.makeAuthRequest(
-    transitKey,
-    `${document.location.origin}${redirectTo}`,
-    `${document.location.origin}${manifestPath}`,
-    userSession.appConfig.scopes,
-    undefined,
-    undefined,
-    {
-      sendToSignIn,
-      appDetails,
-      connectVersion: version,
-    }
-  );
-
-  const params = window.location.search
-    .substr(1)
-    .split('&')
-    .filter(param => param.startsWith('utm'))
-    .map(param => param.split('='));
-  const urlParams = new URLSearchParams();
-  params.forEach(([key, value]) => urlParams.set(key, value));
-  urlParams.set('authRequest', authRequest);
-
-  const path = sendToSignIn ? 'sign-in' : 'sign-up';
-
-  const authURL = new URL(extensionUrl);
-
-  const url = `${authURL.origin}/index.html#/${path}?${urlParams.toString()}`;
-  if (shouldUsePopup()) {
-    const popup = popupCenter({
-      url,
-      // If the extension is installed, dont worry about popup blocking
-      // Otherwise, firefox will open the popup and a new tab.
-      skipPopupFallback: true,
-    });
-
-    setupAuthListener({
-      popup,
-      authRequest,
-      onFinish: onFinish || finished,
-      authURL,
-      userSession,
-      onCancel,
-    });
-    return;
-  }
-
-  document.location.href = url;
-}
-
-interface FinishedEventData {
-  authResponse: string;
-  authRequest: string;
-  source: string;
-}
-
-interface ListenerParams {
-  popup: Window | null;
-  authRequest: string;
-  onFinish?: (payload: FinishedData) => void;
-  onCancel?: () => void;
-  authURL: URL;
-  userSession: UserSession;
-}
-
-const setupAuthListener = ({
-  popup,
-  authRequest,
-  onFinish,
-  onCancel,
-  authURL,
-  userSession,
-}: ListenerParams) => {
-  setupListener<FinishedEventData>({
-    popup,
-    onCancel,
-    onFinish: async (data: FinishedEventData) => {
-      if (data.authRequest === authRequest) {
-        if (onFinish) {
-          const { authResponse } = data;
-          await userSession.handlePendingSignIn(authResponse);
-          onFinish({
-            authResponse,
-            userSession,
-          });
-        }
-      }
-    },
-    messageParams: {
-      authRequest,
-    },
-    authURL,
-  });
 };
 
 export const getUserData = async (userSession?: UserSession) => {

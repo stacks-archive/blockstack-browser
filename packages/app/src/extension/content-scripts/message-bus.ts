@@ -1,4 +1,3 @@
-import { popupCenter } from '@stacks/connect';
 import { getEventSourceWindow } from '../../common/utils';
 import {
   MessageFromContentScript,
@@ -44,8 +43,6 @@ function sendMessage(message: MessageFromContentScript) {
 function handleDomEvent({
   payload,
   method,
-  urlParam,
-  path,
 }: {
   payload: string;
   method: MessageFromContentScript['method'];
@@ -57,10 +54,6 @@ function handleDomEvent({
     payload,
     source: MESSAGE_SOURCE,
   });
-  const origin = chrome.runtime.getURL('index.html');
-  const urlParams = new URLSearchParams();
-  urlParams.set(urlParam, payload);
-  popupCenter({ url: `${origin}#${path}?${urlParams.toString()}` });
 }
 
 document.addEventListener(DomEventName.authenticationRequest, ((

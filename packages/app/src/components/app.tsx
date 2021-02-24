@@ -5,7 +5,7 @@ import { theme } from '@common/theme';
 import { Routes } from '@components/routes';
 import { HashRouter as Router } from 'react-router-dom';
 import { useMessagePong } from '@common/hooks/use-message-pong';
-import { version } from '../../package.json';
+import packageJson from '../../package.json';
 
 import { css, Global } from '@emotion/react';
 import { VaultLoader } from '@components/vault-loader';
@@ -54,6 +54,8 @@ const globalStyle = css`
     -webkit-font-smoothing: antialiased;
     background-color: white;
     font-size: 100%;
+    height: 600px;
+    width: 392px;
   }
 
   h1,
@@ -70,7 +72,7 @@ const globalStyle = css`
 export const App: React.FC = () => {
   useMessagePong();
   useEffect(() => {
-    (window as any).__APP_VERSION__ = version;
+    (window as any).__APP_VERSION__ = packageJson.version;
   }, []);
   return (
     <ThemeProvider theme={theme}>

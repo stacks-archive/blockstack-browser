@@ -1,18 +1,27 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const baseWebpack = require('./webpack.config');
+const config = require('./webpack.config.base');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 // Basically, disable any code splitting stuff
-baseWebpack.optimization = {
+config.optimization = {
+  ...config.optimization,
   flagIncludedChunks: false,
-  occurrenceOrder: false,
   concatenateModules: false,
   minimize: process.env.NODE_ENV !== 'test',
+  moduleIds: 'deterministic',
   splitChunks: {
     hidePathInfo: false,
     minSize: 10000,
     maxAsyncRequests: Infinity,
     maxInitialRequests: Infinity,
   },
+  minimizer: [
+    new ESBuildMinifyPlugin({
+      target: 'es2015',
+    }),
+  ],
 };
 
-module.exports = baseWebpack;
+config.devtool = false;
+
+module.exports = config;

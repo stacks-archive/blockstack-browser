@@ -34,7 +34,8 @@
       "@pages/*": ["pages/*"]
     },
     "baseUrl": "src",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["./src/**/*", "./tests/**/*"]
 }

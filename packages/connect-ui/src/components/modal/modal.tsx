@@ -13,13 +13,13 @@ import { StacksIcon } from './assets/stacks-icon';
 export class Modal {
   @Prop() authOptions: AuthOptions;
   @Event()
-  onSignUp: EventEmitter;
+  handleSignUp: EventEmitter;
 
   @Event()
-  onSignIn: EventEmitter;
+  handleSignIn: EventEmitter;
 
   @Event()
-  onCloseModal: EventEmitter;
+  handleCloseModal: EventEmitter;
 
   @State()
   openedInstall: boolean;
@@ -33,14 +33,14 @@ export class Modal {
     const handleContainerClick = (event: MouseEvent) => {
       const target = event.target as HTMLDivElement;
       if (target.className?.includes && target.className.includes('modal-container')) {
-        this.onCloseModal.emit();
+        this.handleCloseModal.emit();
       }
     };
     return (
       <div class="modal-container" onClick={handleContainerClick}>
         <div class="modal-body">
           <div class="modal-top">
-            <CloseIcon onClick={() => this.onCloseModal.emit()} />
+            <CloseIcon onClick={() => this.handleCloseModal.emit()} />
           </div>
           <div class="modal-content">
             <div>

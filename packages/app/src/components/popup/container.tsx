@@ -126,13 +126,12 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
   return (
     <>
       <Warning />
-      <Flex
-        minHeight={'min(600px, 100vh)'}
-        minWidth={'min(512px, 100vw)'}
+      <Box
+        height="calc(100vh - 55px)"
+        overflow="auto"
+        width="100%"
         background="white"
         p="24px"
-        flexWrap="wrap"
-        flexDirection="column"
         data-test="container-outer"
       >
         <SettingsPopover />
@@ -176,14 +175,16 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                 <Box flexGrow={1} />
                 <ModeBadge position="relative" top="5px" />
               </Flex>
-              <Flex display={['flex', 'none']}>
-                {hideActions ? null : <Settings position="relative" top="-4px" />}
-              </Flex>
+              {hideActions ? null : (
+                <Flex display={['flex', 'none']}>
+                  <Settings position="relative" top="-4px" />
+                </Flex>
+              )}
             </Flex>
             {hasRehydratedVault ? children : null}
           </Flex>
         </Flex>
-      </Flex>
+      </Box>
     </>
   );
 };
