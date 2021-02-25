@@ -195,54 +195,63 @@ export const transactionBroadcastErrorStore = atom<string | null>({
 // A recoil selector used for creating internal transactions
 export const internalTransactionStore = selectorFamily({
   key: 'transaction.internal-transaction',
-  get: ([amount, recipient]: [number, string]) => async ({ get }) => {
-    const asset = get(selectedAssetStore);
-    const currentAccount = get(currentAccountStore);
-    const currentAccountStxAddress = get(currentAccountStxAddressStore);
-    if (!asset || !currentAccount || !currentAccountStxAddress) return null;
-    const network = get(stacksNetworkStore);
-    const balances = get(accountBalancesStore);
-    const nonce = get(correctNonceStore);
-    if (asset.type === 'stx') {
-      const mStx = stxToMicroStx(amount);
-      const _tx = await makeSTXTokenTransfer({
-        recipient,
-        amount: new BN(mStx.toString(), 10),
-        senderKey: currentAccount.stxPrivateKey,
-        network,
-        nonce: new BN(nonce, 10),
-      });
-      return _tx;
-    } else {
-      const { address: contractAddress, contractName, assetName } = getAssetStringParts(
-        asset.contractAddress
-      );
-      const functionName = 'transfer';
-      const postConditions: PostCondition[] = [];
-      const tokenBalanceKey = Object.keys(balances?.fungible_tokens || {}).find(contract => {
-        return contract.startsWith(asset?.contractAddress);
-      });
-      if (tokenBalanceKey) {
-        const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
-        const pc = makeStandardFungiblePostCondition(
-          currentAccountStxAddress,
-          FungibleConditionCode.Equal,
-          new BN(amount, 10),
-          assetInfo
+  get: ([amount, recipient, nonce]: [number, string, number]) => async ({ get }) => {
+    try {
+      const asset = get(selectedAssetStore);
+      const currentAccount = get(currentAccountStore);
+      const currentAccountStxAddress = get(currentAccountStxAddressStore);
+      if (!asset || !currentAccount || !currentAccountStxAddress) return null;
+      const network = get(stacksNetworkStore);
+      const balances = get(accountBalancesStore);
+      if (asset.type === 'stx') {
+        const mStx = stxToMicroStx(amount);
+        try {
+          const _tx = await makeSTXTokenTransfer({
+            recipient,
+            amount: new BN(mStx.toString(), 10),
+            senderKey: currentAccount.stxPrivateKey,
+            network,
+            nonce: new BN(nonce, 10),
+          });
+          return _tx;
+        } catch (e) {
+          console.error('makeSTXTokenTransfer failed', e.message);
+          return null;
+        }
+      } else {
+        const { address: contractAddress, contractName, assetName } = getAssetStringParts(
+          asset.contractAddress
         );
-        postConditions.push(pc);
+        const functionName = 'transfer';
+        const postConditions: PostCondition[] = [];
+        const tokenBalanceKey = Object.keys(balances?.fungible_tokens || {}).find(contract => {
+          return contract.startsWith(asset?.contractAddress);
+        });
+        if (tokenBalanceKey) {
+          const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
+          const pc = makeStandardFungiblePostCondition(
+            currentAccountStxAddress,
+            FungibleConditionCode.Equal,
+            new BN(amount, 10),
+            assetInfo
+          );
+          postConditions.push(pc);
+        }
+        const _tx = await makeContractCall({
+          network,
+          functionName,
+          functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
+          senderKey: currentAccount.stxPrivateKey,
+          contractAddress,
+          contractName,
+          postConditions,
+          nonce: new BN(nonce, 10),
+        });
+        return _tx;
       }
-      const _tx = await makeContractCall({
-        network,
-        functionName,
-        functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
-        senderKey: currentAccount.stxPrivateKey,
-        contractAddress,
-        contractName,
-        postConditions,
-        nonce: new BN(nonce, 10),
-      });
-      return _tx;
+    } catch (e) {
+      console.error('internalTransactionStore failed', e);
+      return null;
     }
   },
 });

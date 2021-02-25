@@ -11,6 +11,7 @@ import { selectedAssetStore } from '@store/recoil/asset-search';
 import { stacksNetworkStore } from '@store/recoil/networks';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { internalTransactionStore } from '@store/recoil/transaction';
+import { correctNonceStore } from '@store/recoil/api';
 
 const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
 
@@ -18,6 +19,7 @@ interface ConfirmSendDrawerProps extends BaseDrawerProps {
   amount: number;
   recipient: string;
 }
+
 export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   showing,
   close,
@@ -33,9 +35,15 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
 
   const getTx = useRecoilCallback(
     ({ snapshot }) => async () => {
-      const _tx = await snapshot.getPromise(internalTransactionStore([amount, recipient]));
-      if (_tx) setTx(_tx);
-      setLoading(false);
+      try {
+        const nonce = await snapshot.getPromise(correctNonceStore);
+        const _tx = await snapshot.getPromise(internalTransactionStore([amount, recipient, nonce]));
+        if (_tx) setTx(_tx);
+        setLoading(false);
+      } catch (e) {
+        console.error('getTx falsed: ', e);
+        setLoading(false);
+      }
     },
     [amount, recipient]
   );
