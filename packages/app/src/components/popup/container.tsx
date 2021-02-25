@@ -114,6 +114,7 @@ interface PopupHomeProps {
   onClose?: () => void;
   hideActions?: boolean;
 }
+
 export const PopupContainer: React.FC<PopupHomeProps> = ({
   children,
   title,
@@ -139,7 +140,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
           <Header position="relative" top="-5px" />
           <Box flexGrow={1} />
           <ModeBadge mr="base" />
-          {hideActions ? <Settings position="relative" top="-9px" /> : null}
+          {hideActions ? null : <Settings position="relative" top="-9px" />}
         </Flex>
         <Flex width="100%" justifyContent="center" flexGrow={1}>
           <Flex flexDirection="column" maxWidth="512px" minWidth="min(100%, 512px)">
@@ -176,7 +177,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
                 <ModeBadge position="relative" top="5px" />
               </Flex>
               <Flex display={['flex', 'none']}>
-                {hideActions ? <Settings position="relative" top="-4px" /> : null}
+                {hideActions ? null : <Settings position="relative" top="-4px" />}
               </Flex>
             </Flex>
             {hasRehydratedVault ? children : null}
