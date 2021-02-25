@@ -8,17 +8,22 @@
     "256": "assets/connect-logo/Stacks256w.png",
     "512": "assets/connect-logo/Stacks512w.png"
   },
-  "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src 'self'; frame-src 'none';",
+  "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src 'none'; frame-src 'none'; frame-ancestors 'none';",
   "permissions": [
     "activeTab",
     "storage"
   ],
   "manifest_version": 2,
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": true
   },
-  "web_accessible_resources": ["inpage.js", "index.html"],
+  "web_accessible_resources": [
+    "inpage.js",
+    "index.html"
+  ],
   "browser_action": {
     "default_title": "Stacks",
     "default_icon": "assets/connect-logo/Stacks128w.png",
@@ -39,8 +44,12 @@
   },
   "content_scripts": [
     {
-      "js": ["message-bus.js"],
-      "matches": ["*://*/*"]
+      "js": [
+        "message-bus.js"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
     }
   ],
   "browser_specific_settings": {
