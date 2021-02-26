@@ -32,7 +32,7 @@ export const Unlock: React.FC = () => {
       </Box>
       <Box mt="loose" width="100%">
         <Input
-          placeholder="Set a password"
+          placeholder="Enter your password."
           width="100%"
           autoFocus
           type="password"

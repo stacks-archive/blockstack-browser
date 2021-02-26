@@ -12,8 +12,14 @@ import { validatePassword, blankPasswordValidation } from '@common/validate-pass
 interface SetPasswordProps {
   redirect?: boolean;
   accountGate?: boolean;
+  placeholder?: string;
 }
-export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect, accountGate }) => {
+
+export const SetPasswordPage: React.FC<SetPasswordProps> = ({
+  redirect,
+  accountGate,
+  placeholder,
+}) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
@@ -73,7 +79,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect, accountG
   }, [password, submit]);
 
   return (
-    <PopupContainer hideActions title="Set a password">
+    <PopupContainer hideActions title="Set a password.">
       <Box my="loose">
         <Text fontSize={2}>
           <Text color="green" fontWeight="500">
@@ -95,7 +101,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect, accountG
       ) : null}
       <Box width="100%">
         <Input
-          placeholder="Set a password"
+          placeholder={placeholder || 'Set a password'}
           key="password-input"
           width="100%"
           autoFocus

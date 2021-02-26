@@ -1,14 +1,18 @@
 import React from 'react';
-import { Box, Flex, useEventListener, IconButton } from '@stacks/ui';
+import { Box, Flex, useEventListener, IconButton, color } from '@stacks/ui';
 import { IconX } from '@tabler/icons';
 import useOnClickOutside from 'use-onclickoutside';
+import { Title } from '@components/typography';
 
 const transition = '0.2s all ease-in-out';
+
 export interface BaseDrawerProps {
   showing: boolean;
+  title: string;
   close: () => void;
 }
-export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children }) => {
+
+export const BaseDrawer: React.FC<BaseDrawerProps> = ({ title, showing, close, children }) => {
   const ref = React.useRef(null);
 
   useOnClickOutside(ref, () => {
@@ -45,7 +49,6 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children
         willChange: 'background',
       }}
     >
-      <Box flexGrow={1} />
       <Box
         ref={ref}
         opacity={showing ? 1 : 0}
@@ -59,10 +62,26 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ showing, close, children
         borderTopRightRadius="24px"
         overflowY="auto"
         position="relative"
+        mt="auto"
       >
-        <Box position="absolute" top="15px" right="20px">
-          <IconButton size="42px" iconSize="24px" onClick={close} color="ink.900" icon={IconX} />
-        </Box>
+        <Flex pb="base" justifyContent="space-between" alignItems="center" px="loose">
+          {title ? (
+            <Title fontSize="20px" lineHeight="28px">
+              {title}
+            </Title>
+          ) : null}
+          <IconButton
+            transform="translateX(8px)"
+            size="36px"
+            iconSize="20px"
+            onClick={close}
+            color={color('text-caption')}
+            _hover={{
+              color: color('text-title'),
+            }}
+            icon={IconX}
+          />
+        </Flex>
         {children}
       </Box>
     </Flex>

@@ -7,6 +7,7 @@ interface RecoilControlledDrawerProps {
   state: RecoilState<boolean>;
   /** An optional callback that is fired _after_ visibility has been turned off. */
   close?: () => void;
+  title: string;
 }
 
 /**
@@ -16,6 +17,7 @@ interface RecoilControlledDrawerProps {
 export const ControlledDrawer: React.FC<RecoilControlledDrawerProps> = ({
   state,
   close: _close,
+  title,
   children,
 }) => {
   const [showing, setShowing] = useRecoilState(state);
@@ -25,7 +27,7 @@ export const ControlledDrawer: React.FC<RecoilControlledDrawerProps> = ({
   }, [setShowing, _close]);
 
   return (
-    <BaseDrawer showing={showing} close={close}>
+    <BaseDrawer title={title} showing={showing} close={close}>
       {children}
     </BaseDrawer>
   );

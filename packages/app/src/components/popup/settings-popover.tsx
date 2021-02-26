@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
-import { Box, Text, BoxProps, Flex } from '@stacks/ui';
+import React, { memo, useCallback } from 'react';
+import { Box, SlideFade, BoxProps, color, Flex } from '@stacks/ui';
+import { Text, Caption } from '@components/typography';
 import useOnClickOutside from 'use-onclickoutside';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDrawers } from '@common/hooks/use-drawers';
@@ -8,24 +9,47 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { AccountStep } from '@store/recoil/drawers';
 import { Divider } from '@components/divider';
 import { USERNAMES_ENABLED } from '@common/constants';
+import { forwardRefWithAs } from '@stacks/ui-core';
 
-const SettingsItem: React.FC<BoxProps> = ({ onClick, children, ...props }) => (
+const MenuWrapper = forwardRefWithAs((props, ref) => (
   <Box
+    ref={ref}
+    position="absolute"
+    top="60px"
+    right="extra-loose"
+    borderRadius="8px"
+    width="296px"
+    boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
+    zIndex={2000}
+    border="1px solid"
+    bg={color('bg')}
+    borderColor={color('border')}
+    py="tight"
+    transformOrigin="top right"
     {...props}
-    width="100%"
-    p="base-tight"
-    color="ink.1000"
-    _hover={{ backgroundColor: 'ink.150' }}
-    cursor="pointer"
-    onClick={e => {
-      onClick?.(e);
-    }}
-  >
-    <Text textStyle="body.small" display="block">
+  />
+));
+
+const MenuItem: React.FC<BoxProps> = memo(props => {
+  const { onClick, children, ...rest } = props;
+  return (
+    <Text
+      {...rest}
+      width="100%"
+      px="base"
+      py="base-tight"
+      cursor="pointer"
+      color={color('text-title')}
+      _hover={{ backgroundColor: color('bg-4') }}
+      onClick={e => {
+        onClick?.(e);
+      }}
+      fontSize={1}
+    >
       {children}
     </Text>
-  </Box>
-);
+  );
+});
 
 export const SettingsPopover: React.FC = () => {
   const ref = React.useRef<HTMLDivElement | null>(null);
@@ -47,120 +71,104 @@ export const SettingsPopover: React.FC = () => {
   } = useDrawers();
   const { doChangeScreen } = useAnalytics();
 
-  const showing = showSettings;
-  const close = useCallback(() => {
+  const handleClose = useCallback(() => {
     setShowSettings(false);
   }, [setShowSettings]);
 
-  useOnClickOutside(ref, () => {
-    if (showing) {
-      close();
-    }
-  });
-
   const wrappedCloseCallback = useCallback(
-    (callback: () => void) => {
-      return () => {
-        callback();
-        close();
-      };
+    (callback: () => void) => () => {
+      callback();
+      handleClose();
     },
-    [close]
+    [handleClose]
   );
 
+  const isShowing = showSettings;
+
+  useOnClickOutside(ref, isShowing ? handleClose : null);
+
   return (
-    <Box
-      ref={ref}
-      position="absolute"
-      top="50px"
-      right="30px"
-      borderRadius="8px"
-      width="296px"
-      boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
-      zIndex={2000}
-      background="white"
-      display={showing ? 'block' : 'none'}
-      pt="tight"
-    >
-      {isSignedIn ? (
-        <>
-          {wallet && wallet.accounts.length > 1 ? (
-            <SettingsItem
-              onClick={wrappedCloseCallback(() => {
-                setAccountStep(AccountStep.Switch);
-                setShowAccounts(true);
-              })}
-            >
-              Switch account
-            </SettingsItem>
+    <SlideFade initialOffset="-20px" timeout={150} in={isShowing}>
+      {styles => (
+        <MenuWrapper ref={ref} style={styles} pointerEvents={!isShowing ? 'none' : 'all'}>
+          {isSignedIn && (
+            <>
+              {wallet && wallet?.accounts?.length > 1 && (
+                <MenuItem
+                  onClick={wrappedCloseCallback(() => {
+                    setAccountStep(AccountStep.Switch);
+                    setShowAccounts(true);
+                  })}
+                >
+                  Switch account
+                </MenuItem>
+              )}
+              <MenuItem
+                onClick={wrappedCloseCallback(() => {
+                  setAccountStep(AccountStep.Create);
+                  setShowAccounts(true);
+                })}
+              >
+                Create an Account
+              </MenuItem>
+              <MenuItem
+                onClick={wrappedCloseCallback(() => {
+                  doChangeScreen(ScreenPaths.SETTINGS_KEY);
+                })}
+              >
+                View Secret Key
+              </MenuItem>
+            </>
+          )}
+          {USERNAMES_ENABLED && currentAccount && !currentAccount.username ? (
+            <>
+              <Divider />
+              <MenuItem
+                onClick={wrappedCloseCallback(() => {
+                  setAccountStep(AccountStep.Username);
+                  setShowAccounts(true);
+                })}
+              >
+                Add username
+              </MenuItem>
+            </>
           ) : null}
-          <SettingsItem
+          {isSignedIn ? <Divider /> : null}
+          <MenuItem
             onClick={wrappedCloseCallback(() => {
-              setAccountStep(AccountStep.Create);
-              setShowAccounts(true);
+              setShowNetworks(true);
             })}
           >
-            Create an Account
-          </SettingsItem>
-          <SettingsItem
-            onClick={() => {
-              doChangeScreen(ScreenPaths.SETTINGS_KEY);
-            }}
-          >
-            View Secret Key
-          </SettingsItem>
-        </>
-      ) : null}
-      {USERNAMES_ENABLED && currentAccount && !currentAccount.username ? (
-        <>
-          <Divider />
-          <SettingsItem
-            onClick={wrappedCloseCallback(() => {
-              setAccountStep(AccountStep.Username);
-              setShowAccounts(true);
-            })}
-          >
-            Add username
-          </SettingsItem>
-        </>
-      ) : null}
-      {isSignedIn ? <Divider /> : null}
-      <SettingsItem
-        mb="tight"
-        onClick={wrappedCloseCallback(() => {
-          setShowNetworks(true);
-        })}
-      >
-        <Flex width="100%">
-          <Box flexGrow={1}>Change Network</Box>
-          <Box color="ink.600">{currentNetworkKey}</Box>
-        </Flex>
-      </SettingsItem>
-      {encryptedSecretKey ? (
-        <>
-          <Divider />
-          <SettingsItem
-            mb="tight"
-            onClick={wrappedCloseCallback(() => {
-              doSignOut();
-              doChangeScreen(ScreenPaths.INSTALLED);
-            })}
-          >
-            Sign Out
-          </SettingsItem>
-          {isSignedIn ? (
-            <SettingsItem
-              mb="tight"
-              onClick={wrappedCloseCallback(() => {
-                doChangeScreen(ScreenPaths.POPUP_HOME);
-                doLockWallet();
-              })}
-            >
-              Lock
-            </SettingsItem>
-          ) : null}
-        </>
-      ) : null}
-    </Box>
+            <Flex width="100%" alignItems="center" justifyContent="space-between">
+              <Box>Change Network</Box>
+              <Caption>{currentNetworkKey}</Caption>
+            </Flex>
+          </MenuItem>
+          {encryptedSecretKey && (
+            <>
+              <Divider />
+              {isSignedIn && (
+                <MenuItem
+                  onClick={wrappedCloseCallback(() => {
+                    void doLockWallet();
+                    doChangeScreen(ScreenPaths.POPUP_HOME);
+                  })}
+                >
+                  Lock
+                </MenuItem>
+              )}
+              <MenuItem
+                onClick={wrappedCloseCallback(() => {
+                  void doSignOut();
+                  doChangeScreen(ScreenPaths.INSTALLED);
+                })}
+              >
+                Sign Out
+              </MenuItem>
+            </>
+          )}
+        </MenuWrapper>
+      )}
+    </SlideFade>
   );
 };

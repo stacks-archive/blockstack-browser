@@ -1,14 +1,14 @@
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { AssetAvatar } from '@components/stx-avatar';
-import { Flex, Box, ChevronIcon, Text } from '@stacks/ui';
+import { Flex, Box, ChevronIcon, Text, color } from '@stacks/ui';
 import { stacksValue } from '@common/stacks-utils';
 import { selectedAssetStore, searchInputStore } from '@store/recoil/asset-search';
 import BigNumber from 'bignumber.js';
 import React, { useMemo } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-export const SelectedAsset: React.FC = () => {
+export const SelectedAsset: React.FC<{ hideArrow?: boolean }> = ({ hideArrow }) => {
   const balancesLoadable = useFetchBalances();
   const selectedAsset = useRecoilValue(selectedAssetStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
@@ -47,11 +47,14 @@ export const SelectedAsset: React.FC = () => {
         px="base"
         py="base-tight"
         borderRadius="8px"
-        borderColor="rgb(229, 229, 236)"
-        borderWidth="1px"
+        border="1px solid"
+        borderColor={color('border')}
+        userSelect="none"
         onClick={() => {
-          setSearchInput('');
-          setSelectedAsset(undefined);
+          if (!hideArrow) {
+            setSearchInput('');
+            setSelectedAsset(undefined);
+          }
         }}
       >
         <Flex flexWrap="wrap" flexDirection="row">
@@ -70,7 +73,7 @@ export const SelectedAsset: React.FC = () => {
               {name}
             </Text>
           </Box>
-          <Box px="base">
+          <Box pl="base">
             {balance ? (
               <Text fontSize={2} color="ink.600">
                 {balance}
@@ -79,18 +82,20 @@ export const SelectedAsset: React.FC = () => {
               <LoadingRectangle height="16px" width="60px" />
             )}
           </Box>
-          <Box textAlign="right" height="24px">
-            <ChevronIcon
-              size="24px"
-              direction="down"
-              cursor="pointer"
-              opacity="70%"
-              onClick={() => {
-                setSearchInput('');
-                setSelectedAsset(undefined);
-              }}
-            />
-          </Box>
+          {!hideArrow ? (
+            <Box ml="base" textAlign="right" height="24px">
+              <ChevronIcon
+                size="24px"
+                direction="down"
+                cursor="pointer"
+                opacity="70%"
+                onClick={() => {
+                  setSearchInput('');
+                  setSelectedAsset(undefined);
+                }}
+              />
+            </Box>
+          ) : null}
         </Flex>
       </Box>
     </Flex>

@@ -20,7 +20,7 @@ interface ConfirmSendDrawerProps extends BaseDrawerProps {
   recipient: string;
 }
 
-export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
+export const ConfirmSendDrawer: React.FC<Omit<ConfirmSendDrawerProps, 'title'>> = ({
   showing,
   close,
   amount,
@@ -65,12 +65,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   }, [tx, close, doChangeScreen, doSetLatestNonce, stacksNetwork]);
 
   return (
-    <BaseDrawer showing={showing} close={close}>
-      <Box width="100%" px={6}>
-        <Text fontSize={4} fontWeight="600">
-          Confirm transfer
-        </Text>
-      </Box>
+    <BaseDrawer title="Confirm transfer" showing={showing} close={close}>
       <Box width="100%" px={6} mt="base">
         <Divider />
         <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">

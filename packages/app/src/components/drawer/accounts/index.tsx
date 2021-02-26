@@ -18,8 +18,19 @@ export const AccountsDrawer: React.FC = () => {
     },
     []
   );
+
+  const getTitle = () => {
+    switch (accountStep) {
+      case AccountStep.Create:
+        return 'Create account';
+      case AccountStep.Switch:
+        return 'Switch account';
+      case AccountStep.Username:
+        return 'Add a username';
+    }
+  };
   return (
-    <ControlledDrawer state={showAccountsStore} close={close}>
+    <ControlledDrawer title={getTitle()} state={showAccountsStore} close={close}>
       {accountStep === AccountStep.Switch ? <SwitchAccounts close={close} /> : null}
       {accountStep === AccountStep.Create ? <CreateAccount close={close} /> : null}
       {accountStep === AccountStep.Username ? <AddUsername close={close} /> : null}

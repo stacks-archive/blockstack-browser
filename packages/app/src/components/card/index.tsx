@@ -1,30 +1,25 @@
-import React from 'react';
-import { Box, BoxProps, Text } from '@stacks/ui';
+import React, { memo } from 'react';
+import { Box, BoxProps, color } from '@stacks/ui';
+import { Caption } from '@components/typography';
 
 interface CardProps extends BoxProps {
   title: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
+export const Card: React.FC<CardProps> = memo(({ title, children, ...rest }) => {
   return (
     <Box
       borderRadius="6px"
       border="1px solid"
-      borderColor="#E5E5EC"
-      boxShadow="mid"
+      borderColor={color('border')}
+      boxShadow="low"
       textAlign="center"
       {...rest}
     >
-      <Box borderBottom="1px solid" borderColor="#E5E5EC" p={3}>
-        <Text textStyle="caption" color="ink.600">
-          {title}
-        </Text>
-      </Box>
-      <Box px={10} py={5}>
-        {children}
-      </Box>
+      <Caption borderBottom="1px solid" borderColor={color('border')} width="100%" p="tight">
+        {title}
+      </Caption>
+      <Box p="base">{children}</Box>
     </Box>
   );
-};
-
-export { Card };
+});

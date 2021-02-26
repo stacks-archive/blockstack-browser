@@ -126,33 +126,16 @@ export const DarkMode = (
 export const Base = (
   <Global
     styles={css`
-      * {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
       html {
         background: var(--colors-bg);
         border-color: var(--colors-border);
-
         &.light {
           ${generateCssVariables('light')({ colorMode: 'light', theme })};
           --colors-highlight-line-bg: rgba(255, 255, 255, 0.08);
-          * {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-          }
         }
         &.dark {
           ${generateCssVariables('dark')({ colorMode: 'dark', theme })};
           --colors-highlight-line-bg: rgba(255, 255, 255, 0.04);
-          * {
-            -webkit-font-smoothing: subpixel-antialiased;
-            -moz-osx-font-smoothing: auto;
-          }
-          .metaverse-header {
-            opacity: 0.6;
-            //filter: brightness(1.3) contrast(0.7);
-          }
         }
       }
     `}

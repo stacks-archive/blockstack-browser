@@ -1,48 +1,21 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Text, Flex, Input } from '@stacks/ui';
 import { useCombobox } from 'downshift';
 import { useFetchBalances } from '@common/hooks/use-account-info';
-import { getAssetStringParts, toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';
 import { Asset, searchInputStore, selectedAssetStore } from '@store/recoil/asset-search';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingRectangle } from '../loading-rectangle';
-import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { AssetResult } from './asset-search-result';
 import { SelectedAsset } from './selected-asset';
+import { useAssets } from '@common/hooks/use-assets';
 
-export const AssetSearchField: React.FC = () => {
-  const balancesLoadable = useFetchBalances();
+export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus }) => {
+  const assets = useAssets();
+
   const selectedAsset = useRecoilValue(selectedAssetStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
   const [searchInput, setSearchInput] = useRecoilState(searchInputStore);
-  const balancesJSON = JSON.stringify(balancesLoadable.value);
-  const [searchResults, setSearchResults] = useState<Asset[]>([]);
-
-  const assets: Asset[] = useMemo(() => {
-    if (!balancesJSON) return [];
-    const balances: AddressBalanceResponse = JSON.parse(balancesJSON);
-    const _assets: Asset[] = [];
-    if (!balances) return _assets;
-    _assets.push({
-      type: 'stx',
-      contractAddress: '',
-      balance: toHumanReadableStx(balances.stx.balance),
-      subtitle: 'STX',
-      name: 'Stacks Token',
-    });
-    Object.keys(balances.fungible_tokens).forEach(key => {
-      const { balance } = balances.fungible_tokens[key];
-      const { address, contractName, assetName } = getAssetStringParts(key);
-      _assets.push({
-        type: 'ft',
-        subtitle: `${truncateMiddle(address)}.${contractName}`,
-        contractAddress: key,
-        name: assetName,
-        balance: balance,
-      });
-    });
-    return _assets;
-  }, [balancesJSON]);
+  const [searchResults, setSearchResults] = useState<Asset[]>(assets);
 
   const {
     isOpen,
@@ -68,7 +41,6 @@ export const AssetSearchField: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log('updating search results');
     setSearchResults(assets);
   }, [assets]);
 
@@ -120,7 +92,7 @@ export const AssetSearchField: React.FC = () => {
           onFocus={() => {
             openMenu();
           }}
-          autoFocus
+          autoFocus={autoFocus}
         />
       </Box>
       <Flex
@@ -142,12 +114,19 @@ export const AssetSearchField: React.FC = () => {
   );
 };
 
-export const AssetSearch: React.FC = () => {
+export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus }) => {
   const balancesLoadable = useFetchBalances();
-  const selectedAsset = useRecoilValue(selectedAssetStore);
+  const [selectedAsset, setSelectedAsset] = useRecoilState(selectedAssetStore);
+  const assets = useAssets();
+
+  useEffect(() => {
+    if (assets.length === 1 && !selectedAsset) {
+      setSelectedAsset(assets[0]);
+    }
+  }, [assets, selectedAsset]);
 
   if (selectedAsset) {
-    return <SelectedAsset />;
+    return <SelectedAsset hideArrow={assets.length === 1} />;
   }
 
   if (balancesLoadable.state === 'loading' && !balancesLoadable.value) {
@@ -158,5 +137,5 @@ export const AssetSearch: React.FC = () => {
     );
   }
 
-  return <AssetSearchField />;
+  return <AssetSearchField autoFocus={autoFocus} />;
 };
