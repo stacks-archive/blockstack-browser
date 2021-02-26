@@ -7,7 +7,7 @@ import type {
 } from '@blockstack/stacks-blockchain-api-types';
 import { fetchAllAccountData } from '@common/api/accounts';
 import BN from 'bn.js';
-import { fetchFromSidecar } from '@common/api/fetch';
+import { defaultHeaders, fetchFromSidecar } from '@common/api/fetch';
 
 const DEFAULT_POLL_RATE = 60000;
 
@@ -50,6 +50,7 @@ export const accountInfoStore = selector<{ balance: BN; nonce: number }>({
     const error = new Error(`Unable to fetch account info from ${url}`);
     const response = await fetch(url, {
       credentials: 'omit',
+      headers: defaultHeaders,
     });
     if (!response.ok) throw error;
     const data = await response.json();
@@ -67,7 +68,7 @@ export const chainInfoStore = selector({
     const { url } = get(currentNetworkStore);
     const infoUrl = `${url}/v2/info`;
     try {
-      const res = await fetch(infoUrl);
+      const res = await fetch(infoUrl, { headers: defaultHeaders });
       if (!res.ok) throw `Unable to fetch chain data from ${infoUrl}`;
       const info: CoreNodeInfoResponse = await res.json();
       return info;

@@ -1,3 +1,4 @@
+import { defaultHeaders } from '@common/api/fetch';
 import {
   MempoolTransaction,
   MempoolTransactionListResponse,
@@ -48,7 +49,7 @@ export const fetchPendingTxs = (apiServer: string) => async ({
     apiServer,
   });
 
-  const res = await fetch(path);
+  const res = await fetch(path, { headers: defaultHeaders });
   const mempool: MempoolTransactionListResponse = await res.json();
 
   if (type === 'principal') {

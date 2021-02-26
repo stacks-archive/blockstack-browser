@@ -39,9 +39,10 @@ import { decodeToken } from 'jsontokens';
 import { latestBlockHeightStore, apiRevalidation } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { isValidUrl } from '@common/validate-url';
+import { defaultHeaders } from '@common/api/fetch';
 
 const loadManifest = async (decodedAuthRequest: DecodedAuthRequest) => {
-  const res = await fetch(decodedAuthRequest.manifest_uri);
+  const res = await fetch(decodedAuthRequest.manifest_uri, { headers: defaultHeaders });
   const json: AppManifest = await res.json();
   return json;
 };
