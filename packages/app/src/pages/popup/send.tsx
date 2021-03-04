@@ -219,7 +219,7 @@ export const PopupSend: React.FC = () => {
                           textStyle="caption"
                           position="absolute"
                           right="base"
-                          top="10px"
+                          top="16px"
                           onClick={handleSetSendMax}
                         >
                           Send max
