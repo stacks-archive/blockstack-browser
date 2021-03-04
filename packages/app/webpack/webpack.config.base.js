@@ -192,7 +192,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: path.join(SRC_ROOT_PATH, '../', 'public', 'html', 'popup.html'),
-      filename: 'index.html',
+      filename: 'popup.html',
       ...HTML_PROD_OPTIONS,
     }),
     new HtmlWebpackPlugin({
