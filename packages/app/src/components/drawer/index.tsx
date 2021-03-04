@@ -8,7 +8,7 @@ const transition = '0.2s all ease-in-out';
 
 export interface BaseDrawerProps {
   showing: boolean;
-  title: string;
+  title?: string;
   close: () => void;
 }
 

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Text, Box, BoxProps } from '@stacks/ui';
+import { Text, BoxProps, color } from '@stacks/ui';
 
 interface LinkProps extends BoxProps {
   _hover?: BoxProps;
@@ -25,15 +25,18 @@ export const Link: React.FC<LinkProps> = ({
   onClick,
   ...rest
 }) => (
-  <Box {...rest} onKeyPress={buildEnterKeyEvent(onClick)} onClick={onClick} tabIndex={0}>
-    <Text
-      _hover={{ textDecoration: 'underline', cursor: 'pointer', ..._hover }}
-      fontSize={fontSize}
-      textStyle={textStyle}
-    >
-      {children}
-    </Text>
-  </Box>
+  <Text
+    _hover={{ textDecoration: 'underline', cursor: 'pointer', ..._hover }}
+    fontSize={fontSize}
+    textStyle={textStyle}
+    color={color('brand')}
+    onKeyPress={buildEnterKeyEvent(onClick)}
+    onClick={onClick}
+    tabIndex={0}
+    {...rest}
+  >
+    {children}
+  </Text>
 );
 
 export const MediumLink: React.FC<LinkProps> = ({ children, fontSize = '14px', ...rest }) => (

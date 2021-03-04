@@ -41,6 +41,7 @@ export const Text = forwardRefWithAs<BoxProps, 'span'>((props, ref) => (
     letterSpacing="-0.01em"
     color={color('text-body')}
     display="block"
+    lineHeight={1.48}
     ref={ref}
     {...props}
   />

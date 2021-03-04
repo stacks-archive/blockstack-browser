@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Text, Button, Box, Input } from '@stacks/ui';
+import { Button, Box, Input } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -8,6 +8,7 @@ import { buildEnterKeyEvent } from '@components/link';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { validatePassword, blankPasswordValidation } from '@common/validate-password';
+import { Text } from '@components/typography';
 
 interface SetPasswordProps {
   redirect?: boolean;

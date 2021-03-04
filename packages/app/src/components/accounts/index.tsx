@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Flex, FlexProps, Spinner, color } from '@stacks/ui';
+import { Flex, FlexProps, Spinner, color, Stack } from '@stacks/ui';
+import { Caption, Text } from '@components/typography';
 import { ScreenPaths } from '@store/onboarding/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
@@ -8,6 +9,7 @@ import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { truncateMiddle } from '@stacks/ui-utils';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -32,23 +34,23 @@ const AccountItem: React.FC<AccountItemProps> = ({
   const loading = address === selectedAddress;
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   return (
-    <Flex alignItems="center" maxWidth="100%" {...rest}>
-      <Flex flex={1} maxWidth="100%" flexDirection="column">
+    <Flex alignItems="center" {...rest}>
+      <Stack spacing="2px">
         <Text
           display="block"
           maxWidth="100%"
           textAlign="left"
-          textStyle="body.small.medium"
+          fontWeight={600}
+          fontSize={2}
           style={{ wordBreak: 'break-word' }}
-          mb="extra-tight"
           {...getLoadingProps(showLoadingProps)}
         >
           {getAccountDisplayName(account)}
         </Text>
-        <Text display="block" fontSize={1} {...getLoadingProps(showLoadingProps)}>
-          {address}
-        </Text>
-      </Flex>
+        <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
+          {truncateMiddle(address as string, 6)}
+        </Caption>
+      </Stack>
       <Flex width={4} flexDirection="column" mr={3}>
         {loading && <Spinner width={4} height={4} {...loadingProps} />}
       </Flex>
@@ -56,13 +58,18 @@ const AccountItem: React.FC<AccountItemProps> = ({
   );
 };
 
-interface AccountsProps {
+interface AccountsProps extends FlexProps {
   accountIndex?: number;
   showAddAccount?: boolean;
   next?: (accountIndex: number) => void;
 }
 
-export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) => {
+export const Accounts: React.FC<AccountsProps> = ({
+  showAddAccount,
+  accountIndex,
+  next,
+  ...rest
+}) => {
   const { wallet, transactionVersion } = useWallet();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { decodedAuthRequest } = useOnboardingState();
@@ -86,7 +93,7 @@ export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) 
   const disableSelect = !decodedAuthRequest || !!selectedAddress;
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" {...rest}>
       {accounts.map((account, index) => {
         return (
           <ListItem

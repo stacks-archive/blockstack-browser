@@ -42,7 +42,12 @@ export const Header: React.FC<HeaderProps> = memo(props => {
   const { doChangeScreen } = useAnalytics();
 
   return (
-    <Flex alignItems="flex-start" justifyContent="space-between" {...props}>
+    <Flex
+      p="loose"
+      alignItems={hideActions ? 'center' : 'flex-start'}
+      justifyContent="space-between"
+      {...props}
+    >
       {!title ? (
         <StacksWalletLogo pt="7px" onClick={() => doChangeScreen(ScreenPaths.HOME)} />
       ) : (
@@ -59,7 +64,7 @@ export const Header: React.FC<HeaderProps> = memo(props => {
           <HeaderTitle>{title}</HeaderTitle>
         </Box>
       )}
-      <Stack alignItems="center" isInline>
+      <Stack pt={hideActions ? '7px' : 0} alignItems="center" isInline>
         <NetworkModeBadge />
         {!hideActions && <MenuButton />}
       </Stack>

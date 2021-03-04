@@ -23,12 +23,12 @@ const Actions: React.FC<StackProps> = props => {
   }, [doMakeWallet, doChangeScreen, decodedAuthRequest]);
 
   return (
-    <Stack textAlign="center" {...props}>
+    <Stack spacing="loose" textAlign="center" {...props}>
       <Button onClick={register} isLoading={isCreatingWallet} data-test="sign-up" width="100%">
-        I'm new to Stacks Wallet
+        I'm new to Stacks
       </Button>
       <Link onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)}>
-        Continue with Secret Key
+        Sign in with Secret Key
       </Link>
     </Stack>
   );
@@ -39,7 +39,7 @@ export const Installed: React.FC = memo(() => (
     <Stack spacing="extra-loose" flexGrow={1} justifyContent="center">
       <Stack width="100%" spacing="base" textAlign="center" alignItems="center" mt="extra-loose">
         <Title>Stacks Wallet is installed</Title>
-        <Text maxWidth="24ch">Are you new or do you already have a Secret Key?</Text>
+        <Text maxWidth="28ch">Are you new to Stacks or do you already have a Secret Key?</Text>
       </Stack>
       <Actions />
     </Stack>

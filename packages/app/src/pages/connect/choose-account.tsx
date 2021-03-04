@@ -1,5 +1,5 @@
 import React from 'react';
-import { Screen, ScreenBody, ScreenHeader } from '@screen';
+import { Screen, ScreenBody } from '@screen';
 import { Title } from '@components/typography';
 import { Box } from '@stacks/ui';
 import { Accounts } from '@components/accounts';
@@ -28,6 +28,7 @@ import {
   ConfigApp,
 } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { Header } from '@components/header';
 
 interface ChooseAccountProps {
   next: (accountIndex: number) => void;
@@ -118,13 +119,16 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         }}
       />
       <Screen textAlign="center">
-        <ScreenHeader title="Continue with Secret Key" />
+        <Header hideActions />
         <AppIcon mt={10} mb={4} size="72px" />
         <ScreenBody
           body={[
-            <Title pb={2}>Choose an account</Title>,
-            `to use with ${appName}`,
+            <Title fontSize={4} pb={2}>
+              Choose an account
+            </Title>,
+            `to sign in to ${appName}`,
             <Accounts
+              mt="loose"
               accountIndex={accountIndex}
               next={(accountIndex: number) => didSelectAccount({ accountIndex })}
             />,
