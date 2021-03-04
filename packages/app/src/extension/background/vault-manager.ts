@@ -26,15 +26,25 @@ export interface Vault {
 }
 
 const encryptedKeyIdentifier = 'stacks-wallet-encrypted-key' as const;
+const hasSetPasswordIdentifier = 'stacks-wallet-has-set-password' as const;
 
 const defaultVault: Vault = {
   encryptedSecretKey: undefined,
   hasSetPassword: false,
 } as const;
 
+function getHasSetPassword() {
+  const persisted = localStorage.getItem(hasSetPasswordIdentifier);
+  if (persisted !== null) {
+    return JSON.parse(persisted);
+  }
+  return false;
+}
+
 let vault: Vault = {
   ...defaultVault,
   encryptedSecretKey: localStorage.getItem(encryptedKeyIdentifier) || undefined,
+  hasSetPassword: getHasSetPassword(),
 };
 
 export const getVault = () => {
@@ -48,6 +58,7 @@ export const vaultMessageHandler = async (message: MessageFromApp) => {
   } else {
     localStorage.removeItem(encryptedKeyIdentifier);
   }
+  localStorage.setItem(hasSetPasswordIdentifier, JSON.stringify(vault.hasSetPassword));
   return vault;
 };
 
@@ -91,7 +102,6 @@ export const vaultReducer = async (message: MessageFromApp): Promise<Vault> => {
         ...vault,
         secretKey,
         wallet: _wallet,
-        encryptedSecretKey: _wallet.encryptedSecretKey,
         currentAccountIndex: 0,
       };
     }
