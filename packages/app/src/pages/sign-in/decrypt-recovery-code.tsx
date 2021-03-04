@@ -96,7 +96,7 @@ export const DecryptRecoveryCode: React.FC = () => {
           width="100%"
           mt={6}
           size="lg"
-          onClick={async (event: MouseEvent) => {
+          onClick={async event => {
             event.preventDefault();
             return onSubmit();
           }}

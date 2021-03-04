@@ -100,7 +100,7 @@ export const InstalledSignIn: React.FC = () => {
           isLoading={isLoading}
           isDisabled={isLoading}
           data-test="sign-in-key-continue"
-          onClick={async (event: MouseEvent) => {
+          onClick={async event => {
             event.preventDefault();
             return onSubmit();
           }}

@@ -121,7 +121,7 @@ export const SignIn: React.FC<SignInProps> = props => {
             size="lg"
             type="submit"
             data-test="sign-in-key-continue"
-            onClick={async (event: MouseEvent) => {
+            onClick={async event => {
               event.preventDefault();
               return onSubmit();
             }}
