@@ -12,7 +12,6 @@ import {
   Wallet as SDKWallet,
 } from '@stacks/wallet-sdk';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
-// import { WalletStore, walletStore } from '../storage';
 
 /**
  * Manage a wallet instance, stored in memory in the background script
@@ -122,7 +121,7 @@ export const vaultReducer = async (message: MessageFromApp): Promise<Vault> => {
           gaiaHubConfig,
         });
       };
-      void updateConfig();
+      await updateConfig();
       return {
         ...vault,
         wallet,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { Box, Fade, Button, Stack, color } from '@stacks/ui';
 import { Title, Caption } from '@components/typography';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -14,66 +14,98 @@ interface SwitchAccountProps {
   close: () => void;
 }
 
+const TIMEOUT = 350;
+
+const useSwitchAccount = (handleClose: () => void) => {
+  const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
+  const transactionVersion = useRecoilValue(currentTransactionVersion);
+  const timeoutRef = useRef<number | null>(null);
+  const handleSwitchAccount = useCallback(
+    async index => {
+      await doSwitchAccount(index);
+      if (!timeoutRef.current) {
+        timeoutRef.current = setTimeout(() => {
+          handleClose();
+        }, TIMEOUT);
+      }
+    },
+    [doSwitchAccount, timeoutRef, close]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const accounts = wallet?.accounts || [];
+  const getIsActive = (index: number) => index === currentAccountIndex;
+  return { accounts, handleSwitchAccount, getIsActive, transactionVersion };
+};
+
 // eslint-disable-next-line no-warning-comments
 // TODO: this page is nearly identical to the network switcher abstract it out into a shared component
-
-export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
-  const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
-  const setAccountDrawerStep = useSetRecoilState(accountDrawerStep);
-  const transactionVersion = useRecoilValue(currentTransactionVersion);
-  const accountRows = (wallet?.accounts || []).map((account, index) => {
-    return (
-      <SpaceBetween
-        width="100%"
-        key={`account-${account.index}`}
-        _hover={{
-          bg: color('bg-4'),
-        }}
-        cursor="pointer"
-        py="base"
-        px="loose"
-        onClick={async () => {
-          await doSwitchAccount(index);
-          setTimeout(() => {
-            close();
-          }, 350);
-        }}
-      >
-        <Stack>
-          <Title fontSize={2} lineHeight="1rem" fontWeight="400">
-            {getAccountDisplayName(account)}
-          </Title>
-          <Caption>
-            {truncateMiddle(
-              getStxAddress({
-                account: account,
-                transactionVersion,
-              }),
-              9
-            )}
-          </Caption>
-        </Stack>
-        <Fade in={index === currentAccountIndex}>
-          {styles => (
-            <Box
-              as={IconCheck}
-              size="18px"
-              strokeWidth={2.5}
-              color={color('brand')}
-              style={styles}
-            />
-          )}
-        </Fade>
-      </SpaceBetween>
-    );
-  });
-
+const AccountList: React.FC<{ handleClose: () => void }> = memo(({ handleClose }) => {
+  const { accounts, handleSwitchAccount, transactionVersion, getIsActive } = useSwitchAccount(
+    handleClose
+  );
   return (
     <>
-      {accountRows}
+      {accounts.map((account, index) => {
+        return (
+          <SpaceBetween
+            width="100%"
+            key={`account-${account.index}`}
+            _hover={{
+              bg: color('bg-4'),
+            }}
+            cursor="pointer"
+            py="base"
+            px="loose"
+            onClick={() => handleSwitchAccount(index)}
+          >
+            <Stack>
+              <Title fontSize={2} lineHeight="1rem" fontWeight="400">
+                {getAccountDisplayName(account)}
+              </Title>
+              <Caption>
+                {truncateMiddle(
+                  getStxAddress({
+                    account: account,
+                    transactionVersion,
+                  }),
+                  9
+                )}
+              </Caption>
+            </Stack>
+            <Fade in={getIsActive(index)}>
+              {styles => (
+                <Box
+                  as={IconCheck}
+                  size="18px"
+                  strokeWidth={2.5}
+                  color={color('brand')}
+                  style={styles}
+                />
+              )}
+            </Fade>
+          </SpaceBetween>
+        );
+      })}
+    </>
+  );
+});
+
+export const SwitchAccounts: React.FC<SwitchAccountProps> = memo(({ close }) => {
+  const setAccountDrawerStep = useSetRecoilState(accountDrawerStep);
+  return (
+    <>
+      <AccountList handleClose={close} />
       <Box pt="base" px="loose">
         <Button onClick={() => setAccountDrawerStep(AccountStep.Create)}>Create an account</Button>
       </Box>
     </>
   );
-};
+});

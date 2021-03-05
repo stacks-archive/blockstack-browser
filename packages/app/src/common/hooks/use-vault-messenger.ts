@@ -19,7 +19,7 @@ import {
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
 
-const innerMessageWrapper = (message: MessageFromApp, set: Set) => {
+const innerMessageWrapper = async (message: MessageFromApp, set: Set) => {
   return new Promise<Vault>((resolve, reject) => {
     chrome.runtime.sendMessage(message, (vaultOrError: Vault | Error) => {
       if ('hasSetPassword' in vaultOrError) {
@@ -39,9 +39,10 @@ const innerMessageWrapper = (message: MessageFromApp, set: Set) => {
 };
 
 const messageWrapper = (message: MessageFromApp) => {
-  return useRecoilCallback(({ set }) => () => {
-    return innerMessageWrapper(message, set);
-  });
+  return useRecoilCallback(({ set }) => () => innerMessageWrapper(message, set), [
+    message,
+    innerMessageWrapper,
+  ]);
 };
 
 export const useVaultMessenger = () => {
@@ -80,12 +81,21 @@ export const useVaultMessenger = () => {
     return innerMessageWrapper(message, set);
   });
 
+  const getWallet = messageWrapper({ method: Methods.walletRequest, payload: undefined });
+  const doMakeWallet = messageWrapper({ method: Methods.makeWallet, payload: undefined });
+  const doCreateNewAccount = messageWrapper({
+    method: Methods.createNewAccount,
+    payload: undefined,
+  });
+  const doSignOut = messageWrapper({ method: Methods.signOut, payload: undefined });
+  const doLockWallet = messageWrapper({ method: Methods.lockWallet, payload: undefined });
+
   return {
-    getWallet: messageWrapper({ method: Methods.walletRequest, payload: undefined }),
-    doMakeWallet: messageWrapper({ method: Methods.makeWallet, payload: undefined }),
-    doCreateNewAccount: messageWrapper({ method: Methods.createNewAccount, payload: undefined }),
-    doSignOut: messageWrapper({ method: Methods.signOut, payload: undefined }),
-    doLockWallet: messageWrapper({ method: Methods.lockWallet, payload: undefined }),
+    getWallet,
+    doMakeWallet,
+    doCreateNewAccount,
+    doSignOut,
+    doLockWallet,
     doSetPassword,
     doStoreSeed,
     doUnlockWallet,

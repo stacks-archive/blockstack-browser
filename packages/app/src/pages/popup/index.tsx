@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Button, Stack, Box, ButtonProps } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
@@ -30,11 +30,10 @@ const TxButton: React.FC<TxButtonProps> = ({ kind, onClick, ...rest }) => {
   );
 };
 
-export const PopupHome: React.FC = () => {
+export const PopupHome: React.FC = memo(() => {
   const { currentAccount, currentAccountIndex, currentAccountStxAddress } = useWallet();
   const { doChangeScreen } = useAnalytics();
   const assets = useAssets();
-  console.log(assets);
   if (!currentAccount || currentAccountIndex === undefined || !currentAccountStxAddress) {
     console.error('Error! Homepage is not present, this should never happen!');
     return null;
@@ -60,4 +59,4 @@ export const PopupHome: React.FC = () => {
       <AccountInfo />
     </PopupContainer>
   );
-};
+});

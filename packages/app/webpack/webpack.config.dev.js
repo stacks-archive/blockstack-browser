@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const ExtensionReloader = require('webpack-extension-reloader');
 const baseConfig = require('./webpack.config.base');
 
 const config = {
@@ -18,17 +17,7 @@ const config = {
     splitChunks: false,
   },
   devtool: 'eval', // fastest
-  plugins: [
-    new ExtensionReloader({
-      port: 9128,
-      reloadPage: true,
-      entries: {
-        background: 'background',
-        contentScript: ['message-bus'],
-      },
-    }),
-    ...baseConfig.plugins,
-  ],
+  plugins: [...baseConfig.plugins],
 };
 
 module.exports = config;
