@@ -40,7 +40,7 @@ jobs:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
         if: needs.check_fork.outputs.is_not_fork == 'true'
         with:
-          header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}), the [hosted version](https://pr-${{ github.event.number }}.app.stacks.engineering), or the [Stacks testnet demo app](https://pr-${{ github.event.number }}.testnet-demo.stacks.engineering)'
+          header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}) or the [Stacks testnet demo app](https://pr-${{ github.event.number }}.testnet-demo.stacks.engineering)'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
@@ -60,18 +60,6 @@ jobs:
         with:
           name: stacks-wallet-chromium
           path: stacks-wallet-chromium.zip
-      - name: Get git branch
-        id: git-branch
-        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 )"
-      - name: Echo git branch
-        run: echo "${{ steps.git-branch.outputs.branch }}"
-      - name: Upload chromium extension to GCS
-        if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == 'canary'
-        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
-        with:
-          credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
-          path: ./stacks-wallet-chromium.zip
-          destination: wallet-extensions
 
   integration_tests:
     name: Integration tests
@@ -171,26 +159,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
-      - name: Build Blockstack App
-        run: yarn prod:web
-        working-directory: packages/app
-      - name: Copy Blockstack App vercel.json
-        uses: canastro/copy-file-action@master
-        with:
-          source: 'packages/app/vercel.json'
-          target: 'packages/app/dist/vercel.json'
-      - name: Deploy Blockstack App with Vercel
-        uses: amondnet/vercel-action@d4e0a9f
-        id: vercel-deployment-blockstack-app
-        if: github.event_name == 'pull_request'
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP }}
-          scope: ${{ secrets.VERCEL_SCOPE }}
-          working-directory: packages/app/dist
-          github-comment: false
-          alias-domains: pr-${{ github.event.number }}.app.stacks.engineering
       - name: Build Blockstack Test App
         env:
           AUTH_ORIGIN: ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
@@ -202,7 +170,7 @@ jobs:
           source: 'packages/test-app/vercel.json'
           target: 'packages/test-app/dist/vercel.json'
       - name: Deploy Blockstack Test App with Vercel
-        uses: amondnet/vercel-action@d4e0a9f
+        uses: amondnet/vercel-action@d4e0a9f55bfc7ee4d87dd69541f2c93c8e4e8ae6
         id: vercel-deployment-blockstack-test-app
         if: github.event_name == 'pull_request'
         with:
@@ -247,25 +215,3 @@ jobs:
         with:
           name: connect-addon
           path: web-ext-artifacts/*.xpi
-      - name: Get Firefox addon filename
-        id: addon-file
-        run: echo "::set-output name=addon_path::$(find ./web-ext-artifacts -type f -iname "*.xpi" | tail -n1)"
-      - name: Echo FF addon file
-        env:
-          ADDON_PATH: ${{ steps.addon-file.outputs.addon_path }}
-        run: echo $ADDON_PATH
-      - name: Get git branch
-        id: git-branch
-        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 )"
-      - name: Echo git branch
-        run: echo "${{ steps.git-branch.outputs.branch }}"
-      - name: Rename Firefox addon file
-        run: cp ${{ steps.addon-file.outputs.addon_path }} stacks-wallet-firefox.xpi
-      # TODO: move this action to the `publish` workflow after Stacks Wallet is released
-      - name: Upload chromium extension to GCS
-        if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == 'canary'
-        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
-        with:
-          credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
-          path: ./stacks-wallet-firefox.xpi
-          destination: wallet-extensions/

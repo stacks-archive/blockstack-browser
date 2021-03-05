@@ -1,6 +1,6 @@
 {
   "name": "@stacks/connect",
-  "version": "4.3.15",
+  "version": "5.0.0",
   "scripts": {
     "build": "yarn build:modules && yarn build:standalone",
     "build:modules": "tsdx build --format cjs,esm,umd",
@@ -20,9 +20,9 @@
   "unpkg": "dist/bundle.js",
   "dependencies": {
     "@stacks/auth": "^1.0.2",
+    "@stacks/connect-ui": "^3.0.0",
     "@stacks/network": "^1.0.2",
     "@stacks/transactions": "^1.1.1-alpha.0",
-    "@stacks/connect-ui": "2.17.16",
     "buffer": "5.6.0",
     "jsontokens": "^3.0.0"
   },

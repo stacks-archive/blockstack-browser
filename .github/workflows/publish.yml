@@ -2,11 +2,12 @@ name: Publish
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
   workflow_dispatch:
 
 jobs:
   publish_extension:
+    name: Publish production extensions
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'chore(release)')"
     steps:
@@ -25,24 +26,46 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Build extension
         run: sh build-ext.sh
+
+      # Chromium
       - uses: actions/upload-artifact@v2
-        name: Upload Extension Zip
+        name: Upload Artifact - Chromium Extension Zip
         with:
           name: stacks-wallet-chromium
           path: stacks-wallet-chromium.zip
+      - name: Upload Chromium extension to production
+        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
+        with:
+          credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
+          path: ./stacks-wallet-chromium.zip
+          destination: wallet-extensions
+
+      # Firefox
       - name: Sign Production Firefox version
         continue-on-error: true
-        run: yarn web-ext sign --channel=listed
+        run: yarn web-ext sign --channel=unlisted
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
       - uses: actions/upload-artifact@v2
-        name: Upload Firefox Add-On XPI
+        name: Upload Artifact - Firefox Add-On XPI
         with:
           name: connect-addon
           path: web-ext-artifacts/*.xpi
+      - name: Get Firefox addon filename
+        id: addon-file
+        run: echo "::set-output name=addon_path::$(find ./web-ext-artifacts -type f -iname "*.xpi" | tail -n1)"
+      - name: Rename Firefox addon file
+        run: cp ${{ steps.addon-file.outputs.addon_path }} stacks-wallet-firefox.xpi
+      - name: Upload Firefox extension to GCS
+        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
+        with:
+          credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
+          path: ./stacks-wallet-firefox.xpi
+          destination: wallet-extensions/
 
   deploy-prod-apps:
+    name: Publish testnet demo app
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'chore(release)')"
     steps:
@@ -62,25 +85,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
-      - name: Build Blockstack App
-        run: yarn prod:web
-        working-directory: packages/app
-      - name: Copy Blockstack App vercel.json
-        uses: canastro/copy-file-action@master
-        with:
-          source: 'packages/app/vercel.json'
-          target: 'packages/app/dist/vercel.json'
-      - uses: amondnet/vercel-action@d4e0a9f
-        id: vercel-deployment-app-production
-        if: github.event_name == 'push' ||  github.event_name == 'release'
-        name: Deploy authenticator app to production
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP }}
-          vercel-args: '--prod'
-          scope: ${{ secrets.VERCEL_SCOPE }}
-          working-directory: packages/app/dist
       - name: Build Blockstack Test App
         env:
           AUTH_ORIGIN: https://app.blockstack.org
@@ -91,7 +95,7 @@ jobs:
         with:
           source: 'packages/test-app/vercel.json'
           target: 'packages/test-app/dist/vercel.json'
-      - uses: amondnet/vercel-action@d4e0a9f
+      - uses: amondnet/vercel-action@d4e0a9f55bfc7ee4d87dd69541f2c93c8e4e8ae6
         id: vercel-deployment-production
         name: Deploy test app to production
         if: github.event_name == 'push' ||  github.event_name == 'release'
@@ -104,6 +108,7 @@ jobs:
           working-directory: packages/test-app/dist
 
   publish_npm:
+    name: Publish production NPM packages
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'chore(release)')"
     steps:

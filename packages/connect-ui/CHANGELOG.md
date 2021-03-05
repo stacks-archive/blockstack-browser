@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/blockstack/ux/compare/@stacks/connect-ui@2.17.16...@stacks/connect-ui@3.0.0) (2021-03-05)
+
+
+### Bug Fixes
+
+* webpack 5, fast refresh :~) ([63d7d38](https://github.com/blockstack/ux/commit/63d7d383855ab46545bccea4302858960e806a5c))
+
+
+### Features
+
+* improved UX around wallet onboarding ([8ab3dd3](https://github.com/blockstack/ux/commit/8ab3dd397b16a6c46f225286826966b5ef5db250))
+* stacks wallet for web ([6957c04](https://github.com/blockstack/ux/commit/6957c04bdcfb816fcf757815b9b2720e7a9209eb))
+* use extension-native apis for app messaging ([663281a](https://github.com/blockstack/ux/commit/663281ad6e7a29e572ae6a6f24cf2bc6925a6a3b))
+
+
+
+
+
 ## 2.17.16 (2021-01-09)
 
 **Note:** Version bump only for package @stacks/connect-ui

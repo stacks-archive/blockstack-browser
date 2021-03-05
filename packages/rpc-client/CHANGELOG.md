@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/blockstack/ux/compare/@stacks/rpc-client@0.8.15...@stacks/rpc-client@1.0.0) (2021-03-05)
+
+
+### Features
+
+* use extension-native apis for app messaging ([663281a](https://github.com/blockstack/ux/commit/663281ad6e7a29e572ae6a6f24cf2bc6925a6a3b))
+
+
+
+
+
 ## 0.8.15 (2021-01-09)
 
 **Note:** Version bump only for package @stacks/rpc-client

@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/blockstack/ux/compare/@stacks/app@1.20.16...@stacks/app@2.0.0) (2021-03-05)
+
+
+### Bug Fixes
+
+* add ability to view secret key ([d7dca7d](https://github.com/blockstack/ux/commit/d7dca7d580f4dc294dab7b3b70ee40ae29a85b12))
+* add in warning ([2906270](https://github.com/blockstack/ux/commit/2906270f5fb9ed952b5c9c58f5306d06c618a7ef))
+* authentication error ([6abf504](https://github.com/blockstack/ux/commit/6abf504de6995e357c9c8fac7a291fe42e5edb1a))
+* bad state after resetting recoil state ([1e89762](https://github.com/blockstack/ux/commit/1e8976275e9e961d8ffb327c114bbd267b44a5bb))
+* broken extension locked state, fixes [#760](https://github.com/blockstack/ux/issues/760) ([c2bca4e](https://github.com/blockstack/ux/commit/c2bca4e0da406baaf9447a33bc82f89315de8be5))
+* broken state after restoring extension ([7baf146](https://github.com/blockstack/ux/commit/7baf14648332dead4b4096881c4325ecff22b20c))
+* bug when creating new account ([7bdeec6](https://github.com/blockstack/ux/commit/7bdeec6984f860fcf71ff18aa8a60c770f01ccbe))
+* capitalize secret key, fixes [#768](https://github.com/blockstack/ux/issues/768) ([0706230](https://github.com/blockstack/ux/commit/0706230589202c4e4d7b452271f9340548004e7c))
+* choose account page tweaks, fixes [#735](https://github.com/blockstack/ux/issues/735) ([6ae6889](https://github.com/blockstack/ux/commit/6ae688929363c6d0d8de4e75cd5d0db7cc0dbc06))
+* close icon in drawers ([c4f1def](https://github.com/blockstack/ux/commit/c4f1defebe21ce32f8f6ff1d4b2de5c538db7959))
+* conditional bug ([5f2ad4a](https://github.com/blockstack/ux/commit/5f2ad4aca1fb0f20ef9ae7a3c69d899654f5e1e6))
+* correct network/chainID matching in tx signing, nonce error ([6190d5f](https://github.com/blockstack/ux/commit/6190d5fcfb62067d494718532215a1e043db8594))
+* cursor on settings popover, fixes [#739](https://github.com/blockstack/ux/issues/739) ([8d58259](https://github.com/blockstack/ux/commit/8d58259d920267051ddac5809fdddfd05f215754))
+* default font-size in extension ([320fea6](https://github.com/blockstack/ux/commit/320fea633eb67fb9c63afa501953c528496fbf64))
+* font sizes on tx popup ([00bf475](https://github.com/blockstack/ux/commit/00bf475d13c8175755347b6ecf48dfc0cae8b586))
+* header alignment ([7121f8a](https://github.com/blockstack/ux/commit/7121f8a3039017f1def47455bfed937c66f0f285))
+* hide actions during onboarding, fixes [#738](https://github.com/blockstack/ux/issues/738) ([d1cede0](https://github.com/blockstack/ux/commit/d1cede0f2cc38a5d371455ea28d824d41adb682c))
+* improve general sizing and layout, refactor some layout elements ([91f580c](https://github.com/blockstack/ux/commit/91f580c5b02fc88edd66d8b5f9e4f810fd86e39a))
+* improvements from code review feedback ([2a1d243](https://github.com/blockstack/ux/commit/2a1d2433afffac19ae9728297995919fc991430c))
+* improvements to reduce network load ([101b278](https://github.com/blockstack/ux/commit/101b278bbaa3419198edd91e225ab6017ca83b3a))
+* index.html -> popup.html ([5e0b42f](https://github.com/blockstack/ux/commit/5e0b42fd01187855744dc63463f406b6aa6f4e84))
+* input formatting on send page. fixes [#729](https://github.com/blockstack/ux/issues/729) ([c6ad05e](https://github.com/blockstack/ux/commit/c6ad05ec4b4591f641f908e473ec6a4418d42675))
+* installation integration test ([8a2982b](https://github.com/blockstack/ux/commit/8a2982b41f769ea1faaa7b4266067f3ca4497ecf))
+* integration tests ([c903de7](https://github.com/blockstack/ux/commit/c903de7d05b806d66fd23b5816d05be7f8ef9f3d))
+* lint ([2197ea5](https://github.com/blockstack/ux/commit/2197ea58a7116b4ac4e67d26628c5780ae60182b))
+* lint error ([75e60a4](https://github.com/blockstack/ux/commit/75e60a4f0f6ee4b6a87af0d905497ca227d95fe7))
+* linting error ([35ca002](https://github.com/blockstack/ux/commit/35ca002b0b235962ee9823812862675eea2736f3))
+* missing test selector for integration tests ([6691350](https://github.com/blockstack/ux/commit/6691350efc6dbba3fc8f49ab5fde1ff37e8c04ae))
+* mock fee fetching in transaction-utils test ([135c3f4](https://github.com/blockstack/ux/commit/135c3f4f7047919223a13dcb3138eb67a4b47a8e))
+* nasty bugs around password, redux state in ext, fixes [#770](https://github.com/blockstack/ux/issues/770) ([6fc81dd](https://github.com/blockstack/ux/commit/6fc81ddb978673c02288dd88e21324ce5c70c6c9))
+* nonce issue ([225e1f3](https://github.com/blockstack/ux/commit/225e1f371aa8afa79faef2052d191608ab37f8c4))
+* nonce issues causing pending tx's ([1e916f9](https://github.com/blockstack/ux/commit/1e916f9aa175e144ecce82ac4c031d32afd71447))
+* nonce not set when zero ([b7a0724](https://github.com/blockstack/ux/commit/b7a0724f7326292d343c06c4088dc7003962faad))
+* prevent overflow on save key in popup, fixes [#926](https://github.com/blockstack/ux/issues/926) ([e6be09b](https://github.com/blockstack/ux/commit/e6be09b489db4616510d170e951d4fb8ac9c3e9c))
+* properly set post conditions from payload ([a53216e](https://github.com/blockstack/ux/commit/a53216ee2baf5f7a940af05e4ff0b9d057f934ce))
+* quick fix to reduce node load ([63f00a1](https://github.com/blockstack/ux/commit/63f00a173de79b273601abadc4c00e97bf438809))
+* remove incorrect typing for event ([eda8e64](https://github.com/blockstack/ux/commit/eda8e6404372a8ffdd15787fafa35ba7e0a454a8))
+* revert to localStorage for ext, fix CI oddities ([e43b74d](https://github.com/blockstack/ux/commit/e43b74d9c22af8860f82f959b6d3d1334b49aa6f))
+* secret key cut off, 24 words default, fixes [#771](https://github.com/blockstack/ux/issues/771) ([0f27637](https://github.com/blockstack/ux/commit/0f2763784508ef6f751d3289cc26f37601c99690))
+* send max top ([0c8418e](https://github.com/blockstack/ux/commit/0c8418e5391fd2b9301c6b01f618141dd7c0ba10))
+* serialize post conditions in connect payload ([faebbec](https://github.com/blockstack/ux/commit/faebbecb4994de6a439b78ad693017c279c3bc82))
+* set PostCondition principal for string serialized PCs ([36b1aeb](https://github.com/blockstack/ux/commit/36b1aeb6f1412dd60fc043346410f9704117c9bf))
+* show latest transaction on home page immediately, fixes [#766](https://github.com/blockstack/ux/issues/766) ([0ce2c74](https://github.com/blockstack/ux/commit/0ce2c747519f29f7bfb468bed4daa3e8188c5ee2))
+* sizes in different contexts, clean up account select page ([b131429](https://github.com/blockstack/ux/commit/b13142943bfea3139fe001c823919444cd35c39f))
+* small csp fix ([1306198](https://github.com/blockstack/ux/commit/13061987ce7f7c3b37aa54d7c4f1c349e1d9bfce))
+* spacing, flow of sign up ([d514fd4](https://github.com/blockstack/ux/commit/d514fd4f104746f275789166f2d101b71db25206))
+* stacks blockchain api language, fixes [#740](https://github.com/blockstack/ux/issues/740) ([2a3a6f9](https://github.com/blockstack/ux/commit/2a3a6f9ad887e9ad0dfb29d09b5b376b994f76ff))
+* tests with new auth rules ([6934049](https://github.com/blockstack/ux/commit/693404953738b8a56ed0b56c07b5a9cd6aa15282))
+* tons of tx-related improvements. fixes [#728](https://github.com/blockstack/ux/issues/728) and [#729](https://github.com/blockstack/ux/issues/729) ([d8b9e50](https://github.com/blockstack/ux/commit/d8b9e5096ea13b09fdbd1d2f5ba4245bdf15e9e4))
+* track rehydrated from vault to reduce jitter on load ([8d76df9](https://github.com/blockstack/ux/commit/8d76df98a84518bdf9a95aae910336c1d4e9da01))
+* ts error unused import ([c1180a3](https://github.com/blockstack/ux/commit/c1180a3a2f667d0e04bf8241ef750e392b9f855f))
+* update blockchain API URLs, fixes [#802](https://github.com/blockstack/ux/issues/802) ([2aa204f](https://github.com/blockstack/ux/commit/2aa204fa90f4483f4d2e04efda50912ed72b37c8))
+* validate STX address on send page, fixes [#945](https://github.com/blockstack/ux/issues/945) ([c14ab85](https://github.com/blockstack/ux/commit/c14ab85d44beca11ad35b4a4ea1331f05a7d4f59))
+* webpack 5, fast refresh :~) ([63d7d38](https://github.com/blockstack/ux/commit/63d7d383855ab46545bccea4302858960e806a5c))
+* wonky url causing issues in auth ([fba1619](https://github.com/blockstack/ux/commit/fba16199102272b52aea17031befeed9dbab15da))
+
+
+### Features
+
+* disable username registrations ([1f21428](https://github.com/blockstack/ux/commit/1f214285e111a1bdacbcdbe3f13188beb8004fcc))
+* improved UX around wallet onboarding ([8ab3dd3](https://github.com/blockstack/ux/commit/8ab3dd397b16a6c46f225286826966b5ef5db250))
+* mainnet network ([c9802a9](https://github.com/blockstack/ux/commit/c9802a93392b98b84f35c46d20bda91acf48cff5))
+* move key management to 'vault' in background script ([b83cc7e](https://github.com/blockstack/ux/commit/b83cc7e181e4d45474e7c0d393d045052f4fdd94))
+* password validation, fixes [#733](https://github.com/blockstack/ux/issues/733), fixes [#720](https://github.com/blockstack/ux/issues/720) ([d8f6832](https://github.com/blockstack/ux/commit/d8f6832e85199d05ad906236bd8c12614427e227))
+* persist networks ChainID, use it everywhere ([66a21c6](https://github.com/blockstack/ux/commit/66a21c674bb76c57e93d4d35652407da9833504d))
+* qol improvements for tx signing ([f86d568](https://github.com/blockstack/ux/commit/f86d568825aa7bcb5512885546862d892324c546))
+* refactor wallet logic, remove keychain ([0f3ac1f](https://github.com/blockstack/ux/commit/0f3ac1fa86b81d7eef1da1db89f8ab3c30540d6c))
+* restore from wallet config ([008b1a2](https://github.com/blockstack/ux/commit/008b1a2c13f9cafcd1dc73f659bb53a328baeec9))
+* stacks wallet branding, icon, asset cleanup, fixes [#732](https://github.com/blockstack/ux/issues/732) ([b9cb445](https://github.com/blockstack/ux/commit/b9cb445c92554ffc8ed9b05622cf087739454498))
+* stacks wallet for web ([6957c04](https://github.com/blockstack/ux/commit/6957c04bdcfb816fcf757815b9b2720e7a9209eb))
+* switch to signed-in account with connect tx calls ([d6a896f](https://github.com/blockstack/ux/commit/d6a896f39ab150fb8a9d3d3d6aba219334547c9b))
+* use extension-native apis for app messaging ([663281a](https://github.com/blockstack/ux/commit/663281ad6e7a29e572ae6a6f24cf2bc6925a6a3b))
+
+
+
+
+
 ## 1.20.16 (2021-01-09)
 
 **Note:** Version bump only for package @stacks/app

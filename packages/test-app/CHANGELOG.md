@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/blockstack/ux/compare/test-app@1.11.15...test-app@2.0.0) (2021-03-05)
+
+
+### Bug Fixes
+
+* correct network/chainID matching in tx signing, nonce error ([6190d5f](https://github.com/blockstack/ux/commit/6190d5fcfb62067d494718532215a1e043db8594))
+* default font-size in extension ([320fea6](https://github.com/blockstack/ux/commit/320fea633eb67fb9c63afa501953c528496fbf64))
+* dont wait for faucet in test app, fixes [#929](https://github.com/blockstack/ux/issues/929) ([c60a564](https://github.com/blockstack/ux/commit/c60a56402c9850a094c2b58bcb03f7bd8c6d5e39))
+* header on demo app ([e2969c8](https://github.com/blockstack/ux/commit/e2969c8b75a1af45b21b9f5b1e25b7557e3b608a))
+* properly set post conditions from payload ([a53216e](https://github.com/blockstack/ux/commit/a53216ee2baf5f7a940af05e4ff0b9d057f934ce))
+* testnet demo bug, fixes [#774](https://github.com/blockstack/ux/issues/774) ([e9ac21a](https://github.com/blockstack/ux/commit/e9ac21a991ba8356851a96feda878cd8d4b2e823))
+* tests with new auth rules ([6934049](https://github.com/blockstack/ux/commit/693404953738b8a56ed0b56c07b5a9cd6aa15282))
+* webpack 5, fast refresh :~) ([63d7d38](https://github.com/blockstack/ux/commit/63d7d383855ab46545bccea4302858960e806a5c))
+
+
+### Features
+
+* improved UX around wallet onboarding ([8ab3dd3](https://github.com/blockstack/ux/commit/8ab3dd397b16a6c46f225286826966b5ef5db250))
+* mainnet network ([c9802a9](https://github.com/blockstack/ux/commit/c9802a93392b98b84f35c46d20bda91acf48cff5))
+* password validation, fixes [#733](https://github.com/blockstack/ux/issues/733), fixes [#720](https://github.com/blockstack/ux/issues/720) ([d8f6832](https://github.com/blockstack/ux/commit/d8f6832e85199d05ad906236bd8c12614427e227))
+* qol improvements for tx signing ([f86d568](https://github.com/blockstack/ux/commit/f86d568825aa7bcb5512885546862d892324c546))
+* refactor wallet logic, remove keychain ([0f3ac1f](https://github.com/blockstack/ux/commit/0f3ac1fa86b81d7eef1da1db89f8ab3c30540d6c))
+* stacks wallet for web ([6957c04](https://github.com/blockstack/ux/commit/6957c04bdcfb816fcf757815b9b2720e7a9209eb))
+* use extension-native apis for app messaging ([663281a](https://github.com/blockstack/ux/commit/663281ad6e7a29e572ae6a6f24cf2bc6925a6a3b))
+
+
+
+
+
 ## 1.11.15 (2021-01-09)
 
 **Note:** Version bump only for package test-app

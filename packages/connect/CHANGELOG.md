@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/blockstack/ux/compare/@stacks/connect@4.3.15...@stacks/connect@5.0.0) (2021-03-05)
+
+
+### Bug Fixes
+
+* correct network/chainID matching in tx signing, nonce error ([6190d5f](https://github.com/blockstack/ux/commit/6190d5fcfb62067d494718532215a1e043db8594))
+* link packages when building in npm ([34aff46](https://github.com/blockstack/ux/commit/34aff4632fcb24dbb0d8e2b9c20beb30298cfc41))
+* serialize post conditions in connect payload ([faebbec](https://github.com/blockstack/ux/commit/faebbecb4994de6a439b78ad693017c279c3bc82))
+* showing connect ui and opening extension ([f1f75de](https://github.com/blockstack/ux/commit/f1f75dedfcde220c6c7eaabce2beeed62be67dbf))
+* webpack 5, fast refresh :~) ([63d7d38](https://github.com/blockstack/ux/commit/63d7d383855ab46545bccea4302858960e806a5c))
+
+
+### Features
+
+* improved UX around wallet onboarding ([8ab3dd3](https://github.com/blockstack/ux/commit/8ab3dd397b16a6c46f225286826966b5ef5db250))
+* refactor wallet logic, remove keychain ([0f3ac1f](https://github.com/blockstack/ux/commit/0f3ac1fa86b81d7eef1da1db89f8ab3c30540d6c))
+* stacks wallet for web ([6957c04](https://github.com/blockstack/ux/commit/6957c04bdcfb816fcf757815b9b2720e7a9209eb))
+* switch to signed-in account with connect tx calls ([d6a896f](https://github.com/blockstack/ux/commit/d6a896f39ab150fb8a9d3d3d6aba219334547c9b))
+* use extension-native apis for app messaging ([663281a](https://github.com/blockstack/ux/commit/663281ad6e7a29e572ae6a6f24cf2bc6925a6a3b))
+* use testnet by default in connect tx signing ([056dc00](https://github.com/blockstack/ux/commit/056dc0036e36fdae0d52caadfa5094e388d6de3b))
+
+
+
+
+
 ## 4.3.15 (2021-01-09)
 
 **Note:** Version bump only for package @stacks/connect

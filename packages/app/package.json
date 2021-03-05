@@ -25,7 +25,7 @@
     "test:watch": "NODE_ENV=test jest --watch",
     "typecheck": "tsc --noEmit"
   },
-  "version": "1.20.16",
+  "version": "2.0.0",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/prettier-config": "^0.0.6",
@@ -37,10 +37,10 @@
     "@emotion/styled": "^11.0.0",
     "@rehooks/document-title": "^1.0.1",
     "@stacks/auth": "^1.0.2",
-    "@stacks/connect": "^4.3.15",
-    "@stacks/connect-ui": "^2.17.16",
+    "@stacks/connect": "^5.0.0",
+    "@stacks/connect-ui": "^3.0.0",
     "@stacks/network": "^1.0.2",
-    "@stacks/rpc-client": "^0.8.15",
+    "@stacks/rpc-client": "^1.0.0",
     "@stacks/transactions": "1.1.1-alpha.0",
     "@stacks/ui": "7.3.0",
     "@stacks/ui-core": "7.0.0",

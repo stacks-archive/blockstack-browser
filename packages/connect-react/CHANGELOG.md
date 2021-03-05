@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/blockstack/ux/compare/@stacks/connect-react@2.17.15...@stacks/connect-react@3.0.0) (2021-03-05)
+
+
+### Bug Fixes
+
+* dont export screen in useConnect, fixes [#919](https://github.com/blockstack/ux/issues/919) ([4823355](https://github.com/blockstack/ux/commit/4823355799708d59666c50447ee2256d8bf3fa8e))
+* webpack 5, fast refresh :~) ([63d7d38](https://github.com/blockstack/ux/commit/63d7d383855ab46545bccea4302858960e806a5c))
+
+
+### Features
+
+* refactor wallet logic, remove keychain ([0f3ac1f](https://github.com/blockstack/ux/commit/0f3ac1fa86b81d7eef1da1db89f8ab3c30540d6c))
+* stacks wallet for web ([6957c04](https://github.com/blockstack/ux/commit/6957c04bdcfb816fcf757815b9b2720e7a9209eb))
+* use extension-native apis for app messaging ([663281a](https://github.com/blockstack/ux/commit/663281ad6e7a29e572ae6a6f24cf2bc6925a6a3b))
+
+
+
+
+
 ## 2.17.15 (2021-01-09)
 
 **Note:** Version bump only for package @stacks/connect-react

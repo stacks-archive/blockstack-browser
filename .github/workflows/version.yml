@@ -2,7 +2,7 @@ name: Version
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
   workflow_dispatch:
 
 env:
