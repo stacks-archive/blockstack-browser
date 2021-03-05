@@ -59,9 +59,4 @@ export class DemoPage {
     )) as string;
     return authResponse;
   }
-
-  async clickConnectGetStarted() {
-    const modal = await this.page.waitForSelector('connect-modal', { state: 'attached' });
-    await modal.dispatchEvent('onSignUp');
-  }
 }

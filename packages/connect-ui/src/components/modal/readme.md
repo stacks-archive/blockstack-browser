@@ -17,8 +17,6 @@
 | Event              | Description | Type               |
 | ------------------ | ----------- | ------------------ |
 | `handleCloseModal` |             | `CustomEvent<any>` |
-| `handleSignIn`     |             | `CustomEvent<any>` |
-| `handleSignUp`     |             | `CustomEvent<any>` |
 
 
 ----------------------------------------------

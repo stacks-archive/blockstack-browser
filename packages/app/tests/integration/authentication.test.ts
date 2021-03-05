@@ -67,7 +67,6 @@ describe(`Authentication integration tests`, () => {
     }
     await browser.demoPage.goToPage();
     await browser.demoPage.openConnect();
-    await browser.demoPage.clickConnectGetStarted();
 
     const auth = await WalletPage.getAuthPopup(browser);
     await auth.clickSignUp();
@@ -170,4 +169,3 @@ describe(`Authentication integration tests`, () => {
     );
   });
 });
-// });

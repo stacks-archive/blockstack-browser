@@ -12,11 +12,6 @@ import { StacksIcon } from './assets/stacks-icon';
 })
 export class Modal {
   @Prop() authOptions: AuthOptions;
-  @Event()
-  handleSignUp: EventEmitter;
-
-  @Event()
-  handleSignIn: EventEmitter;
 
   @Event()
   handleCloseModal: EventEmitter;
