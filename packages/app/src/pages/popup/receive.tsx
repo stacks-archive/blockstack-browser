@@ -7,17 +7,12 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { Toast } from '@components/toast';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { Caption, Title } from '@components/typography';
-
-// eslint-disable-next-line no-warning-comments
-// TODO: fix types
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import vkQr from '@vkontakte/vk-qr';
+import { createQR } from '@vkontakte/vk-qr';
 
 const QRcode: React.FC<{ principal: string } & FlexProps> = memo(({ principal, ...rest }) => {
   const qrSvg = React.useMemo(
     () =>
-      vkQr.createQR(principal, {
+      createQR(principal, {
         ecc: 0,
         qrSize: 180,
         backgroundColor: color('text-body'),
