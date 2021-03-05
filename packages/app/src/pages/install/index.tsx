@@ -27,7 +27,7 @@ const Actions: React.FC<StackProps> = props => {
       <Button onClick={register} isLoading={isCreatingWallet} data-test="sign-up" width="100%">
         I'm new to Stacks
       </Button>
-      <Link onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)}>
+      <Link onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)} data-test="sign-in">
         Sign in with Secret Key
       </Link>
     </Stack>
