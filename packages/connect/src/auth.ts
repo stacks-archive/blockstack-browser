@@ -6,7 +6,7 @@ import { getStacksProvider } from './utils';
 export const defaultAuthURL = 'https://app.blockstack.org';
 
 if (typeof window !== 'undefined') {
-  (window as any).__CONNECT_VERSION__ = packageJson.version;
+  window.__CONNECT_VERSION__ = packageJson.version;
 }
 
 export const isMobile = () => {

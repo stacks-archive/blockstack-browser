@@ -5,6 +5,12 @@ export interface FinishedData {
   userSession: UserSession;
 }
 
+declare global {
+  interface Window {
+    __CONNECT_VERSION__?: string;
+  }
+}
+
 export interface AuthOptions {
   /** The URL you want the user to be redirected to after authentication. */
   redirectTo?: string;
