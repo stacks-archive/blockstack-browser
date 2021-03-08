@@ -212,12 +212,15 @@ const config = {
         toType: 'file',
         transform(content, path) {
           const csrTag = '<% DEV_CSR %>';
+          const objSrcTag = '<% DEV_OBJECT_SRC %>';
           const versionTag = '<% VERSION %>';
           content = content.toString();
           if (IS_DEV) {
             content = content.replace(csrTag, " 'unsafe-eval'");
+            content = content.replace(objSrcTag, "'self'");
           } else {
             content = content.replace(csrTag, '');
+            content = content.replace(objSrcTag, "'none'");
           }
           const fullVersion = getVersion();
           console.log('Extension Version:', fullVersion);
