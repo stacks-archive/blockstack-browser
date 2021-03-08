@@ -29,7 +29,7 @@ const useSwitchAccount = (handleClose: () => void) => {
         }, TIMEOUT);
       }
     },
-    [doSwitchAccount, timeoutRef, close]
+    [doSwitchAccount, timeoutRef, handleClose]
   );
 
   useEffect(() => {

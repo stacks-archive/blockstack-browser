@@ -39,10 +39,7 @@ const innerMessageWrapper = async (message: MessageFromApp, set: Set) => {
 };
 
 const messageWrapper = (message: MessageFromApp) => {
-  return useRecoilCallback(({ set }) => () => innerMessageWrapper(message, set), [
-    message,
-    innerMessageWrapper,
-  ]);
+  return useRecoilCallback(({ set }) => () => innerMessageWrapper(message, set), [message]);
 };
 
 export const useVaultMessenger = () => {
