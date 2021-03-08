@@ -35,7 +35,7 @@ export const PopupHome: React.FC = memo(() => {
   const { doChangeScreen } = useAnalytics();
   const assets = useAssets();
   if (!currentAccount || currentAccountIndex === undefined || !currentAccountStxAddress) {
-    console.error('Error! Homepage is not present, this should never happen!');
+    console.error('Error! Homepage rendered without account state, which should never happen.');
     return null;
   }
   return (

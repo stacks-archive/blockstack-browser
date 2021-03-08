@@ -17,12 +17,12 @@ const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...
   const setCurrentNetworkKey = useSetRecoilState(currentNetworkKeyStore);
 
   const network = networks[item];
-
+  const delayToShowCheckmarkMotion = 350;
   const handleItemClick = useCallback(() => {
     setCurrentNetworkKey(item);
     setTimeout(() => {
       setShowNetworks(false);
-    }, 350); // timeout to show the check mark move :)
+    }, delayToShowCheckmarkMotion);
   }, [setCurrentNetworkKey, item, setShowNetworks]);
 
   return (

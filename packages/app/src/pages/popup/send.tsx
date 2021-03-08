@@ -108,7 +108,7 @@ export const PopupSend: React.FC = () => {
     if (assets.length === 1 && amountInputRef.current) {
       amountInputRef?.current?.focus?.();
     }
-  }, [amountInputRef]);
+  }, [amountInputRef, assets.length]);
 
   const onValidate = useValidateForm({
     setAssetError,

@@ -34,6 +34,8 @@ export const Screen: React.FC<ScreenBodyProps> = ({
         as={onSubmit ? 'form' : 'main'}
         onSubmit={handleSubmit}
         data-test="screen"
+        maxHeight="100vh"
+        overflow="auto"
         {...rest}
       >
         {children}

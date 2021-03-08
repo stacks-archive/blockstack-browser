@@ -66,6 +66,7 @@ export const Header: React.FC<HeaderProps> = memo(props => {
         p="loose"
         alignItems={hideActions ? 'center' : 'flex-start'}
         justifyContent="space-between"
+        position="relative"
         {...props}
       >
         {!title ? (

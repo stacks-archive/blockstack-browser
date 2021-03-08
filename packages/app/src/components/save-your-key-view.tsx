@@ -12,7 +12,7 @@ export const SecretKeyMessage: React.FC<BoxProps> = props => {
     <Text {...props}>
       These {wordCount} words are your Secret Key. They create your account, and you sign in on
       different devices with them. Make sure to save these somewhere safe.{' '}
-      <Text display="inline" fontWeight={600}>
+      <Text display="inline" fontWeight={500}>
         If you lose these words, you lose your account.
       </Text>
     </Text>

@@ -35,12 +35,12 @@ const AccountItem: React.FC<AccountItemProps> = ({
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   return (
     <Flex alignItems="center" {...rest}>
-      <Stack spacing="2px">
+      <Stack textAlign="left" spacing="2px">
         <Text
           display="block"
           maxWidth="100%"
           textAlign="left"
-          fontWeight={600}
+          fontWeight={500}
           fontSize={2}
           style={{ wordBreak: 'break-word' }}
           {...getLoadingProps(showLoadingProps)}
