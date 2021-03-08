@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.2 (2021-03-08)
+
+
+### Bug Fixes
+
+* deps ([86de1c1](https://github.com/blockstack/ux/commit/86de1c1a931ceaa141d4baf0c88612c180216f35))
+
+
+
+
+
 ## 5.0.1 (2021-03-08)
 
 
