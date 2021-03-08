@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.1 (2021-03-08)
+
+
+### Bug Fixes
+
+* checkout main when publishing npm on main ([40446a0](https://github.com/blockstack/ux/commit/40446a0264ccdbcc4ddc556118517680e39b246f))
+
+
+
+
+
 # [5.0.0](https://github.com/blockstack/ux/compare/@stacks/connect@4.3.15...@stacks/connect@5.0.0) (2021-03-05)
 
 
