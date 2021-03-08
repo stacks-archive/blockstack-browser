@@ -15,6 +15,6 @@ export const theme = {
   fonts: {
     ...uiTheme.fonts,
     heading:
-      '"Open Sauce", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+      '"Open Sauce One", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
   },
 };

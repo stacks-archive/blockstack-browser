@@ -1,15 +1,117 @@
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/assets/fonts/open-sauce-one/opensauceone-bold-webfont.woff2') format('woff2'),
+  url('/assets/fonts/open-sauce-one/opensauceone-bold-webfont.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/assets/fonts/open-sauce-one/opensauceone-bolditalic-webfont.woff2') format('woff2'),
+  url('/assets/fonts/open-sauce-one/opensauceone-bolditalic-webfont.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/assets/fonts/open-sauce-one/opensauceone-italic-webfont.woff2') format('woff2'),
+  url('/assets/fonts/open-sauce-one/opensauceone-italic-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/assets/fonts/open-sauce-one/opensauceone-regular-webfont.woff2') format('woff2'),
+  url('/assets/fonts/open-sauce-one/opensauceone-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/assets/fonts/open-sauce-one/opensauceone-semibold-webfont.woff2') format('woff2'),
+  url('/assets/fonts/open-sauce-one/opensauceone-semibold-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sauce One';
+  src: url('/assets/fonts/open-sauce-one/opensauceone-semibolditalic-webfont.woff2') format('woff2'),
+  url('/assets/fonts/open-sauce-one/opensauceone-semibolditalic-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/inter/Inter-Regular.woff2") format("woff2"),
+  url("/assets/fonts/inter/Inter-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/inter/Inter-Italic.woff2") format("woff2"),
+  url("/assets/fonts/inter/Inter-Italic.woff") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/assets/fonts/inter/Inter-Medium.woff2") format("woff2"),
+  url("/assets/fonts/inter/Inter-Medium.woff") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/assets/fonts/inter/Inter-MediumItalic.woff2") format("woff2"),
+  url("/assets/fonts/inter/Inter-MediumItalic.woff") format("woff");
+}
+
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/assets/fonts/fira-code/woff2/FiraCode-Light.woff2') format('woff2'),
+  url("/assets/fonts/fira-code/woff/FiraCode-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/assets/fonts/fira-code/woff2/FiraCode-Regular.woff2') format('woff2'),
+  url("/assets/fonts/fira-code/woff/FiraCode-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 html, body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-  sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   -webkit-font-smoothing: antialiased;
   background-color: white;
   font-size: 100%;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
-  height: 600px;
-  max-height: 600px;
-  width: 392px;
+}
+
+
+html, body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+  sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 body {
@@ -32,8 +134,12 @@ hr {
 }
 
 pre {
-  font-family: monospace, monospace;
+  font-family: 'Fira Code', monospace;
   font-size: 1em;
+}
+
+code {
+  font-family: 'Fira Code', monospace;
 }
 
 a {
@@ -166,83 +272,12 @@ template {
   display: none;
 }
 
-@font-face {
-  font-family: 'Fira Code';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJV37MOzlojwUKaJO.woff) format('woff');
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-}
-
-@font-face {
-  font-family: 'Fira Code';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVT7MOzlojwUKaJO.woff) format('woff');
-  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-
-@font-face {
-  font-family: 'Fira Code';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVz7MOzlojwUKaJO.woff) format('woff');
-  unicode-range: U+1F00-1FFF;
-}
-
-@font-face {
-  font-family: 'Fira Code';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVP7MOzlojwUKaJO.woff) format('woff');
-  unicode-range: U+0370-03FF;
-}
-
-@font-face {
-  font-family: 'Fira Code';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJV77MOzlojwUKaJO.woff) format('woff');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Fira Code';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firacode/v9/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVD7MOzlojwUKQ.woff) format('woff');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Open Sauce';
-  src: url('https://explorer.stacks.co/static/fonts/opensaucesans-medium-webfont.woff2') format('woff2'), url('https://explorer.stacks.co/static/fonts/opensaucesans-medium-webfont.woff') format('woff');
-  font-weight: 500;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Open Sauce';
-  src: url('https://explorer.stacks.co/static/fonts/opensaucesans-regular-webfont.woff2') format('woff2'), url('https://explorer.stacks.co/static/fonts/opensaucesans-regular-webfont.woff') format('woff');
-  font-weight: 400;
-  font-weight: normal;
-  font-style: normal;
-}
-
-
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: 'Open Sauce', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+  font-family: 'Open Sauce One', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
   sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }

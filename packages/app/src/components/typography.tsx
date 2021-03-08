@@ -12,7 +12,7 @@ export const Title = forwardRefWithAs<BoxProps, 'span'>((props, ref) => (
     fontSize="32px"
     lineHeight="42px"
     fontWeight="500"
-    fontFamily="'Open Sauce'"
+    fontFamily="'Open Sauce One'"
     color={color('text-title')}
     ref={ref}
     display="block"
