@@ -4,7 +4,7 @@
 
 </div>
 
-Source code is available on Github at https://github.com/blockstack/ux/tree/master/packages/app
+Source code is available on Github at https://github.com/blockstack/ux/tree/main/packages/app
 
 The Blockstack App is an application for interacting and authenticating with [Blockstack](https://blockstack.org) apps. It can be used as a hosted web app (available at [app.blockstack.org](https://app.blockstack.org)) or as a browser extension.
 
@@ -29,20 +29,20 @@ Although this app is usable as a browser extension, the best interface for devel
 
 Clone this repository and install dependencies:
 
-~~~bash
+```bash
 git clone https://github.com/blockstack/ux
 cd ux
 yarn
-~~~
+```
 
 ### Run Locally
 
-~~~bash
+```bash
 yarn dev
-~~~
+```
 
 Then, open [localhost:8080](http://localhost:8080).
 
 ## Build and install browser extension
 
-Documentation for building browser extensions can be found in the [top-level README.md file](https://github.com/blockstack/ux/tree/master#building-browser-extensions) of this repository.
+Documentation for building browser extensions can be found in the [top-level README.md file](https://github.com/blockstack/ux/tree/main#building-browser-extensions) of this repository.

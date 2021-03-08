@@ -115,7 +115,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Prepare repository
-        run: git checkout master
+        run: git checkout main
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
