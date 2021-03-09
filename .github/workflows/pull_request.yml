@@ -46,7 +46,7 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
-      - name: Restore lerna cache
+      - name: Restore cache
         uses: actions/cache@v2
         with:
           path: |
@@ -56,7 +56,7 @@ jobs:
       - name: Code Checks
         uses: ./.github/actions/code-checks
       - uses: actions/upload-artifact@v2
-        name: Upload Extension Zip
+        name: Upload Chrome Extension Zip
         with:
           name: stacks-wallet-chromium
           path: stacks-wallet-chromium.zip
@@ -72,7 +72,7 @@ jobs:
         with:
           node-version: 12.16.1
       - uses: microsoft/playwright-github-action@v1
-      - name: Restore lerna cache
+      - name: Restore cache
         uses: actions/cache@v2
         with:
           path: |
@@ -86,101 +86,7 @@ jobs:
         name: Upload Screenshots
         with:
           name: integration-test-screenshots
-          path: packages/app/tests/screenshots/
-
-  publish_npm_betas:
-    name: Publish NPM beta versions
-    runs-on: ubuntu-latest
-    needs: [check_fork]
-    if: needs.check_fork.outputs.is_not_fork == 'true'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 12.16.1
-      - name: Restore lerna cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Install monorepo deps
-        run: yarn --frozen-lockfile
-      - name: Bootstrap
-        run: yarn lerna bootstrap
-      - name: Setup .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - name: Get git branch
-        id: git-branch
-        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 )"
-      - name: Get git commit
-        id: git-commit
-        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
-      - name: print preid
-        env:
-          BRANCH: ${{ steps.git-branch.outputs.branch }}
-          SHA: ${{ steps.git-commit.outputs.sha }}
-        run: echo $BRANCH.$SHA
-      - name: Setup git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-      - name: Publish to NPM
-        env:
-          BRANCH: ${{ steps.git-branch.outputs.branch }}
-          SHA: ${{ steps.git-commit.outputs.sha }}
-        run: yarn lerna publish prepatch --preid alpha.$SHA --dist-tag $BRANCH --yes --no-push
-
-  publish_beta_web_apps:
-    name: Publich beta hosted versions
-    runs-on: ubuntu-latest
-    needs: [check_fork]
-    if: needs.check_fork.outputs.is_not_fork == 'true'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 12.16.1
-      - name: Restore lerna cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Install monorepo deps
-        run: yarn --frozen-lockfile
-      - name: Build Blockstack Test App
-        env:
-          AUTH_ORIGIN: ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
-        run: yarn prod:web
-        working-directory: packages/test-app
-      - name: Copy Blockstack Test App vercel.json
-        uses: canastro/copy-file-action@master
-        with:
-          source: 'packages/test-app/vercel.json'
-          target: 'packages/test-app/dist/vercel.json'
-      - name: Deploy Blockstack Test App with Vercel
-        uses: amondnet/vercel-action@d4e0a9f55bfc7ee4d87dd69541f2c93c8e4e8ae6
-        id: vercel-deployment-blockstack-test-app
-        if: github.event_name == 'pull_request'
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_TEST_APP }}
-          scope: ${{ secrets.VERCEL_SCOPE }}
-          working-directory: packages/test-app/dist
-          github-comment: false
-          alias-domains: pr-${{ github.event.number }}.testnet-demo.stacks.engineering
+          path: tests/screenshots/
 
   publish_firefox_beta:
     name: Publish beta firefox extension
@@ -196,7 +102,7 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
-      - name: Restore lerna cache
+      - name: Restore cache
         uses: actions/cache@v2
         with:
           path: |

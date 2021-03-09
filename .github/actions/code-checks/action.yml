@@ -19,9 +19,6 @@ runs:
     - name: Build extension
       run: sh build-ext.sh
       shell: bash
-    - name: Build web apps
-      run: yarn lerna run prod:web --parallel
-      shell: bash
     - name: Setup screenshots
       shell: bash
-      run: mkdir packages/app/tests/screenshots
+      run: mkdir tests/screenshots

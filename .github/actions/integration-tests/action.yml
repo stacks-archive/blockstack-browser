@@ -16,5 +16,4 @@ runs:
       shell: bash
       run: |
         yarn serve:test &
-        cd packages/app &&
         xvfb-run --auto-servernum -- yarn test:integration

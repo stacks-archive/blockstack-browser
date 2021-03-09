@@ -58,6 +58,5 @@ Provide context on how tests should be performed.
 ## Checklist
 - [ ] Code is commented where needed
 - [ ] Unit test coverage for new or modified code paths
-- [ ] `yarn lerna run test` passes
 - [ ] Changelog is updated
 - [ ] Tag 1 of @hstove or @kyranjamie or @aulneau for review
