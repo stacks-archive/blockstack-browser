@@ -15,7 +15,6 @@ runs:
     - name: App unit tests
       run: yarn test:unit
       shell: bash
-      working-directory: packages/app
     - name: Build extension
       run: sh build-ext.sh
       shell: bash
