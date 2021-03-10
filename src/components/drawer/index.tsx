@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex, useEventListener, IconButton, color } from '@stacks/ui';
 import { IconX } from '@tabler/icons';
-import useOnClickOutside from 'use-onclickoutside';
+import useOnClickOutside from "@common/hooks/use-onclickoutside";
 import { Title } from '@components/typography';
 
 const transition = '0.2s all ease-in-out';

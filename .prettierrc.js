@@ -1,1 +1,1 @@
-module.exports = require('@blockstack/prettier-config');
+module.exports = require('@stacks/prettier-config');

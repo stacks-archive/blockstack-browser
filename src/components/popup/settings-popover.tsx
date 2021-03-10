@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { Box, SlideFade, BoxProps, color, Flex } from '@stacks/ui';
 import { Text, Caption } from '@components/typography';
-import useOnClickOutside from 'use-onclickoutside';
+import useOnClickOutside from "@common/hooks/use-onclickoutside";
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useAnalytics } from '@common/hooks/use-analytics';
