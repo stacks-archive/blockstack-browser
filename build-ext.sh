@@ -4,6 +4,7 @@ yarn
 echo "🛠  Compiling extension."
 yarn build
 echo "🛠  Packaging Browser Extension"
+cd dist
 TS=$(date +%Y)$(date +%m)010000
 find -print | while read file; do
     touch -t $TS "$file"
