@@ -7,13 +7,13 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
-    'jest/globals': true,
   },
   globals: {
     page: true,
     browser: true,
     context: true,
   },
+  plugins: ['react-hooks', '@typescript-eslint'],
   rules: {
     '@typescript-eslint/no-unnecessary-type-assertion': [0],
     '@typescript-eslint/no-unsafe-assignment': [0],
