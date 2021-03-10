@@ -8,7 +8,7 @@ runs:
       run: rm -rf node_modules
     - name: Install dependencies
       shell: bash
-      run: yarn --frozen-lockfile
+      run: yarn --frozen-lockfile && cd test-app && yarn --frozen-lockfile
     - name: Build web apps
       shell: bash
       run: yarn build:test

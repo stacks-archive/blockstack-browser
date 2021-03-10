@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, Box, space, ButtonGroup } from '@blockstack/ui';
+import { Button, Text, Box, space, ButtonGroup } from '@stacks/ui';
 import { useConnect } from '@stacks/connect-react';
 
 export const Auth: React.FC = () => {

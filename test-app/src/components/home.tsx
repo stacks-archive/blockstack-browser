@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '@common/context';
-import { Box, Text, Flex, space, BoxProps } from '@blockstack/ui';
+import { Box, Text, Flex, space, BoxProps } from '@stacks/ui';
 import { Auth } from './auth';
 import { Tab } from './tab';
 import { Status } from './status';

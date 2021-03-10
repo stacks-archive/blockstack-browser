@@ -1,7 +1,0 @@
-dist/
-node_modules/
-tests/screenshots/*
-.env
-.next
-.idea
-.DS_Store

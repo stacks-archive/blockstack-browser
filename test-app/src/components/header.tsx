@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box } from '@stacks/ui';
 import { StacksLogo } from '@stacks/ui';
 import { AppContext } from '@common/context';
 import { Link } from '@components/link';

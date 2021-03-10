@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup, Box, Text } from '@blockstack/ui';
+import { Button, ButtonGroup, Box, Text } from '@stacks/ui';
 import { AppContext } from '@common/context';
 import { getAuthOrigin, getRPCClient, stacksNetwork as network } from '@common/utils';
 import { deserializeCV, IntCV } from '@blockstack/stacks-transactions';

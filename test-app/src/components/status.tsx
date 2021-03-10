@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { space, Box, Text, Button, Input, Flex } from '@blockstack/ui';
+import { space, Box, Text, Button, Input, Flex } from '@stacks/ui';
 import { ExplorerLink } from './explorer-link';
 import { useConnect } from '@stacks/connect-react';
 import {

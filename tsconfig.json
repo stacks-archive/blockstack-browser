@@ -36,5 +36,6 @@
     "esModuleInterop": true,
     "types": ["jest", "chrome"]
   },
-  "include": ["./src/**/*", "./tests/**/*"]
+  "include": ["./src/**/*", "./tests/**/*"],
+  "exclude": ["test-app"]
 }

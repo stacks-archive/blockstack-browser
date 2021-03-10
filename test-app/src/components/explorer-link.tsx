@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@components/link';
-import { Box } from '@blockstack/ui';
+import { Box } from '@stacks/ui';
 
 interface LinkProps {
   txId: string;

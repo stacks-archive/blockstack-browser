@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Text } from '@blockstack/ui';
+import { Box, Flex, Text } from '@stacks/ui';
 import { ContractCallTransaction } from '@blockstack/stacks-blockchain-sidecar-types';
 import { toRelativeTime } from '@common/utils';
 

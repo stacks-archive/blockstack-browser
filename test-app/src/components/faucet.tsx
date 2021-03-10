@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Flex, Box, Button, Input, Text } from '@blockstack/ui';
+import { Flex, Box, Button, Input, Text } from '@stacks/ui';
 import { getRPCClient } from '@common/utils';
 import { ExplorerLink } from './explorer-link';
 

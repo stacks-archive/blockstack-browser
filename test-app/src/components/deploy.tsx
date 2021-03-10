@@ -2,7 +2,7 @@ import React from 'react';
 import { getAuthOrigin } from '@common/utils';
 import { useConnect } from '@stacks/connect-react';
 import { SampleContracts } from '@common/contracts';
-import { Box, Button, Text } from '@blockstack/ui';
+import { Box, Button, Text } from '@stacks/ui';
 import { ExplorerLink } from './explorer-link';
 
 export const Deploy = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { space, Box, Text, Button, ButtonGroup } from '@blockstack/ui';
+import { space, Box, Text, Button, ButtonGroup } from '@stacks/ui';
 import { getAuthOrigin, stacksNetwork as network } from '@common/utils';
 import { demoTokenContract } from '@common/contracts';
 import { useSTXAddress } from '@common/use-stx-address';
