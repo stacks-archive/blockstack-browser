@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "esnext",
     "module": "commonjs",
-    "lib": ["es2017", "dom"],
+    "lib": ["dom","dom.iterable","esnext"],
     "jsx": "react",
     "sourceMap": true,
     "removeComments": true,
@@ -33,7 +33,8 @@
     },
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["jest", "chrome"]
   },
   "include": ["./src/**/*", "./tests/**/*"]
 }

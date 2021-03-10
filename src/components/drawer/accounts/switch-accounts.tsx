@@ -24,7 +24,7 @@ const useSwitchAccount = (handleClose: () => void) => {
     async index => {
       await doSwitchAccount(index);
       if (!timeoutRef.current) {
-        timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = window.setTimeout(() => {
           handleClose();
         }, TIMEOUT);
       }

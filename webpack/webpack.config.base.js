@@ -167,7 +167,7 @@ const config = {
             loader: 'esbuild-loader',
             options: {
               loader: 'tsx',
-              target: 'es2015',
+              target: 'esnext',
             },
           },
         ],

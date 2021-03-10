@@ -1,12 +1,12 @@
 import '../setup';
-import { generateTransaction } from '../../src/common/transaction-utils';
+import { generateTransaction } from '@common/transaction-utils';
 import {
   PostConditionMode,
   makeStandardFungiblePostCondition,
   FungibleConditionCode,
   createAssetInfo,
 } from '@stacks/transactions';
-import { makeContractCallToken, TransactionPayload } from '../../../connect/src/index';
+import { makeContractCallToken, TransactionPayload } from '@stacks/connect';
 import BN from 'bn.js';
 import { decodeToken } from 'jsontokens';
 

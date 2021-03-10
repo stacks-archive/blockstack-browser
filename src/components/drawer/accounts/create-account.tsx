@@ -17,7 +17,7 @@ export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
     if (!setting && !timeout.current) {
       setSetting(true);
       await doCreateNewAccount();
-      timeout.current = setTimeout(() => close(), TIMEOUT);
+      timeout.current = window.setTimeout(() => close(), TIMEOUT);
       setSetting(false);
     }
   }, [doCreateNewAccount, setting, timeout, close]);
