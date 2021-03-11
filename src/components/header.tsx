@@ -27,6 +27,7 @@ const MenuButton: React.FC<BoxProps> = memo(props => {
       _hover={{
         color: color('text-title'),
       }}
+      data-test="menu-button"
       icon={IconDots}
       {...props}
     />

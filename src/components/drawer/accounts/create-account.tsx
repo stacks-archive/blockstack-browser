@@ -42,7 +42,13 @@ export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
         <Text fontSize={2}>Your new account has been created.</Text>
       </Box>
       <Flex width="100%" flexGrow={1} mt="base">
-        <Button width="100%" ml={2} onClick={close}>
+        <Button
+          width="100%"
+          onClick={close}
+          isLoading={setting}
+          isDisabled={setting}
+          data-test={setting ? undefined : 'create-account-done-button'}
+        >
           Done
         </Button>
       </Flex>

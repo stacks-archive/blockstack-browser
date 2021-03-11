@@ -42,7 +42,12 @@ export const PopupHome: React.FC = memo(() => {
     <PopupContainer>
       <Stack mt="loose" data-test="home-page" spacing="loose">
         <Stack alignItems="flex-start" spacing="base">
-          <Title lineHeight="1rem" fontSize={4} fontWeight={500}>
+          <Title
+            lineHeight="1rem"
+            fontSize={4}
+            fontWeight={500}
+            data-test="home-current-display-name"
+          >
             {getAccountDisplayName(currentAccount)}
           </Title>
           <Caption>{truncateMiddle(currentAccountStxAddress, 8)}</Caption>

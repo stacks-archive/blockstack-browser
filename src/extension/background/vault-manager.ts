@@ -124,7 +124,8 @@ export const vaultReducer = async (message: MessageFromApp): Promise<Vault> => {
       await updateConfig();
       return {
         ...vault,
-        wallet,
+        wallet: newWallet,
+        currentAccountIndex: newWallet.accounts.length - 1,
       };
     }
     case Methods.signOut: {

@@ -23,6 +23,7 @@ export class WalletPage {
     'text="You can only use lowercase letters (a–z), numbers (0–9), and underscores (_)."';
   signInKeyError = createTestSelector('sign-in-seed-error');
   password = 'mysecretreallylongpassword';
+  settingsButton = createTestSelector('menu-button');
   page: Page;
 
   constructor(page: Page) {
@@ -136,5 +137,16 @@ export class WalletPage {
 
   chooseAccount(username: string) {
     return this.page.click(`[data-test="account-${username}"]`);
+  }
+
+  /** Sign up with a randomly generated seed phrase */
+  async signUp() {
+    await this.clickSignUp();
+    await this.saveKey();
+    await this.waitForHomePage();
+  }
+
+  async openSettings() {
+    return this.page.click(this.settingsButton);
   }
 }
