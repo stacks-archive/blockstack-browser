@@ -81,6 +81,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Create Release Pull Request
-        uses: changesets/action@master
+        uses: changesets/action@640c4a5d646991720131ef3b6e0e63220de5dddf
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}

@@ -39,7 +39,7 @@ const getCommit = () => {
  */
 const getVersion = () => {
   const branch = getBranch();
-  if (!branch || branch.includes('main')) return _version;
+  if (branch === 'main') return _version;
   return `${_version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
 };
 
