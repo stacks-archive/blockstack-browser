@@ -85,6 +85,6 @@ jobs:
           git config --global user.email "${COMMIT_EMAIL}"
           git config --global user.name "${COMMIT_USER}"
       - name: Bump version and update changelog
-        run: yarn standard-version
+        run: yarn changeset version
       - name: Push git tags and version commit
         run: git push --follow-tags origin main
