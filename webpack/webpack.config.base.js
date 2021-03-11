@@ -182,7 +182,12 @@ const config = {
   watch: false,
   plugins: [
     new WebpackBarPlugin({}),
-    new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+    new webpack.IgnorePlugin(
+      {
+        resourceRegExp: /^\.\/wordlists\/(?!english)/,
+        contextRegExp: /bip39\/src$/,
+      }
+    ),
     new ESBuildPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(SRC_ROOT_PATH, '../', 'public', 'html', 'extension.html'),
@@ -255,7 +260,4 @@ if (IS_PROD) {
   module.exports.plugins.push(
     new CleanWebpackPlugin({verbose: true, dry: false, cleanStaleWebpackAssets: false})
   );
-}
-if (ANALYZE_BUNDLE) {
-  module.exports.plugins.push(new BundleAnalyzerPlugin());
 }

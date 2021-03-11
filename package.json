@@ -59,7 +59,7 @@
     "are-passive-events-supported": "^1.1.1",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
-    "bn.js": "^5.1.1",
+    "bn.js": "^5.2.0",
     "body-parser": "^1.19.0",
     "buffer": "^6.0.3",
     "concurrently": "^6.0.0",
@@ -175,6 +175,7 @@
     "@reach/rect": "^0.13.2",
     "@reach/utils": "^0.13.2",
     "@reach/visually-hidden": "^0.13.2",
+    "bn.js": "^5.2.0",
     "buffer": "^6.0.3",
     "spinners-react": "npm:spinners-react-peer-deps-fix@1.0.5",
     "use-onclickoutside": "npm:use-onclickoutside-peer-deps@0.3.1"
