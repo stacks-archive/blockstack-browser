@@ -1,7 +1,13 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### 2.0.5 (2021-03-11)
+
+
+### Bug Fixes
+
+* push new version and tags in version job ([98b9d46](https://github.com/blockstack/ux/commit/98b9d46b7413f48e82de3e465557b97c8b3f24bd))
 
 ## 2.0.3 (2021-03-08)
 
