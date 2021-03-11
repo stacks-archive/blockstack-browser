@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.0.6 (2021-03-11)
+
+
+### Bug Fixes
+
+* location of zip file after build-ext.sh ([0c003ba](https://github.com/blockstack/ux/commit/0c003baaf539dd9d0c53871c2e45c16a0c93de14))
+
 ### 2.0.5 (2021-03-11)
 
 
