@@ -63,7 +63,7 @@ jobs:
   version:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'chore(release)')"
-    needs: [ integration_tests, code_checks ]
+    needs: [integration_tests, code_checks]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -84,3 +84,5 @@ jobs:
         run: |
           git config --global user.email "${COMMIT_EMAIL}"
           git config --global user.name "${COMMIT_USER}"
+      - name: Bump version and update changelog
+        run: yarn standard-version
