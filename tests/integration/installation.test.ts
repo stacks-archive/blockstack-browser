@@ -1,4 +1,4 @@
-import { BrowserDriver, SECRET_KEY, setupBrowser } from './utils';
+import { BrowserDriver, createTestSelector, randomString, SECRET_KEY, setupBrowser } from './utils';
 import { WalletPage } from './page-objects/wallet.page';
 import { ScreenPaths } from '@store/onboarding/types';
 
@@ -35,5 +35,26 @@ describe(`Installation integration tests`, () => {
     await installPage.waitForHomePage();
     const secretKey = await installPage.getSecretKey();
     expect(secretKey).toEqual(SECRET_KEY);
+  });
+
+  it('should be able to sign up, restore, lock and unlock the extension', async () => {
+    await installPage.clickSignUp();
+    await installPage.saveKey();
+    await installPage.waitForHomePage();
+    await installPage.goToSecretKey();
+    const secretKey = await installPage.getSecretKey();
+    await installPage.openSettings();
+    await installPage.page.click(createTestSelector('settings-sign-out'));
+
+    await installPage.clickSignIn();
+    await installPage.enterSecretKey(secretKey);
+    const password = randomString(15);
+    await installPage.enterPassword(password);
+    await installPage.openSettings();
+    await installPage.page.click(createTestSelector('settings-lock'));
+    await installPage.enterPassword(password);
+    await installPage.goToSecretKey();
+    const decryptedSecretKey = await installPage.getSecretKey();
+    expect(decryptedSecretKey).toEqual(secretKey);
   });
 });

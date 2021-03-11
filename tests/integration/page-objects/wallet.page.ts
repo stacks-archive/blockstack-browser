@@ -118,8 +118,8 @@ export class WalletPage {
     await this.goTo(ScreenPaths.SETTINGS_KEY);
   }
 
-  async enterPassword() {
-    await this.page.fill('input[type="password"]', this.password);
+  async enterPassword(password?: string) {
+    await this.page.fill('input[type="password"]', password ?? this.password);
     await this.page.click(this.setPasswordDone);
   }
 

@@ -154,6 +154,7 @@ export const SettingsPopover: React.FC = () => {
                     void doLockWallet();
                     doChangeScreen(ScreenPaths.POPUP_HOME);
                   })}
+                  data-test="settings-lock"
                 >
                   Lock
                 </MenuItem>
@@ -163,6 +164,7 @@ export const SettingsPopover: React.FC = () => {
                   void doSignOut();
                   doChangeScreen(ScreenPaths.INSTALLED);
                 })}
+                data-test="settings-sign-out"
               >
                 Sign Out
               </MenuItem>
