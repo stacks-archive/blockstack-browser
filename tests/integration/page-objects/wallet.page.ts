@@ -52,7 +52,7 @@ export class WalletPage {
       if (attempt > 3) {
         throw new Error('Unable to get auth page popup');
       }
-      await wait(50);
+      await wait(250);
       return this.recursiveGetAuthPopup(browser, attempt + 1);
     }
     return page;
