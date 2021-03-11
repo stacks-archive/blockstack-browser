@@ -80,11 +80,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn --frozen-lockfile
-      - name: Setup git
-        run: |
-          git config --global user.email "${COMMIT_EMAIL}"
-          git config --global user.name "${COMMIT_USER}"
-      - name: Bump version and update changelog
-        run: yarn changeset version
-      - name: Push git tags and version commit
-        run: git push --follow-tags origin main
+      - name: Create Release Pull Request
+        uses: changesets/action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
