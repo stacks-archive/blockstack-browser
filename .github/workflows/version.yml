@@ -62,7 +62,7 @@ jobs:
 
   version:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'chore(release)')"
+    if: "!contains(github.event.head_commit.message, 'Version Packages')"
     needs: [integration_tests, code_checks]
     steps:
       - name: Checkout
