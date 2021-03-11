@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.0.7 (2021-03-11)
+
+
+### Bug Fixes
+
+* remove demo app stick header ([3e7d19a](https://github.com/blockstack/ux/commit/3e7d19a6070f8a79555f668cf70c3be64bd0e43b))
+
 ### 2.0.6 (2021-03-11)
 
 
