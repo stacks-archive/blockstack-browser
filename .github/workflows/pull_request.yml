@@ -40,7 +40,7 @@ jobs:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
         if: needs.check_fork.outputs.is_not_fork == 'true'
         with:
-          header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}) or the [Stacks testnet demo app](https://pr-${{ github.event.number }}.testnet-demo.stacks.engineering)'
+          header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}).'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
