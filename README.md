@@ -8,7 +8,7 @@ To use this extension with your own Stacks App, we recommend using [Connect](htt
 
 Table of Contents:
 
-<!-- TOC depthFrom:3 -->
+<!-- TOC depthFrom:2 -->
 
 - [Development](#development)
   - [Setup](#setup)
@@ -19,10 +19,10 @@ Table of Contents:
     - [Firefox](#firefox)
 - [Production](#production)
   - [Building browser extensions](#building-browser-extensions)
-    - [Optional: use Docker](#optional-build-browser-extensions-using-docker)
+    - [Optional: use Docker](#optional-use-docker)
   - [Install browser extension from source](#install-browser-extension-from-source)
-    - [Chromium](#if-installing-for-chrome-or-brave)
-    - [Firefox](#if-installing-for-firefox)
+    - [Chromium](#chromium-1)
+    - [Firefox](#firefox-1)
 
 <!-- /TOC -->
 
@@ -96,7 +96,7 @@ sh build-ext.sh
 
 The extension will be packaged as `stacks-wallet-chromium.zip` inside this folder.
 
-#### Optional: Build browser extensions using Docker
+#### Optional: use Docker
 
 1. Build the docker image locally:
    ```bash
@@ -111,19 +111,19 @@ The extension will be packaged as `stacks-wallet-chromium.zip` inside this folde
 
 First, unzip the `stacks-wallet-chromium.zip` file that was generated in the previous step.
 
-#### If installing for Chrome or Brave:
+#### Chromium
+
+Use these steps when using a Chromium browser, like Chrome, Brave, and Edge.
 
 1. Go to: `chrome://extensions`
 2. Toggle: **"developer mode"** on.
 3. Click on: **"Load unpacked"**
 4. Select the new directory that was unzipped from `stacks-wallet-chromium.zip`.
 
-#### If installing for Firefox:
+#### Firefox
 
 1. Go to: `about:debugging `
 2. Click on **"This Firefox"**
 3. Click on: **"Load Temporary Add-on…"**
 4. Navigate inside the new directory that was unzipped from `stacks-wallet-chromium.zip`
 5. Select the `manifest.json` file.
-
-

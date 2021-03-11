@@ -10,3 +10,5 @@ tests/screenshots/*
 .DS_Store
 .vercel
 yarn-error.log
+stacks-wallet-chromium.zip
+packages

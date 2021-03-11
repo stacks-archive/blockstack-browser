@@ -25,12 +25,10 @@
     "test": "NODE_ENV=test jest --verbose=true",
     "test:coverage": "NODE_ENV=test jest --collect-coverage",
     "test:watch": "NODE_ENV=test jest --watch",
-    "serve:test:ext": "yarn http-server ./dist -p 3000 -s",
-    "serve:test:test-app": "yarn http-server ./test-app/dist -p 3001 -s",
-    "serve:test": "concurrently 'yarn serve:test:ext' 'yarn serve:test:test-app'",
+    "serve:test": "yarn http-server ./test-app/dist -p 3001 -s",
     "typecheck": "tsc --noEmit"
   },
-  "version": "2.0.2",
+  "version": "2.0.4",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/stats": "^0.7.0",
@@ -195,5 +193,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/blockstack/ux.git"
+  },
+  "webExt": {
+    "sourceDir": "dist/"
   }
 }

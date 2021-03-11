@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "jsx": "react",
     "sourceMap": true,
     "removeComments": true,
@@ -28,36 +25,17 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "paths": {
-      "@store/*": [
-        "./store/*"
-      ],
-      "@store": [
-        "./store/index"
-      ],
-      "@dev/*": [
-        "./dev/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@containers/*": [
-        "./containers/*"
-      ],
-      "@common/*": [
-        "./common/*"
-      ],
-      "@cards/*": [
-        "./components/cards/*"
-      ]
+      "@store/*": ["./store/*"],
+      "@store": ["./store/index"],
+      "@dev/*": ["./dev/*"],
+      "@components/*": ["./components/*"],
+      "@containers/*": ["./containers/*"],
+      "@common/*": ["./common/*"],
+      "@cards/*": ["./components/cards/*"]
     },
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": [
-    "./src/**/*",
-    "./tests/**/*",
-    "./components/**/*",
-    "./common/**/*"
-  ]
+  "include": ["./src/**/*", "./tests/**/*", "./components/**/*", "./common/**/*"]
 }
