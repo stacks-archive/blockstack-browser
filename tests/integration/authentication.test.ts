@@ -7,7 +7,7 @@ import { generateSecretKey, generateWallet, getAppPrivateKey } from '@stacks/wal
 
 const WRONG_SECRET_KEY =
   'invite helmet save lion indicate chuckle world pride afford hard broom yup';
-const WRONG_MAGIC_RECOVERY_KEY =
+const MAGIC_RECOVERY_KEY =
   'KDR6O8gKXGmstxj4d2oQqCi806M/Cmrbiatc6g7MkQQLVreRA95IoPtvrI3N230jTTGb2XWT5joRFKPfY/2YlmRz1brxoaDJCNS4z18Iw5Y=';
 const WRONG_PASSWORD = 'sstest202020';
 const CORRECT_PASSWORD = 'test202020';
@@ -17,8 +17,7 @@ const SEED_PHRASE_LENGTH = 24;
 
 const getRandomWord = () => {
   const list = wordlists.EN;
-  const word = list[Math.floor(Math.random() * list.length)];
-  return word;
+  return list[Math.floor(Math.random() * list.length)];
 };
 
 jest.retryTimes(process.env.CI ? 2 : 0);
@@ -129,9 +128,9 @@ describe(`Authentication integration tests`, () => {
     await browser.demoPage.openConnect();
     const auth = await WalletPage.getAuthPopup(browser);
     await auth.clickSignIn();
-    await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
+    await auth.enterSecretKey(MAGIC_RECOVERY_KEY);
     await auth.decryptRecoveryCode(WRONG_PASSWORD);
-    await auth.page.waitForSelector('text="Incorrect password"');
+    await auth.page.waitForSelector('text="Incorrect password, try again."');
   });
 
   it('Sign in with the correct magic recovery code', async () => {
@@ -139,7 +138,7 @@ describe(`Authentication integration tests`, () => {
     await browser.demoPage.openConnect();
     const auth = await WalletPage.getAuthPopup(browser);
     await auth.clickSignIn();
-    await auth.enterSecretKey(WRONG_MAGIC_RECOVERY_KEY);
+    await auth.enterSecretKey(MAGIC_RECOVERY_KEY);
     await auth.decryptRecoveryCode(CORRECT_PASSWORD);
     const authResponse = await browser.demoPage.waitForAuthResponse();
     expect(authResponse).toBeTruthy();

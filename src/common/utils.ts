@@ -1,3 +1,4 @@
+import React from 'react';
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 import { FinishedTxPayload } from '@stacks/connect';
@@ -19,10 +20,7 @@ export const getAuthRequestParam = () => {
   return null;
 };
 
-export const authenticationInit = () => {
-  const authRequest = getAuthRequestParam();
-  return authRequest;
-};
+export const authenticationInit = () => getAuthRequestParam();
 
 export const getEventSourceWindow = (event: MessageEvent) => {
   const isWindow =
@@ -114,3 +112,42 @@ export function stringToHslColor(str: string, saturation: number, lightness: num
   const hue = hash % 360;
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
+
+export function extractPhraseFromString(value: string) {
+  const clean = value.trim();
+  const words = clean.match(/\S+/g);
+  if (words?.length) {
+    return words
+      .map(word => (word.match(/[^0-9]+/g) ? word : null))
+      .filter(Boolean)
+      .join(' ');
+  } else {
+    return clean;
+  }
+}
+
+export function extractPhraseFromPasteEvent(event: React.ClipboardEvent) {
+  const pasted = event.clipboardData.getData('Text');
+  return extractPhraseFromString(pasted);
+}
+
+export function validateAndCleanRecoveryInput(value: string) {
+  const cleaned = value.trim();
+  // Base64 encoded encrypted phrase
+  let cleanedEncrypted = cleaned.replace(/\s/gm, '');
+  const isPossibleRecoveryKey = /^[a-zA-Z0-9\+\/]+=?$/.test(cleanedEncrypted);
+
+  if (isPossibleRecoveryKey && cleanedEncrypted.slice(-1) !== '=') {
+    // Append possibly missing equals sign padding
+    cleanedEncrypted = `${cleanedEncrypted}=`;
+  }
+  if (cleanedEncrypted.length >= 108) {
+    return {
+      isValid: true,
+      value: cleanedEncrypted,
+    };
+  }
+  return { isValid: false, value };
+}
+
+export const hasLineReturn = (input: string) => input.includes('\n');

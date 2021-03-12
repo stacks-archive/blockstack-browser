@@ -52,6 +52,7 @@ export const Caption = forwardRefWithAs<BoxProps, 'span'>((props, ref) => (
     fontFeatureSettings={`'ss01' on`}
     letterSpacing="-0.01em"
     fontSize={1}
+    lineHeight="24px"
     color={color('text-caption')}
     display="block"
     ref={ref}

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
 import { OnboardingPassword, SaveKey } from '@pages/sign-up';
-import { DecryptRecoveryCode } from '@pages/sign-in';
+import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
 import { Username } from '@pages/username';
 import { SaveYourKeyView } from '@components/save-your-key-view';
 import { ChooseAccount } from '@pages/connect';
@@ -141,7 +141,10 @@ export const Routes: React.FC = () => {
       <Route path={ScreenPaths.USERNAME} element={<Username />} />
       {/*Sign In*/}
       <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />
-      <Route path={ScreenPaths.RECOVERY_CODE} element={<DecryptRecoveryCode />} />
+      <Route
+        path={ScreenPaths.RECOVERY_CODE}
+        element={<MagicRecoveryCode key="MagicRecoveryCode" />}
+      />
       <Route path={ScreenPaths.ADD_ACCOUNT} element={<Username />} />;
       <Route
         path={ScreenPaths.CHOOSE_ACCOUNT}

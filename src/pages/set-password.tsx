@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Button, Box, Input } from '@stacks/ui';
+import { Button, Input, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -8,7 +8,7 @@ import { buildEnterKeyEvent } from '@components/link';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { validatePassword, blankPasswordValidation } from '@common/validate-password';
-import { Text } from '@components/typography';
+import { Caption, Text } from '@components/typography';
 
 interface SetPasswordProps {
   redirect?: boolean;
@@ -81,26 +81,19 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
 
   return (
     <PopupContainer hideActions title="Set a password.">
-      <Box my="loose">
-        <Text fontSize={2}>
-          <Text color="green" fontWeight="500">
-            This password is for this device only.
-          </Text>{' '}
-          To access your account on a new device you’ll use just your Secret Key.
-        </Text>
-      </Box>
-      <Box flexGrow={[1, 1, 0.5]} />
-      {showWarning ? (
-        <>
-          <Text display="block" textStyle="body.small" color="ink.600" mt="tight">
-            Please use a stronger password before continuing.
-          </Text>
-          <Text display="block" textStyle="body.small" color="ink.600" my="tight">
-            {strengthResult.feedback.suggestions[0]}
-          </Text>
-        </>
-      ) : null}
-      <Box width="100%">
+      <Text>
+        <Text color="green" fontWeight="500">
+          This password is for this device only.
+        </Text>{' '}
+        To access your account on a new device you’ll use just your Secret Key.
+      </Text>
+      <Stack spacing="base" mt="auto" width="100%">
+        {showWarning ? (
+          <Caption fontSize={0}>
+            Please use a stronger password before continuing. Longer than 12 characters, with
+            symbols, numbers, and words.
+          </Caption>
+        ) : null}
         <Input
           placeholder={placeholder || 'Set a password'}
           key="password-input"
@@ -112,8 +105,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
           onChange={handlePasswordInput}
           onKeyUp={buildEnterKeyEvent(handleSubmit)}
         />
-      </Box>
-      <Box mt="base">
+
         <Button
           width="100%"
           isLoading={loading}
@@ -123,7 +115,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
         >
           Done
         </Button>
-      </Box>
+      </Stack>
     </PopupContainer>
   );
 };
