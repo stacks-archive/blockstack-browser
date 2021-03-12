@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Button, Input, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
@@ -9,6 +9,7 @@ import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { validatePassword, blankPasswordValidation } from '@common/validate-password';
 import { Caption, Text } from '@components/typography';
+import debounce from 'just-debounce-it';
 
 interface SetPasswordProps {
   redirect?: boolean;
@@ -21,6 +22,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
   accountGate,
   placeholder,
 }) => {
+  const ref = useRef<HTMLInputElement | null>(null);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
@@ -31,11 +33,20 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
 
   const showWarning = !strengthResult.meetsAllStrengthRequirements && hasSubmitted;
 
-  const handlePasswordInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
-    const pass = e.currentTarget.value;
-    setPassword(pass);
-    const result = validatePassword(pass);
+  const validate = (value: string) => {
+    const result = validatePassword(value);
     setStrengthResult(result);
+    ref?.current?.focus();
+  };
+
+  const handleOnChange = debounce((value: string) => {
+    setPassword(value);
+    validate(value);
+  }, 150);
+
+  const handlePasswordInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    handleOnChange(value);
   }, []);
 
   const submit = useCallback(async () => {
@@ -95,13 +106,13 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
           </Caption>
         ) : null}
         <Input
+          ref={ref}
           placeholder={placeholder || 'Set a password'}
           key="password-input"
           width="100%"
           autoFocus
           type="password"
           data-test="set-password"
-          value={password}
           onChange={handlePasswordInput}
           onKeyUp={buildEnterKeyEvent(handleSubmit)}
         />
