@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import type {
   Transaction,
   MempoolTransaction,
@@ -10,7 +10,7 @@ import { useHover } from 'use-events';
 import BigNumber from 'bignumber.js';
 
 import { stacksValue } from '@common/stacks-utils';
-import { useCurrentNetwork } from '@common/hooks/use-current-network';
+import { useExplorerLink } from '@common/hooks/use-explorer-link';
 
 import { Caption, Title } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';
@@ -56,10 +56,6 @@ const getTxCaption = (transaction: Tx) => {
   }
 };
 
-function makeTxExplorerLink(txid: string, chain: 'mainnet' | 'testnet') {
-  return `https://explorer.stacks.co/txid/${txid}?chain=${chain}`;
-}
-
 const Status: React.FC<{ transaction: Tx } & BoxProps> = ({ transaction, ...rest }) => {
   const isPending = isPendingTx(transaction as any);
   const isFailed = !isPending && transaction.tx_status !== 'success';
@@ -88,20 +84,21 @@ const Status: React.FC<{ transaction: Tx } & BoxProps> = ({ transaction, ...rest
 };
 
 export const TxItem: React.FC<TxItemProps & BoxProps> = ({ transaction, ...rest }) => {
-  const { mode } = useCurrentNetwork();
   const [isHovered, bind] = useHover();
-
-  const handleOpenLink = useCallback(
-    () => window.open(makeTxExplorerLink(transaction.tx_id, mode), '_blank'),
-    [transaction, mode]
-  );
+  const { handleOpenTxLink } = useExplorerLink();
 
   if (!transaction) {
     return null;
   }
 
   return (
-    <Box onClick={handleOpenLink} position="relative" cursor="pointer" {...bind} {...rest}>
+    <Box
+      onClick={() => handleOpenTxLink(transaction.tx_id)}
+      position="relative"
+      cursor="pointer"
+      {...bind}
+      {...rest}
+    >
       <Stack
         py="tight"
         alignItems="center"

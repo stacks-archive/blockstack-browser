@@ -151,3 +151,7 @@ export function validateAndCleanRecoveryInput(value: string) {
 }
 
 export const hasLineReturn = (input: string) => input.includes('\n');
+
+export function makeTxExplorerLink(txid: string, chain: 'mainnet' | 'testnet') {
+  return `https://explorer.stacks.co/txid/${txid}?chain=${chain}`;
+}

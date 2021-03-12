@@ -6,11 +6,14 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { deserializeCV, cvToString, ClarityType, getCVTypeString } from '@stacks/transactions';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { NonceRow } from './nonce-row';
+import { Link } from '@components/link';
+import { useExplorerLink } from '@common/hooks/use-explorer-link';
 
 interface ArgumentProps {
   arg: string;
   index: number;
 }
+
 const Argument: React.FC<ArgumentProps> = ({ arg, index }) => {
   const { pendingTransactionFunction } = useTxState();
   const argCV = deserializeCV(Buffer.from(arg, 'hex'));
@@ -52,6 +55,7 @@ const Argument: React.FC<ArgumentProps> = ({ arg, index }) => {
 
 export const ContractCallDetails: React.FC = () => {
   const { pendingTransaction } = useTxState();
+  const { handleOpenTxLink } = useExplorerLink();
   if (!pendingTransaction || pendingTransaction.txType !== 'contract_call') {
     return null;
   }
@@ -59,15 +63,24 @@ export const ContractCallDetails: React.FC = () => {
   const args = pendingTransaction.functionArgs.map((arg, index) => {
     return <Argument key={`${arg}-${index}`} arg={arg} index={index} />;
   });
+
   return (
     <>
       <Box my="base">
         <Text fontWeight="500" display="block" fontSize={2}>
           Contract
         </Text>
-        <Text fontSize={1} color="blue">
+        <Link
+          onClick={() =>
+            handleOpenTxLink(
+              `${pendingTransaction.contractAddress}.${pendingTransaction.contractName}`
+            )
+          }
+          fontSize={1}
+          color="blue"
+        >
           {truncateMiddle(pendingTransaction.contractAddress)}.{pendingTransaction.contractName}
-        </Text>
+        </Link>
       </Box>
       <Divider />
       <Box my="base">
