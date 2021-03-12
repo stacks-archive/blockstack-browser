@@ -8,6 +8,8 @@ import { Toast } from '@components/toast';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { Caption, Title } from '@components/typography';
 import { createQR } from '@vkontakte/vk-qr';
+import { truncateMiddle } from '@stacks/ui-utils';
+import { Tooltip } from '@components/tooltip';
 
 const QRcode: React.FC<{ principal: string } & FlexProps> = memo(({ principal, ...rest }) => {
   const qrSvg = React.useMemo(
@@ -59,7 +61,9 @@ export const PopupReceive: React.FC = () => {
             {getAccountDisplayName(currentAccount)}
           </Title>
         )}
-        <Caption fontSize={0}>{address}</Caption>
+        <Tooltip interactive placement="bottom" label={address}>
+          <Caption userSelect="none">{truncateMiddle(address, 8)}</Caption>
+        </Tooltip>
       </Stack>
       <Box mt="auto">
         <Button width="100%" onClick={onCopy}>

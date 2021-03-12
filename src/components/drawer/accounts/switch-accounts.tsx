@@ -9,6 +9,7 @@ import { currentTransactionVersion } from '@store/recoil/networks';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
 import { IconCheck } from '@tabler/icons';
+import { AccountAvatar } from '@components/account-avatar';
 
 interface SwitchAccountProps {
   close: () => void;
@@ -66,19 +67,22 @@ const AccountList: React.FC<{ handleClose: () => void }> = memo(({ handleClose }
             px="loose"
             onClick={() => handleSwitchAccount(index)}
           >
-            <Stack>
-              <Title fontSize={2} lineHeight="1rem" fontWeight="400">
-                {getAccountDisplayName(account)}
-              </Title>
-              <Caption>
-                {truncateMiddle(
-                  getStxAddress({
-                    account: account,
-                    transactionVersion,
-                  }),
-                  9
-                )}
-              </Caption>
+            <Stack isInline>
+              <AccountAvatar account={account} />
+              <Stack>
+                <Title fontSize={2} lineHeight="1rem" fontWeight="400">
+                  {getAccountDisplayName(account)}
+                </Title>
+                <Caption>
+                  {truncateMiddle(
+                    getStxAddress({
+                      account: account,
+                      transactionVersion,
+                    }),
+                    9
+                  )}
+                </Caption>
+              </Stack>
             </Stack>
             <Fade in={getIsActive(index)}>
               {styles => (
