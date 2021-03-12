@@ -71,7 +71,7 @@ export const AddUsername: React.FC<AddUsernameProps> = ({ close }) => {
             </ErrorLabel>
           )} */}
         </Box>
-        <Flex width="100%" flexGrow={1} mt="base">
+        <Flex pb="loose" width="100%" flexGrow={1} mt="base">
           <Button width="50%" mode="secondary" mr={2} onClick={close}>
             Cancel
           </Button>

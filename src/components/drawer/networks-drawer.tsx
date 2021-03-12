@@ -76,7 +76,7 @@ export const NetworksDrawer: React.FC = memo(() => {
   return (
     <ControlledDrawer title="Select Network" state={showNetworksStore}>
       <NetworkList />
-      <Box width="100%" px="loose" mt="base">
+      <Box pb="loose" width="100%" px="loose" mt="base">
         <Button onClick={handleAddNetworkClick}>Add a network</Button>
       </Box>
     </ControlledDrawer>

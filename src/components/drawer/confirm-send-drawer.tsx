@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Box, Flex, Button, Text } from '@stacks/ui';
+import { Button, Stack } from '@stacks/ui';
+import { Text, Caption } from '@components/typography';
+import { Tooltip } from '@components/tooltip';
 import { BaseDrawer, BaseDrawerProps } from './index';
 import { StacksTransaction, broadcastTransaction } from '@stacks/transactions';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -12,8 +14,7 @@ import { stacksNetworkStore } from '@store/recoil/networks';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { internalTransactionStore } from '@store/recoil/transaction';
 import { correctNonceStore } from '@store/recoil/api';
-
-const Divider: React.FC = () => <Box height="1px" backgroundColor="ink.150" my="base" />;
+import { truncateMiddle } from '@stacks/ui-utils';
 
 interface ConfirmSendDrawerProps extends BaseDrawerProps {
   amount: number;
@@ -66,66 +67,56 @@ export const ConfirmSendDrawer: React.FC<Omit<ConfirmSendDrawerProps, 'title'>> 
 
   return (
     <BaseDrawer title="Confirm transfer" showing={showing} close={close}>
-      <Box width="100%" px={6} mt="base">
-        <Divider />
-        <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
-          Amount
-        </Text>
-        <Text fontSize={1}>
-          {amount}
-          {asset?.type === 'stx' ? ' STX' : ''}
-        </Text>
-      </Box>
-      <Box width="100%" px={6} mt="base">
-        <Divider />
-        <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
-          To
-        </Text>
-        <Text fontSize={1} overflowWrap="break-word">
-          {recipient}
-        </Text>
-      </Box>
-      <Box width="100%" px={6} mt="base">
-        <Divider />
-        <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
-          Nonce
-        </Text>
-        {tx ? (
-          <Text fontSize={1}>{tx.auth.spendingCondition?.nonce.toNumber()}</Text>
-        ) : (
-          <LoadingRectangle height="14px" width="80px" />
-        )}
-      </Box>
-      <Box width="100%" px={6} mt="base">
-        <Divider />
-        <Text fontSize={2} fontWeight="500" display="block" mb="extra-tight">
-          Fee
-        </Text>
-        {tx ? (
-          <Text fontSize={1}>
-            {stacksValue({
-              value: tx.auth.spendingCondition?.fee?.toNumber() || 0,
-            })}
-          </Text>
-        ) : (
-          <LoadingRectangle height="14px" width="80px" />
-        )}
-      </Box>
-      <Flex width="100%" px="6" flexGrow={1} mt="base">
-        <Button width="50%" mode="secondary" mr={2} onClick={close}>
-          Cancel
-        </Button>
-        <Button
-          width="50%"
-          mode="primary"
-          ml={2}
-          isDisabled={!tx || loading}
-          onClick={submit}
-          isLoading={!tx || loading}
-        >
-          Send
-        </Button>
-      </Flex>
+      <Stack pt="tight" spacing="extra-loose">
+        <Stack spacing="loose">
+          <Stack width="100%" px="extra-loose">
+            <Caption>Amount</Caption>
+            <Text>
+              {amount}
+              {asset?.type === 'stx' ? ' STX' : ''}
+            </Text>
+          </Stack>
+          <Stack width="100%" px="extra-loose">
+            <Caption>Recipient</Caption>
+            <Tooltip label={recipient}>
+              <Text>{truncateMiddle(recipient, 12)}</Text>
+            </Tooltip>
+          </Stack>
+          <Stack width="100%" px="extra-loose">
+            <Caption>Nonce</Caption>
+            {tx ? (
+              <Text>{tx.auth.spendingCondition?.nonce.toNumber()}</Text>
+            ) : (
+              <LoadingRectangle height="14px" width="80px" />
+            )}
+          </Stack>
+          <Stack width="100%" px="extra-loose">
+            <Caption>Fee</Caption>
+            {tx ? (
+              <Text>
+                {stacksValue({
+                  value: tx.auth.spendingCondition?.fee?.toNumber() || 0,
+                })}
+              </Text>
+            ) : (
+              <LoadingRectangle height="14px" width="80px" />
+            )}
+          </Stack>
+        </Stack>
+        <Stack spacing="base" pb="loose" width="100%" px="extra-loose">
+          <Button
+            mode="primary"
+            isDisabled={!tx || loading}
+            onClick={submit}
+            isLoading={!tx || loading}
+          >
+            Send
+          </Button>
+          <Button mode="tertiary" onClick={close}>
+            Cancel
+          </Button>
+        </Stack>
+      </Stack>
     </BaseDrawer>
   );
 };

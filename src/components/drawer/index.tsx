@@ -1,10 +1,8 @@
 import React from 'react';
-import { Box, Flex, useEventListener, IconButton, color } from '@stacks/ui';
+import { Flex, useEventListener, IconButton, color, transition } from '@stacks/ui';
 import { IconX } from '@tabler/icons';
 import useOnClickOutside from '@common/hooks/use-onclickoutside';
 import { Title } from '@components/typography';
-
-const transition = '0.2s all ease-in-out';
 
 export interface BaseDrawerProps {
   showing: boolean;
@@ -49,22 +47,30 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ title, showing, close, c
         willChange: 'background',
       }}
     >
-      <Box
+      <Flex
+        flexDirection="column"
+        flexGrow={0}
         ref={ref}
         opacity={showing ? 1 : 0}
         transform={showing ? 'none' : 'translateY(35px)'}
         transition={showing ? transition + ' 0.1s' : transition}
+        transitionDuration="0.4s"
         style={{ willChange: 'transform, opacity' }}
         width="100%"
         bg="white"
-        py={6}
         borderTopLeftRadius="24px"
         borderTopRightRadius="24px"
-        overflowY="auto"
         position="relative"
         mt="auto"
+        maxHeight="calc(100vh - 24px)"
       >
-        <Flex pb="base" justifyContent="space-between" alignItems="center" px="loose">
+        <Flex
+          pb="base"
+          justifyContent="space-between"
+          alignItems="center"
+          pt="extra-loose"
+          px="extra-loose"
+        >
           {title ? (
             <Title fontSize="20px" lineHeight="28px">
               {title}
@@ -82,8 +88,10 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({ title, showing, close, c
             icon={IconX}
           />
         </Flex>
-        {children}
-      </Box>
+        <Flex maxHeight="100%" flexGrow={1} overflowY="auto" flexDirection="column">
+          {children}
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

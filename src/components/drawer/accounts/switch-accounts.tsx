@@ -67,9 +67,9 @@ const AccountList: React.FC<{ handleClose: () => void }> = memo(({ handleClose }
             px="loose"
             onClick={() => handleSwitchAccount(index)}
           >
-            <Stack isInline>
+            <Stack isInline alignItems="center" spacing="base">
               <AccountAvatar account={account} />
-              <Stack>
+              <Stack spacing="base-tight">
                 <Title fontSize={2} lineHeight="1rem" fontWeight="400">
                   {getAccountDisplayName(account)}
                 </Title>
@@ -107,7 +107,7 @@ export const SwitchAccounts: React.FC<SwitchAccountProps> = memo(({ close }) => 
   return (
     <>
       <AccountList handleClose={close} />
-      <Box pt="base" px="loose">
+      <Box pt="base" pb="loose" px="loose">
         <Button onClick={() => setAccountDrawerStep(AccountStep.Create)}>Create an account</Button>
       </Box>
     </>

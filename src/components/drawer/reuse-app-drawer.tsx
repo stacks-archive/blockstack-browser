@@ -73,7 +73,7 @@ export const ReuseAppDrawer: React.FC<ReuseAppDrawerProps> = ({
           </>,
         ]}
       />
-      <ScreenActions mt={2}>
+      <ScreenActions pb="loose" mt={2}>
         <Stack width="100%" isInline spacing={3}>
           <Button mode="secondary" onClick={close} flexGrow={1}>
             Go back
