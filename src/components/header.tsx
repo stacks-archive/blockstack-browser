@@ -51,7 +51,7 @@ const WarningBanner: React.FC<FlexProps> = () => {
       borderColor={color('border')}
     >
       <Box as={IconAlertTriangle} size="16px" color={color('feedback-alert')} />
-      <Caption fontSize={0}>Stacks Wallet for Web is in alpha, it has not been audited.</Caption>
+      <Caption variant="c2">Stacks Wallet for Web is in alpha, it has not been audited.</Caption>
     </Stack>
   );
 };

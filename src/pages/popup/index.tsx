@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import { Button, Stack, Box, ButtonProps } from '@stacks/ui';
+import { Button, Stack, Box, color, StackProps, DynamicColorCircle } from '@stacks/ui';
+import type { ButtonProps } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -15,53 +16,80 @@ interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
 }
 
-const TxButton: React.FC<TxButtonProps> = ({ kind, onClick, ...rest }) => {
-  return (
-    <Button onClick={onClick} size="sm" px="base" py="tight" fontSize={2} mode="primary" {...rest}>
-      <Box
-        as={kind === 'send' ? IconArrowUp : IconQrcode}
-        transform={kind === 'send' ? 'unset' : 'scaleY(-1)'}
-        size="14px"
-      />
-      <Box as="span" ml="tight" fontSize="14px">
-        {kind === 'send' ? 'Send' : 'Receive'}
-      </Box>
-    </Button>
-  );
-};
+const TxButton: React.FC<TxButtonProps> = memo(({ kind, onClick, ...rest }) => (
+  <Button
+    onClick={onClick}
+    size="sm"
+    px="base-tight"
+    py="tight"
+    fontSize={2}
+    mode="primary"
+    {...rest}
+  >
+    <Box
+      as={kind === 'send' ? IconArrowUp : IconQrcode}
+      transform={kind === 'send' ? 'unset' : 'scaleY(-1)'}
+      size="16px"
+    />
+    <Box as="span" ml="extra-tight" fontSize="14px">
+      {kind === 'send' ? 'Send' : 'Receive'}
+    </Box>
+  </Button>
+));
 
-export const PopupHome: React.FC = memo(() => {
-  const { currentAccount, currentAccountIndex, currentAccountStxAddress } = useWallet();
-  const { doChangeScreen } = useAnalytics();
-  const assets = useAssets();
-  if (!currentAccount || currentAccountIndex === undefined || !currentAccountStxAddress) {
+const UserAccount: React.FC<StackProps> = memo(props => {
+  const { currentAccount, currentAccountStxAddress } = useWallet();
+  if (!currentAccount || !currentAccountStxAddress) {
     console.error('Error! Homepage rendered without account state, which should never happen.');
     return null;
   }
+  const displayName = getAccountDisplayName(currentAccount);
+  const circleText = displayName?.includes('Account') ? displayName.split(' ')[1] : displayName[0];
   return (
-    <PopupContainer>
-      <Stack mt="loose" data-test="home-page" spacing="loose">
-        <Stack alignItems="flex-start" spacing="base">
-          <Title
-            lineHeight="1rem"
-            fontSize={4}
-            fontWeight={500}
-            data-test="home-current-display-name"
-          >
-            {getAccountDisplayName(currentAccount)}
-          </Title>
-          <Caption>{truncateMiddle(currentAccountStxAddress, 8)}</Caption>
-        </Stack>
-        <Stack spacing="base-tight" isInline>
-          <TxButton
-            isDisabled={assets.length === 0}
-            onClick={() => doChangeScreen(ScreenPaths.POPUP_SEND)}
-            kind="send"
-          />
-          <TxButton onClick={() => doChangeScreen(ScreenPaths.POPUP_RECEIVE)} kind="receive" />
-        </Stack>
+    <Stack spacing="base-tight" alignItems="center" isInline {...props}>
+      <DynamicColorCircle
+        string={`${currentAccountStxAddress}.${currentAccount.appsKey}`}
+        color={color('bg')}
+      >
+        {circleText}
+      </DynamicColorCircle>
+      <Stack alignItems="flex-start" spacing="base-tight">
+        <Title as="h1" lineHeight="1rem" fontSize={4} fontWeight={500}>
+          {displayName}
+        </Title>
+        <Caption>{truncateMiddle(currentAccountStxAddress, 8)}</Caption>
       </Stack>
-      <AccountInfo />
-    </PopupContainer>
+    </Stack>
   );
 });
+
+const Actions: React.FC<StackProps> = memo(props => {
+  const { doChangeScreen } = useAnalytics();
+  const assets = useAssets();
+  return (
+    <Stack spacing="base-tight" isInline {...props}>
+      <TxButton
+        isDisabled={assets.length === 0}
+        onClick={() => doChangeScreen(ScreenPaths.POPUP_SEND)}
+        kind="send"
+      />
+      <TxButton onClick={() => doChangeScreen(ScreenPaths.POPUP_RECEIVE)} kind="receive" />
+    </Stack>
+  );
+});
+
+const PageTop: React.FC<StackProps> = memo(props => (
+  <Stack data-test="home-page" spacing="loose" {...props}>
+    <UserAccount />
+    <Actions />
+  </Stack>
+));
+
+export const PopupHome: React.FC = memo(() => (
+  <PopupContainer>
+    <Stack spacing="loose">
+      <PageTop />
+      <AccountInfo />
+    </Stack>
+  </PopupContainer>
+));

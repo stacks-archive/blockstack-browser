@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@stacks/ui';
+import { Box, FlexProps } from '@stacks/ui';
 import { AssetList } from '@components/popup/asset-list';
 import { useFetchAccountData } from '@common/hooks/use-account-info';
 import { Flex } from '@stacks/ui';
@@ -20,7 +20,7 @@ const HomeLoading: React.FC = () => {
   );
 };
 
-export const AccountInfo: React.FC = () => {
+export const AccountInfo: React.FC<FlexProps> = props => {
   const accountData = useFetchAccountData();
   if (accountData.state === 'loading' && !accountData.value) {
     return <HomeLoading />;
@@ -33,7 +33,7 @@ export const AccountInfo: React.FC = () => {
   const latestPendingTx = data.pendingTransactions[0];
   const latestTx: MempoolTransaction | Transaction = latestPendingTx || latestConfirmedTx;
   return (
-    <Flex flexWrap="wrap" flexDirection="column">
+    <Flex flexWrap="wrap" flexDirection="column" {...props}>
       <TxItem transaction={latestTx} />
       <AssetList balances={data.balances} />
     </Flex>

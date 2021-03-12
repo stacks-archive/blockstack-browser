@@ -46,7 +46,7 @@ export const TxItem: React.FC<TxItemProps> = ({ transaction }) => {
     return null;
   }
   return (
-    <Box width="100%" mt="loose">
+    <Box width="100%">
       <Text display="block" color="ink.600" fontSize={1} mb="tight">
         Latest Transaction
       </Text>

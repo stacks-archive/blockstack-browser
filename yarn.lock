@@ -2552,10 +2552,10 @@
     type-fest "^0.21.3"
     typescript "^4.1.2"
 
-"@stacks/ui@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.7.0.tgz#a9cc4a004ed0b04551ac02d3508b42ad10b3dfe4"
-  integrity sha512-WRNKe9PEXFkHwhO6/2Yd01zh7rjgFNfDQTCHct65FgoJGwIKIEfR4xP+SJhpOaBXaA8leasXSIATTUAj0QAjIA==
+"@stacks/ui@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.8.0.tgz#03bc42b9c95f432bef6650781bbabd81e19272cb"
+  integrity sha512-A8l1SKqMYBZ1t13V3yQcXySxv5RkPrjPovjlPoQswaNceS1Eh+UI3r5jMAwqHWDL9LE9G3wjSl4ect7whURkyg==
   dependencies:
     "@reach/alert" "^0.13.2"
     "@reach/auto-id" "^0.13.2"
@@ -4818,6 +4818,13 @@ caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001181:
   version "1.0.30001197"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001197.tgz#47ad15b977d2f32b3ec2fe2b087e0c50443771db"
   integrity sha512-8aE+sqBqtXz4G8g35Eg/XEaFr2N7rd/VQ6eABGBmNtcB8cN6qNJhMi6oSFy4UWWZgqgL3filHT8Nha4meu3tsw==
+
+capsize@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/capsize/-/capsize-1.1.0.tgz#d70f918b5ecadc2390b2a3b3b672ced639907ed6"
+  integrity sha512-tV0weOXxQ9hsbqewiWfGQBXsGzSN/i/w9IGuH+JVySzGOhscTAzeK3N9ZAM3Kf89bWgYot80Za5fSXKi6ZynvA==
+  dependencies:
+    round-to "^4.1.0"
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -12193,6 +12200,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+round-to@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/round-to/-/round-to-4.1.0.tgz#148d768d18b2f127f78e6648cb8b0a5943c416bf"
+  integrity sha512-H/4z+4QdWS82iMZ23+5St302Mv2jJws0hUvEogrD6gC8NN6Z5TalDtbg51owCrVy4V/4c8ePvwVLNtlhEfPo5g==
 
 rsvp@^4.8.4:
   version "4.8.5"
