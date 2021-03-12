@@ -33,20 +33,16 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
 
   const showWarning = !strengthResult.meetsAllStrengthRequirements && hasSubmitted;
 
-  const validate = (value: string) => {
+  const validate = debounce((value: string) => {
     const result = validatePassword(value);
     setStrengthResult(result);
     ref?.current?.focus();
-  };
-
-  const handleOnChange = debounce((value: string) => {
-    setPassword(value);
-    validate(value);
-  }, 150);
+  }, 100);
 
   const handlePasswordInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
-    handleOnChange(value);
+    setPassword(value);
+    validate(value);
   }, []);
 
   const submit = useCallback(async () => {
