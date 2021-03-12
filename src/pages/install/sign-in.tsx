@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, Input, Stack } from '@stacks/ui';
+import { Text, Button, Input, Stack, color } from '@stacks/ui';
 
 import { ErrorLabel } from '@components/error-label';
 import { PopupContainer } from '@components/popup/container';
@@ -28,7 +28,19 @@ export const InstalledSignIn: React.FC = () => {
     >
       <Caption>Enter your 12 or 24 word Secret Key to continue.</Caption>
       <Stack as="form" onSubmit={onSubmit} spacing="loose" mt="auto">
-        <Stack>
+        <Stack spacing="base">
+          {error && (
+            <ErrorLabel lineHeight="16px">
+              <Text
+                textAlign="left"
+                textStyle="caption"
+                color={color('feedback-error')}
+                data-test="sign-in-seed-error"
+              >
+                {error}
+              </Text>
+            </ErrorLabel>
+          )}
           <Input
             autoFocus
             placeholder="Paste or type your Secret Key"
@@ -45,18 +57,6 @@ export const InstalledSignIn: React.FC = () => {
             onChange={onChange}
             value={value}
           />
-          {error && (
-            <ErrorLabel lineHeight="16px">
-              <Text
-                textAlign="left"
-                textStyle="caption"
-                color="feedback.error"
-                data-test="sign-in-seed-error"
-              >
-                {error}
-              </Text>
-            </ErrorLabel>
-          )}
         </Stack>
         <Button
           width="100%"

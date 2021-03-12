@@ -1,15 +1,23 @@
 import React from 'react';
-import { Flex, Box, FlexProps } from '@stacks/ui';
+import { Box, color, StackProps, Stack } from '@stacks/ui';
+import { IconAlertTriangle } from '@tabler/icons';
 
-import { ExclamationMark } from './icons/exclamation-mark';
-
-type ErrorLabelProps = FlexProps;
-
-export const ErrorLabel: React.FC<ErrorLabelProps> = ({ children, ...rest }) => (
-  <Flex mt={3} {...rest}>
-    <Box mr={2} position="relative" top="2px">
-      <ExclamationMark />
-    </Box>
-    <Box mr={5}>{children}</Box>
-  </Flex>
+export const ErrorLabel: React.FC<StackProps> = ({ children, ...rest }) => (
+  <Stack
+    spacing="extra-tight"
+    color={color('feedback-error')}
+    isInline
+    alignItems="center"
+    {...rest}
+  >
+    <Box
+      size="1.2rem"
+      color={color('feedback-error')}
+      as={IconAlertTriangle}
+      position="relative"
+      top="2px"
+      strokeWidth={1.5}
+    />
+    <Box>{children}</Box>
+  </Stack>
 );
