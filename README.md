@@ -1,8 +1,8 @@
-# Stacks wallet for web
+# Stacks Wallet for web
+
+Stacks Wallet is a browser extension for managing your digital assets and connecting to apps built with the Stacks blockchain.
 
 Source code is available on GitHub at https://github.com/blockstack/stacks-wallet-web/tree/main
-
-Stacks Wallet for web is a web extension for interacting with apps built on [Stacks](https://stacks.co).
 
 To use this extension with your own Stacks App, we recommend using [Connect](https://github.com/blockstack/connect).
 
