@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '@common/context';
-import { Box, Text, Flex, space, BoxProps } from '@stacks/ui';
+import { Box, Text, Flex, BoxProps } from '@stacks/ui';
 import { Auth } from './auth';
 import { Tab } from './tab';
 import { Status } from './status';
@@ -62,8 +62,8 @@ export const Home: React.FC = () => {
   };
   return (
     <Flex flexWrap="wrap">
-      <Container mt={space('base-loose')}>
-        <Text as="h1" textStyle="display.large" fontSize={7} mb={space('loose')} display="block">
+      <Container mt={'base-loose'}>
+        <Text as="h1" textStyle="display.large" fontSize={7} mb={'loose'} display="block">
           Testnet Demo
         </Text>
       </Container>

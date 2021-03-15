@@ -970,6 +970,11 @@
   resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.53.1.tgz#7842eb9b577caf970de7a57be938377906c86bd2"
   integrity sha512-k3fGydKG3fRClToIwYukfKJ/N4d+D7+dfGYrZAnwd26PF4cRKQJS4eFJahjWOf/ui3brSQD8+tTlr+MMnlMFmQ==
 
+"@blockstack/stacks-blockchain-sidecar-types@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-sidecar-types/-/stacks-blockchain-sidecar-types-0.0.22.tgz#516017641c2ca9b89101c6f08eda94cb0200becd"
+  integrity sha512-xU1CFB0xyLyGRUVH8a5o/A260KDn39lmE/5w5l3GK/5EKwEhbppcFilySMao/QRrNT42Q0YWqhWxNz6BFMllGQ==
+
 "@blockstack/stacks-transactions@0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@blockstack/stacks-transactions/-/stacks-transactions-0.7.0.tgz#c587f69879b1903bada87769f1d6d1217479336a"
@@ -2522,7 +2527,7 @@
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
 
-"@stacks/ui-core@^7.3.0":
+"@stacks/ui-core@7.3.0", "@stacks/ui-core@^7.3.0":
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/@stacks/ui-core/-/ui-core-7.3.0.tgz#7d4dd4d60206e795ca6b7109dfbaea74f878fda2"
   integrity sha512-q3ZBu2uk/MMFsBGNZ8aT6stbwqaHuQTatDwS2A8a1gM+Csb/souJD6uY0Nf3R/z4IDCUGT6SYlvd8+lYgTAxzA==
@@ -2531,7 +2536,7 @@
     camelcase "^6.0.0"
     micro-memoize "^4.0.9"
 
-"@stacks/ui-theme@^7.5.0":
+"@stacks/ui-theme@7.5.0", "@stacks/ui-theme@^7.5.0":
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/@stacks/ui-theme/-/ui-theme-7.5.0.tgz#39949295935f37ab0694e1f16067679c268a3d51"
   integrity sha512-lS83ApLE5lwizR59RgUoqeXNu3yolSwOjVO5p8ySTAU3M2bhOk5FCroSXYRpMuz20bRRdqyaOWCYJt+xP1sNUA==
@@ -2539,7 +2544,7 @@
     type-fest "^0.21.3"
     typescript "^4.1.2"
 
-"@stacks/ui-utils@^7.5.0":
+"@stacks/ui-utils@7.5.0", "@stacks/ui-utils@^7.5.0":
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/@stacks/ui-utils/-/ui-utils-7.5.0.tgz#1a1753a02f2a62e732b0d9f31897665a89c7a6f6"
   integrity sha512-g2DaH1h3/nd+Cx99S5l37nv3Fuzbbc0NGlD4zY/XSzbfH2lpXwCfZDwj2Vz74H9vjPuGGiJ8Y48+0BxScKWPSw==
@@ -2552,7 +2557,7 @@
     type-fest "^0.21.3"
     typescript "^4.1.2"
 
-"@stacks/ui@^7.8.0":
+"@stacks/ui@7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.8.0.tgz#03bc42b9c95f432bef6650781bbabd81e19272cb"
   integrity sha512-A8l1SKqMYBZ1t13V3yQcXySxv5RkPrjPovjlPoQswaNceS1Eh+UI3r5jMAwqHWDL9LE9G3wjSl4ect7whURkyg==

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { space, Box, Text, Flex } from '@stacks/ui';
+import { Box, Text, Flex } from '@stacks/ui';
 import { ExplorerLink } from './explorer-link';
 import { CounterActions } from './counter-actions';
 import { getRPCClient } from '@common/utils';
@@ -31,7 +31,7 @@ export const Counter = () => {
       <Text as="h2" textStyle="display.small">
         Counter smart contract
       </Text>
-      <Text textStyle="body.large" display="block" my={space('loose')}>
+      <Text textStyle="body.large" display="block" my={'loose'}>
         Try a smart contract that keeps a single "counter" state variable. The public methods
         "increment" and "decrement" change the value of the counter.
       </Text>
@@ -43,7 +43,7 @@ export const Counter = () => {
 
       {transactions.length > 0 && (
         <>
-          <Text display="block" my={space('base-loose')} textStyle="body.large.medium">
+          <Text display="block" my={'base-loose'} textStyle="body.large.medium">
             Latest changes
           </Text>
           <Flex flexWrap="wrap" justifyContent="left">

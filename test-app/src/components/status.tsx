@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { space, Box, Text, Button, Input, Flex } from '@stacks/ui';
+import { Box, Text, Button, Input, Flex } from '@stacks/ui';
 import { ExplorerLink } from './explorer-link';
 import { useConnect } from '@stacks/connect-react';
 import {
@@ -114,7 +114,7 @@ export const Status = () => {
       <Text as="h2" textStyle="display.small">
         Status smart contract
       </Text>
-      <Text textStyle="body.large" display="block" my={space('loose')}>
+      <Text textStyle="body.large" display="block" my={'loose'}>
         Try a smart contract where anyone can write their public status, like a decentralized
         Twitter. You can read someone else's status by entering their address.
       </Text>
@@ -126,7 +126,7 @@ export const Status = () => {
 
       {transactions.length > 0 && (
         <>
-          <Text display="block" my={space('base-loose')} textStyle="body.large.medium">
+          <Text display="block" my={'base-loose'} textStyle="body.large.medium">
             Latest statuses
           </Text>
           <Flex flexWrap="wrap" justifyContent="left">
@@ -137,7 +137,7 @@ export const Status = () => {
         </>
       )}
 
-      <Text display="block" my={space('base-loose')} textStyle="body.large.medium">
+      <Text display="block" my={'base-loose'} textStyle="body.large.medium">
         Write a status
       </Text>
 
@@ -158,16 +158,16 @@ export const Status = () => {
         />
       </Box>
       {txId && <ExplorerLink txId={txId} />}
-      <Button my={space('base-loose')} onClick={onSubmitWrite}>
+      <Button my={'base-loose'} onClick={onSubmitWrite}>
         Write status
       </Button>
 
-      <Text display="block" my={space('base-loose')} textStyle="body.large.medium">
+      <Text display="block" my={'base-loose'} textStyle="body.large.medium">
         Read a status
       </Text>
 
       {stxAddress && (
-        <Text display="block" my={space('base-loose')} textStyle="body.small">
+        <Text display="block" my={'base-loose'} textStyle="body.small">
           If you want to read your own status, your address is {stxAddress}.
         </Text>
       )}
@@ -200,7 +200,7 @@ export const Status = () => {
           {error}
         </Text>
       )}
-      <Button my={space('base-loose')} onClick={onSubmitRead} isLoading={loading}>
+      <Button my={'base-loose'} onClick={onSubmitRead} isLoading={loading}>
         Read status
       </Button>
     </Box>

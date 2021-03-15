@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { space, Box, Text, Button, ButtonGroup } from '@stacks/ui';
+import { Box, Text, Button, ButtonGroup } from '@stacks/ui';
 import { getAuthOrigin, stacksNetwork as network } from '@common/utils';
 import { demoTokenContract } from '@common/contracts';
 import { useSTXAddress } from '@common/use-stx-address';
@@ -133,11 +133,11 @@ export const Debugger = () => {
       <Text as="h2" textStyle="display.small">
         Debugger
       </Text>
-      <Text textStyle="body.large" display="block" my={space('base')}>
+      <Text textStyle="body.large" display="block" my={'base'}>
         Try out a bunch of different transactions on the Stacks blockchain testnet.
       </Text>
       {txId && (
-        <Text textStyle="body.large" display="block" my={space('base')}>
+        <Text textStyle="body.large" display="block" my={'base'}>
           <Text color="green" fontSize={1}>
             Successfully broadcasted &quot;{txType}&quot;
           </Text>
