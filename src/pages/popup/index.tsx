@@ -108,7 +108,13 @@ const UserAccount: React.FC<StackProps> = memo(props => {
       <Stack overflow="hidden" display="block" alignItems="flex-start" spacing="base-tight">
         <Box>
           <Tooltip label={isLong ? name : undefined}>
-            <Title as="h1" lineHeight="1rem" fontSize={4} fontWeight={500}>
+            <Title
+              data-test="home-current-display-name"
+              as="h1"
+              lineHeight="1rem"
+              fontSize={4}
+              fontWeight={500}
+            >
               {displayName}
             </Title>
           </Tooltip>

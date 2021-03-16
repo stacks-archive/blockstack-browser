@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Flex, Text, Button } from '@stacks/ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Box, Flex, Button, Stack } from '@stacks/ui';
 import { useWallet } from '@common/hooks/use-wallet';
+import { Body } from '@components/typography';
 
 interface CreateAccountProps {
   close: () => void;
@@ -10,48 +11,41 @@ const TIMEOUT = 3000;
 
 export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
   const { doCreateNewAccount } = useWallet();
-  const [setting, setSetting] = useState(false);
-  const timeout = useRef<number | null>(null);
+  const [isSetting, setSetting] = useState(false);
+  const [hasFired, setHasFired] = useState(false);
 
   const createAccount = useCallback(async () => {
-    if (!setting && !timeout.current) {
+    if (!isSetting) {
       setSetting(true);
       await doCreateNewAccount();
-      timeout.current = window.setTimeout(() => close(), TIMEOUT);
       setSetting(false);
+      window.setTimeout(() => close(), TIMEOUT);
     }
-  }, [doCreateNewAccount, setting, timeout, close]);
+  }, [doCreateNewAccount, isSetting, setSetting, close]);
 
   useEffect(() => {
-    void createAccount();
-    return () => {
-      if (timeout.current) {
-        clearTimeout(timeout.current);
-      }
-    };
-  }, [timeout, createAccount]);
+    if (!hasFired) {
+      setHasFired(true);
+      void createAccount();
+    }
+  }, [createAccount, hasFired]);
 
   return (
-    <Box width="100%" px={6}>
-      <Box>
-        <Text fontSize={4} fontWeight="600">
-          Account Created
-        </Text>
-      </Box>
-      <Box py="base">
-        <Text fontSize={2}>Your new account has been created.</Text>
-      </Box>
-      <Flex width="100%" flexGrow={1} mt="base">
-        <Button
-          width="100%"
-          onClick={close}
-          isLoading={setting}
-          isDisabled={setting}
-          data-test={setting ? undefined : 'create-account-done-button'}
-        >
-          Done
-        </Button>
-      </Flex>
+    <Box width="100%" px="extra-loose">
+      <Stack spacing="base">
+        <Body>Your new account has been created.</Body>
+        <Flex width="100%" flexGrow={1} mt="base" pb="loose">
+          <Button
+            width="100%"
+            onClick={close}
+            isLoading={isSetting}
+            isDisabled={isSetting}
+            data-test={isSetting ? undefined : 'create-account-done-button'}
+          >
+            Done
+          </Button>
+        </Flex>
+      </Stack>
     </Box>
   );
 };
