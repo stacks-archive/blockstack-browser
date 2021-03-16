@@ -4,7 +4,7 @@ import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 export const VaultLoader: React.FC = () => {
   const { getWallet } = useVaultMessenger();
   useEffect(() => {
-    getWallet();
+    void getWallet();
   }, [getWallet]);
   return null;
 };

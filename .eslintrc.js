@@ -15,6 +15,7 @@ module.exports = {
   },
   plugins: ['react-hooks', '@typescript-eslint'],
   rules: {
+    '@typescript-eslint/no-floating-promises': [1],
     '@typescript-eslint/no-unnecessary-type-assertion': [0],
     '@typescript-eslint/no-unsafe-assignment': [0],
     '@typescript-eslint/no-unsafe-return': [0],

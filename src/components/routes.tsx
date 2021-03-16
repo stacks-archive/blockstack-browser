@@ -148,7 +148,7 @@ export const Routes: React.FC = () => {
         element={
           <ChooseAccount
             next={(accountIndex: number) => {
-              doFinishSignIn(accountIndex);
+              void doFinishSignIn(accountIndex);
             }}
           />
         }
