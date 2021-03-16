@@ -35,10 +35,11 @@ export default function useOnClickOutside(
     return;
   }
 
+  const noHandler = !handler;
   const handlerRef = useLatest(handler);
 
   useEffect(() => {
-    if (!handler) {
+    if (noHandler) {
       return;
     }
 
@@ -59,5 +60,5 @@ export default function useOnClickOutside(
         document.removeEventListener(event, listener, getOptions(event) as EventListenerOptions);
       });
     };
-  }, [!handler]);
+  }, [ref, handlerRef, noHandler]);
 }

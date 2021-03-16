@@ -123,7 +123,7 @@ export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus }) =>
     if (assets.length === 1 && !selectedAsset) {
       setSelectedAsset(assets[0]);
     }
-  }, [assets, selectedAsset]);
+  }, [setSelectedAsset, assets, selectedAsset]);
 
   if (selectedAsset) {
     return <SelectedAsset hideArrow={assets.length === 1} />;

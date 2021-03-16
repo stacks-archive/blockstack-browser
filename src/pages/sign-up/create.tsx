@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch } from '@common/hooks/use-dispatch';
 import { Spinner, Flex, Text, color } from '@stacks/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@screen';
@@ -52,47 +52,53 @@ const preloadImages = (images: { imageUrl: string }[]) => {
 interface CreateProps {
   next: () => void;
 }
+
 export const Create: React.FC<CreateProps> = props => {
   const [cardIndex, setCardIndex] = useState(0);
   const { wallet, doMakeWallet } = useWallet();
   const { name } = useAppDetails();
   const dispatch = useDispatch();
 
-  const explainerData: ExplainerCardProps[] = [
-    {
-      title: 'Generating your Secret Key...',
-      imageUrl: '/assets/images/icon-delay-key.svg',
-    },
-    {
-      title: `Everything you do in ${name} is protected with encryption`,
-      imageUrl: '/assets/images/icon-delay-padlock.svg',
-    },
-    {
-      title: `${name} can't see or track your activity`,
-      imageUrl: '/assets/images/icon-delay-private.svg',
-    },
-  ];
+  const { next } = props;
+
+  const explainerData: ExplainerCardProps[] = useMemo(
+    () => [
+      {
+        title: 'Generating your Secret Key...',
+        imageUrl: '/assets/images/icon-delay-key.svg',
+      },
+      {
+        title: `Everything you do in ${name} is protected with encryption`,
+        imageUrl: '/assets/images/icon-delay-padlock.svg',
+      },
+      {
+        title: `${name} can't see or track your activity`,
+        imageUrl: '/assets/images/icon-delay-private.svg',
+      },
+    ],
+    [name]
+  );
 
   useEffect(() => {
     preloadImages(explainerData);
-  }, []);
+  }, [explainerData]);
 
   useEffect(() => {
     // This timeout is important because if the app is navigated to as a sign in, the
     // create page will be rendered momentarily, and we need to cancel these
     // functions if we're on a different screen
     const timeout = setTimeout(() => {
-      createTimeoutLoop(setCardIndex, explainerData.length, () => props.next());
+      createTimeoutLoop(setCardIndex, explainerData.length, () => next());
       // We have this check for `wallet`, because this is the
       // default first screen rendered. We don't want to accidentally create a new
       // seed if a logged-in user gets into this hook.
       if (!wallet) {
-        dispatch(doSetOnboardingProgress(true));
-        doMakeWallet();
+        void dispatch(doSetOnboardingProgress(true));
+        void doMakeWallet();
       }
     }, 200);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [dispatch, doMakeWallet, explainerData.length, next, wallet]);
 
   const offCenterOffset = '3';
   const card = explainerData[cardIndex];

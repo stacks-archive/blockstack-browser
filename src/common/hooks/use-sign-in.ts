@@ -1,7 +1,6 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { magicRecoveryCodeState, seedInputErrorState, seedInputState } from '@store/recoil/seed';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useDispatch } from '@common/hooks/use-dispatch';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import {
@@ -21,17 +20,19 @@ export function useSignIn() {
   const { isLoading, setIsLoading, setIsIdle } = useLoading();
   const { doChangeScreen, doTrack } = useAnalytics();
   const { doStoreSeed } = useWallet();
-  const dispatch = useDispatch();
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleSetError = (message = "The Secret Key you've entered is invalid") => {
-    setError(message);
-    setIsIdle();
-    textAreaRef.current?.focus();
-    doTrack(SIGN_IN_INCORRECT);
-    return;
-  };
+  const handleSetError = useCallback(
+    (message = "The Secret Key you've entered is invalid") => {
+      setError(message);
+      setIsIdle();
+      textAreaRef.current?.focus();
+      doTrack(SIGN_IN_INCORRECT);
+      return;
+    },
+    [setError, setIsIdle, textAreaRef, doTrack]
+  );
 
   const handleSubmit = useCallback(
     async (passedValue?: string) => {
@@ -66,7 +67,16 @@ export function useSignIn() {
         handleSetError();
       }
     },
-    [seed, dispatch, doStoreSeed, doChangeScreen, doTrack]
+    [
+      seed,
+      doStoreSeed,
+      doChangeScreen,
+      doTrack,
+      handleSetError,
+      setIsIdle,
+      setIsLoading,
+      setMagicRecoveryCode,
+    ]
   );
 
   const handleSetSeed = useCallback(
@@ -86,7 +96,7 @@ export function useSignIn() {
         await handleSubmit(trimmed);
       }
     },
-    [hasLineReturn, error, seed, textAreaRef]
+    [error, seed, textAreaRef, handleSubmit, setSeed, setError]
   );
 
   const onChange = useCallback(
@@ -102,7 +112,7 @@ export function useSignIn() {
       await handleSetSeed(value);
       await handleSubmit(value);
     },
-    [handleSetSeed, textAreaRef, extractPhraseFromPasteEvent, handleSubmit]
+    [handleSetSeed, handleSubmit]
   );
 
   const onSubmit = useCallback(
@@ -113,21 +123,24 @@ export function useSignIn() {
     [handleSubmit]
   );
 
-  const onBack = useCallback(() => doChangeScreen(ScreenPaths.HOME), []);
+  const onBack = useCallback(() => doChangeScreen(ScreenPaths.HOME), [doChangeScreen]);
 
-  const onKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      void handleSubmit();
-    }
-  }, []);
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        void handleSubmit();
+      }
+    },
+    [handleSubmit]
+  );
 
   useEffect(() => {
     return () => {
       setError(undefined);
       setSeed('');
     };
-  }, []);
+  }, [setError, setSeed]);
 
   return {
     onBack,

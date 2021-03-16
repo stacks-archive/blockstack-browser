@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useNavigate, ToOptions } from 'react-router-dom';
@@ -11,10 +11,10 @@ interface NavigateProps {
 export const Navigate: React.FC<NavigateProps> = ({ to, screenPath }) => {
   const { doChangeScreen } = useAnalytics();
   const navigate = useNavigate();
-  React.useEffect(() => {
+  useEffect(() => {
     navigate(to);
     doChangeScreen(screenPath, false);
-  }, []);
+  }, [screenPath, doChangeScreen, to, navigate]);
 
   return null;
 };

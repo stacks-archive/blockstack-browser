@@ -19,7 +19,7 @@ export function useMagicRecoveryCode() {
   const { decodedAuthRequest } = useOnboardingState();
   const { doChangeScreen, doTrack } = useAnalytics();
 
-  const handleNavigate = () => {
+  const handleNavigate = useCallback(() => {
     if (decodedAuthRequest) {
       if (!USERNAMES_ENABLED) {
         setTimeout(() => {
@@ -31,7 +31,7 @@ export function useMagicRecoveryCode() {
     } else {
       doChangeScreen(ScreenPaths.HOME);
     }
-  };
+  }, [doChangeScreen, decodedAuthRequest, doFinishSignIn]);
 
   const handleSubmit = useCallback(async () => {
     setIsLoading();
@@ -46,12 +46,24 @@ export function useMagicRecoveryCode() {
       setPasswordError(`Incorrect password, try again.`);
       setIsIdle();
     }
-  }, [magicRecoveryCode, password, doStoreSeed, handleNavigate, doTrack]);
+  }, [
+    doSetPassword,
+    setIsIdle,
+    setIsLoading,
+    magicRecoveryCode,
+    password,
+    doStoreSeed,
+    handleNavigate,
+    doTrack,
+  ]);
 
-  const onChange = useCallback((event: React.FormEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setPassword(event.currentTarget.value);
-  }, []);
+  const onChange = useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      setPassword(event.currentTarget.value);
+    },
+    [setPassword]
+  );
 
   const handleBack = () => doChangeScreen(ScreenPaths.SIGN_IN);
 
@@ -68,7 +80,7 @@ export function useMagicRecoveryCode() {
       setMagicRecoveryCode('');
       setPassword('');
     };
-  }, []);
+  }, [setMagicRecoveryCode, setPassword]);
 
   return {
     isLoading,

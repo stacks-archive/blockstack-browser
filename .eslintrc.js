@@ -23,11 +23,12 @@ module.exports = {
     '@typescript-eslint/ban-types': [0],
     '@typescript-eslint/restrict-template-expressions': [0],
     '@typescript-eslint/explicit-module-boundary-types': [0],
-    "no-warning-comments": [1],
-    "react-hooks/exhaustive-deps": [
-      "warn", {
-        additionalHooks: "useRecoilCallback",
+    'no-warning-comments': [0],
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        additionalHooks: 'useRecoilCallback',
       },
-    ]
+    ],
   },
 };

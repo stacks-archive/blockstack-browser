@@ -39,11 +39,14 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
     ref?.current?.focus();
   }, 100);
 
-  const handlePasswordInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-    setPassword(value);
-    validate(value);
-  }, []);
+  const handlePasswordInput = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      const value = e.currentTarget.value;
+      setPassword(value);
+      validate(value);
+    },
+    [validate]
+  );
 
   const submit = useCallback(async () => {
     if (!wallet) throw 'Please log in before setting a password.';
