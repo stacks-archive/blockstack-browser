@@ -2,8 +2,7 @@
 '@stacks/wallet-web': minor
 ---
 
-This PR updates elements that link to the explorer throughout the application, and starts the work on displaying
-transaction items in a more robust way (working towards our designs in figma).
+This PR updates elements that link to the explorer throughout the application, and starts the work on displaying transaction items in a more robust way (working towards our designs in figma).
 
 **Improvements**
 
