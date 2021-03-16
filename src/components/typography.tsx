@@ -89,8 +89,6 @@ export const titleStyles = (as: Headings) => {
   }
 };
 
-export const Body: React.FC = props => <Text fontSize="14px" lineHeight="20px" {...props} />;
-
 export const Title = forwardRefWithAs<BoxProps, Headings>((props, ref) => (
   <BaseText
     userSelect="none"
@@ -130,6 +128,8 @@ export const Text = forwardRefWithAs<BoxProps, 'span'>((props, ref) => (
     {...props}
   />
 ));
+
+export const Body: React.FC<BoxProps> = props => <Text css={c1} {...props} />;
 
 export const Caption = forwardRefWithAs<{ variant?: 'c1' | 'c2' } & BoxProps, 'span'>(
   ({ variant, ...props }, ref) => (

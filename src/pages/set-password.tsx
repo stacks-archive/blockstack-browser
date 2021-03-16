@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Button, Input, Stack } from '@stacks/ui';
+import { Button, color, Input, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -8,7 +8,7 @@ import { buildEnterKeyEvent } from '@components/link';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { validatePassword, blankPasswordValidation } from '@common/validate-password';
-import { Caption, Text } from '@components/typography';
+import { Body, Caption } from '@components/typography';
 import debounce from 'just-debounce-it';
 
 interface SetPasswordProps {
@@ -91,12 +91,12 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
 
   return (
     <PopupContainer hideActions title="Set a password.">
-      <Text>
-        <Text color="green" fontWeight="500">
+      <Stack spacing="loose">
+        <Body color={color('feedback-success')} fontWeight="500">
           This password is for this device only.
-        </Text>{' '}
-        To access your account on a new device you’ll use just your Secret Key.
-      </Text>
+        </Body>
+        <Body>To access your account on a new device you will use your Secret Key.</Body>
+      </Stack>
       <Stack spacing="base" mt="auto" width="100%">
         {showWarning ? (
           <Caption fontSize={0}>

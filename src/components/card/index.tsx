@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Box, BoxProps, color } from '@stacks/ui';
+import { Box, BoxProps, color, Flex } from '@stacks/ui';
 import { Caption } from '@components/typography';
 
 interface CardProps extends BoxProps {
@@ -16,9 +16,16 @@ export const Card: React.FC<CardProps> = memo(({ title, children, ...rest }) => 
       textAlign="center"
       {...rest}
     >
-      <Caption borderBottom="1px solid" borderColor={color('border')} width="100%" p="tight">
-        {title}
-      </Caption>
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        borderBottom="1px solid"
+        borderColor={color('border')}
+        width="100%"
+        p="base-tight"
+      >
+        <Caption>{title}</Caption>
+      </Flex>
       <Box p="base">{children}</Box>
     </Box>
   );

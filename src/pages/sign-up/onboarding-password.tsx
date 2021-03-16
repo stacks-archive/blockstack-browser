@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { Screen, ScreenBody, ScreenActions, Title, ScreenHeader } from '@screen';
-import { Button, Text, Input, Box } from '@stacks/ui';
+import { Screen, ScreenBody, ScreenActions, Title, ScreenHeader, Body } from '@screen';
+import { Button, Input, Box } from '@stacks/ui';
 import { buildEnterKeyEvent } from '@components/link';
 import { useWallet } from '@common/hooks/use-wallet';
 
@@ -29,12 +29,12 @@ export const OnboardingPassword: React.FC<OnboardingPasswordProps> = ({ next }) 
         body={[
           <Title>{title}</Title>,
           <Box my="loose">
-            <Text fontSize={2}>
-              <Text color="green" fontWeight="500">
+            <Body>
+              <Body color="green" fontWeight="500">
                 This password is for this device only.
-              </Text>{' '}
+              </Body>{' '}
               To access your account on a new device you’ll use just your Secret Key.
-            </Text>
+            </Body>
           </Box>,
           <Box my="base" width="100%">
             <Input
