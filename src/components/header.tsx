@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = memo(props => {
         {!title ? (
           <StacksWalletLogo pt="7px" onClick={() => doChangeScreen(ScreenPaths.HOME)} />
         ) : (
-          <Box pt={onClose ? 'loose' : 'unset'}>
+          <Box pt={onClose ? 'loose' : 'unset'} pr="tight">
             {onClose ? (
               <IconButton
                 top="base-tight"
@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = memo(props => {
             <HeaderTitle>{title}</HeaderTitle>
           </Box>
         )}
-        <Stack pt={hideActions ? '7px' : 0} alignItems="center" isInline>
+        <Stack flexShrink={0} pt={hideActions ? '7px' : 0} alignItems="center" isInline>
           <NetworkModeBadge />
           {!hideActions && <MenuButton />}
         </Stack>

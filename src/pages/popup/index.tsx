@@ -13,6 +13,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { IconArrowUp, IconCopy, IconQrcode } from '@tabler/icons';
 import { useAssets } from '@common/hooks/use-assets';
 import { AccountAvatar } from '@components/account-avatar';
+import { truncateString } from '@common/utils';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
@@ -96,14 +97,22 @@ const UserAccount: React.FC<StackProps> = memo(props => {
     console.error('Error! Homepage rendered without account state, which should never happen.');
     return null;
   }
-  const displayName = getAccountDisplayName(currentAccount);
+  const nameCharLimit = 18;
+  const name = getAccountDisplayName(currentAccount);
+  const isLong = name.length > nameCharLimit;
+  const displayName = truncateString(name, nameCharLimit);
+
   return (
     <Stack spacing="base-tight" alignItems="center" isInline {...props}>
-      <AccountAvatar account={currentAccount} />
-      <Stack alignItems="flex-start" spacing="base-tight">
-        <Title as="h1" lineHeight="1rem" fontSize={4} fontWeight={500}>
-          {displayName}
-        </Title>
+      <AccountAvatar flexShrink={0} account={currentAccount} />
+      <Stack overflow="hidden" display="block" alignItems="flex-start" spacing="base-tight">
+        <Box>
+          <Tooltip label={isLong ? name : undefined}>
+            <Title as="h1" lineHeight="1rem" fontSize={4} fontWeight={500}>
+              {displayName}
+            </Title>
+          </Tooltip>
+        </Box>
         <Caption>{truncateMiddle(currentAccountStxAddress, 8)}</Caption>
       </Stack>
     </Stack>
