@@ -29,6 +29,7 @@ export const AccountsDrawer: React.FC = () => {
         return 'Add a username';
     }
   };
+
   return (
     <ControlledDrawer title={getTitle()} state={showAccountsStore} close={close}>
       {accountStep === AccountStep.Switch ? <SwitchAccounts close={close} /> : null}

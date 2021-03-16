@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Box, Fade, Button, Stack, color } from '@stacks/ui';
 import { Title, Caption } from '@components/typography';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -20,26 +20,16 @@ const TIMEOUT = 350;
 const useSwitchAccount = (handleClose: () => void) => {
   const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
   const transactionVersion = useRecoilValue(currentTransactionVersion);
-  const timeoutRef = useRef<number | null>(null);
+
   const handleSwitchAccount = useCallback(
     async index => {
       await doSwitchAccount(index);
-      if (!timeoutRef.current) {
-        timeoutRef.current = window.setTimeout(() => {
-          handleClose();
-        }, TIMEOUT);
-      }
+      window.setTimeout(() => {
+        handleClose();
+      }, TIMEOUT);
     },
-    [doSwitchAccount, timeoutRef, handleClose]
+    [doSwitchAccount, handleClose]
   );
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   const accounts = wallet?.accounts || [];
   const getIsActive = (index: number) => index === currentAccountIndex;
