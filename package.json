@@ -98,6 +98,7 @@
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
+    "@actions/core": "1.2.6",
     "@babel/core": "7.13.10",
     "@babel/plugin-proposal-class-properties": "7.13.0",
     "@babel/plugin-transform-regenerator": "7.12.13",
