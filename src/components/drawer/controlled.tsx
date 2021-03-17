@@ -27,7 +27,7 @@ export const ControlledDrawer: React.FC<RecoilControlledDrawerProps> = ({
   }, [setShowing, _close]);
 
   return (
-    <BaseDrawer title={title} showing={showing} close={close}>
+    <BaseDrawer title={title} isShowing={showing} onClose={close}>
       {children}
     </BaseDrawer>
   );

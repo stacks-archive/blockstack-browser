@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { loadingState } from '@store/recoil/loading';
 
-export function useLoading() {
-  const [loadingState, setLoadingState] = useState<'idle' | 'loading'>('idle');
+export function useLoading(key: string) {
+  const [state, setState] = useRecoilState(loadingState(key));
 
-  const setIsLoading = () => setLoadingState(() => 'loading');
-  const setIsIdle = () => setLoadingState(() => 'idle');
+  const setIsLoading = () => setState(() => 'loading');
+  const setIsIdle = () => setState(() => 'idle');
 
-  const isLoading = loadingState === 'loading';
+  const isLoading = state === 'loading';
   return {
     isLoading,
     setIsLoading,

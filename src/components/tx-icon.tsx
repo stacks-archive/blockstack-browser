@@ -62,7 +62,11 @@ const TypeIcon: React.FC<
     }
     case 'contract_call':
       return (
-        <TypeIconWrapper icon={() => <FunctionIcon />} status={transaction.tx_status} {...rest} />
+        <TypeIconWrapper
+          icon={() => <FunctionIcon size="14px" />}
+          status={transaction.tx_status}
+          {...rest}
+        />
       );
     default:
       return null;

@@ -17,7 +17,7 @@ export function useSignIn() {
   const [seed, setSeed] = useRecoilState(seedInputState);
   const [error, setError] = useRecoilState(seedInputErrorState);
 
-  const { isLoading, setIsLoading, setIsIdle } = useLoading();
+  const { isLoading, setIsLoading, setIsIdle } = useLoading('useSignIn');
   const { doChangeScreen, doTrack } = useAnalytics();
   const { doStoreSeed } = useWallet();
 

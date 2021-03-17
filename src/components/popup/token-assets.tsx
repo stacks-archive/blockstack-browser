@@ -1,7 +1,8 @@
 import React from 'react';
-import { Flex, Text, Box, BoxProps } from '@stacks/ui';
+import { Text, Box, BoxProps, Stack } from '@stacks/ui';
 import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { getTicker, stacksValue } from '@common/stacks-utils';
+import { stacksValue } from '@common/stacks-utils';
+import { getTicker } from '@common/utils';
 import { useWallet } from '@common/hooks/use-wallet';
 import { AssetRow } from '../asset-row';
 import { STACKS_MARKETS_URL } from '@common/constants';
@@ -51,21 +52,21 @@ export const TokenAssets: React.FC<TokenAssetProps> = ({ balances, ...props }) =
         friendlyName={assetName}
         key={key}
         value={token.balance}
-        subtitle={getTicker(assetName)}
+        subtitle={getTicker(assetName).toUpperCase()}
       />
     );
   });
   return (
-    <Box width="100%" py="base" {...props}>
-      <Flex flexWrap="wrap" flexDirection="column">
+    <Box width="100%" {...props}>
+      <Stack pt="base" spacing="base" flexWrap="wrap" flexDirection="column">
         <AssetRow
           name="STX"
           friendlyName="Stacks Token"
           value={stacksValue({ value: balances.stx.balance, withTicker: false })}
           subtitle="STX"
         />
-        {fungibleTokens}
-      </Flex>
+        <Stack spacing="base">{fungibleTokens}</Stack>
+      </Stack>
     </Box>
   );
 };

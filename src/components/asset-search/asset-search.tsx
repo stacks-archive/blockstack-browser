@@ -9,7 +9,7 @@ import { AssetResult } from './asset-search-result';
 import { SelectedAsset } from './selected-asset';
 import { useAssets } from '@common/hooks/use-assets';
 
-export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus }) => {
+export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus, ...rest }) => {
   const assets = useAssets();
 
   const selectedAsset = useRecoilValue(selectedAssetStore);
@@ -63,7 +63,7 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus 
   });
 
   return (
-    <Flex flexDirection="column" mt="loose" width="100%" position="relative" overflow="visible">
+    <Flex flexDirection="column" width="100%" position="relative" overflow="visible" {...rest}>
       <Box width="100%">
         <Text
           as="label"
@@ -74,7 +74,7 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus 
           htmlFor="amount"
           {...getLabelProps({ ref: labelRef })}
         >
-          Choose an asset:
+          Choose an asset
         </Text>
       </Box>
       <Box width="100%" {...getComboboxProps({ ref: comboRef })}>
@@ -114,7 +114,7 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus 
   );
 };
 
-export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus }) => {
+export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus, ...rest }) => {
   const balancesLoadable = useFetchBalances();
   const [selectedAsset, setSelectedAsset] = useRecoilState(selectedAssetStore);
   const assets = useAssets();
@@ -126,16 +126,16 @@ export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus }) =>
   }, [setSelectedAsset, assets, selectedAsset]);
 
   if (selectedAsset) {
-    return <SelectedAsset hideArrow={assets.length === 1} />;
+    return <SelectedAsset hideArrow={assets.length === 1} {...rest} />;
   }
 
   if (balancesLoadable.state === 'loading' && !balancesLoadable.value) {
     return (
-      <Box my="loose">
+      <Box {...rest}>
         <LoadingRectangle width="80%" height="32px" />
       </Box>
     );
   }
 
-  return <AssetSearchField autoFocus={autoFocus} />;
+  return <AssetSearchField autoFocus={autoFocus} {...rest} />;
 };

@@ -27,23 +27,23 @@ interface ReuseAppDrawerProps extends BaseDrawerProps {
 }
 
 export const ReuseAppDrawer: React.FC<ReuseAppDrawerProps> = ({
-  showing,
-  close,
+  isShowing,
+  onClose,
   apps,
   confirm,
 }) => {
   const [checked, setChecked] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const onClose = () => {
-    if (showing) {
+  const handleClose = () => {
+    if (isShowing) {
       setLoading(false);
-      close();
+      onClose();
     }
   };
 
   return (
-    <BaseDrawer showing={showing} close={onClose}>
+    <BaseDrawer isShowing={isShowing} onClose={handleClose}>
       <PreviousApps apps={apps} />
       <ScreenBody
         body={[

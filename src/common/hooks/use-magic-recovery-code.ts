@@ -13,7 +13,7 @@ import { SIGN_IN_CORRECT } from '@common/track';
 export function useMagicRecoveryCode() {
   const [magicRecoveryCode, setMagicRecoveryCode] = useRecoilState(magicRecoveryCodeState);
   const [password, setPassword] = useRecoilState(magicRecoveryCodePasswordState);
-  const { isLoading, setIsLoading, setIsIdle } = useLoading();
+  const { isLoading, setIsLoading, setIsIdle } = useLoading('useMagicRecoveryCode');
   const { doStoreSeed, doSetPassword, doFinishSignIn } = useWallet();
   const [error, setPasswordError] = useState('');
   const { decodedAuthRequest } = useOnboardingState();

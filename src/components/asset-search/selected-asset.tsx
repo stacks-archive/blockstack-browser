@@ -1,14 +1,18 @@
 import { useFetchBalances } from '@common/hooks/use-account-info';
-import { LoadingRectangle } from '@components/loading-rectangle';
 import { AssetAvatar } from '@components/stx-avatar';
-import { Flex, Box, ChevronIcon, Text, color } from '@stacks/ui';
+import { Box, ChevronIcon, Text, color, Stack, StackProps } from '@stacks/ui';
 import { stacksValue } from '@common/stacks-utils';
 import { selectedAssetStore, searchInputStore } from '@store/recoil/asset-search';
 import BigNumber from 'bignumber.js';
 import React, { useMemo } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Caption } from '@components/typography';
+import { getTicker } from '@common/utils';
 
-export const SelectedAsset: React.FC<{ hideArrow?: boolean }> = ({ hideArrow }) => {
+export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
+  hideArrow,
+  ...rest
+}) => {
   const balancesLoadable = useFetchBalances();
   const selectedAsset = useRecoilValue(selectedAssetStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
@@ -34,14 +38,15 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean }> = ({ hideArrow }) 
   if (!selectedAsset) {
     return null;
   }
-  const { name } = selectedAsset;
+  const { name, contractAddress } = selectedAsset;
+
+  const isStx = name === 'Stacks Token';
+  const ticker = isStx ? 'STX' : getTicker(name).toUpperCase();
   return (
-    <Flex flexDirection="column" mt="loose">
-      <Box>
-        <Text display="block" fontSize={1} fontWeight="500" mb="tight">
-          Token
-        </Text>
-      </Box>
+    <Stack spacing="tight" flexDirection="column" {...rest}>
+      <Text display="block" fontSize={1} fontWeight="500" mb="tight">
+        Token
+      </Text>
       <Box
         width="100%"
         px="base"
@@ -57,31 +62,24 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean }> = ({ hideArrow }) 
           }
         }}
       >
-        <Flex flexWrap="wrap" flexDirection="row">
-          <Box width="24px" mr="base">
-            <AssetAvatar
-              useStx={name === 'Stacks Token'}
-              gradientString={name}
-              mr="tight"
-              size="24px"
-            >
-              {name[0]}
-            </AssetAvatar>
-          </Box>
-          <Box flexGrow={1}>
+        <Stack spacing="base" alignItems="center" isInline>
+          <AssetAvatar
+            useStx={isStx}
+            gradientString={contractAddress}
+            mr="tight"
+            size="36px"
+            color="white"
+          >
+            {name[0]}
+          </AssetAvatar>
+
+          <Stack flexGrow={1}>
             <Text display="block" fontWeight="400" fontSize={2} color="ink.1000">
               {name}
             </Text>
-          </Box>
-          <Box pl="base">
-            {balance ? (
-              <Text fontSize={2} color="ink.600">
-                {balance}
-              </Text>
-            ) : (
-              <LoadingRectangle height="16px" width="60px" />
-            )}
-          </Box>
+            <Caption>{ticker}</Caption>
+          </Stack>
+
           {!hideArrow ? (
             <Box ml="base" textAlign="right" height="24px">
               <ChevronIcon
@@ -96,8 +94,13 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean }> = ({ hideArrow }) 
               />
             </Box>
           ) : null}
-        </Flex>
+        </Stack>
       </Box>
-    </Flex>
+      {balance && (
+        <Caption variant="c2">
+          Balance: {balance} {!isStx && ticker}
+        </Caption>
+      )}
+    </Stack>
   );
 };

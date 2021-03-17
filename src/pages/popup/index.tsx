@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import { Button, Stack, Box, StackProps, Flex, useClipboard, BoxProps } from '@stacks/ui';
 import { Tooltip } from '@components/tooltip';
 import type { ButtonProps } from '@stacks/ui';
@@ -17,6 +17,7 @@ import { truncateString } from '@common/utils';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
+  path: ScreenPaths.POPUP_SEND | ScreenPaths.POPUP_RECEIVE;
 }
 
 const CopyAction: React.FC<BoxProps> = memo(({ onClick }) => {
@@ -53,39 +54,50 @@ const CopyAction: React.FC<BoxProps> = memo(({ onClick }) => {
   );
 });
 
-const TxButton: React.FC<TxButtonProps> = memo(({ kind, onClick, ...rest }) => {
+const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
   const ref = useRef<HTMLButtonElement | null>(null);
+  const { doChangeScreen } = useAnalytics();
+  const assets = useAssets();
+
+  const isSend = kind === 'send';
+  const sendDisabled = isSend && assets.length === 0;
+
+  const handleClick = useCallback(() => {
+    doChangeScreen(path);
+  }, [path, doChangeScreen]);
+
+  const handleFocus = useCallback(() => {
+    ref?.current?.focus();
+  }, [ref]);
+
+  const label = isSend ? 'Send' : 'Receive';
   return (
     <>
       <Button
         size="sm"
         pl="base-tight"
-        pr={kind === 'send' ? 'base' : 'calc(32px + 12px)'}
+        pr={isSend ? 'base' : 'calc(32px + 12px)'}
         py="tight"
         fontSize={2}
         mode="primary"
         position="relative"
         ref={ref}
+        isDisabled={sendDisabled}
+        onClick={isSend ? handleClick : undefined}
         {...rest}
       >
-        <Flex onClick={onClick} position="relative" zIndex={2}>
+        <Flex onClick={!isSend ? handleClick : undefined} position="relative" zIndex={2}>
           <Box
-            as={kind === 'send' ? IconArrowUp : IconQrcode}
-            transform={kind === 'send' ? 'unset' : 'scaleY(-1)'}
+            as={isSend ? IconArrowUp : IconQrcode}
+            transform={isSend ? 'unset' : 'scaleY(-1)'}
             size="16px"
           />
           <Box as="span" ml="extra-tight" fontSize="14px">
-            {kind === 'send' ? 'Send' : 'Receive'}
+            {label}
           </Box>
         </Flex>
 
-        {kind !== 'send' && (
-          <CopyAction
-            onClick={() => {
-              ref?.current?.focus();
-            }}
-          />
-        )}
+        {!isSend && <CopyAction onClick={handleFocus} />}
       </Button>
     </>
   );
@@ -126,16 +138,10 @@ const UserAccount: React.FC<StackProps> = memo(props => {
 });
 
 const Actions: React.FC<StackProps> = memo(props => {
-  const { doChangeScreen } = useAnalytics();
-  const assets = useAssets();
   return (
     <Stack spacing="base-tight" isInline {...props}>
-      <TxButton
-        isDisabled={assets.length === 0}
-        onClick={() => doChangeScreen(ScreenPaths.POPUP_SEND)}
-        kind="send"
-      />
-      <TxButton onClick={() => doChangeScreen(ScreenPaths.POPUP_RECEIVE)} kind="receive" />
+      <TxButton path={ScreenPaths.POPUP_SEND} kind="send" />
+      <TxButton path={ScreenPaths.POPUP_RECEIVE} kind="receive" />
     </Stack>
   );
 });

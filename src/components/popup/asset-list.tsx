@@ -25,7 +25,7 @@ interface TabHeaderProps extends BoxProps {
   setTab: (tab: Tab) => void;
 }
 const TabHeader: React.FC<TabHeaderProps> = ({ tab, setTab, ...rest }) => {
-  const tabName = new String(tab);
+  const tabName = String(tab);
   return (
     <Box
       width="50%"
@@ -48,7 +48,7 @@ export const AssetList: React.FC<AssetListProps> = ({ balances }) => {
   const [currentTab, setCurrentTab] = useState<Tab>('tokens');
 
   return (
-    <Flex mt="base" flexWrap="wrap" flexDirection="column">
+    <Flex pt="tight" flexWrap="wrap" flexDirection="column">
       <Flex width="100%">
         <TabHeader {...getTabStyles('tokens' === currentTab)} setTab={setCurrentTab} tab="tokens" />
         <TabHeader

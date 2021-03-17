@@ -95,12 +95,12 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   return (
     <Box flexGrow={1} position="relative">
       <ReuseAppDrawer
-        close={() => {
+        onClose={() => {
           setAccountIndex(undefined);
           doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_BACK);
           setTimeout(() => setReusedApps([]), 250);
         }}
-        showing={reusedApps.length > 0}
+        isShowing={reusedApps.length > 0}
         apps={reusedApps}
         confirm={async (hideWarning: boolean) => {
           if (hideWarning && walletConfig.value) {

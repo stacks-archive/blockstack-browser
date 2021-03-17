@@ -9,6 +9,7 @@ import { GlobalStyles } from '@components/global-styles';
 import { VaultLoader } from '@components/vault-loader';
 import { AccountsDrawer } from './drawer/accounts';
 import { NetworksDrawer } from './drawer/networks-drawer';
+import { Toaster } from 'react-hot-toast';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -26,6 +27,7 @@ export const App: React.FC = () => {
               <NetworksDrawer />
               <Routes />
             </Router>
+            <Toaster position="bottom-center" toastOptions={{ style: { fontSize: '14px' } }} />
           </>
         </ColorModeProvider>
       </RecoilRoot>

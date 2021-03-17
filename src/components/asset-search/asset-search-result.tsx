@@ -1,29 +1,29 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { AssetRow } from '@components/asset-row';
-import { BoxProps } from '@stacks/ui';
+import type { StackProps } from '@stacks/ui';
 import { Asset } from '@store/recoil/asset-search';
 
-interface AssetResultProps extends BoxProps {
+interface AssetResultProps extends StackProps {
   asset: Asset;
   highlighted: boolean;
   index: number;
 }
 
-export const AssetResult = React.forwardRef<HTMLDivElement, AssetResultProps>((props, ref) => {
-  const { asset, highlighted, ...otherProps } = props;
+export const AssetResult = forwardRef<HTMLDivElement, AssetResultProps>((props, ref) => {
+  const { asset, highlighted, ...rest } = props;
 
   return (
     <AssetRow
       ref={ref}
       key={`${asset.contractAddress}.${asset.type}`}
       name={asset.name}
+      contractAddress={asset.contractAddress || asset.name}
       subtitle={asset.subtitle}
       friendlyName={asset.name}
       value={asset.balance}
       backgroundColor={highlighted ? 'ink.150' : 'white'}
-      {...otherProps}
       p="base-tight"
-      mb="0"
+      {...rest}
     />
   );
 });

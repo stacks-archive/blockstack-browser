@@ -10,7 +10,7 @@ import BN from 'bn.js';
 import { fetchFromSidecar } from '@common/api/fetch';
 import { fetcher } from '@common/wrapped-fetch';
 
-const DEFAULT_POLL_RATE = 60000;
+const DEFAULT_POLL_RATE = 10000;
 
 export const apiRevalidation = atom({
   key: 'api.revalidation',

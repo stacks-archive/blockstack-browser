@@ -56,5 +56,5 @@ export function useAccountGradient(account: Account) {
     const gradientType = generateGradientType(gradientTypeString);
 
     return `${gradientType}, ${bg3} 0%, ${bg2} 70%, ${bg} 100%)`;
-  }, [generateGradientType, account]);
+  }, [transactionVersion, account]);
 }
