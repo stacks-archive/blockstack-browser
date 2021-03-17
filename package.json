@@ -28,7 +28,7 @@
     "serve:test": "yarn http-server ./test-app/dist -p 3001 -s",
     "typecheck": "tsc --noEmit"
   },
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/stats": "^0.7.0",

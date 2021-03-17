@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.2.0
+
+### Minor Changes
+
+- [#1065](https://github.com/blockstack/stacks-wallet-web/pull/1065) [`ed019a48`](https://github.com/blockstack/stacks-wallet-web/commit/ed019a48cd15db336b95951f935403a8a119e494) Thanks [@aulneau](https://github.com/aulneau)! - Seed input fixes:
+
+  - A user can now paste in any combination of string and numbers and hopefully get a correct phrase out.
+  - The input for the seed phrase is now the perfect height to not scroll when someone enters in a 12 or 24 word phrase
+  - Hitting return/enter will submit the form
+  - Pasting in a magic recovery code will get validated. Previously we were just checking to see if it was 1 word.
+
+  Password entry fixes:
+
+  - Now debounced and does not blur the input when validation occurs, fixes #942
+  - improved the error message to be less dynamic with a sane, static, suggestion, resolves #1031
+
+* [#1068](https://github.com/blockstack/stacks-wallet-web/pull/1068) [`618d6fd7`](https://github.com/blockstack/stacks-wallet-web/commit/618d6fd7f6c40f3cd71d1ffb9ece5cf33cf22bcd) Thanks [@aulneau](https://github.com/aulneau)! - This PR updates elements that link to the explorer throughout the application, and starts the work on displaying transaction items in a more robust way (working towards our designs in figma).
+
+  **Improvements**
+
+  - Added a copy action to the receive button
+  - The latest transaction item component has been updated to reflect the designs/states in figma
+  - items now link to explorer, fixes #1018
+  - fixes the drawers component such that the contents will scroll, and the header stays fixed
+  - created an `AccountAvatar` component to display a generated gradient (based on the account, will persist between
+    sessions)
+  - general code health improvements
+  - added [capsize](https://github.com/seek-oss/capsize) for better typography sizing
+
+- [#1068](https://github.com/blockstack/stacks-wallet-web/pull/1068) [`126e2342`](https://github.com/blockstack/stacks-wallet-web/commit/126e2342d1468e92101974d8397c079efe2ff3a5) Thanks [@aulneau](https://github.com/aulneau)! - This bumps the version for our @stacks/ui-\* libs to their latest versions.
+
+### Patch Changes
+
+- [#1054](https://github.com/blockstack/stacks-wallet-web/pull/1054) [`099b75c4`](https://github.com/blockstack/stacks-wallet-web/commit/099b75c4d6dfb1db1bf207ee11aac912006feecb) Thanks [@hstove](https://github.com/hstove)! - Added an integration test for creating an account, locking the wallet, and unlocking
+
 ## 2.1.0
 
 ### Minor Changes
