@@ -1,0 +1,5 @@
+name: 'Check package version lock'
+description: Checks all versions are installed with exact version
+runs:
+  using: 'node12'
+  main: 'check-version-lock.js'

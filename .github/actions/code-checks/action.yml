@@ -12,6 +12,9 @@ runs:
     - name: Typecheck
       run: yarn typecheck
       shell: bash
+    - name: Audit dependencies
+      shell: bash
+      run: yarn audit
     - name: App unit tests
       run: yarn test:unit
       shell: bash

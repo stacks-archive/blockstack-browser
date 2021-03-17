@@ -28,6 +28,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Code Checks
         uses: ./.github/actions/code-checks
+      - name: Check exact versions
+        uses: ./.github/actions/check-version-lock
       - uses: actions/upload-artifact@v2
         name: Upload Chrome Extension Zip
         with:
