@@ -1,5 +1,6 @@
 import { validateMnemonic, wordlists } from 'bip39';
-import { randomString, SECRET_KEY, setupBrowser, BrowserDriver } from './utils';
+import { randomString, setupBrowser, BrowserDriver } from './utils';
+import { SECRET_KEY } from '../mocks';
 import { DemoPage } from './page-objects/demo.page';
 import { WalletPage } from './page-objects/wallet.page';
 import { USERNAMES_ENABLED } from '@common/constants';

@@ -1,4 +1,5 @@
-import { BrowserDriver, createTestSelector, randomString, SECRET_KEY, setupBrowser } from './utils';
+import { BrowserDriver, createTestSelector, randomString, setupBrowser } from './utils';
+import { SECRET_KEY } from '../mocks';
 import { WalletPage } from './page-objects/wallet.page';
 import { ScreenPaths } from '@store/onboarding/types';
 

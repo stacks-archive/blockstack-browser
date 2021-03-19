@@ -4,13 +4,10 @@ import { join } from 'path';
 import { mkdtemp } from 'fs';
 import { tmpdir } from 'os';
 import { promisify } from 'util';
-import { setupMocks } from './mocks';
+import { setupMocks } from '../mocks';
 import { DemoPage } from './page-objects/demo.page';
 
 const makeTmpDir = promisify(mkdtemp);
-
-export const SECRET_KEY =
-  'invite helmet save lion indicate chuckle world pride afford hard broom draft';
 
 export function createTestSelector(name: string) {
   return `[data-test="${name}"]`;
