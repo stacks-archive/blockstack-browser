@@ -7,12 +7,14 @@ import { stacksValue } from '@common/stacks-utils';
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { useWallet } from '@common/hooks/use-wallet';
+import { Body } from '@components/typography';
 
 export enum TransactionErrorReason {
   StxTransferInsufficientFunds = 0,
   FeeInsufficientFunds = 1,
   Generic = 2,
   BroadcastError = 3,
+  Unauthorized = 4,
 }
 
 interface TransactionErrorProps {
@@ -69,25 +71,45 @@ export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) =>
           </Box>
         </Box>
       ) : null}
-      <Box mb="base">
-        <Text fontSize={2} fontWeight="500">
-          Current Network:
-        </Text>
-        <Text fontSize={2} ml="tight" fontFamily="mono">
-          {currentNetwork.name}
-        </Text>
-      </Box>
-      <Box width="100%">
-        {/* <Text fontSize={1} fontWeight="500">
+      {reason === TransactionErrorReason.Unauthorized ? (
+        <Box mb="base">
+          <Body display="block" fontSize={2} my="loose">
+            The request to sign a transaction was not properly authorized by any of your accounts.
+          </Body>
+          <Body display="block" fontSize={2} my="loose">
+            If you've logged in to this app before, then you might need to re-authenticate into this
+            application before attempting to sign a transaction with the Stacks Wallet.
+          </Body>
+        </Box>
+      ) : (
+        <>
+          <Box mb="base">
+            <Text fontSize={2} fontWeight="500">
+              Current Network:
+            </Text>
+            <Text fontSize={2} ml="tight" fontFamily="mono">
+              {currentNetwork.name}
+            </Text>
+          </Box>
+          <Box width="100%">
+            {/* <Text fontSize={1} fontWeight="500">
           Current account:
         </Text> */}
-        <Text fontSize={2} fontWeight="600" fontFamily="heading" color="ink.1000" display="block">
-          {currentAccountDisplayName}
-        </Text>
-        <Text textStyle="body.small" color="ink.600">
-          {currentAccountStxAddress}
-        </Text>
-      </Box>
+            <Text
+              fontSize={2}
+              fontWeight="600"
+              fontFamily="heading"
+              color="ink.1000"
+              display="block"
+            >
+              {currentAccountDisplayName}
+            </Text>
+            <Text textStyle="body.small" color="ink.600">
+              {currentAccountStxAddress}
+            </Text>
+          </Box>
+        </>
+      )}
       <Box flexGrow={1} />
       <Box mt="extra-loose" mb="base">
         <Button width="100%" onClick={() => window.close()}>

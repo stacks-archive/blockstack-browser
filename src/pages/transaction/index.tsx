@@ -38,6 +38,7 @@ export const TransactionPage: React.FC = () => {
     signedTransaction,
     doSubmitPendingTransaction,
     broadcastError,
+    isUnauthorizedTransaction,
   } = useTxState();
   const { currentAccount, currentAccountStxAddress } = useWallet();
   const balances = useFetchBalances();
@@ -60,6 +61,8 @@ export const TransactionPage: React.FC = () => {
   }, [doSubmitPendingTransaction]);
 
   const error = useMemo<TransactionErrorReason | void>(() => {
+    if (isUnauthorizedTransaction) return TransactionErrorReason.Unauthorized;
+
     if (!pendingTransaction || balances.errorMaybe() || !currentAccount) {
       return TransactionErrorReason.Generic;
     }
@@ -74,7 +77,7 @@ export const TransactionPage: React.FC = () => {
       }
     }
     return;
-  }, [balances, currentAccount, pendingTransaction, broadcastError]);
+  }, [balances, currentAccount, pendingTransaction, broadcastError, isUnauthorizedTransaction]);
 
   if (error !== undefined) {
     return <TransactionError reason={error} />;

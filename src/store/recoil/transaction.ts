@@ -31,18 +31,6 @@ export const showTxDetails = atom<boolean>({
 export const requestTokenStore = atom<string>({
   key: 'transaction.request-token',
   default: '',
-  effects_UNSTABLE: [
-    ({ setSelf, trigger }) => {
-      if (trigger === 'get') {
-        const search = location.hash.split('/transaction')[1];
-        const urlParams = new URLSearchParams(search);
-        const requestToken = urlParams.get('request');
-        if (requestToken) {
-          setSelf(requestToken);
-        }
-      }
-    },
-  ],
 });
 
 const getPayload = (requestToken: string) => {
@@ -254,4 +242,9 @@ export const internalTransactionStore = selectorFamily({
       return null;
     }
   },
+});
+
+export const isUnauthorizedTransactionStore = atom<boolean>({
+  key: 'transaction.is-unauthorized-tx',
+  default: false,
 });

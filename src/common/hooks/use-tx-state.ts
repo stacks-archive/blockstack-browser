@@ -7,6 +7,7 @@ import {
   pendingTransactionFunctionSelector,
   transactionBroadcastErrorStore,
   requestTokenStore,
+  isUnauthorizedTransactionStore,
 } from '@store/recoil/transaction';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { currentNetworkStore } from '@store/recoil/networks';
@@ -22,6 +23,7 @@ export const useTxState = () => {
   const contractInterface = useLoadable(contractInterfaceStore);
   const pendingTransactionFunction = useLoadable(pendingTransactionFunctionSelector);
   const signedTransaction = useLoadable(signedTransactionStore);
+  const isUnauthorizedTransaction = useRecoilValue(isUnauthorizedTransactionStore);
 
   const doSubmitPendingTransaction = useRecoilCallback(
     ({ snapshot, set }) => async () => {
@@ -56,5 +58,6 @@ export const useTxState = () => {
     pendingTransactionFunction,
     doSubmitPendingTransaction,
     broadcastError,
+    isUnauthorizedTransaction,
   };
 };

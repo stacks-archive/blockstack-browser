@@ -22,7 +22,7 @@ export const useSetupTx = () => {
 
   useEffect(() => {
     if (!requestToken) {
-      handleDecodeRequest();
+      void handleDecodeRequest();
     }
   }, [requestToken, handleDecodeRequest]);
 
