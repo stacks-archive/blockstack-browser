@@ -35,10 +35,10 @@ function generateGradientType(string: string) {
 }
 
 export function useAccountGradient(account: Account) {
-  // always mainnet, so people can associate color with an account regardless of network
-  const transactionVersion = TransactionVersion.Mainnet;
-
   return useMemo(() => {
+    // always mainnet, so people can associate color with an account regardless of network
+    const transactionVersion = TransactionVersion.Mainnet;
+
     const stxAddress = getStxAddress({ account, transactionVersion });
     const pubKeyLikeString = toHex(stxAddress);
 
@@ -56,5 +56,5 @@ export function useAccountGradient(account: Account) {
     const gradientType = generateGradientType(gradientTypeString);
 
     return `${gradientType}, ${bg3} 0%, ${bg2} 70%, ${bg} 100%)`;
-  }, [transactionVersion, account]);
+  }, [account]);
 }
