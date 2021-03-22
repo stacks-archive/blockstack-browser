@@ -28,7 +28,10 @@ export const PostConditions: React.FC = () => {
   });
 
   const getPostConditionsContent = () => {
-    if (pendingTransaction?.txType === TransactionTypes.STXTransfer) {
+    if (
+      pendingTransaction?.txType === TransactionTypes.STXTransfer &&
+      postConditions.length === 0
+    ) {
       return (
         <PostConditionBase
           title="transfer exactly"

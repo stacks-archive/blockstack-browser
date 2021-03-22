@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, Flex, Text, DynamicColorCircle } from '@stacks/ui';
+import { Text, Stack, StackProps } from '@stacks/ui';
 import { addressToString, PostCondition, PostConditionType } from '@stacks/transactions';
 import { useSetRecoilState } from 'recoil';
 import { postConditionsStore, currentPostConditionIndexStore } from '@store/recoil/transaction';
@@ -9,6 +9,7 @@ import { Asset, selectedAssetStore } from '@store/recoil/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';
 import { getPostConditionTitle, stacksValue } from '@common/stacks-utils';
+import { AssetAvatar } from '@components/stx-avatar';
 
 interface PostConditionBaseProps {
   title: string;
@@ -19,62 +20,79 @@ interface PostConditionBaseProps {
   edit?: () => void;
   remove?: () => void;
 }
-export const PostConditionBase: React.FC<PostConditionBaseProps> = props => {
-  const { edit, remove } = props;
+
+type PostConditionDetailsProps = Pick<PostConditionBaseProps, 'iconString' | 'amount' | 'ticker'> &
+  StackProps;
+
+const PostConditionDetails: React.FC<PostConditionDetailsProps> = ({
+  iconString,
+  amount,
+  ticker,
+  ...rest
+}) => {
   return (
-    <Box mb="base">
-      <Flex flexDirection="column">
-        <Box mb="base">
-          <Text fontSize={2}>You {props.title}</Text>
-        </Box>
-        <Box>
-          <Flex flexDirection="row">
-            <Box>
-              <DynamicColorCircle mr="base" size="32px" string={props.iconString}>
-                {props.iconChar}
-              </DynamicColorCircle>
-            </Box>
-            <Box pt="extra-tight" flexGrow={1}>
-              <Text fontWeight="600" fontSize={2}>
-                {props.amount}
-              </Text>
-            </Box>
-            <Box pt="extra-tight">
-              <Text fontWeight="500" fontSize={2}>
-                {props.ticker}
-              </Text>
-            </Box>
-          </Flex>
-        </Box>
-        {edit || remove ? (
-          <Box mt="base">
-            <Text
-              fontWeight="500"
-              color="blue"
-              mr="base-tight"
-              onClick={edit}
-              cursor="pointer"
-              _hover={{
-                textDecoration: 'underline',
-              }}
-            >
-              Edit
-            </Text>
-            <Text
-              fontWeight="500"
-              color="red"
-              cursor="pointer"
-              _hover={{
-                textDecoration: 'underline',
-              }}
-              onClick={remove}
-            >
-              Remove
-            </Text>
-          </Box>
-        ) : null}
-      </Flex>
-    </Box>
+    <Stack isInline alignItems="center" flexGrow={1} width="100%" {...rest}>
+      <AssetAvatar
+        size="32px"
+        useStx={iconString === 'STX'}
+        gradientString={
+          // TODO: use fully realized asset name
+          iconString
+        }
+      />
+      <Text fontWeight="600" fontSize={2}>
+        {amount}
+      </Text>
+
+      <Text fontWeight="500" fontSize={2} ml="auto">
+        {ticker}
+      </Text>
+    </Stack>
+  );
+};
+
+type PostConditionActionsProps = Pick<PostConditionBaseProps, 'edit' | 'remove'> & StackProps;
+const PostConditionActions: React.FC<PostConditionActionsProps> = ({ edit, remove, ...rest }) => {
+  return (
+    <Stack spacing="base-tight" isInline {...rest}>
+      {edit && (
+        <Text
+          fontWeight="500"
+          color="blue"
+          onClick={edit}
+          cursor="pointer"
+          _hover={{
+            textDecoration: 'underline',
+          }}
+        >
+          Edit
+        </Text>
+      )}
+      {remove && (
+        <Text
+          fontWeight="500"
+          color="red"
+          cursor="pointer"
+          _hover={{
+            textDecoration: 'underline',
+          }}
+          onClick={remove}
+        >
+          Remove
+        </Text>
+      )}
+    </Stack>
+  );
+};
+
+export const PostConditionBase: React.FC<PostConditionBaseProps> = props => {
+  const { edit, remove, iconString, amount, ticker } = props;
+  return (
+    <Stack spacing="base-loose">
+      <Text fontSize={2}>You {props.title}</Text>
+      <PostConditionDetails iconString={iconString} amount={amount} ticker={ticker} />
+      {(edit || remove) && <PostConditionActions edit={edit} remove={remove} />}
+    </Stack>
   );
 };
 
@@ -119,6 +137,7 @@ interface PostConditionProps {
   pc: PostCondition;
   index: number;
 }
+
 export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, index }) => {
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);

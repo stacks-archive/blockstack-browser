@@ -10,6 +10,7 @@ import {
   Methods,
   TransactionResponseMessage,
 } from '@extension/message-types';
+import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
 import { KEBAB_REGEX } from '@common/constants';
 
 function kebabCase(str: string) {
@@ -185,4 +186,9 @@ export function getTicker(value: string) {
     name = `${getLetters(name, 3)}`;
   }
   return name.toUpperCase();
+}
+
+export function postConditionFromString(postCondition: string): PostCondition {
+  const reader = BufferReader.fromBuffer(Buffer.from(postCondition, 'hex'));
+  return deserializePostCondition(reader);
 }
