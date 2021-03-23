@@ -1,8 +1,8 @@
-import { defaultHeaders } from '@common/api/fetch';
 import {
   MempoolTransaction,
   MempoolTransactionListResponse,
 } from '@blockstack/stacks-blockchain-api-types';
+import { fetcher } from '@common/wrapped-fetch';
 
 interface GetKeyOptions {
   index: number;
@@ -49,7 +49,7 @@ export const fetchPendingTxs = (apiServer: string) => async ({
     apiServer,
   });
 
-  const res = await fetch(path, { headers: defaultHeaders });
+  const res = await fetcher(path);
   const mempool: MempoolTransactionListResponse = await res.json();
 
   if (type === 'principal') {
