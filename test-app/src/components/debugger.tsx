@@ -13,6 +13,8 @@ import {
   standardPrincipalCV,
   trueCV,
   makeStandardSTXPostCondition,
+  makeStandardFungiblePostCondition,
+  createAssetInfo,
   FungibleConditionCode,
 } from '@stacks/transactions';
 import { ExplorerLink } from './explorer-link';
@@ -58,6 +60,16 @@ export const Debugger = () => {
           address || '',
           FungibleConditionCode.LessEqual,
           new BN('100', 10)
+        ),
+        makeStandardFungiblePostCondition(
+          'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+          FungibleConditionCode.Equal,
+          new BN(1234),
+          createAssetInfo(
+            'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+            'connect-token',
+            'connect-token'
+          )
         ),
       ],
       finished: data => {
