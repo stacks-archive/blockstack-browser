@@ -1,5 +1,5 @@
 ---
-'@stacks/wallet-web': patch
+'@stacks/wallet-web': minor
 ---
 
 This update resolves these issues:
