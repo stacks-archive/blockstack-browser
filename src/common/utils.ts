@@ -10,6 +10,11 @@ import {
   Methods,
   TransactionResponseMessage,
 } from '@extension/message-types';
+import { KEBAB_REGEX } from '@common/constants';
+
+function kebabCase(str: string) {
+  return str.replace(KEBAB_REGEX, match => '-' + match.toLowerCase());
+}
 
 export const getAuthRequestParam = () => {
   const { hash } = document.location;
@@ -163,18 +168,21 @@ export function truncateString(str: string, maxLength: number) {
   return str.slice(0, maxLength) + '...';
 }
 
-export function getTicker(name: string) {
+function getLetters(string: string, offset = 1) {
+  return string.slice(0, offset);
+}
+
+export function getTicker(value: string) {
+  let name = kebabCase(value);
   if (name.includes('-')) {
-    const parts = name.split('-');
-    if (parts.length >= 3) {
-      return `${parts[0][0]}${parts[1][0]}${parts[2][0]}`;
+    const words = name.split('-');
+    if (words.length >= 3) {
+      name = `${getLetters(words[0])}${getLetters(words[1])}${getLetters(words[2])}`;
     } else {
-      return `${parts[0][0]}${parts[1][0]}${parts[1][1]}`;
+      name = `${getLetters(words[0])}${getLetters(words[1], 2)}`;
     }
-  } else {
-    if (name.length >= 3) {
-      return `${name[0]}${name[1]}${name[2]}`;
-    }
-    return name;
+  } else if (name.length >= 3) {
+    name = `${getLetters(name, 3)}`;
   }
+  return name.toUpperCase();
 }

@@ -52,7 +52,7 @@ export const TokenAssets: React.FC<TokenAssetProps> = ({ balances, ...props }) =
         friendlyName={assetName}
         key={key}
         value={token.balance}
-        subtitle={getTicker(assetName).toUpperCase()}
+        subtitle={getTicker(assetName)}
       />
     );
   });

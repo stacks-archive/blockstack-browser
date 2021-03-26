@@ -194,7 +194,7 @@ const Form = ({
     ? 'Select an asset'
     : isStx
     ? '0.000000 STX'
-    : `0 ${getTicker(selectedAsset.name).toUpperCase()}`;
+    : `0 ${getTicker(selectedAsset.name)}`;
 
   const { doChangeScreen } = useAnalytics();
 

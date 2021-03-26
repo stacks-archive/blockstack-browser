@@ -31,7 +31,7 @@ const TransactionDetails: React.FC<
   } & StackProps
 > = ({ amount, nonce, fee, recipient, ...rest }) => {
   const asset = useRecoilValue(selectedAssetStore);
-  const ticker = asset && asset.type !== 'stx' ? getTicker(asset.name).toUpperCase() : 'STX';
+  const ticker = asset && asset.type !== 'stx' ? getTicker(asset.name) : 'STX';
   return (
     <Stack spacing="loose" {...rest}>
       <Stack width="100%" px="extra-loose">

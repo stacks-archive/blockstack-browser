@@ -41,7 +41,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
   const { name, contractAddress } = selectedAsset;
 
   const isStx = name === 'Stacks Token';
-  const ticker = isStx ? 'STX' : getTicker(name).toUpperCase();
+  const ticker = isStx ? 'STX' : getTicker(name);
   return (
     <Stack spacing="tight" flexDirection="column" {...rest}>
       <Text display="block" fontSize={1} fontWeight="500" mb="tight">

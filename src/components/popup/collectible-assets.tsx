@@ -32,7 +32,7 @@ export const CollectibleAssets: React.FC<CollectibleAssetProps> = ({ balances, .
         friendlyName={assetName}
         key={key}
         value={collectible.count}
-        subtitle={getTicker(assetName).toUpperCase()}
+        subtitle={getTicker(assetName)}
       />
     );
   });
