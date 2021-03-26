@@ -20,22 +20,16 @@ interface PostConditionsOptions {
   amount: number;
 }
 
-function makePostConditions(options?: PostConditionsOptions) {
-  if (!options) return [];
-
+function makePostCondition(options: PostConditionsOptions): PostCondition {
   const { contractAddress, contractName, assetName, stxAddress, amount } = options;
-  const postConditions: PostCondition[] = [];
 
   const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
-  const pc = makeStandardFungiblePostCondition(
+  return makeStandardFungiblePostCondition(
     stxAddress,
     FungibleConditionCode.Equal,
     new BN(amount, 10),
     assetInfo
   );
-  postConditions.push(pc);
-
-  return postConditions;
 }
 
 export function useMakeAssetTransfer() {
@@ -69,9 +63,14 @@ export function useMakeAssetTransfer() {
         }
       : undefined;
 
-    const postConditions = makePostConditions(postConditionOptions);
+    const postConditions = postConditionOptions ? [makePostCondition(postConditionOptions)] : [];
 
-    const functionArgs = [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)];
+    // (transfer (uint principal principal) (response bool uint))
+    const functionArgs = [
+      uintCV(amount),
+      standardPrincipalCVFromAddress(createAddress(stxAddress)),
+      standardPrincipalCVFromAddress(createAddress(recipient)),
+    ];
 
     const txOptions = {
       network,
