@@ -86,7 +86,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
                 size="24px"
                 direction="down"
                 cursor="pointer"
-                opacity="70%"
+                opacity={0.7}
                 onClick={() => {
                   setSearchInput('');
                   setSelectedAsset(undefined);
