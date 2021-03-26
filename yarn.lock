@@ -12242,17 +12242,10 @@ scheduler@^0.20.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-schema-inspector@2.0.0:
+schema-inspector@2.0.0, schema-inspector@^1.7.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/schema-inspector/-/schema-inspector-2.0.0.tgz#f124f2d66e2d68c93d38d3dd7e0f4cf3d1e4ccd7"
   integrity sha512-Qa0fZ8vfCNzwPWZPfXVtjqYKN7rC2jFrHia2UvBvmaXTdwiA9hnTnWh30MP47Tw5ZejkuH0QqUpDK4NqPoBk4w==
-  dependencies:
-    async "~2.6.3"
-
-schema-inspector@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/schema-inspector/-/schema-inspector-1.7.0.tgz#b3f8b97fc26ba930ef16cd7b8fcf77201ce468db"
-  integrity sha512-Cj4XP6O3QfDhOq7bIPpz3Ev+sjR++nqFsIggBVIk/8axqFc2p+XSwNBWih9Ut/p8k36f1uCyXB+TzumZUsxVBQ==
   dependencies:
     async "~2.6.3"
 
