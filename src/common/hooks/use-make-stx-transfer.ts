@@ -23,7 +23,7 @@ export function useMakeStxTransfer() {
     const nonce = await snapshot.getPromise(correctNonceStore);
 
     if (account) {
-      return await makeSTXTokenTransfer({
+      return makeSTXTokenTransfer({
         recipient,
         amount: new BN(stxToMicroStx(amount).toString(), 10),
         senderKey: account.stxPrivateKey,
