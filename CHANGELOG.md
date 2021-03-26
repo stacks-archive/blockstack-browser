@@ -1,5 +1,51 @@
 # Changelog
 
+## 2.3.0
+
+### Minor Changes
+
+- [#1084](https://github.com/blockstack/stacks-wallet-web/pull/1084) [`ae5c723e`](https://github.com/blockstack/stacks-wallet-web/commit/ae5c723ee2eb7fe50b1fac16ee9e353753ce4ed7) Thanks [@aulneau](https://github.com/aulneau)! - This update fixes https://github.com/blockstack/stacks-wallet-web/issues/1067. It seems that there were some issues with the way that we were keeping `StacksTransactions` in recoil store. Recoil serializes everything that is in an atom/selector, and that serialization was breaking the transaction class.
+
+  **Changes & Improvements**
+
+  - validation has been improved on the send screen
+  - send screen design has been improved slightly moving towards the figma designs
+  - tickers are now displayed in the same way as the explorer
+  - error handling now displays a toast if the transaction fails for some reason
+  - assets now use the same kind of gradient as on the explorer
+  - amount placeholder updates based on asset selected
+
+  ![stx-transfer](https://user-images.githubusercontent.com/11803153/111552123-b1cb7800-874f-11eb-9000-3d4cd499fd7c.gif)
+
+  ![stella-transfer](https://user-images.githubusercontent.com/11803153/111552120-b09a4b00-874f-11eb-8599-b4e2c828e795.gif)
+
+* [#1095](https://github.com/blockstack/stacks-wallet-web/pull/1095) [`f2092eb8`](https://github.com/blockstack/stacks-wallet-web/commit/f2092eb8a8f644d8bb353c5da58bde0848e385cb) Thanks [@aulneau](https://github.com/aulneau)! - This update resolves these issues:
+
+  - fixes [#969](https://github.com/blockstack/stacks-wallet-web/issues/969)
+  - fixes [#1093](https://github.com/blockstack/stacks-wallet-web/issues/1093)
+
+  **Changes**
+
+  refactors the hook `use-setup-tx` ([before](https://github.com/blockstack/stacks-wallet-web/blob/35bb9d7a786ffe236322a7c96eb091cc3b94fa49/src/common/hooks/use-setup-tx.ts#L28), [after](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/hooks/use-setup-tx.ts)) into smaller, more manageable parts. From the original hook, there are a few new ones that each take care of their own responsibility:
+
+  - [useAccountSwitchCallback](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/hooks/callbacks/use-account-switch-callback.ts)
+  - [useDecodeRequestCallback](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/hooks/callbacks/use-decode-request-callback.ts)
+  - [useNetworkSwitchCallback](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/hooks/callbacks/use-network-switch-callback.ts)
+  - [usePostConditionsCallback](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/hooks/callbacks/use-post-conditions-callback.ts) (the one we care about for this PR)
+    - [post-conditions-utils.ts](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/post-condition-utils.ts#L16)
+    - [postConditionFromString](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/common/utils.ts#L168)
+
+  **Other misc fixes**
+
+  - There was a bug where if a `token_transfer` had post conditions defined (which it should not), it would not display them. [This fixes that bug.](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/components/transactions/post-conditions/list.tsx#L33)
+  - Very briefly refactored the base component that displays the post conditions, [see component](https://github.com/blockstack/stacks-wallet-web/blob/cafd37b6737960df4542490eeb74dcbcc7f1881e/src/components/transactions/post-conditions/single.tsx#L88).
+
+### Patch Changes
+
+- [#1096](https://github.com/blockstack/stacks-wallet-web/pull/1096) [`55635960`](https://github.com/blockstack/stacks-wallet-web/commit/55635960c108a7e184dbd77a38dc8f58c3451f20) Thanks [@aulneau](https://github.com/aulneau)! - This update adds headers to all outbound requests to the `stacks-node-api` server with the product name and version.
+
+* [#1082](https://github.com/blockstack/stacks-wallet-web/pull/1082) [`84553743`](https://github.com/blockstack/stacks-wallet-web/commit/8455374374ee5d88eaa1c28bf0032249cb3d832c) Thanks [@hstove](https://github.com/hstove)! - Updates our dependencies so that all versions are pinned. Also adds some checks to CI to make sure dependencies are pinned, and that `yarn audit` does not flag anything.
+
 ## 2.2.0
 
 ### Minor Changes
