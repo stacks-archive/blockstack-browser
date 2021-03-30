@@ -125,6 +125,8 @@ const config = {
       stream: require.resolve('stream-browserify'),
       vm: require.resolve('vm-browserify'),
       assert: require.resolve('assert'),
+      fs: false,
+      path: false,
     },
   },
   optimization: {
@@ -171,6 +173,17 @@ const config = {
             },
           },
         ],
+      },
+      {
+        test: /\.wasm$/,
+        // Tells WebPack that this module should be included as
+        // base64-encoded binary file and not as code
+        loader: 'base64-loader',
+        // Disables WebPack's opinion where WebAssembly should be,
+        // makes it think that it's not WebAssembly
+        //
+        // Error: WebAssembly module is included in initial chunk.
+        type: 'javascript/auto',
       },
     ].filter(Boolean),
   },
@@ -221,7 +234,7 @@ const config = {
               content = content.replace(csrTag, " 'unsafe-eval'");
               content = content.replace(objSrcTag, "'self'");
             } else {
-              content = content.replace(csrTag, '');
+              content = content.replace(csrTag, " 'wasm-eval'");
               content = content.replace(objSrcTag, "'none'");
             }
             const fullVersion = getVersion();
@@ -230,6 +243,7 @@ const config = {
             return Buffer.from(content);
           },
         },
+        { from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' },
       ],
     }),
     new webpack.DefinePlugin({

@@ -78,7 +78,7 @@ export class WalletPage {
   }
 
   async waitForHomePage() {
-    await this.page.waitForSelector(this.homePage, { timeout: 5000 });
+    await this.page.waitForSelector(this.homePage, { timeout: 30000 });
   }
 
   async loginWithPreviousSecretKey(secretKey: string) {

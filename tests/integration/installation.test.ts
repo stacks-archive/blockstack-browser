@@ -3,7 +3,7 @@ import { SECRET_KEY } from '../mocks';
 import { WalletPage } from './page-objects/wallet.page';
 import { ScreenPaths } from '@store/onboarding/types';
 
-jest.setTimeout(20_000);
+jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);
 describe(`Installation integration tests`, () => {
   let browser: BrowserDriver;

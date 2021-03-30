@@ -22,7 +22,7 @@ const getRandomWord = () => {
 };
 
 jest.retryTimes(process.env.CI ? 2 : 0);
-jest.setTimeout(20_000);
+jest.setTimeout(30_000);
 describe(`Authentication integration tests`, () => {
   let browser: BrowserDriver;
 
