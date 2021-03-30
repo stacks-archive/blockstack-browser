@@ -51,9 +51,7 @@ let vault: Vault = {
   salt: localStorage.getItem(saltIdentifier) || undefined,
 };
 
-export const getVault = () => {
-  return vault;
-};
+export const getVault = () => vault;
 
 function persistOptional(storageKey: string, value?: string) {
   if (value) {
@@ -63,13 +61,13 @@ function persistOptional(storageKey: string, value?: string) {
   }
 }
 
-export const vaultMessageHandler = async (message: MessageFromApp) => {
+export async function vaultMessageHandler(message: MessageFromApp) {
   vault = await vaultReducer(message);
   persistOptional(encryptedKeyIdentifier, vault.encryptedSecretKey);
   persistOptional(saltIdentifier, vault.salt);
   localStorage.setItem(hasSetPasswordIdentifier, JSON.stringify(vault.hasSetPassword));
   return vault;
-};
+}
 
 export function generateRandomHexString() {
   const size = 16;
