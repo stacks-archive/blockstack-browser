@@ -992,11 +992,6 @@
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
 
-"@blockstack/stats@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/stats/-/stats-0.7.0.tgz#be39d3e76c2a16c1cd1283aa702d1e20b5e04645"
-  integrity sha512-AS/UdJH/cJ7K8la3/TbQziEMlRrNI/4VEHSfYUsEzU7Nx892G6qE4uu/XvW9ycS0Jg2/TW2bjTnRijsyecaEJA==
-
 "@changesets/apply-release-plan@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@changesets/apply-release-plan/-/apply-release-plan-4.2.0.tgz#f1005815f27c3238f66507e90c6ae14d8fc62b41"
