@@ -3,7 +3,7 @@ import { Box, InputGroup, Input, Text, Button, usePrevious, Stack } from '@stack
 import { Formik, FormikErrors, FormikProps } from 'formik';
 import { PopupContainer } from '@components/popup/container';
 import { ConfirmSendDrawer } from '@components/drawer/confirm-send-drawer';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { Link } from '@components/link';
 import BigNumber from 'bignumber.js';
@@ -196,7 +196,7 @@ const Form = ({
     ? '0.000000 STX'
     : `0 ${getTicker(selectedAsset.name)}`;
 
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   const { handleOnKeyDown, handleSetSendMax } = useSendForm({
     ref,

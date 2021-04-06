@@ -9,14 +9,6 @@ import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
 import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
 import { gaiaUrl } from '@common/constants';
-import {
-  CHOOSE_ACCOUNT_CHOSEN,
-  CHOOSE_ACCOUNT_REUSE_WARNING,
-  CHOOSE_ACCOUNT_REUSE_WARNING_BACK,
-  CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE,
-  CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED,
-} from '@common/track';
-import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
@@ -43,7 +35,6 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const { decodedAuthRequest: authRequest } = useOnboardingState();
   const [accountIndex, setAccountIndex] = React.useState<number | undefined>();
-  const { doTrack } = useAnalytics();
 
   if (!wallet) {
     return <Navigate to={{ pathname: '/', hash: 'sign-up' }} screenPath={ScreenPaths.GENERATION} />;
@@ -82,13 +73,8 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
           newReusedApps = [];
         }
         setReusedApps(newReusedApps);
-        if (Object.keys(newReusedApps).length > 0) {
-          doTrack(CHOOSE_ACCOUNT_REUSE_WARNING);
-          return;
-        }
       }
     }
-    doTrack(CHOOSE_ACCOUNT_CHOSEN);
     next(accountIndex);
   };
 
@@ -97,14 +83,12 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
       <ReuseAppDrawer
         onClose={() => {
           setAccountIndex(undefined);
-          doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_BACK);
           setTimeout(() => setReusedApps([]), 250);
         }}
         isShowing={reusedApps.length > 0}
         apps={reusedApps}
         confirm={async (hideWarning: boolean) => {
           if (hideWarning && walletConfig.value) {
-            doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED);
             const gaiaHubConfig = await createWalletGaiaConfig({ wallet, gaiaHubUrl: gaiaUrl });
             const newConfig: WalletConfig = {
               ...walletConfig.value,
@@ -114,7 +98,6 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
             };
             await updateWalletConfig({ wallet, walletConfig: newConfig, gaiaHubConfig });
           }
-          doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE);
           next(accountIndex as number);
         }}
       />

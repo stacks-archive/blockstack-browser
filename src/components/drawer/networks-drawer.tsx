@@ -4,7 +4,7 @@ import { Box, Flex, Button, Stack, color, FlexProps, BoxProps } from '@stacks/ui
 import { ControlledDrawer } from './controlled';
 import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { currentNetworkKeyStore } from '@store/recoil/networks';
 import { showNetworksStore } from '@store/recoil/drawers';
@@ -66,7 +66,7 @@ const NetworkList: React.FC<FlexProps> = memo(props => {
 
 export const NetworksDrawer: React.FC = memo(() => {
   const { setShowNetworks } = useDrawers();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   const handleAddNetworkClick = useCallback(() => {
     setShowNetworks(false);

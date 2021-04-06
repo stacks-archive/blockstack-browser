@@ -3,7 +3,7 @@ import { Box, BoxProps, color, Flex, FlexProps, IconButton, Stack } from '@stack
 import { IconAlertTriangle, IconArrowLeft, IconDots } from '@tabler/icons';
 
 import { StacksWalletLogo } from '@components/stacks-wallet-logo';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { NetworkModeBadge } from '@components/network-mode-badge';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -58,7 +58,7 @@ const WarningBanner: React.FC<FlexProps> = () => {
 
 export const Header: React.FC<HeaderProps> = memo(props => {
   const { onClose, title, hideActions } = props;
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   return (
     <>

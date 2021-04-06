@@ -8,7 +8,7 @@ import {
   currentPostConditionStore,
   currentPostConditionIndexStore,
 } from '@store/recoil/transaction';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 import { AssetSearch } from '@components/asset-search/asset-search';
@@ -30,7 +30,7 @@ import { useWallet } from '@common/hooks/use-wallet';
 type PostConditionCode = FungibleConditionCode | NonFungibleConditionCode;
 
 export const EditPostConditionsPage: React.FC = () => {
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   return (
     <PopupContainer
       title="Add a constraint"
@@ -55,7 +55,7 @@ export const EditPostConditions: React.FC = () => {
   const currentPostConditionIndex = useRecoilValue(currentPostConditionIndexStore);
   const selectedAsset = useRecoilValue(selectedAssetStore);
   const { currentAccountStxAddress } = useWallet();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   useEffect(() => {
     if (selectedAsset?.type === 'nft') {

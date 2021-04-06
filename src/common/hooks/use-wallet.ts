@@ -33,7 +33,6 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
 import { doChangeScreen, saveAuthRequest } from '@store/onboarding/actions';
-import { doTrackScreenChange } from '@common/track';
 import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
 import { decodeToken } from 'jsontokens';
 import { latestBlockHeightStore, apiRevalidation } from '@store/recoil/api';
@@ -158,10 +157,7 @@ export const useWallet = () => {
 
       const hasIdentities = wallet?.accounts && wallet.accounts.length;
       if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
-        doTrackScreenChange(ScreenPaths.CHOOSE_ACCOUNT, decodedAuthRequest);
         dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
-      } else {
-        doTrackScreenChange(screen, decodedAuthRequest);
       }
     },
     [dispatch, wallet?.accounts, screen]

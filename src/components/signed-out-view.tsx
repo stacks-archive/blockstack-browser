@@ -5,10 +5,10 @@ import { PopupContainer } from '@components/popup/container';
 import { Text } from '@components/typography';
 
 import { ScreenPaths } from '@store/onboarding/types';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 
 export const SignedOut = memo(() => {
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   return (
     <PopupContainer hideActions>
       <Box width="100%" mt="extra-loose" textAlign="center">

@@ -5,7 +5,7 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
@@ -73,7 +73,7 @@ export const Accounts: React.FC<AccountsProps> = ({
   const { wallet, transactionVersion } = useWallet();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { decodedAuthRequest } = useOnboardingState();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   useEffect(() => {
     if (typeof accountIndex === 'undefined' && selectedAddress) {

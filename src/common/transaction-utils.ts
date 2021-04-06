@@ -19,7 +19,6 @@ import {
   FinishedTxPayload,
 } from '@stacks/connect';
 import { getPublicKeyFromPrivate } from '@stacks/encryption';
-import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@common/track';
 import RPCClient from '@stacks/rpc-client';
 import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
@@ -152,7 +151,6 @@ export const generateTransaction = async ({
 
 export const finishTransaction = async ({
   tx,
-  pendingTransaction,
   nodeUrl,
 }: {
   tx: StacksTransaction;
@@ -164,10 +162,6 @@ export const finishTransaction = async ({
   const res = await rpcClient.broadcastTX(serialized);
 
   if (res.ok) {
-    doTrack(TRANSACTION_SIGN_SUBMIT, {
-      txType: pendingTransaction?.txType,
-      appName: pendingTransaction?.appDetails?.name,
-    });
     const txIdJson: string = await res.json();
     const txId = `0x${txIdJson.replace('"', '')}`;
     const txRaw = `0x${serialized.toString('hex')}`;
@@ -179,11 +173,6 @@ export const finishTransaction = async ({
     const response = await res.json();
     if (response.error) {
       const error = `${response.error} - ${response.reason}`;
-      doTrack(TRANSACTION_SIGN_ERROR, {
-        txType: pendingTransaction?.txType,
-        appName: pendingTransaction?.appDetails?.name,
-        error: error,
-      });
       console.error(response.error);
       console.error(response.reason);
       throw new Error(error);

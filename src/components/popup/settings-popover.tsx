@@ -4,7 +4,7 @@ import { Text, Caption } from '@components/typography';
 import useOnClickOutside from '@common/hooks/use-onclickoutside';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDrawers } from '@common/hooks/use-drawers';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { AccountStep } from '@store/recoil/drawers';
 import { Divider } from '@components/divider';
@@ -69,7 +69,7 @@ export const SettingsPopover: React.FC = () => {
     setShowSettings,
     showSettings,
   } = useDrawers();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   const handleClose = useCallback(() => {
     setShowSettings(false);

@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { useSetRecoilState } from 'recoil';
 import { currentNetworkKeyStore, networksStore } from '@store/recoil/networks';
 import { PopupContainer } from '@components/popup/container';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { isValidUrl } from '@common/validate-url';
 import { ChainID, fetchPrivate } from '@stacks/transactions';
@@ -13,7 +13,7 @@ import { ErrorLabel } from '@components/error-label';
 export const AddNetwork: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const setNetworks = useSetRecoilState(networksStore);
   const setNetworkKey = useSetRecoilState(currentNetworkKeyStore);
 

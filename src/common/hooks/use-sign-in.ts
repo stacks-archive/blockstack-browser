@@ -2,14 +2,13 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { magicRecoveryCodeState, seedInputErrorState, seedInputState } from '@store/recoil/seed';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useWallet } from '@common/hooks/use-wallet';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import {
   extractPhraseFromPasteEvent,
   validateAndCleanRecoveryInput,
   hasLineReturn,
 } from '@common/utils';
 import { ScreenPaths } from '@store/onboarding/types';
-import { SIGN_IN_CORRECT, SIGN_IN_INCORRECT } from '@common/track';
 import { useLoading } from '@common/hooks/use-loading';
 
 export function useSignIn() {
@@ -18,7 +17,7 @@ export function useSignIn() {
   const [error, setError] = useRecoilState(seedInputErrorState);
 
   const { isLoading, setIsLoading, setIsIdle } = useLoading('useSignIn');
-  const { doChangeScreen, doTrack } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const { doStoreSeed } = useWallet();
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -28,10 +27,9 @@ export function useSignIn() {
       setError(message);
       setIsIdle();
       textAreaRef.current?.focus();
-      doTrack(SIGN_IN_INCORRECT);
       return;
     },
-    [setError, setIsIdle, textAreaRef, doTrack]
+    [setError, setIsIdle, textAreaRef]
   );
 
   const handleSubmit = useCallback(
@@ -60,7 +58,6 @@ export function useSignIn() {
 
       try {
         await doStoreSeed(parsedKeyInput);
-        doTrack(SIGN_IN_CORRECT);
         doChangeScreen(ScreenPaths.SET_PASSWORD);
         setIsIdle();
       } catch (error) {
@@ -71,7 +68,6 @@ export function useSignIn() {
       seed,
       doStoreSeed,
       doChangeScreen,
-      doTrack,
       handleSetError,
       setIsIdle,
       setIsLoading,

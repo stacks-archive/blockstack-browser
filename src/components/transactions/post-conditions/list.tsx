@@ -7,7 +7,7 @@ import {
   currentPostConditionIndexStore,
   pendingTransactionStore,
 } from '@store/recoil/transaction';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { selectedAssetStore } from '@store/recoil/asset-search';
 import { PostConditionComponent, PostConditionBase } from './single';
@@ -21,7 +21,7 @@ export const PostConditions: React.FC = () => {
   const postConditions = useRecoilValue(postConditionsStore);
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   const postConditionComponents = postConditions.map((pc, index) => {
     return <PostConditionComponent pc={pc} key={`${pc.type}-${pc.conditionCode}`} index={index} />;

@@ -17,7 +17,7 @@ import { SetPasswordPage } from '@pages/set-password';
 
 import { ScreenPaths } from '@store/onboarding/types';
 import { authenticationInit } from '@common/utils';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
@@ -39,7 +39,7 @@ export const Route: React.FC<RouteProps> = ({ path, element }) => {
 };
 
 export const Routes: React.FC = () => {
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const {
     isSignedIn: signedIn,
     doFinishSignIn,

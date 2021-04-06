@@ -1,7 +1,6 @@
 import React from 'react';
 import { Flex, Box, Text, BoxProps, ChevronIcon } from '@stacks/ui';
 import { useHover } from 'use-events';
-import { useAnalytics } from '@common/hooks/use-analytics';
 
 interface TitleProps extends BoxProps {
   isFirst: boolean;
@@ -48,7 +47,6 @@ const Body: React.FC<BodyProps> = ({ body }) => (
 interface Data {
   title: string;
   body: string;
-  tracking?: string;
   icon?: string;
 }
 
@@ -63,7 +61,6 @@ interface CollapseProps extends BoxProps {
  */
 export const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
   const [open, setOpen] = React.useState<number | null>(null);
-  const { doTrack } = useAnalytics();
   const handleOpen = (key: number) => (key === open ? setOpen(null) : setOpen(key));
   return (
     <Box px={6} fontSize="12px" {...rest}>
@@ -77,13 +74,12 @@ export const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
           will not have margin in and of themselves. No component should
           have default whitespace
       */}
-      {data.map(({ title, body, tracking }, key) => {
+      {data.map(({ title, body }, key) => {
         const [hovered, bind] = useHover();
         return (
           <Box key={key} cursor={hovered ? 'pointer' : undefined} lineHeight="16px" {...bind}>
             <TitleElement
               onClick={() => {
-                tracking && doTrack(tracking);
                 handleOpen(key);
               }}
               isFirst={key === 0}

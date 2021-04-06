@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Button, color, Input, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { buildEnterKeyEvent } from '@components/link';
@@ -28,7 +28,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const { doSetPassword, wallet, doFinishSignIn } = useWallet();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const { decodedAuthRequest } = useOnboardingState();
 
   const showWarning = !strengthResult.meetsAllStrengthRequirements && hasSubmitted;

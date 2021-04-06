@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Box, Button, color, useClipboard, Flex, FlexProps, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Toast } from '@components/toast';
@@ -46,7 +46,7 @@ const QRcode: React.FC<{ principal: string } & FlexProps> = memo(({ principal, .
 
 export const PopupReceive: React.FC = () => {
   const { currentAccount, currentAccountStxAddress } = useWallet();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const address = currentAccountStxAddress || '';
   const { onCopy, hasCopied } = useClipboard(address);
   return (

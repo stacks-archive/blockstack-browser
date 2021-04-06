@@ -3,7 +3,7 @@ import { Text, Stack, StackProps } from '@stacks/ui';
 import { addressToString, PostCondition, PostConditionType } from '@stacks/transactions';
 import { useSetRecoilState } from 'recoil';
 import { postConditionsStore, currentPostConditionIndexStore } from '@store/recoil/transaction';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { Asset, selectedAssetStore } from '@store/recoil/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
@@ -143,7 +143,7 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, index
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
   const setPostConditions = useSetRecoilState(postConditionsStore);
   const balancesLoadable = useFetchBalances();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const balancesJSON = JSON.stringify(balancesLoadable.value);
 
   const removePostCondition = useCallback(() => {

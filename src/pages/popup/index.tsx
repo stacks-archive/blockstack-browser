@@ -3,7 +3,7 @@ import { Button, Stack, Box, StackProps, Flex, useClipboard, BoxProps } from '@s
 import { Tooltip } from '@components/tooltip';
 import type { ButtonProps } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { AccountInfo } from '@components/popup/account-info';
@@ -56,7 +56,7 @@ const CopyAction: React.FC<BoxProps> = memo(({ onClick }) => {
 
 const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
   const ref = useRef<HTMLButtonElement | null>(null);
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const assets = useAssets();
 
   const isSend = kind === 'send';

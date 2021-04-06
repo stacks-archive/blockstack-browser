@@ -3,7 +3,7 @@ import {
   StacksTransaction,
   TxBroadcastResultRejected,
 } from '@stacks/transactions';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useLoading } from '@common/hooks/use-loading';
 import { useRecoilValue } from 'recoil';
@@ -39,7 +39,7 @@ export function useHandleSubmitTransaction({
   onClose: () => void;
   loadingKey: string;
 }) {
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const { doSetLatestNonce } = useWallet();
   const { setIsLoading, setIsIdle } = useLoading(loadingKey);
   const stacksNetwork = useRecoilValue(stacksNetworkStore);

@@ -4,11 +4,10 @@ import { useLoading } from '@common/hooks/use-loading';
 import { useWallet } from '@common/hooks/use-wallet';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { ScreenPaths } from '@store/onboarding/types';
 import { decrypt } from '@stacks/wallet-sdk';
-import { SIGN_IN_CORRECT } from '@common/track';
 
 export function useMagicRecoveryCode() {
   const [magicRecoveryCode, setMagicRecoveryCode] = useRecoilState(magicRecoveryCodeState);
@@ -17,7 +16,7 @@ export function useMagicRecoveryCode() {
   const { doStoreSeed, doSetPassword, doFinishSignIn } = useWallet();
   const [error, setPasswordError] = useState('');
   const { decodedAuthRequest } = useOnboardingState();
-  const { doChangeScreen, doTrack } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
 
   const handleNavigate = useCallback(() => {
     if (decodedAuthRequest) {
@@ -40,7 +39,6 @@ export function useMagicRecoveryCode() {
       const seed = await decrypt(codeBuffer, password);
       await doStoreSeed(seed);
       await doSetPassword(password);
-      doTrack(SIGN_IN_CORRECT);
       handleNavigate();
     } catch (error) {
       setPasswordError(`Incorrect password, try again.`);
@@ -54,7 +52,6 @@ export function useMagicRecoveryCode() {
     password,
     doStoreSeed,
     handleNavigate,
-    doTrack,
   ]);
 
   const onChange = useCallback(

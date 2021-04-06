@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { Screen, ScreenBody, ScreenActions, Title, ScreenHeader } from '@screen';
-
 import { Button, Text } from '@stacks/ui';
-
 import { Collapse } from '@components/collapse';
-
 import { faqs } from '@common/onboarding-data';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useAppDetails } from '@common/hooks/useAppDetails';
-import { useAnalytics } from '@common/hooks/use-analytics';
+import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 
 interface SaveKeyProps {
   next: () => void;
@@ -17,7 +14,7 @@ interface SaveKeyProps {
 export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
   const title = 'Save your Secret Key';
   const { name } = useAppDetails();
-  const { doChangeScreen } = useAnalytics();
+  const doChangeScreen = useDoChangeScreen();
   const [loading, setLoading] = useState(false);
 
   return (
