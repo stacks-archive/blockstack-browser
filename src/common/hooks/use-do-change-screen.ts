@@ -4,9 +4,9 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
-type doChangeScreen = (path: ScreenPaths, changeRoute?: boolean) => void;
+type DoChangeScreen = (path: ScreenPaths, changeRoute?: boolean) => void;
 
-export function useDoChangeScreen(): doChangeScreen {
+export function useDoChangeScreen(): DoChangeScreen {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
