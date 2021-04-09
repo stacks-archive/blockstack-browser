@@ -87,6 +87,8 @@ export const TransactionPage: React.FC = () => {
 
   const appName = pendingTransaction?.appDetails?.name;
 
+  const sponsored = signedTransaction.value ? signedTransaction.value.auth.authType === 5 : false;
+
   return (
     <PopupContainer>
       <Box width="100%" mt="loose" data-test="home-page">
@@ -143,7 +145,7 @@ export const TransactionPage: React.FC = () => {
         <Flex>
           <Box flexGrow={1}>
             <Text textStyle="caption" color="ink.600">
-              Fees
+              {signedTransaction.value && sponsored ? 'No fees' : 'Fees'}
             </Text>
           </Box>
           <Box>
@@ -151,11 +153,16 @@ export const TransactionPage: React.FC = () => {
               {signedTransaction.state === 'loading' && !signedTransaction.value ? (
                 <LoadingRectangle width="100px" height="14px" />
               ) : null}
-              {signedTransaction.value
+              {signedTransaction.value && !sponsored
                 ? stacksValue({
                     value: signedTransaction.value.auth.spendingCondition?.fee?.toNumber() || 0,
                   })
                 : null}
+              {signedTransaction.value && sponsored && (
+                <Text textStyle="caption" color="ink.600">
+                  sponsored
+                </Text>
+              )}
             </Text>
           </Box>
         </Flex>

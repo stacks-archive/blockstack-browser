@@ -53,7 +53,7 @@ export const generateContractCallTx = ({
   senderKey: string;
   nonce?: number;
 }) => {
-  const { contractName, contractAddress, functionName, functionArgs } = txData;
+  const { contractName, contractAddress, functionName, functionArgs, sponsored } = txData;
   const args = functionArgs.map(arg => {
     return deserializeCV(Buffer.from(arg, 'hex'));
   });
@@ -68,6 +68,7 @@ export const generateContractCallTx = ({
     postConditionMode: txData.postConditionMode,
     postConditions: getPostConditions(txData.postConditions),
     network: txData.network,
+    sponsored,
   });
 };
 
@@ -160,6 +161,15 @@ export const finishTransaction = async ({
   nodeUrl: string;
 }): Promise<FinishedTxPayload> => {
   const serialized = tx.serialize();
+  const txRaw = `0x${serialized.toString('hex')}`;
+
+  // if sponsored, return raw tx
+  if (tx.auth.authType === 5) {
+    return {
+      txRaw,
+    };
+  }
+
   const response = await broadcastRawTransaction(
     serialized,
     `${nodeUrl}/v2/transactions`,
@@ -167,7 +177,6 @@ export const finishTransaction = async ({
   );
 
   if (typeof response === 'string') {
-    const txRaw = `0x${serialized.toString('hex')}`;
     return {
       txId: response,
       txRaw,
