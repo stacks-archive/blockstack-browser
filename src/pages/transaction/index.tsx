@@ -16,6 +16,7 @@ import { TransactionTypes } from '@stacks/connect';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useWallet } from '@common/hooks/use-wallet';
 import { TransactionError, TransactionErrorReason } from './transaction-error';
+import { AuthType } from '@stacks/transactions';
 import BigNumber from 'bignumber.js';
 
 export const TxLoading: React.FC = () => {
@@ -28,6 +29,25 @@ export const TxLoading: React.FC = () => {
         <LoadingRectangle width="40%" height="16px" />
       </Box>
     </Flex>
+  );
+};
+
+export const FeeValue = () => {
+  const { signedTransaction: tx } = useTxState();
+  if (tx.state === 'loading' && !tx.value) return <LoadingRectangle width="100px" height="14px" />;
+
+  if (!tx.value) return null;
+
+  const sponsored = tx.value.auth.authType === AuthType.Sponsored;
+
+  return (
+    <>
+      {sponsored
+        ? '🎉 sponsored'
+        : stacksValue({
+            value: tx.value.auth.spendingCondition?.fee?.toNumber() || 0,
+          })}
+    </>
   );
 };
 
@@ -150,19 +170,7 @@ export const TransactionPage: React.FC = () => {
           </Box>
           <Box>
             <Text textStyle="caption" color="ink.600">
-              {signedTransaction.state === 'loading' && !signedTransaction.value ? (
-                <LoadingRectangle width="100px" height="14px" />
-              ) : null}
-              {signedTransaction.value && !sponsored
-                ? stacksValue({
-                    value: signedTransaction.value.auth.spendingCondition?.fee?.toNumber() || 0,
-                  })
-                : null}
-              {signedTransaction.value && sponsored && (
-                <Text textStyle="caption" color="ink.600">
-                  sponsored
-                </Text>
-              )}
+              <FeeValue />
             </Text>
           </Box>
         </Flex>

@@ -10,6 +10,7 @@ import {
   deserializePostCondition,
   getAddressFromPrivateKey,
   broadcastRawTransaction,
+  AuthType,
 } from '@stacks/transactions';
 import {
   ContractDeployPayload,
@@ -164,7 +165,7 @@ export const finishTransaction = async ({
   const txRaw = `0x${serialized.toString('hex')}`;
 
   // if sponsored, return raw tx
-  if (tx.auth.authType === 5) {
+  if (tx.auth.authType === AuthType.Sponsored) {
     return {
       txRaw,
     };
