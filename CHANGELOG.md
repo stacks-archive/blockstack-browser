@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.1
+
+### Patch Changes
+
+- [#1107](https://github.com/blockstack/stacks-wallet-web/pull/1107) [`054cef76`](https://github.com/blockstack/stacks-wallet-web/commit/054cef763bc72cddfb3edcb8098afb86428d725a) Thanks [@aulneau](https://github.com/aulneau)! - This update removes all analytics calls we were using while the extension was in alpha.
+
+* [#1092](https://github.com/blockstack/stacks-wallet-web/pull/1092) [`81ed8f4e`](https://github.com/blockstack/stacks-wallet-web/commit/81ed8f4e1d539842227bcb0b39b8664267b07ebc) Thanks [@hstove](https://github.com/hstove)! - Added extra verification to a transaction signing request. If an app tries to have you sign a transaction, but you haven't logged into that app with any of the accounts currently in your wallet, the transaction will be blocked. Fixes [#1076](https://github.com/blockstack/stacks-wallet-web/issues/1076) and [#1078](https://github.com/blockstack/stacks-wallet-web/issues/1078).
+
+- [#1099](https://github.com/blockstack/stacks-wallet-web/pull/1099) [`3a387b8e`](https://github.com/blockstack/stacks-wallet-web/commit/3a387b8e0343276e88ba21da9aa79b71d7e3b7e3) Thanks [@hstove](https://github.com/hstove)! - Adds Argon2 password hashing. This greatly improves the security of user's encrypted secret keys, because Argon2 vastly increases the time it takes to test a password.
+
 ## 2.3.0
 
 ### Minor Changes
