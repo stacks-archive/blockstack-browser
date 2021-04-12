@@ -165,7 +165,7 @@ export const TransactionPage: React.FC = () => {
         <Flex>
           <Box flexGrow={1}>
             <Text textStyle="caption" color="ink.600">
-              {signedTransaction.value && sponsored ? 'No fees' : 'Fees'}
+              Fees
             </Text>
           </Box>
           <Box>
