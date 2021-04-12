@@ -107,8 +107,6 @@ export const TransactionPage: React.FC = () => {
 
   const appName = pendingTransaction?.appDetails?.name;
 
-  const sponsored = signedTransaction.value ? signedTransaction.value.auth.authType === 5 : false;
-
   return (
     <PopupContainer>
       <Box width="100%" mt="loose" data-test="home-page">
