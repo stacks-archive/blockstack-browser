@@ -32,6 +32,16 @@ jobs:
         with:
           name: stacks-wallet-chromium
           path: stacks-wallet-chromium.zip
+
+      - uses: Klemensas/chrome-extension-upload-action@1
+        with:
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          file-name: './stacks-wallet-chromium.zip'
+          app-id: ${{ secrets.CHROME_APP_ID }}
+          publish: true
+
       - name: Upload Chromium extension to production
         uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
         with:
@@ -40,25 +50,19 @@ jobs:
           destination: wallet-extensions
 
       # Firefox
-      - name: Sign Production Firefox version
+      - name: Sign and Upload Production Firefox version
         continue-on-error: true
-        run: yarn web-ext sign --channel=unlisted
+        run: yarn web-ext sign --channel=listed
         env:
-          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
-      - uses: actions/upload-artifact@v2
-        name: Upload Artifact - Firefox Add-On XPI
-        with:
-          name: connect-addon
-          path: web-ext-artifacts/*.xpi
+          WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
       - name: Get Firefox addon filename
         id: addon-file
         run: echo "::set-output name=addon_path::$(find ./web-ext-artifacts -type f -iname "*.xpi" | tail -n1)"
       - name: Rename Firefox addon file
         run: cp ${{ steps.addon-file.outputs.addon_path }} stacks-wallet-firefox.xpi
-      - name: Upload Firefox extension to GCS
-        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
+      - name: Upload Artifact - Firefox Add-On XPI
+        uses: actions/upload-artifact@v2
         with:
-          credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
-          path: ./stacks-wallet-firefox.xpi
-          destination: wallet-extensions/
+          name: stacks-wallet-firefox
+          path: stacks-wallet-firefox.xpi

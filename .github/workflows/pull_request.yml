@@ -2,22 +2,6 @@ name: Pull Request
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  check_fork:
-    name: Disable jobs for forks
-    runs-on: ubuntu-latest
-    outputs:
-      is_not_fork: ${{ steps.is_not_fork.outputs.is_not_fork }}
-    steps:
-      - name: Check for secret
-        id: is_not_fork
-        env:
-          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-          STABLE_WALLET_BRANCH: ${{ secrets.STABLE_WALLET_BRANCH }}
-        run: |
-          echo "Is a fork: ${{ env.WEB_EXT_API_KEY == '' }}"
-          echo "::set-output name=is_not_fork::${{ env.WEB_EXT_API_KEY != '' }}"
-          echo "::set-output name=stable_wallet_branch::${{ env.STABLE_WALLET_BRANCH }}"
-
   commitlint:
     runs-on: ubuntu-latest
     env:
@@ -29,7 +13,6 @@ jobs:
       - uses: wagoid/commitlint-github-action@v1
 
   code_checks:
-    needs: [check_fork]
     name: Code checks
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +21,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: needs.check_fork.outputs.is_not_fork == 'true'
+        # Don't run on forks
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}).'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,8 +77,8 @@ jobs:
   publish_firefox_beta:
     name: Publish beta firefox extension
     runs-on: ubuntu-latest
-    needs: [check_fork]
-    if: needs.check_fork.outputs.is_not_fork == 'true'
+    # Don't run on forks
+    if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Checkout
         uses: actions/checkout@v2
