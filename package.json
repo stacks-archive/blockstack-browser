@@ -96,7 +96,7 @@
     "use-events": "1.4.2",
     "use-latest": "1.2.0",
     "valid-url": "1.0.9",
-    "web-ext": "5.5.0",
+    "web-ext": "6.1.0",
     "webext-redux": "2.1.7",
     "zxcvbn": "4.4.2"
   },
