@@ -168,7 +168,6 @@
     "speed-measure-webpack-plugin": "1.4.2",
     "standard-version": "9.1.1",
     "stream-browserify": "3.0.0",
-    "terser-webpack-plugin": "2.3.8",
     "ts-jest": "26.5.3",
     "ts-loader": "8.0.17",
     "ts-node": "9.1.1",
