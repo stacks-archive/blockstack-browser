@@ -20,7 +20,7 @@ jobs:
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
-          node-version: 12.16.1
+          node-version: 12.21.0
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -46,7 +46,7 @@ jobs:
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
-          node-version: 12.16.1
+          node-version: 12.21.0
       - uses: microsoft/playwright-github-action@v1
       - name: Restore cache
         uses: actions/cache@v2
@@ -74,7 +74,7 @@ jobs:
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
-          node-version: 12.16.1
+          node-version: 12.21.0
       - name: Restore cache
         uses: actions/cache@v2
         with:
