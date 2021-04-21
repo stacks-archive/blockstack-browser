@@ -23,8 +23,11 @@ export function useSaveAuthRequest() {
       let appName = decodedAuthRequest.appDetails?.name;
       let appIcon = decodedAuthRequest.appDetails?.icon;
 
-      if (!appName || !appIcon) {
-        throw new Error('Missing `appName` or `appIcon` from auth request');
+      if (!appIcon) {
+        throw new Error('Missing `appIcon` from auth request');
+      }
+      if (!appName) {
+        throw new Error('Missing `appName` from auth request');
       }
 
       dispatch(
