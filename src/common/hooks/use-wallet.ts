@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import {
   createWalletGaiaConfig,
   getOrCreateWalletConfig,
@@ -7,7 +6,6 @@ import {
   getAccountDisplayName,
 } from '@stacks/wallet-sdk';
 import { useRecoilValue, useRecoilState, useRecoilCallback } from 'recoil';
-import { useDispatch } from 'react-redux';
 import { gaiaUrl } from '@common/constants';
 import {
   currentNetworkKeyStore,
@@ -29,22 +27,10 @@ import {
 import { StacksTransaction } from '@stacks/transactions';
 import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
-import { ScreenPaths } from '@store/onboarding/types';
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
-import { doChangeScreen, saveAuthRequest } from '@store/onboarding/actions';
-import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
-import { decodeToken } from 'jsontokens';
 import { latestBlockHeightStore, apiRevalidation } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
-import { isValidUrl } from '@common/validate-url';
-import { fetcher } from '@common/wrapped-fetch';
-
-const loadManifest = async (decodedAuthRequest: DecodedAuthRequest) => {
-  const res = await fetcher(decodedAuthRequest.manifest_uri);
-  const json: AppManifest = await res.json();
-  return json;
-};
 
 export const useWallet = () => {
   const [wallet, setWallet] = useRecoilState(walletStore);
@@ -65,8 +51,7 @@ export const useWallet = () => {
     ? getAccountDisplayName(currentAccount)
     : undefined;
 
-  const dispatch = useDispatch();
-  const { decodedAuthRequest, authRequest, appName, appIcon, screen } = useOnboardingState();
+  const { decodedAuthRequest, authRequest, appName, appIcon } = useOnboardingState();
 
   const isSignedIn = !!wallet;
 
@@ -128,41 +113,6 @@ export const useWallet = () => {
     [decodedAuthRequest, authRequest, appName, appIcon]
   );
 
-  const doSaveAuthRequest = useCallback(
-    async (authRequest: string) => {
-      const { payload } = decodeToken(authRequest);
-      const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
-      const dangerousUri = decodedAuthRequest.redirect_uri;
-      if (!isValidUrl(dangerousUri)) {
-        throw new Error('Cannot proceed with malicious url');
-      }
-      let appName = decodedAuthRequest.appDetails?.name;
-      let appIcon = decodedAuthRequest.appDetails?.icon;
-
-      if (!appName || !appIcon) {
-        const appManifest = await loadManifest(decodedAuthRequest);
-        appName = appManifest.name;
-        appIcon = appManifest.icons[0].src as string;
-      }
-
-      dispatch(
-        saveAuthRequest({
-          decodedAuthRequest,
-          authRequest,
-          appName,
-          appIcon,
-          appURL: new URL(decodedAuthRequest.redirect_uri),
-        })
-      );
-
-      const hasIdentities = wallet?.accounts && wallet.accounts.length;
-      if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
-        dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
-      }
-    },
-    [dispatch, wallet?.accounts, screen]
-  );
-
   return {
     wallet,
     secretKey,
@@ -179,7 +129,6 @@ export const useWallet = () => {
     encryptedSecretKey,
     hasSetPassword,
     doFinishSignIn,
-    doSaveAuthRequest,
     doSetLatestNonce,
     setWallet,
     ...vaultMessenger,

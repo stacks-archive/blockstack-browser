@@ -16,10 +16,10 @@ import { EditPostConditionsPage } from '@pages/transaction/edit-post-conditions'
 import { SetPasswordPage } from '@pages/set-password';
 
 import { ScreenPaths } from '@store/onboarding/types';
-import { authenticationInit } from '@common/utils';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { useSaveAuthRequest } from '@common/hooks/callbacks/use-save-auth-request-callback';
 import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 import { Navigate } from '@components/navigate';
 import { AccountGate } from '@components/account-gate';
@@ -40,25 +40,14 @@ export const Route: React.FC<RouteProps> = ({ path, element }) => {
 
 export const Routes: React.FC = () => {
   const doChangeScreen = useDoChangeScreen();
-  const {
-    isSignedIn: signedIn,
-    doFinishSignIn,
-    doSaveAuthRequest,
-    encryptedSecretKey,
-  } = useWallet();
+  const { isSignedIn: signedIn, doFinishSignIn, encryptedSecretKey } = useWallet();
   const { isOnboardingInProgress } = useOnboardingState();
-  const authRequest = authenticationInit();
   const { search, pathname } = useLocation();
   const setLastSeen = useSetRecoilState(lastSeenStore);
+  useSaveAuthRequest();
 
   const isSignedIn = signedIn && !isOnboardingInProgress;
   const isLocked = !signedIn && encryptedSecretKey;
-
-  useEffect(() => {
-    if (authRequest) {
-      void doSaveAuthRequest(authRequest);
-    }
-  }, [doSaveAuthRequest, authRequest]);
 
   // Keep track of 'last seen' by updating it whenever a route is set.
   useEffect(() => {

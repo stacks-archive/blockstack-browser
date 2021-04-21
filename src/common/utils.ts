@@ -17,17 +17,6 @@ function kebabCase(str: string) {
   return str.replace(KEBAB_REGEX, match => '-' + match.toLowerCase());
 }
 
-export const getAuthRequestParam = () => {
-  const { hash } = document.location;
-  const matches = /authRequest=(.*)&?/.exec(hash);
-  if (matches && matches.length === 2) {
-    return matches[1];
-  }
-  return null;
-};
-
-export const authenticationInit = () => getAuthRequestParam();
-
 export const getEventSourceWindow = (event: MessageEvent) => {
   const isWindow =
     !(event.source instanceof MessagePort) && !(event.source instanceof ServiceWorker);
