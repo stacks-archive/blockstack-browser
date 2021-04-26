@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.4.0
+
+### Minor Changes
+
+- [#1123](https://github.com/blockstack/stacks-wallet-web/pull/1123) [`9985a3cb`](https://github.com/blockstack/stacks-wallet-web/commit/9985a3cbfcb8ac8332cde20592e0991b661eec93) Thanks [@hstove](https://github.com/hstove)! - This removes the dependence on `redirect_uri` when generating an `appPrivateKey`. Instead, the wallet will use the URL of the tab that originated this request.
+
+  It also includes two chores:
+
+  - Remove the `terser-webpack-plugin` package, which is unused and was flagged in `yarn audit`
+  - Bumps the version of node.js used in Github Actions from 12.16 to 12.22
+
 ## 2.3.1
 
 ### Patch Changes
