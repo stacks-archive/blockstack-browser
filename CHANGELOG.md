@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.1
+
+### Patch Changes
+
+- [#1117](https://github.com/blockstack/stacks-wallet-web/pull/1117) [`3f3f8762`](https://github.com/blockstack/stacks-wallet-web/commit/3f3f8762e54feac79680730e99bec61518499f48) Thanks [@CharlieC3](https://github.com/CharlieC3)! - Updates our Github Actions to automatically publish production versions of the extension to the Chrome and Firefox stoes.
+
 ## 2.4.0
 
 ### Minor Changes
