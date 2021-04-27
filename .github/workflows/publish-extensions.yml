@@ -33,7 +33,7 @@ jobs:
           name: stacks-wallet-chromium
           path: stacks-wallet-chromium.zip
 
-      - uses: Klemensas/chrome-extension-upload-action@v1.3
+      - uses: Klemensas/chrome-extension-upload-action@1df3cdf4047a4789bc61a64a125994d8caf23572
         with:
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
