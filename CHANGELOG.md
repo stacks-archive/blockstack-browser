@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.2
+
+### Patch Changes
+
+- [#1127](https://github.com/blockstack/stacks-wallet-web/pull/1127) [`4a629e04`](https://github.com/blockstack/stacks-wallet-web/commit/4a629e04317a2b1a568c11a9512af74049dc3bb2) Thanks [@hstove](https://github.com/hstove)! - Fixes the version of the Github Action used to upload the chrome extension
+
 ## 2.4.1
 
 ### Patch Changes
