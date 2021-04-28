@@ -17,6 +17,7 @@ Table of Contents:
   - [Add extension to your browser](#add-extension-to-your-browser)
     - [Chromium](#chromium)
     - [Firefox](#firefox)
+  - [Adding a Changeset](#adding-a-changeset)
 - [Production](#production)
   - [Building browser extensions](#building-browser-extensions)
     - [Optional: use Docker](#optional-use-docker)
@@ -78,11 +79,19 @@ within the project.
 
 #### Firefox
 
-1. Go to: `about:debugging `
+1. Go to: `about:debugging`
 2. Click on **"This Firefox"**
 3. Click on: **"Load Temporary Add-on…"**
 4. Navigate to the `stacks-wallet-web` project directory
 5. Select the `manifest.json` file.
+
+### Adding a Changeset
+
+This repository utilizes [Changesets](https://github.com/atlassian/changesets) in order to create a `CHANGELOG.md` file and update the version of the wallet. Each pull request should include a changeset, which includes a description of the changes made in your PR. Most information can be found in the [changesets repository](https://github.com/atlassian/changesets), but the quickest way to add a changeset is to run `yarn changeset add`. You'll be prompted to enter a summary of your changes.
+
+Once your PR is merged into the `main` branch, a new pull request will automatically be created. This is a "release" pull request. The PR will merge your changesets into the [`CHANGELOG.md`](https://github.com/blockstack/ux/blob/main/CHANGELOG.md) file, and will update the version of the wallet appropriately, depending on the type of change you've made.
+
+In general, you should not update the version of the wallet (found in `package.json`). Each commit in a PR will generate a "beta" version, which can be used for testing.
 
 ## Production
 
@@ -122,7 +131,7 @@ Use these steps when using a Chromium browser, like Chrome, Brave, and Edge.
 
 #### Firefox
 
-1. Go to: `about:debugging `
+1. Go to: `about:debugging`
 2. Click on **"This Firefox"**
 3. Click on: **"Load Temporary Add-on…"**
 4. Navigate inside the new directory that was unzipped from `stacks-wallet-chromium.zip`
