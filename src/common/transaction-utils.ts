@@ -9,6 +9,7 @@ import {
   BufferReader,
   deserializePostCondition,
   getAddressFromPrivateKey,
+  broadcastRawTransaction,
 } from '@stacks/transactions';
 import {
   ContractDeployPayload,
@@ -19,7 +20,6 @@ import {
   FinishedTxPayload,
 } from '@stacks/connect';
 import { getPublicKeyFromPrivate } from '@stacks/encryption';
-import RPCClient from '@stacks/rpc-client';
 import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import { TokenVerifier, decodeToken } from 'jsontokens';
@@ -151,6 +151,7 @@ export const generateTransaction = async ({
 
 export const finishTransaction = async ({
   tx,
+  pendingTransaction,
   nodeUrl,
 }: {
   tx: StacksTransaction;
@@ -158,26 +159,19 @@ export const finishTransaction = async ({
   nodeUrl: string;
 }): Promise<FinishedTxPayload> => {
   const serialized = tx.serialize();
-  const rpcClient = new RPCClient(nodeUrl);
-  const res = await rpcClient.broadcastTX(serialized);
+  const response = await broadcastRawTransaction(serialized,`${nodeUrl}/v2/transactions`,pendingTransaction.attachment ? Buffer.from(pendingTransaction.attachment,'hex') : undefined);
 
-  if (res.ok) {
-    const txIdJson: string = await res.json();
-    const txId = `0x${txIdJson.replace('"', '')}`;
+  if (typeof response === "string") {
     const txRaw = `0x${serialized.toString('hex')}`;
     return {
-      txId,
+      txId: response,
       txRaw,
     };
   } else {
-    const response = await res.json();
-    if (response.error) {
-      const error = `${response.error} - ${response.reason}`;
-      console.error(response.error);
-      console.error(response.reason);
-      throw new Error(error);
-    }
-    throw new Error('Unable to submit transaction');
+    const error = `${response.error} - ${response.reason}`;
+    console.error(response.error);
+    console.error(response.reason);
+    throw new Error(error);
   }
 };
 
