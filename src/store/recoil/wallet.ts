@@ -56,8 +56,8 @@ export const latestNonceStore = selector({
   get: ({ get }) => {
     const network = get(currentNetworkStore);
     const address = get(currentAccountStxAddressStore);
-    const nonce = get(latestNoncesStore([network.url, address || '']));
-    return nonce;
+
+    return get(latestNoncesStore([network.url, address || '']));
   },
 });
 
@@ -90,8 +90,7 @@ export const currentAccountStxAddressStore = selector({
     const account = get(currentAccountStore);
     if (!account) return undefined;
     const transactionVersion = get(currentTransactionVersion);
-    const address = getStxAddress({ account, transactionVersion });
-    return address;
+    return getStxAddress({ account, transactionVersion });
   },
 });
 
@@ -109,8 +108,7 @@ export const walletConfigStore = selector<WalletConfig | null>({
       return null;
     }
     const gaiaHubConfig = await createWalletGaiaConfig({ wallet, gaiaHubUrl: gaiaUrl });
-    const walletConfig = await fetchWalletConfig({ wallet, gaiaHubConfig });
-    return walletConfig;
+    return fetchWalletConfig({ wallet, gaiaHubConfig });
   },
 });
 
