@@ -1,4 +1,4 @@
-import { selector, atom, atomFamily } from 'recoil';
+import { selector, atom, atomFamily, waitForAll } from 'recoil';
 import { latestNonceStore, currentAccountStxAddressStore } from './wallet';
 import { currentNetworkStore } from './networks';
 import type {
@@ -92,23 +92,32 @@ export const correctNonceStore = selector({
   key: 'api.correct-nonce',
   get: ({ get }) => {
     get(apiRevalidation);
-    const blockHeight = get(latestBlockHeightStore);
-    const account = get(accountInfoStore);
-    const lastTx = get(latestNonceStore);
 
-    // Blocks have been mined since the last TX from this user.
-    // This is the most likely scenario.
-    if (account.nonce > lastTx.nonce) {
-      return account.nonce;
-    }
-    // The current stacks chain has been reset or advanced since the last tx
-    if (blockHeight !== lastTx.blockHeight) {
-      return account.nonce;
-    }
+    const { account, lastTx, accountData, address } = get(
+      waitForAll({
+        account: accountInfoStore,
+        lastTx: latestNonceStore,
+        accountData: accountDataStore,
+        address: currentAccountStxAddressStore,
+      })
+    );
 
-    // No blocks have been mined since the latest transaction from this user.
-    if (lastTx) return lastTx.nonce + 1;
-    return account.nonce;
+    // pending transactions sent by current address
+    const latestPendingTx = accountData?.pendingTransactions?.filter(
+      tx => tx.sender_address === address
+    )?.[0];
+    // see if they have any pending or confirmed transactions
+    const hasTransactions = !!latestPendingTx || lastTx.blockHeight > 0;
+
+    const latestNonce = hasTransactions
+      ? // if they do, use the greater of the two
+        latestPendingTx && latestPendingTx.nonce > lastTx.nonce
+        ? latestPendingTx.nonce + 1
+        : lastTx.nonce + 1
+      : // if they don't, default to 0
+        0;
+
+    return latestNonce > account.nonce ? latestNonce : account.nonce;
   },
 });
 
@@ -123,8 +132,7 @@ export const accountDataStore = selector({
       throw new Error('Cannot get account info when logged out.');
     }
     try {
-      const accountData = await fetchAllAccountData(url)(address);
-      return accountData;
+      return fetchAllAccountData(url)(address);
     } catch (error) {
       throw `Unable to fetch account data from ${url}`;
     }
