@@ -6,6 +6,7 @@ RUN apt-get update -y && apt-get install -y build-essential python3 nodejs zip c
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add - \
   && sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list' \
   && apt-get update -y && apt-get install -y yarn \
+  && chmod +x build-ext.sh \
   && ./build-ext.sh /stacks-wallet-chromium.zip
 
 
