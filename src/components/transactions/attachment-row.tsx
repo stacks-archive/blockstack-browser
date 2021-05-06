@@ -16,7 +16,7 @@ export const AttachmentRow: React.FC = () => {
       <Box as={Text} flexGrow={1} display="block" fontSize={1}>
         attachment
       </Box>
-      <Box as={Text} fontSize={1} color="ink.600">
+      <Box wordBreak="break-word" as={Text} fontSize={1} color="ink.600">
         {toHumanReadable(pendingTransaction.attachment)}
       </Box>
     </Flex>
