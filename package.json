@@ -32,7 +32,7 @@
   "author": "Blockstack PBC",
   "dependencies": {
     "@changesets/changelog-github": "0.3.0",
-    "@changesets/cli": "2.14.1",
+    "@changesets/cli": "^2.16.0",
     "@emotion/core": "11.0.0",
     "@emotion/css": "11.1.3",
     "@emotion/react": "11.1.5",
@@ -165,6 +165,7 @@
     "react-dev-utils": "11.0.4",
     "react-refresh": "0.9.0",
     "react-test-renderer": "17.0.1",
+    "schema-inspector": "2.0.0",
     "speed-measure-webpack-plugin": "1.4.2",
     "standard-version": "9.1.1",
     "stream-browserify": "3.0.0",
@@ -190,6 +191,8 @@
     "@tabler/icons": "npm:tabler-icons-peer-deps@1.39.3",
     "bn.js": "^5.2.0",
     "buffer": "^6.0.3",
+    "hosted-git-info": "4.0.2",
+    "mixme": "0.5.1",
     "schema-inspector": "2.0.0",
     "ssri": "6.0.2"
   },
