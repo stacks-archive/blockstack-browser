@@ -21,6 +21,10 @@ import BN from 'bn.js';
 import { stxToMicroStx } from '@common/stacks-utils';
 import { getAssetStringParts } from '@stacks/ui-utils';
 
+export type TransactionPayloadWithAttachment = TransactionPayload & {
+  attachment?: string;
+};
+
 /** Transaction signing popup store */
 
 export const showTxDetails = atom<boolean>({
@@ -33,12 +37,11 @@ export const requestTokenStore = atom<string>({
   default: '',
 });
 
-const getPayload = (requestToken: string) => {
+function getPayload(requestToken: string): undefined | TransactionPayloadWithAttachment {
   if (!requestToken) return undefined;
   const token = decodeToken(requestToken);
-  const tx = (token.payload as unknown) as TransactionPayload;
-  return tx;
-};
+  return (token.payload as unknown) as TransactionPayloadWithAttachment;
+}
 
 export const transactionPayloadStore = selector({
   key: 'transaction.payload',

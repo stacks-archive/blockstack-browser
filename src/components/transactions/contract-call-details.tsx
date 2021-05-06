@@ -6,7 +6,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { deserializeCV, cvToString, ClarityType, getCVTypeString } from '@stacks/transactions';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { NonceRow } from './nonce-row';
-import { AttachentRow } from './attachment-row';
+import { AttachmentRow } from './attachment-row';
 import { Link } from '@components/link';
 import { useExplorerLink } from '@common/hooks/use-explorer-link';
 
@@ -102,7 +102,7 @@ export const ContractCallDetails: React.FC = () => {
         </Flex>
       </Box>
       <NonceRow />
-      <AttachentRow />
+      <AttachmentRow />
     </>
   );
 };

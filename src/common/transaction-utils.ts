@@ -24,6 +24,7 @@ import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import { TokenVerifier, decodeToken } from 'jsontokens';
 import { Wallet, getAppPrivateKey } from '@stacks/wallet-sdk';
+import { TransactionPayloadWithAttachment } from '@store/recoil/transaction';
 
 const getPostConditions = (
   postConditions?: (PostCondition | string)[]
@@ -155,7 +156,7 @@ export const finishTransaction = async ({
   nodeUrl,
 }: {
   tx: StacksTransaction;
-  pendingTransaction: TransactionPayload;
+  pendingTransaction: TransactionPayloadWithAttachment;
   nodeUrl: string;
 }): Promise<FinishedTxPayload> => {
   const serialized = tx.serialize();

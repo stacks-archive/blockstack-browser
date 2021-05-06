@@ -2,7 +2,7 @@ import React from 'react';
 import { useTxState } from '@common/hooks/use-tx-state';
 import { Box, Text, Flex } from '@stacks/ui';
 import { NonceRow } from './nonce-row';
-import { AttachentRow } from './attachment-row';
+import { AttachmentRow } from './attachment-row';
 
 export const StxTransferDetails: React.FC = () => {
   const { pendingTransaction } = useTxState();
@@ -52,7 +52,7 @@ export const StxTransferDetails: React.FC = () => {
               </Flex>
             )}
             <NonceRow />
-            <AttachentRow />
+            <AttachmentRow />
           </Box>
         </Flex>
       </Box>
