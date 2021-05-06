@@ -26,47 +26,51 @@ export const InstalledSignIn: React.FC = () => {
       hideActions
       key="sign-in"
     >
-      <Caption>Enter your 12 or 24 word Secret Key to continue.</Caption>
-      <Stack as="form" onSubmit={onSubmit} spacing="loose" mt="auto">
-        <Stack spacing="base">
-          {error && (
-            <ErrorLabel lineHeight="16px">
-              <Text
-                textAlign="left"
-                textStyle="caption"
-                color={color('feedback-error')}
-                data-test="sign-in-seed-error"
-              >
-                {error}
-              </Text>
-            </ErrorLabel>
-          )}
-          <Input
-            autoFocus
-            placeholder="Paste or type your Secret Key"
-            as="textarea"
-            fontSize="16px"
-            autoCapitalize="off"
-            spellCheck={false}
+      <Stack spacing="loose">
+        <Caption className="onboarding-text">
+          Enter your 12 or 24 word Secret Key to continue.
+        </Caption>
+        <Stack as="form" onSubmit={onSubmit} spacing="loose">
+          <Stack spacing="base">
+            {error && (
+              <ErrorLabel lineHeight="16px">
+                <Text
+                  textAlign="left"
+                  textStyle="caption"
+                  color={color('feedback-error')}
+                  data-test="sign-in-seed-error"
+                >
+                  {error}
+                </Text>
+              </ErrorLabel>
+            )}
+            <Input
+              autoFocus
+              placeholder="Paste or type your Secret Key"
+              as="textarea"
+              fontSize="16px"
+              autoCapitalize="off"
+              spellCheck={false}
+              width="100%"
+              style={{ resize: 'none' }}
+              minHeight="140px"
+              ref={ref as any} // need to fix type in UI lib
+              onKeyDown={onKeyDown as any} // need to fix type in UI lib
+              onPaste={onPaste}
+              onChange={onChange}
+              value={value}
+            />
+          </Stack>
+          <Button
             width="100%"
-            style={{ resize: 'none' }}
-            minHeight="140px"
-            ref={ref as any} // need to fix type in UI lib
-            onKeyDown={onKeyDown as any} // need to fix type in UI lib
-            onPaste={onPaste}
-            onChange={onChange}
-            value={value}
-          />
+            isLoading={isLoading}
+            isDisabled={isLoading}
+            data-test="sign-in-key-continue"
+            type="submit"
+          >
+            Continue
+          </Button>
         </Stack>
-        <Button
-          width="100%"
-          isLoading={isLoading}
-          isDisabled={isLoading}
-          data-test="sign-in-key-continue"
-          type="submit"
-        >
-          Continue
-        </Button>
       </Stack>
     </PopupContainer>
   );

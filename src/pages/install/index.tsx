@@ -37,7 +37,7 @@ const Actions: React.FC<StackProps> = props => {
 export const Installed: React.FC = memo(() => (
   <PopupContainer hideActions>
     <Stack spacing="extra-loose" flexGrow={1} justifyContent="center">
-      <Stack width="100%" spacing="loose" textAlign="center" alignItems="center" mt="extra-loose">
+      <Stack width="100%" spacing="loose" textAlign="center" alignItems="center">
         <Title as="h1" fontWeight={500}>
           Stacks Wallet is installed
         </Title>

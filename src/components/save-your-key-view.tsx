@@ -9,7 +9,7 @@ export const SecretKeyMessage: React.FC<BoxProps> = props => {
   const { secretKey } = useWallet();
   const wordCount = (secretKey || '').split(' ').length;
   return (
-    <Body {...props}>
+    <Body {...props} className="onboarding-text">
       These {wordCount} words are your Secret Key. They create your account, and you sign in on
       different devices with them. Make sure to save these somewhere safe.{' '}
       <Text display="inline" fontWeight={500}>
@@ -68,7 +68,7 @@ export const SaveYourKeyView: React.FC<{
     hideActions={hideActions}
     title={title || 'Save your Secret Key'}
   >
-    <Stack flexGrow={1} spacing="loose">
+    <Stack spacing="loose">
       <SecretKeyMessage />
       <SecretKeyCard />
       <SecretKeyActions handleNext={handleNext || onClose} />

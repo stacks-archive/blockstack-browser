@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Button, color, Input, Stack } from '@stacks/ui';
+import { Button, Input, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -92,39 +92,39 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
   return (
     <PopupContainer hideActions title="Set a password.">
       <Stack spacing="loose">
-        <Body color={color('feedback-success')} fontWeight="500">
-          This password is for this device only.
+        <Body className="onboarding-text">
+          This password is for this device only. To access your account on a new device you will use
+          your Secret Key.
         </Body>
-        <Body>To access your account on a new device you will use your Secret Key.</Body>
-      </Stack>
-      <Stack spacing="base" mt="auto" width="100%">
-        {showWarning ? (
-          <Caption fontSize={0}>
-            Please use a stronger password before continuing. Longer than 12 characters, with
-            symbols, numbers, and words.
-          </Caption>
-        ) : null}
-        <Input
-          ref={ref}
-          placeholder={placeholder || 'Set a password'}
-          key="password-input"
-          width="100%"
-          autoFocus
-          type="password"
-          data-test="set-password"
-          onChange={handlePasswordInput}
-          onKeyUp={buildEnterKeyEvent(handleSubmit)}
-        />
+        <Stack spacing="loose" width="100%">
+          {showWarning ? (
+            <Caption fontSize={0}>
+              Please use a stronger password before continuing. Longer than 12 characters, with
+              symbols, numbers, and words.
+            </Caption>
+          ) : null}
+          <Input
+            ref={ref}
+            placeholder={placeholder || 'Set a password'}
+            key="password-input"
+            width="100%"
+            autoFocus
+            type="password"
+            data-test="set-password"
+            onChange={handlePasswordInput}
+            onKeyUp={buildEnterKeyEvent(handleSubmit)}
+          />
 
-        <Button
-          width="100%"
-          isLoading={loading}
-          isDisabled={loading || showWarning}
-          onClick={handleSubmit}
-          data-test="set-password-done"
-        >
-          Done
-        </Button>
+          <Button
+            width="100%"
+            isLoading={loading}
+            isDisabled={loading || showWarning}
+            onClick={handleSubmit}
+            data-test="set-password-done"
+          >
+            Done
+          </Button>
+        </Stack>
       </Stack>
     </PopupContainer>
   );

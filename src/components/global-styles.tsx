@@ -21,8 +21,13 @@ const SizeStyles = css`
       width: 100%;
 
       main.main-content {
+        flex-grow: 1;
+        justify-content: center;
         max-width: 440px;
         margin: 0 auto;
+      }
+      .onboarding-text {
+        text-align: center;
       }
     }
   }
