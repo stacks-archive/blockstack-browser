@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 import { Box, BoxProps, color, Flex, FlexProps, IconButton, Stack } from '@stacks/ui';
-import { IconAlertTriangle, IconArrowLeft, IconDots } from '@tabler/icons';
+import { IconArrowLeft, IconDots } from '@tabler/icons';
 
 import { StacksWalletLogo } from '@components/stacks-wallet-logo';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { NetworkModeBadge } from '@components/network-mode-badge';
 import { ScreenPaths } from '@store/onboarding/types';
-import { Caption, Title } from '@components/typography';
+import { Title } from '@components/typography';
 
 interface HeaderProps extends FlexProps {
   onClose?: () => void;
@@ -38,31 +38,12 @@ const HeaderTitle: React.FC<BoxProps> = props => (
   <Title fontSize="20px" lineHeight="28px" fontWeight={500} {...props} />
 );
 
-const WarningBanner: React.FC<FlexProps> = () => {
-  return (
-    <Stack
-      px="base"
-      isInline
-      alignItems="center"
-      justifyContent="center"
-      bg={color('bg-4')}
-      py="tight"
-      borderBottom="1px solid"
-      borderColor={color('border')}
-    >
-      <Box as={IconAlertTriangle} size="16px" color={color('feedback-alert')} />
-      <Caption variant="c2">Stacks Wallet for Web is in alpha, it has not been audited.</Caption>
-    </Stack>
-  );
-};
-
 export const Header: React.FC<HeaderProps> = memo(props => {
   const { onClose, title, hideActions } = props;
   const doChangeScreen = useDoChangeScreen();
 
   return (
     <>
-      <WarningBanner />
       <Flex
         p="loose"
         alignItems={hideActions ? 'center' : 'flex-start'}
