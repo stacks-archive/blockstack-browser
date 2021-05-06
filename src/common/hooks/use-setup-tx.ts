@@ -11,7 +11,7 @@ import { useNetworkSwitchCallback } from '@common/hooks/callbacks/use-network-sw
 import { useDecodeRequestCallback } from '@common/hooks/callbacks/use-decode-request-callback';
 
 export const useSetupTx = () => {
-  const [mount, setMount] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressStore);
   const previousAccountStxAddress = usePrevious(currentAccountStxAddress);
   const requestToken = useRecoilValue(requestTokenStore);
@@ -28,12 +28,6 @@ export const useSetupTx = () => {
   }, [requestToken, handleDecodeRequest]);
 
   useEffect(() => {
-    if (requestToken && !mount) {
-      setMount(true);
-    }
-  }, [requestToken, mount]);
-
-  useEffect(() => {
     void handleNetworkSwitch();
     void handleAccountSwitch();
   }, [requestToken, handleNetworkSwitch, handleAccountSwitch]);
@@ -41,15 +35,18 @@ export const useSetupTx = () => {
   useEffect(() => {
     if (requestToken && currentAccountStxAddress) {
       if (
-        !mount ||
+        !hasMounted ||
         !previousAccountStxAddress ||
         previousAccountStxAddress !== currentAccountStxAddress
       ) {
+        if (!hasMounted) {
+          setHasMounted(true);
+        }
         void handlePostConditions(currentAccountStxAddress);
       }
     }
   }, [
-    mount,
+    hasMounted,
     previousAccountStxAddress,
     requestToken,
     currentAccountStxAddress,
