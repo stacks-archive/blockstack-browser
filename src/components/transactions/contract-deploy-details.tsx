@@ -5,6 +5,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Prism } from '@common/clarity-prism';
 import { NonceRow } from './nonce-row';
+import { AttachentRow } from './attachment-row';
 
 export const ContractDeployDetails: React.FC = () => {
   const { pendingTransaction } = useTxState();
@@ -64,6 +65,7 @@ export const ContractDeployDetails: React.FC = () => {
               />
             </Flex>
             <NonceRow />
+            <AttachentRow />
           </Box>
         </Flex>
       </Box>
