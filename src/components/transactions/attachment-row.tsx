@@ -5,7 +5,7 @@ import React from 'react';
 function readable(data: string)
 	{
 	const text = Buffer.from(data,'hex').toString('ascii');
-	return /^[\x00-\x7F]*$/.test(text) ? text : `0x${data}`;
+	return /^[^\x00-\x1F\x80-\x9F]+$/.test(text) ? text : `0x${data}`;
 	}
 
 export const AttachentRow: React.FC = () => {
