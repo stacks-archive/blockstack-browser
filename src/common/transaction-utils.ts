@@ -159,9 +159,13 @@ export const finishTransaction = async ({
   nodeUrl: string;
 }): Promise<FinishedTxPayload> => {
   const serialized = tx.serialize();
-  const response = await broadcastRawTransaction(serialized,`${nodeUrl}/v2/transactions`,pendingTransaction.attachment ? Buffer.from(pendingTransaction.attachment,'hex') : undefined);
+  const response = await broadcastRawTransaction(
+    serialized,
+    `${nodeUrl}/v2/transactions`,
+    pendingTransaction.attachment ? Buffer.from(pendingTransaction.attachment, 'hex') : undefined
+  );
 
-  if (typeof response === "string") {
+  if (typeof response === 'string') {
     const txRaw = `0x${serialized.toString('hex')}`;
     return {
       txId: response,
