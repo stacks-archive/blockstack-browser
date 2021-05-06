@@ -190,7 +190,8 @@
     "@tabler/icons": "npm:tabler-icons-peer-deps@1.39.3",
     "bn.js": "^5.2.0",
     "buffer": "^6.0.3",
-    "schema-inspector": "2.0.0"
+    "schema-inspector": "2.0.0",
+    "ssri": "6.0.2"
   },
   "keywords": [
     "blockstack",
