@@ -48,7 +48,11 @@ const TransactionDetails: React.FC<
       </Stack>
       <Stack width="100%" px="extra-loose">
         <Caption>Nonce</Caption>
-        {nonce ? <Text>{nonce}</Text> : <LoadingRectangle height="14px" width="80px" />}
+        {typeof nonce !== 'undefined' ? (
+          <Text>{String(nonce)}</Text>
+        ) : (
+          <LoadingRectangle height="14px" width="80px" />
+        )}
       </Stack>
       <Stack width="100%" px="extra-loose">
         <Caption>Fee</Caption>
