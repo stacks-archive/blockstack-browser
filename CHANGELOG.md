@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.4.4
+
+### Patch Changes
+
+- [#1129](https://github.com/blockstack/stacks-wallet-web/pull/1129) [`1f5e24ab`](https://github.com/blockstack/stacks-wallet-web/commit/1f5e24ab18bad8d4c5d04845c38c39dff7d9eec3) Thanks [@markmhx](https://github.com/markmhx)! - This is a patch version bump to get aligned with a manual version bump that was submitted to extension builds.
+
+* [#1137](https://github.com/blockstack/stacks-wallet-web/pull/1137) [`2f0202a1`](https://github.com/blockstack/stacks-wallet-web/commit/2f0202a1ff26c49cc181a713eddf31e103b30eeb) Thanks [@aulneau](https://github.com/aulneau)! - Adds the ability to submit an attachment alongside a transaction. It displays the attachment in a separate row if present. It prints it as ascii if the attachment is composed of only readable characters, otherwise it displays it as a hex string.
+
+  <img width="554" alt="Screenshot 2021-05-05 at 9 40 16 PM" src="https://user-images.githubusercontent.com/5727806/117242873-f936c200-adea-11eb-83f3-8054b8029c58.png">
+
 ## 2.4.2
 
 ### Patch Changes
