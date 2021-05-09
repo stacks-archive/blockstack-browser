@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.4.5
+
+### Patch Changes
+
+- [#1134](https://github.com/blockstack/stacks-wallet-web/pull/1134) [`a2d00798`](https://github.com/blockstack/stacks-wallet-web/commit/a2d0079838c566344d4066cef3eb3f5ef6c2c262) Thanks [@aulneau](https://github.com/aulneau)! - **This fixes two issues:**
+
+  There was a race condition such that sometimes when a transaction would be generated from the requestToken, the
+  postCondition hook would run before the token was decoded, and as such always returned an empty postConditions array.
+
+  There was a bug where if the account had a pending function call transaction, the nonce store would never be correct
+  while the tx was still pending.
+
 ## 2.4.4
 
 ### Patch Changes
