@@ -4,7 +4,7 @@ import { Formik, FormikErrors, FormikProps } from 'formik';
 import { PopupContainer } from '@components/popup/container';
 import { ConfirmSendDrawer } from '@components/drawer/confirm-send-drawer';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { Link } from '@components/link';
 import BigNumber from 'bignumber.js';
 import { microStxToStx, validateAddressChain, validateStacksAddress } from '@common/stacks-utils';
@@ -15,7 +15,7 @@ import { RPCClient } from '@stacks/rpc-client';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { useRecoilValue } from 'recoil';
-import { selectedAssetStore } from '@store/recoil/asset-search';
+import { selectedAssetStore } from '@store/asset-search';
 import { useAssets } from '@common/hooks/use-assets';
 import { getTicker } from '@common/utils';
 

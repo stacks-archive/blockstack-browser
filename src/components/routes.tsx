@@ -15,7 +15,7 @@ import { AddNetwork } from '@pages/popup/add-network';
 import { EditPostConditionsPage } from '@pages/transaction/edit-post-conditions';
 import { SetPasswordPage } from '@pages/set-password';
 
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
@@ -24,7 +24,7 @@ import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-ro
 import { Navigate } from '@components/navigate';
 import { AccountGate } from '@components/account-gate';
 import { AccountGateRoute } from '@components/account-gate-route';
-import { lastSeenStore } from '@store/recoil/wallet';
+import { lastSeenStore } from '@store/wallet';
 import { useSetRecoilState } from 'recoil';
 import { ErrorBoundary } from './error-boundary';
 import { Unlock } from './unlock';

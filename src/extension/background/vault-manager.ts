@@ -11,7 +11,7 @@ import {
   updateWalletConfig,
   Wallet as SDKWallet,
 } from '@stacks/wallet-sdk';
-import { DEFAULT_PASSWORD } from '@store/onboarding/types';
+import { DEFAULT_PASSWORD } from '@store/types';
 import argon2, { ArgonType } from 'argon2-browser';
 
 /**

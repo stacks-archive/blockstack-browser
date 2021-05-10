@@ -17,7 +17,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
-import { Network } from '@store/recoil/networks';
+import { Network } from '@store/networks';
 import { STX_DECIMALS } from './constants';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
@@ -112,9 +112,11 @@ export const getPostConditionTitle = (pc: PostCondition) => {
 };
 
 export const makeAssetInfo = (assetIdentifier: string) => {
-  const { address: contractAddress, contractName, assetName } = getAssetStringParts(
-    assetIdentifier
-  );
+  const {
+    address: contractAddress,
+    contractName,
+    assetName,
+  } = getAssetStringParts(assetIdentifier);
   const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
   return assetInfo;
 };

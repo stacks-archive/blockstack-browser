@@ -5,8 +5,8 @@ import useOnClickOutside from '@common/hooks/use-onclickoutside';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/onboarding/types';
-import { AccountStep } from '@store/recoil/drawers';
+import { ScreenPaths } from '@store/types';
+import { AccountStep } from '@store/drawers';
 import { Divider } from '@components/divider';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { forwardRefWithAs } from '@stacks/ui-core';
@@ -62,13 +62,8 @@ export const SettingsPopover: React.FC = () => {
     isSignedIn,
     encryptedSecretKey,
   } = useWallet();
-  const {
-    setShowNetworks,
-    setShowAccounts,
-    setAccountStep,
-    setShowSettings,
-    showSettings,
-  } = useDrawers();
+  const { setShowNetworks, setShowAccounts, setAccountStep, setShowSettings, showSettings } =
+    useDrawers();
   const doChangeScreen = useDoChangeScreen();
 
   const handleClose = useCallback(() => {

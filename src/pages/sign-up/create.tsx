@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useDispatch } from '@common/hooks/use-dispatch';
 import { Spinner, Flex, Text, color } from '@stacks/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@screen';
 
-import { doSetOnboardingProgress } from '@store/onboarding/actions';
 import { useAppDetails } from '@common/hooks/useAppDetails';
 
 import { useWallet } from '@common/hooks/use-wallet';
+import { useSetRecoilState } from 'recoil';
+import { onboardingProgressState } from '@store/onboarding';
 
 interface ExplainerCardProps {
   title: string;
@@ -57,8 +57,7 @@ export const Create: React.FC<CreateProps> = props => {
   const [cardIndex, setCardIndex] = useState(0);
   const { wallet, doMakeWallet } = useWallet();
   const { name } = useAppDetails();
-  const dispatch = useDispatch();
-
+  const doSetOnboardingProgress = useSetRecoilState(onboardingProgressState);
   const { next } = props;
 
   const explainerData: ExplainerCardProps[] = useMemo(
@@ -93,12 +92,12 @@ export const Create: React.FC<CreateProps> = props => {
       // default first screen rendered. We don't want to accidentally create a new
       // seed if a logged-in user gets into this hook.
       if (!wallet) {
-        void dispatch(doSetOnboardingProgress(true));
+        doSetOnboardingProgress(true);
         void doMakeWallet();
       }
     }, 200);
     return () => clearTimeout(timeout);
-  }, [dispatch, doMakeWallet, explainerData.length, next, wallet]);
+  }, [doSetOnboardingProgress, doMakeWallet, explainerData.length, next, wallet]);
 
   const offCenterOffset = '3';
   const card = explainerData[cardIndex];

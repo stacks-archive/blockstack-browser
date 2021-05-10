@@ -4,12 +4,9 @@ import { Title } from '@components/typography';
 import { Box } from '@stacks/ui';
 import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
-import { useSelector } from 'react-redux';
-import { AppState } from '@store';
-import { selectAppName } from '@store/onboarding/selectors';
 import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
 import { gaiaUrl } from '@common/constants';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
 import { isValidUrl } from '@common/validate-url';
@@ -21,6 +18,7 @@ import {
 } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { Header } from '@components/header';
+import { useAppDetails } from '@common/hooks/useAppDetails';
 
 interface ChooseAccountProps {
   next: (accountIndex: number) => void;
@@ -28,9 +26,7 @@ interface ChooseAccountProps {
 }
 
 export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
-  const { appName } = useSelector((state: AppState) => ({
-    appName: selectAppName(state),
-  }));
+  const { name: appName } = useAppDetails();
   const { wallet, walletConfig } = useWallet();
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const { decodedAuthRequest: authRequest } = useOnboardingState();

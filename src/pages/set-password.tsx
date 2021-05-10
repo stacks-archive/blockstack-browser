@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { Button, Input, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { buildEnterKeyEvent } from '@components/link';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';

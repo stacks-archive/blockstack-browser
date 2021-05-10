@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { usePrevious } from '@stacks/ui';
 
-import { requestTokenStore } from '@store/recoil/transaction';
-import { currentAccountStxAddressStore } from '@store/recoil/wallet';
+import { requestTokenStore } from '@store/transaction';
+import { currentAccountStxAddressStore } from '@store/wallet';
 
 import { useAccountSwitchCallback } from '@common/hooks/callbacks/use-account-switch-callback';
 import { usePostConditionsCallback } from '@common/hooks/callbacks/use-post-conditions-callback';

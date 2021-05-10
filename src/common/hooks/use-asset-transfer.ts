@@ -10,7 +10,7 @@ import {
 } from '@stacks/transactions';
 import BN from 'bn.js';
 import { useRecoilCallback } from 'recoil';
-import { makeFungibleTokenTransferState } from '@store/recoil/transfers';
+import { makeFungibleTokenTransferState } from '@store/transfers';
 
 interface PostConditionsOptions {
   contractAddress: string;

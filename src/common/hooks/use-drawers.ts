@@ -3,7 +3,7 @@ import {
   accountDrawerStep,
   showAccountsStore,
   showSettingsStore,
-} from '@store/recoil/drawers';
+} from '@store/drawers';
 import { useRecoilState } from 'recoil';
 
 export const useDrawers = () => {

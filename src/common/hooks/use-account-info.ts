@@ -1,4 +1,4 @@
-import { accountBalancesStore, accountDataStore } from '@store/recoil/api';
+import { accountBalancesStore, accountDataStore } from '@store/api';
 import { useLoadable } from './use-loadable';
 
 export const useFetchAccountData = () => {

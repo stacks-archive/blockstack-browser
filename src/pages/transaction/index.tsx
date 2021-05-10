@@ -10,7 +10,7 @@ import { ContractCallDetails } from '@components/transactions/contract-call-deta
 import { StxTransferDetails } from '@components/transactions/stx-transfer-details';
 import { ContractDeployDetails } from '@components/transactions/contract-deploy-details';
 import { PostConditions } from '@components/transactions/post-conditions/list';
-import { showTxDetails } from '@store/recoil/transaction';
+import { showTxDetails } from '@store/transaction';
 import { useRecoilValue } from 'recoil';
 import { TransactionTypes } from '@stacks/connect';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';

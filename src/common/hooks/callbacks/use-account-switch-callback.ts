@@ -1,6 +1,6 @@
 import { CallbackInterface, useRecoilCallback } from 'recoil';
-import { transactionPayloadStore } from '@store/recoil/transaction';
-import { currentAccountIndexStore, walletStore } from '@store/recoil/wallet';
+import { transactionPayloadStore } from '@store/transaction';
+import { currentAccountIndexStore, walletStore } from '@store/wallet';
 import { getStxAddress } from '@stacks/wallet-sdk';
 
 function accountSwitchCallback({ snapshot, set }: CallbackInterface) {

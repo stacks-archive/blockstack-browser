@@ -24,8 +24,8 @@ import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import { TokenVerifier, decodeToken } from 'jsontokens';
 import { Wallet, getAppPrivateKey } from '@stacks/wallet-sdk';
-import { TransactionPayloadWithAttachment } from '@store/recoil/transaction';
-import { TxResult } from '@extension/message-types';
+import type { TxResult } from '@extension/message-types';
+import type { TransactionPayloadWithAttachment } from '@store/transaction';
 
 const getPostConditions = (
   postConditions?: (PostCondition | string)[]
@@ -233,7 +233,7 @@ export const verifyTxRequest = async ({
   appDomain: string;
 }): Promise<TransactionPayload> => {
   const token = decodeToken(requestToken);
-  const tx = (token.payload as unknown) as TransactionPayload;
+  const tx = token.payload as unknown as TransactionPayload;
   const { publicKey, stxAddress } = tx;
   const txVersion = getTransactionVersionFromRequest(tx);
   const verifier = new TokenVerifier('ES256k', publicKey);

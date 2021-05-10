@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { currentNetworkStore } from '@store/recoil/networks';
+import { currentNetworkStore } from '@store/networks';
 import { useMemo } from 'react';
 import { ChainID } from '@stacks/transactions';
 

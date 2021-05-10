@@ -5,17 +5,18 @@ import { CreateAccount } from './create-account';
 import { AddUsername } from './add-username';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useRecoilCallback } from 'recoil';
-import { AccountStep, showAccountsStore, accountDrawerStep } from '@store/recoil/drawers';
+import { AccountStep, showAccountsStore, accountDrawerStep } from '@store/drawers';
 
 export const AccountsDrawer: React.FC = () => {
   const { accountStep } = useDrawers();
 
   const close = useRecoilCallback(
-    ({ set }) => () => {
-      set(showAccountsStore, false);
-      const drawerAnimationTime = 200;
-      setTimeout(() => set(accountDrawerStep, AccountStep.Switch), drawerAnimationTime);
-    },
+    ({ set }) =>
+      () => {
+        set(showAccountsStore, false);
+        const drawerAnimationTime = 200;
+        setTimeout(() => set(accountDrawerStep, AccountStep.Switch), drawerAnimationTime);
+      },
     []
   );
 

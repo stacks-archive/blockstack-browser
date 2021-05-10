@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
-import { magicRecoveryCodePasswordState, magicRecoveryCodeState } from '@store/recoil/seed';
+import { magicRecoveryCodePasswordState, magicRecoveryCodeState } from '@store/seed';
 import { useLoading } from '@common/hooks/use-loading';
 import { useWallet } from '@common/hooks/use-wallet';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { USERNAMES_ENABLED } from '@common/constants';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { decrypt } from '@stacks/wallet-sdk';
 
 export function useMagicRecoveryCode() {

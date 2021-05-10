@@ -6,10 +6,10 @@ import {
   showTxDetails,
   currentPostConditionIndexStore,
   pendingTransactionStore,
-} from '@store/recoil/transaction';
+} from '@store/transaction';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/onboarding/types';
-import { selectedAssetStore } from '@store/recoil/asset-search';
+import { ScreenPaths } from '@store/types';
+import { selectedAssetStore } from '@store/asset-search';
 import { PostConditionComponent, PostConditionBase } from './single';
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';

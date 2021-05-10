@@ -1,25 +1,64 @@
-import { combineReducers, createStore, Store, compose, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { onboardingReducer } from './onboarding/reducer';
-import { OnboardingState } from './onboarding/types';
+import { AtomEffect, DefaultValue } from 'recoil';
 
-export interface AppState {
-  onboarding: OnboardingState;
+export const ATOM_LOCALSTORAGE_PREFIX = '__hiro-recoil-v2__';
+
+export const localStorageKey = (atomKey: string): string => {
+  return `${ATOM_LOCALSTORAGE_PREFIX}${atomKey}`;
+};
+
+interface LocalStorageTransformer<T> {
+  serialize: (atom: T | DefaultValue) => string;
+  deserialize: (serialized: string) => T;
 }
 
-const reducers = combineReducers<AppState>({
-  onboarding: onboardingReducer,
-});
+export const guardRecoilDefaultValue = <T>(
+  candidate: DefaultValue | T
+): candidate is DefaultValue => {
+  if (candidate instanceof DefaultValue) return true;
+  return false;
+};
 
-const _window = window as any;
+interface LocalStorageEffectOptions<T> {
+  transformer?: LocalStorageTransformer<T>;
+}
+export const localStorageEffect = <T>({
+  transformer,
+}: LocalStorageEffectOptions<T> = {}): AtomEffect<T> => ({ setSelf, onSet, node }) => {
+  const key = localStorageKey(node.key);
+  if (typeof window !== 'undefined') {
+    const savedValue = localStorage.getItem(key);
+    if (savedValue) {
+      try {
+        if (transformer) {
+          setSelf(transformer.deserialize(savedValue));
+        } else {
+          window.requestAnimationFrame(() => {
+            setSelf(JSON.parse(savedValue));
+          });
+        }
+      } catch (error) {
+        console.error(`Error when saving the recoil state ${key}.`, error);
+        console.error('Recoil value:', savedValue);
+      }
+    }
 
-const middleware = compose(
-  applyMiddleware(thunk),
-  _window.__REDUX_DEVTOOLS_EXTENSION__ ? _window.__REDUX_DEVTOOLS_EXTENSION__() : (f: unknown) => f
-);
-
-export const middlewareComponents = [thunk];
-
-export const store: Store<AppState> = createStore(reducers, undefined, middleware);
-
-export default reducers;
+    onSet(newValue => {
+      if (transformer) {
+        const serialized = transformer.serialize(newValue);
+        if (serialized) {
+          localStorage.setItem(key, serialized);
+        } else {
+          localStorage.removeItem(key);
+        }
+      } else {
+        const doClear =
+          guardRecoilDefaultValue(newValue) || newValue === null || newValue === undefined;
+        if (doClear) {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, JSON.stringify(newValue));
+        }
+      }
+    });
+  }
+};

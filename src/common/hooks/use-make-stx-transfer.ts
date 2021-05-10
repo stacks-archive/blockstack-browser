@@ -1,14 +1,14 @@
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { stacksNetworkStore } from '@store/recoil/networks';
-import { currentAccountStore } from '@store/recoil/wallet';
-import { correctNonceStore } from '@store/recoil/api';
+import { stacksNetworkStore } from '@store/networks';
+import { currentAccountStore } from '@store/wallet';
+import { correctNonceStore } from '@store/api';
 import { makeSTXTokenTransfer, StacksTransaction } from '@stacks/transactions';
 import BN from 'bn.js';
 import { stxToMicroStx } from '@stacks/ui-utils';
 import { useLoading } from '@common/hooks/use-loading';
 import { useEffect } from 'react';
 import { useMakeAssetTransfer } from '@common/hooks/use-asset-transfer';
-import { selectedAssetStore } from '@store/recoil/asset-search';
+import { selectedAssetStore } from '@store/asset-search';
 
 interface TokenTransferParams {
   amount: number;

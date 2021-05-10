@@ -1,9 +1,9 @@
 // A recoil selector used for creating internal transactions
 import { selector } from 'recoil';
-import { selectedAssetStore } from '@store/recoil/asset-search';
-import { currentAccountStore, currentAccountStxAddressStore } from '@store/recoil/wallet';
-import { stacksNetworkStore } from '@store/recoil/networks';
-import { accountBalancesStore, correctNonceStore } from '@store/recoil/api';
+import { selectedAssetStore } from '@store/asset-search';
+import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
+import { stacksNetworkStore } from '@store/networks';
+import { accountBalancesStore, correctNonceStore } from '@store/api';
 import { getAssetStringParts } from '@stacks/ui-utils';
 
 export const makeFungibleTokenTransferState = selector({
@@ -16,9 +16,11 @@ export const makeFungibleTokenTransferState = selector({
     const stxAddress = get(currentAccountStxAddressStore);
     const nonce = get(correctNonceStore);
     if (asset && currentAccount && stxAddress) {
-      const { address: contractAddress, contractName, assetName } = getAssetStringParts(
-        asset.contractAddress
-      );
+      const {
+        address: contractAddress,
+        contractName,
+        assetName,
+      } = getAssetStringParts(asset.contractAddress);
       return {
         asset,
         stxAddress,

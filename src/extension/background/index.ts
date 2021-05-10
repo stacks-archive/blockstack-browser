@@ -1,5 +1,5 @@
 import { popupCenter } from '@common/popup';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import {
   CONTENT_SCRIPT_PORT,
   MessageFromApp,

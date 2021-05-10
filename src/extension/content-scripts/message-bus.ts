@@ -9,7 +9,7 @@ import {
   MESSAGE_SOURCE,
   CONTENT_SCRIPT_PORT,
 } from '../message-types';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 
 const backgroundPort = chrome.runtime.connect({ name: CONTENT_SCRIPT_PORT });
 

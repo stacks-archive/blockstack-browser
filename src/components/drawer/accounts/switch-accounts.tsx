@@ -3,9 +3,9 @@ import { Box, Fade, Button, Stack, color } from '@stacks/ui';
 import { Title, Caption } from '@components/typography';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { accountDrawerStep, AccountStep } from '@store/recoil/drawers';
+import { accountDrawerStep, AccountStep } from '@store/drawers';
 import { getAccountDisplayName, getStxAddress } from '@stacks/wallet-sdk';
-import { currentTransactionVersion } from '@store/recoil/networks';
+import { currentTransactionVersion } from '@store/networks';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
 import { IconCheck } from '@tabler/icons';
@@ -39,9 +39,8 @@ const useSwitchAccount = (handleClose: () => void) => {
 // eslint-disable-next-line no-warning-comments
 // TODO: this page is nearly identical to the network switcher abstract it out into a shared component
 const AccountList: React.FC<{ handleClose: () => void }> = memo(({ handleClose }) => {
-  const { accounts, handleSwitchAccount, transactionVersion, getIsActive } = useSwitchAccount(
-    handleClose
-  );
+  const { accounts, handleSwitchAccount, transactionVersion, getIsActive } =
+    useSwitchAccount(handleClose);
   return (
     <>
       {accounts.map((account, index) => {

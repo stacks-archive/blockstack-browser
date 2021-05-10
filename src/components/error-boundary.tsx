@@ -8,9 +8,9 @@ import {
   pendingTransactionFunctionSelector,
   signedTransactionStore,
   pendingTransactionStore,
-} from '@store/recoil/transaction';
-import { accountDataStore } from '@store/recoil/api';
-import { walletStore } from '@store/recoil/wallet';
+} from '@store/transaction';
+import { accountDataStore } from '@store/api';
+import { walletStore } from '@store/wallet';
 import { useRecoilValue } from 'recoil';
 
 const openGithubIssue = (loadable: ReturnType<typeof useLoadable>) => {

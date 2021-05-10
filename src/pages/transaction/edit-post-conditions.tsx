@@ -7,10 +7,10 @@ import {
   postConditionsStore,
   currentPostConditionStore,
   currentPostConditionIndexStore,
-} from '@store/recoil/transaction';
+} from '@store/transaction';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/onboarding/types';
-import { selectedAssetStore } from '@store/recoil/asset-search';
+import { ScreenPaths } from '@store/types';
+import { selectedAssetStore } from '@store/asset-search';
 import { AssetSearch } from '@components/asset-search/asset-search';
 import { object, string, number } from 'yup';
 import {
@@ -110,14 +110,16 @@ export const EditPostConditions: React.FC = () => {
       }
       const address = currentAccountStxAddress || '';
       if (selectedAsset.type === 'ft') {
-        const { address: contractAddress, contractName, assetName } = getAssetStringParts(
-          selectedAsset.contractAddress
-        );
+        const {
+          address: contractAddress,
+          contractName,
+          assetName,
+        } = getAssetStringParts(selectedAsset.contractAddress);
         const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
-        const code = parseInt((values.code as unknown) as string) as FungibleConditionCode;
+        const code = parseInt(values.code as unknown as string) as FungibleConditionCode;
         pc = makeStandardFungiblePostCondition(address, code, new BN(values.amount, 10), assetInfo);
       } else if (selectedAsset.type === 'stx') {
-        const code = parseInt((values.code as unknown) as string) as FungibleConditionCode;
+        const code = parseInt(values.code as unknown as string) as FungibleConditionCode;
         pc = makeStandardSTXPostCondition(address, code, new BN(values.amount, 10));
       } else {
         throw new Error('Unable to add post conditions to NFT transfer at this time.');

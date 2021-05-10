@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Flex, color } from '@stacks/ui';
 import { SettingsPopover } from './settings-popover';
 import { useRecoilValue } from 'recoil';
-import { hasRehydratedVaultStore } from '@store/recoil/wallet';
+import { hasRehydratedVaultStore } from '@store/wallet';
 import { Header } from '@components/header';
 
 interface PopupHomeProps {

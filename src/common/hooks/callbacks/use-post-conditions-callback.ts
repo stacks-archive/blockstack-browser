@@ -1,5 +1,5 @@
 import { CallbackInterface, useRecoilCallback } from 'recoil';
-import { postConditionsStore, transactionPayloadStore } from '@store/recoil/transaction';
+import { postConditionsStore, transactionPayloadStore } from '@store/transaction';
 import { getPostCondition, handlePostConditions } from '@common/post-condition-utils';
 
 export function usePostConditionsCallback() {

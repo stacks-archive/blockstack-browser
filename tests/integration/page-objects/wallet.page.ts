@@ -1,4 +1,4 @@
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { Page } from 'playwright-core';
 import { createTestSelector, wait, BrowserDriver } from '../utils';
 import { USERNAMES_ENABLED } from '@common/constants';

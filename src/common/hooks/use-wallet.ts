@@ -12,7 +12,7 @@ import {
   currentNetworkStore,
   networksStore,
   currentTransactionVersion,
-} from '@store/recoil/networks';
+} from '@store/networks';
 import {
   walletStore,
   encryptedSecretKeyStore,
@@ -23,13 +23,13 @@ import {
   currentAccountStore,
   walletConfigStore,
   currentAccountStxAddressStore,
-} from '@store/recoil/wallet';
+} from '@store/wallet';
 import { StacksTransaction } from '@stacks/transactions';
 import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
-import { latestBlockHeightStore, apiRevalidation } from '@store/recoil/api';
+import { latestBlockHeightStore, apiRevalidation } from '@store/api';
 import { useLoadable } from '@common/hooks/use-loadable';
 
 export const useWallet = () => {
@@ -56,60 +56,62 @@ export const useWallet = () => {
   const isSignedIn = !!wallet;
 
   const doSetLatestNonce = useRecoilCallback(
-    ({ snapshot, set }) => async (tx: StacksTransaction) => {
-      const newNonce = tx.auth.spendingCondition?.nonce.toNumber();
-      if (newNonce !== undefined) {
-        set(apiRevalidation, current => (current as number) + 1);
-        const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
-        const network = await snapshot.getPromise(currentNetworkStore);
-        const address = await snapshot.getPromise(currentAccountStxAddressStore);
-        set(latestNoncesStore([network.url, address || '']), () => ({
-          blockHeight,
-          nonce: newNonce,
-        }));
-      }
-    },
+    ({ snapshot, set }) =>
+      async (tx: StacksTransaction) => {
+        const newNonce = tx.auth.spendingCondition?.nonce.toNumber();
+        if (newNonce !== undefined) {
+          set(apiRevalidation, current => (current as number) + 1);
+          const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
+          const network = await snapshot.getPromise(currentNetworkStore);
+          const address = await snapshot.getPromise(currentAccountStxAddressStore);
+          set(latestNoncesStore([network.url, address || '']), () => ({
+            blockHeight,
+            nonce: newNonce,
+          }));
+        }
+      },
     []
   );
 
   const doFinishSignIn = useRecoilCallback(
-    ({ set, snapshot }) => async (accountIndex: number) => {
-      const wallet = await snapshot.getPromise(walletStore);
-      const account = wallet?.accounts[accountIndex];
-      if (!decodedAuthRequest || !authRequest || !account || !wallet) {
-        console.error('Uh oh! Finished onboarding without auth info.');
-        return;
-      }
-      const appURL = new URL(decodedAuthRequest.redirect_uri);
-      const gaiaHubConfig = await createWalletGaiaConfig({ gaiaHubUrl: gaiaUrl, wallet });
-      const walletConfig = await getOrCreateWalletConfig({
-        wallet,
-        gaiaHubConfig,
-        skipUpload: true,
-      });
-      await updateWalletConfigWithApp({
-        wallet,
-        walletConfig,
-        gaiaHubConfig,
-        account,
-        app: {
-          origin: appURL.origin,
-          lastLoginAt: new Date().getTime(),
+    ({ set, snapshot }) =>
+      async (accountIndex: number) => {
+        const wallet = await snapshot.getPromise(walletStore);
+        const account = wallet?.accounts[accountIndex];
+        if (!decodedAuthRequest || !authRequest || !account || !wallet) {
+          console.error('Uh oh! Finished onboarding without auth info.');
+          return;
+        }
+        const appURL = new URL(decodedAuthRequest.redirect_uri);
+        const gaiaHubConfig = await createWalletGaiaConfig({ gaiaHubUrl: gaiaUrl, wallet });
+        const walletConfig = await getOrCreateWalletConfig({
+          wallet,
+          gaiaHubConfig,
+          skipUpload: true,
+        });
+        await updateWalletConfigWithApp({
+          wallet,
+          walletConfig,
+          gaiaHubConfig,
+          account,
+          app: {
+            origin: appURL.origin,
+            lastLoginAt: new Date().getTime(),
+            scopes: decodedAuthRequest.scopes,
+            appIcon: appIcon as string,
+            name: appName as string,
+          },
+        });
+        const authResponse = await makeAuthResponse({
+          gaiaHubUrl: gaiaUrl,
+          appDomain: appURL.origin,
+          transitPublicKey: decodedAuthRequest.public_keys[0],
           scopes: decodedAuthRequest.scopes,
-          appIcon: appIcon as string,
-          name: appName as string,
-        },
-      });
-      const authResponse = await makeAuthResponse({
-        gaiaHubUrl: gaiaUrl,
-        appDomain: appURL.origin,
-        transitPublicKey: decodedAuthRequest.public_keys[0],
-        scopes: decodedAuthRequest.scopes,
-        account,
-      });
-      set(currentAccountIndexStore, accountIndex);
-      finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
-    },
+          account,
+        });
+        set(currentAccountIndexStore, accountIndex);
+        finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
+      },
     [decodedAuthRequest, authRequest, appName, appIcon]
   );
 

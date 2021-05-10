@@ -1,10 +1,7 @@
-import { useSelector } from 'react-redux';
-import { selectAppName, selectFullAppIcon, selectAppURL } from '@store/onboarding/selectors';
+import { useRecoilValue } from 'recoil';
+import { authRequestState } from '@store/onboarding';
 
 export const useAppDetails = () => {
-  const name = useSelector(selectAppName);
-  const icon = useSelector(selectFullAppIcon);
-  const url = useSelector(selectAppURL);
-
+  const { appName: name, appIcon: icon, appURL: url } = useRecoilValue(authRequestState);
   return { name, icon, url };
 };

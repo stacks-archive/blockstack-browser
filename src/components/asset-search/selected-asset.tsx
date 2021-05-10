@@ -2,7 +2,7 @@ import { useFetchBalances } from '@common/hooks/use-account-info';
 import { AssetAvatar } from '@components/stx-avatar';
 import { Box, ChevronIcon, Text, color, Stack, StackProps } from '@stacks/ui';
 import { stacksValue } from '@common/stacks-utils';
-import { selectedAssetStore, searchInputStore } from '@store/recoil/asset-search';
+import { selectedAssetStore, searchInputStore } from '@store/asset-search';
 import BigNumber from 'bignumber.js';
 import React, { useMemo } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';

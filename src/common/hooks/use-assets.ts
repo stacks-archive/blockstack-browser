@@ -1,5 +1,5 @@
 import { useFetchBalances } from '@common/hooks/use-account-info';
-import { Asset } from '@store/recoil/asset-search';
+import { Asset } from '@store/asset-search';
 import { useMemo } from 'react';
 import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { getAssetStringParts, toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';

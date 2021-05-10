@@ -1,8 +1,7 @@
 import React from 'react';
 import { Flex, Text } from '@stacks/ui';
-import { selectAppName } from '@store/onboarding/selectors';
-import { useSelector } from 'react-redux';
 import { AppIcon } from '../app-icon';
+import { useAppDetails } from '@common/hooks/useAppDetails';
 
 export interface ScreenHeaderProps {
   title?: string | JSX.Element;
@@ -17,7 +16,7 @@ export const ScreenHeader = ({
   title: _title,
   ...rest
 }: ScreenHeaderProps) => {
-  const name = useSelector(selectAppName);
+  const { name } = useAppDetails();
   return (
     <Flex
       py={[4, 5]}

@@ -1,5 +1,5 @@
 import { useRecoilCallback } from 'recoil';
-import { apiRevalidation } from '@store/recoil/api';
+import { apiRevalidation } from '@store/api';
 
 export function useRevalidateApi() {
   return useRecoilCallback(({ snapshot, set }) => async () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Flex, FlexProps, Spinner, color, Stack } from '@stacks/ui';
 import { Caption, Text } from '@components/typography';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';

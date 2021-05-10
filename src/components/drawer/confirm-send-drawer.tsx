@@ -12,7 +12,7 @@ import { useLoading } from '@common/hooks/use-loading';
 
 import { useMakeTransferEffect } from '@common/hooks/use-make-stx-transfer';
 import { useRecoilValue } from 'recoil';
-import { selectedAssetStore } from '@store/recoil/asset-search';
+import { selectedAssetStore } from '@store/asset-search';
 import { getTicker } from '@common/utils';
 
 interface ConfirmSendDrawerProps extends BaseDrawerProps {

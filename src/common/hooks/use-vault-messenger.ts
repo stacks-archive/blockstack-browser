@@ -15,7 +15,7 @@ import {
   currentAccountIndexStore,
   encryptedSecretKeyStore,
   hasRehydratedVaultStore,
-} from '@store/recoil/wallet';
+} from '@store/wallet';
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
 
@@ -39,7 +39,12 @@ const innerMessageWrapper = async (message: MessageFromApp, set: Set) => {
 };
 
 const messageWrapper = (message: MessageFromApp) => {
-  return useRecoilCallback(({ set }) => () => innerMessageWrapper(message, set), [message]);
+  return useRecoilCallback(
+    ({ set }) =>
+      () =>
+        innerMessageWrapper(message, set),
+    [message]
+  );
 };
 
 export const useVaultMessenger = () => {

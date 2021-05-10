@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Text, Flex, Input } from '@stacks/ui';
 import { useCombobox } from 'downshift';
 import { useFetchBalances } from '@common/hooks/use-account-info';
-import { Asset, searchInputStore, selectedAssetStore } from '@store/recoil/asset-search';
+import { Asset, searchInputStore, selectedAssetStore } from '@store/asset-search';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingRectangle } from '../loading-rectangle';
 import { AssetResult } from './asset-search-result';

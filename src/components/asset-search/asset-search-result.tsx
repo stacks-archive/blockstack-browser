@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { AssetRow } from '@components/asset-row';
 import type { StackProps } from '@stacks/ui';
-import { Asset } from '@store/recoil/asset-search';
+import { Asset } from '@store/asset-search';
 
 interface AssetResultProps extends StackProps {
   asset: Asset;

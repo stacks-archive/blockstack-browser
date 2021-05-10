@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
 import { useRecoilValue } from 'recoil';
-import { currentNetworkStore } from '@store/recoil/networks';
+import { currentNetworkStore } from '@store/networks';
 import { ChainID } from '@stacks/transactions';
 import { IconFlask } from '@tabler/icons';
 import { useDrawers } from '@common/hooks/use-drawers';

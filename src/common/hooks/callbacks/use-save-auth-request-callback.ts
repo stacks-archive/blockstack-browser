@@ -1,24 +1,25 @@
 import { useLocation } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
 import { decodeToken } from 'jsontokens';
-import { useDispatch } from 'react-redux';
 import { getRequestOrigin, StorageKey } from '@extension/storage';
 import { DecodedAuthRequest } from '@common/dev/types';
 import { useWallet } from '@common/hooks/use-wallet';
-import { doChangeScreen, saveAuthRequest } from '@store/onboarding/actions';
-import { ScreenPaths } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/types';
 import { useOnboardingState } from '../use-onboarding-state';
+import { useSetRecoilState } from 'recoil';
+import { authRequestState, currentScreenState } from '@store/onboarding';
 
 export function useSaveAuthRequest() {
-  const dispatch = useDispatch();
   const { wallet } = useWallet();
   const { screen } = useOnboardingState();
+  const changeScreen = useSetRecoilState(currentScreenState);
+  const saveAuthRequest = useSetRecoilState(authRequestState);
   const location = useLocation();
   const accounts = wallet?.accounts;
   const saveAuthRequestParam = useCallback(
     (authRequest: string) => {
       const { payload } = decodeToken(authRequest);
-      const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
+      const decodedAuthRequest = payload as unknown as DecodedAuthRequest;
       const origin = getRequestOrigin(StorageKey.authenticationRequests, authRequest);
       let appName = decodedAuthRequest.appDetails?.name;
       let appIcon = decodedAuthRequest.appDetails?.icon;
@@ -30,22 +31,20 @@ export function useSaveAuthRequest() {
         throw new Error('Missing `appName` from auth request');
       }
 
-      dispatch(
-        saveAuthRequest({
-          decodedAuthRequest,
-          authRequest,
-          appName,
-          appIcon,
-          appURL: new URL(origin),
-        })
-      );
+      saveAuthRequest({
+        decodedAuthRequest,
+        authRequest,
+        appName,
+        appIcon,
+        appURL: new URL(origin),
+      });
 
       const hasIdentities = accounts && accounts.length;
       if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
-        dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
+        changeScreen(ScreenPaths.CHOOSE_ACCOUNT);
       }
     },
-    [dispatch, screen, accounts]
+    [changeScreen, saveAuthRequest, screen, accounts]
   );
 
   useEffect(() => {

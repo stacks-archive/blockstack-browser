@@ -8,9 +8,9 @@ import {
   transactionBroadcastErrorStore,
   requestTokenStore,
   isUnauthorizedTransactionStore,
-} from '@store/recoil/transaction';
+} from '@store/transaction';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { currentNetworkStore } from '@store/recoil/networks';
+import { currentNetworkStore } from '@store/networks';
 import { finishTransaction } from '@common/transaction-utils';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { finalizeTxSignature } from '@common/utils';
@@ -26,27 +26,28 @@ export const useTxState = () => {
   const isUnauthorizedTransaction = useRecoilValue(isUnauthorizedTransactionStore);
 
   const doSubmitPendingTransaction = useRecoilCallback(
-    ({ snapshot, set }) => async () => {
-      const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
-      const requestPayload = await snapshot.getPromise(requestTokenStore);
-      if (!pendingTransaction) {
-        set(transactionBroadcastErrorStore, 'No pending transaction found.');
-        return;
-      }
-      const tx = await snapshot.getPromise(signedTransactionStore);
-      const currentNetwork = await snapshot.getPromise(currentNetworkStore);
-      try {
-        const result = await finishTransaction({
-          tx,
-          pendingTransaction,
-          nodeUrl: currentNetwork.url,
-        });
-        await doSetLatestNonce(tx);
-        finalizeTxSignature(requestPayload, result);
-      } catch (error) {
-        set(transactionBroadcastErrorStore, error.message);
-      }
-    },
+    ({ snapshot, set }) =>
+      async () => {
+        const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
+        const requestPayload = await snapshot.getPromise(requestTokenStore);
+        if (!pendingTransaction) {
+          set(transactionBroadcastErrorStore, 'No pending transaction found.');
+          return;
+        }
+        const tx = await snapshot.getPromise(signedTransactionStore);
+        const currentNetwork = await snapshot.getPromise(currentNetworkStore);
+        try {
+          const result = await finishTransaction({
+            tx,
+            pendingTransaction,
+            nodeUrl: currentNetwork.url,
+          });
+          await doSetLatestNonce(tx);
+          finalizeTxSignature(requestPayload, result);
+        } catch (error) {
+          set(transactionBroadcastErrorStore, error.message);
+        }
+      },
     [doSetLatestNonce]
   );
 
