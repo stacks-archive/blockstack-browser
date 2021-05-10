@@ -96,10 +96,12 @@ export const color = (name: ColorsStringLiteral): string => {
   return `var(--colors-${name})`;
 };
 
-const generateCssVariables = (mode: 'light' | 'dark') => ({ colorMode = mode, ...rest }: any) =>
-  colorMap({ colorMode, ...rest }).map((key: ColorsStringLiteral) => {
-    return `--colors-${key}: ${colorModeStyles({ colorMode, ...rest })[key]}`;
-  });
+const generateCssVariables =
+  (mode: 'light' | 'dark') =>
+  ({ colorMode = mode, ...rest }: any) =>
+    colorMap({ colorMode, ...rest }).map((key: ColorsStringLiteral) => {
+      return `--colors-${key}: ${colorModeStyles({ colorMode, ...rest })[key]}`;
+    });
 
 export const LightMode = (
   <Global

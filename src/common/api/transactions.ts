@@ -34,39 +34,35 @@ export const makeKey = (options: GetKeyOptions) => {
   }`;
 };
 
-export const fetchPendingTxs = (apiServer: string) => async ({
-  query,
-  type,
-}: {
-  query: string;
-  type: 'principal' | 'tx_id';
-}) => {
-  const path = makeKey({
-    type: 'tx',
-    limit: 30,
-    pending: true,
-    index: 0,
-    apiServer,
-  });
+export const fetchPendingTxs =
+  (apiServer: string) =>
+  async ({ query, type }: { query: string; type: 'principal' | 'tx_id' }) => {
+    const path = makeKey({
+      type: 'tx',
+      limit: 30,
+      pending: true,
+      index: 0,
+      apiServer,
+    });
 
-  const res = await fetcher(path);
-  const mempool: MempoolTransactionListResponse = await res.json();
+    const res = await fetcher(path);
+    const mempool: MempoolTransactionListResponse = await res.json();
 
-  if (type === 'principal') {
-    const pendingTransactions =
-      mempool?.results?.filter(
-        (tx: MempoolTransaction) =>
-          ((tx.tx_type === 'smart_contract' ||
-            tx.tx_type === 'contract_call' ||
-            tx.tx_type === 'token_transfer') &&
-            tx.sender_address === query) ||
-          (tx.tx_type === 'token_transfer' && tx.token_transfer.recipient_address === query)
-      ) || [];
+    if (type === 'principal') {
+      const pendingTransactions =
+        mempool?.results?.filter(
+          (tx: MempoolTransaction) =>
+            ((tx.tx_type === 'smart_contract' ||
+              tx.tx_type === 'contract_call' ||
+              tx.tx_type === 'token_transfer') &&
+              tx.sender_address === query) ||
+            (tx.tx_type === 'token_transfer' && tx.token_transfer.recipient_address === query)
+        ) || [];
 
-    return pendingTransactions;
-  } else {
-    return mempool?.results?.find(
-      (tx: MempoolTransaction) => tx.tx_id === query
-    ) as MempoolTransaction;
-  }
-};
+      return pendingTransactions;
+    } else {
+      return mempool?.results?.find(
+        (tx: MempoolTransaction) => tx.tx_id === query
+      ) as MempoolTransaction;
+    }
+  };

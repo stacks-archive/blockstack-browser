@@ -7,17 +7,8 @@ import { Caption } from '@components/typography';
 import { useSignIn } from '@common/hooks/use-sign-in';
 
 export const InstalledSignIn: React.FC = () => {
-  const {
-    onBack,
-    onKeyDown,
-    onChange,
-    onPaste,
-    onSubmit,
-    value,
-    error,
-    isLoading,
-    ref,
-  } = useSignIn();
+  const { onBack, onKeyDown, onChange, onPaste, onSubmit, value, error, isLoading, ref } =
+    useSignIn();
 
   return (
     <PopupContainer

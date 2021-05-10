@@ -21,44 +21,44 @@ export const guardRecoilDefaultValue = <T>(
 interface LocalStorageEffectOptions<T> {
   transformer?: LocalStorageTransformer<T>;
 }
-export const localStorageEffect = <T>({
-  transformer,
-}: LocalStorageEffectOptions<T> = {}): AtomEffect<T> => ({ setSelf, onSet, node }) => {
-  const key = localStorageKey(node.key);
-  if (typeof window !== 'undefined') {
-    const savedValue = localStorage.getItem(key);
-    if (savedValue) {
-      try {
-        if (transformer) {
-          setSelf(transformer.deserialize(savedValue));
-        } else {
-          window.requestAnimationFrame(() => {
-            setSelf(JSON.parse(savedValue));
-          });
+export const localStorageEffect =
+  <T>({ transformer }: LocalStorageEffectOptions<T> = {}): AtomEffect<T> =>
+  ({ setSelf, onSet, node }) => {
+    const key = localStorageKey(node.key);
+    if (typeof window !== 'undefined') {
+      const savedValue = localStorage.getItem(key);
+      if (savedValue) {
+        try {
+          if (transformer) {
+            setSelf(transformer.deserialize(savedValue));
+          } else {
+            window.requestAnimationFrame(() => {
+              setSelf(JSON.parse(savedValue));
+            });
+          }
+        } catch (error) {
+          console.error(`Error when saving the recoil state ${key}.`, error);
+          console.error('Recoil value:', savedValue);
         }
-      } catch (error) {
-        console.error(`Error when saving the recoil state ${key}.`, error);
-        console.error('Recoil value:', savedValue);
       }
-    }
 
-    onSet(newValue => {
-      if (transformer) {
-        const serialized = transformer.serialize(newValue);
-        if (serialized) {
-          localStorage.setItem(key, serialized);
+      onSet(newValue => {
+        if (transformer) {
+          const serialized = transformer.serialize(newValue);
+          if (serialized) {
+            localStorage.setItem(key, serialized);
+          } else {
+            localStorage.removeItem(key);
+          }
         } else {
-          localStorage.removeItem(key);
+          const doClear =
+            guardRecoilDefaultValue(newValue) || newValue === null || newValue === undefined;
+          if (doClear) {
+            localStorage.removeItem(key);
+          } else {
+            localStorage.setItem(key, JSON.stringify(newValue));
+          }
         }
-      } else {
-        const doClear =
-          guardRecoilDefaultValue(newValue) || newValue === null || newValue === undefined;
-        if (doClear) {
-          localStorage.removeItem(key);
-        } else {
-          localStorage.setItem(key, JSON.stringify(newValue));
-        }
-      }
-    });
-  }
-};
+      });
+    }
+  };

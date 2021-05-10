@@ -16,8 +16,7 @@ const faqs = (appName: string) => {
     },
     {
       title: 'What if I lose my Secret Key?',
-      body:
-        'If you lose your Secret Key, it will be lost forever. Only you know your Secret Key, which means that no one can help you recover it.',
+      body: 'If you lose your Secret Key, it will be lost forever. Only you know your Secret Key, which means that no one can help you recover it.',
     },
     {
       title: 'When will I need my Secret Key?',
