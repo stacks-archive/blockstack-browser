@@ -2,7 +2,7 @@
   "name": "Stacks Wallet",
   "author": "Hiro PBC",
   "version": "<% VERSION %>",
-  "description": "The Stacks Wallet is all you need to access the new internet. Use the Stacks blockchain, access privacy-friendly apps, and keep data in your control.",
+  "description": "Stacks Wallet. Use the Stacks blockchain to access privacy-friendly apps, and keep data in your control.",
   "icons": {
     "128": "assets/connect-logo/Stacks128w.png",
     "256": "assets/connect-logo/Stacks256w.png",

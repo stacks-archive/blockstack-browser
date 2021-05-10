@@ -10,6 +10,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - uses: wagoid/commitlint-github-action@v1
 
   code_checks:
@@ -20,16 +21,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
         # Don't run on forks
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}).'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -37,15 +41,12 @@ jobs:
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Code Checks
         uses: ./.github/actions/code-checks
+
       - name: Check exact versions
         uses: ./.github/actions/check-version-lock
-      - uses: actions/upload-artifact@v2
-        name: Upload Chrome Extension Zip
-        with:
-          name: stacks-wallet-chromium
-          path: stacks-wallet-chromium.zip
 
   integration_tests:
     name: Integration tests
@@ -53,11 +54,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - uses: microsoft/playwright-github-action@v1
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -65,8 +69,10 @@ jobs:
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Integration Tests
         uses: ./.github/actions/integration-tests
+
       - uses: actions/upload-artifact@v2
         if: always()
         name: Upload Screenshots
@@ -74,9 +80,30 @@ jobs:
           name: integration-test-screenshots
           path: tests/screenshots/
 
+  build_chrome_extnsion:
+    name: Build Chrome extension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install yarn dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build extension
+        run: sh build-ext.sh
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Chrome Extension Zip
+        with:
+          name: stacks-wallet-chromium
+          path: stacks-wallet-chromium.zip
+
   publish_firefox_beta:
     name: Publish beta firefox extension
     runs-on: ubuntu-latest
+    env:
+      MINIFY_PRODUCTION_BUILD: true
     # Don't run on forks
     if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
@@ -84,10 +111,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -95,13 +124,16 @@ jobs:
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Build extension
         run: sh build-ext.sh
+
       - name: Sign Firefox extension
         run: yarn web-ext sign --channel=unlisted
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+
       - uses: actions/upload-artifact@v2
         name: Upload Firefox Add-On XPI
         with:

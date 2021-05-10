@@ -2,13 +2,14 @@
 const config = require('./webpack.config.base');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
+const shouldMinify = JSON.parse(process.env.MINIFY_PRODUCTION_BUILD || false);
+
 // Basically, disable any code splitting stuff
 config.optimization = {
   ...config.optimization,
   flagIncludedChunks: false,
   concatenateModules: false,
-  // Chrome web store doesn't allow minified code
-  minimize: false,
+  minimize: shouldMinify,
   moduleIds: 'deterministic',
   splitChunks: {
     hidePathInfo: false,
@@ -16,6 +17,15 @@ config.optimization = {
     maxAsyncRequests: Infinity,
     maxInitialRequests: Infinity,
   },
+  ...(shouldMinify
+    ? {
+        minimizer: [
+          new ESBuildMinifyPlugin({
+            target: 'esnext',
+          }),
+        ],
+      }
+    : {}),
 };
 
 config.devtool = false;
