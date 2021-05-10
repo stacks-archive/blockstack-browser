@@ -129,12 +129,15 @@ export const accountDataStore = selector({
     const { url } = get(currentNetworkStore);
     const address = get(currentAccountStxAddressStore);
     if (!address) {
-      throw new Error('Cannot get account info when logged out.');
+      console.error('Cannot get account info when logged out.');
+      return;
     }
     try {
       return fetchAllAccountData(url)(address);
     } catch (error) {
-      throw `Unable to fetch account data from ${url}`;
+      console.error(error);
+      console.error(`Unable to fetch account data from ${url}`);
+      return;
     }
   },
 });
@@ -143,6 +146,6 @@ export const accountBalancesStore = selector({
   key: 'api.account-balances',
   get: ({ get }) => {
     const accountData = get(accountDataStore);
-    return accountData.balances;
+    return accountData?.balances;
   },
 });

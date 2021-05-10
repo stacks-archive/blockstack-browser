@@ -12,7 +12,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-const { ESBuildPlugin } = require('esbuild-loader');
 
 // utils
 const getSegmentKey = () => {
@@ -164,7 +163,7 @@ const config = {
                 '@babel/preset-react',
               ],
               plugins: [
-                ['@babel/plugin-proposal-class-properties', { loose: true }],
+                ['@babel/plugin-proposal-class-properties', { loose: false }],
                 '@babel/plugin-transform-runtime',
                 '@babel/plugin-proposal-nullish-coalescing-operator',
                 '@babel/plugin-proposal-optional-chaining',
@@ -206,7 +205,6 @@ const config = {
       resourceRegExp: /^\.\/wordlists\/(?!english)/,
       contextRegExp: /bip39\/src$/,
     }),
-    new ESBuildPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(SRC_ROOT_PATH, '../', 'public', 'html', 'extension.html'),
       filename: 'extension.html',
@@ -263,7 +261,6 @@ const config = {
       COMMIT_SHA: JSON.stringify(COMMIT_SHA),
       BRANCH: JSON.stringify(BRANCH),
       'process.env.USERNAMES_ENABLED': JSON.stringify(process.env.USERNAMES_ENABLED || 'false'),
-      'process.env.NODE_ENV': `'${NODE_ENV}'`,
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
