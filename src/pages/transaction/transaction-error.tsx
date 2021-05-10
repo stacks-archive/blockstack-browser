@@ -20,6 +20,7 @@ export enum TransactionErrorReason {
 interface TransactionErrorProps {
   reason: TransactionErrorReason;
 }
+
 export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) => {
   const { pendingTransaction, broadcastError } = useTxState();
   const { currentAccountDisplayName, currentAccountStxAddress, currentNetwork } = useWallet();
@@ -49,7 +50,7 @@ export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) =>
             <Text fontSize={2} fontWeight="500">
               Current balance:
             </Text>
-            {balances.state === 'hasValue' ? (
+            {balances.state === 'hasValue' && balances.contents ? (
               <Text fontSize={2} ml="tight" fontFamily="mono">
                 {stacksValue({ value: balances.contents.stx.balance, withTicker: true })}
               </Text>

@@ -36,6 +36,7 @@ export const useTxState = () => {
         }
         const tx = await snapshot.getPromise(signedTransactionStore);
         const currentNetwork = await snapshot.getPromise(currentNetworkStore);
+        if (!tx) return;
         try {
           const result = await finishTransaction({
             tx,
