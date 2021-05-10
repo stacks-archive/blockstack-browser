@@ -7,7 +7,8 @@ config.optimization = {
   ...config.optimization,
   flagIncludedChunks: false,
   concatenateModules: false,
-  minimize: process.env.NODE_ENV !== 'test',
+  // Chrome web store doesn't allow minified code
+  minimize: false,
   moduleIds: 'deterministic',
   splitChunks: {
     hidePathInfo: false,
@@ -15,11 +16,6 @@ config.optimization = {
     maxAsyncRequests: Infinity,
     maxInitialRequests: Infinity,
   },
-  minimizer: [
-    new ESBuildMinifyPlugin({
-      target: 'esnext',
-    }),
-  ],
 };
 
 config.devtool = false;
