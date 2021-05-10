@@ -1,4 +1,4 @@
-import { FinishedTxPayload } from '@stacks/connect';
+import { FinishedTxPayload, SponsoredFinishedTxPayload } from '@stacks/connect';
 /**
  * Content Script <-> Background messaging
  */
@@ -49,11 +49,17 @@ export type AuthenticationResponseMessage = Message<
 
 export type TransactionRequestMessage = Message<Methods.transactionRequest, string>;
 
+// export interface TxResult extends SponsoredFinishedTxPayload {
+//   txId?: string;
+// }
+
+export type TxResult = SponsoredFinishedTxPayload | FinishedTxPayload;
+
 export type TransactionResponseMessage = Message<
   Methods.transactionResponse,
   {
     transactionRequest: string;
-    transactionResponse: FinishedTxPayload;
+    transactionResponse: TxResult;
   }
 >;
 

@@ -18,7 +18,6 @@ import {
   STXTransferPayload,
   TransactionPayload,
   TransactionTypes,
-  FinishedTxPayload,
 } from '@stacks/connect';
 import { getPublicKeyFromPrivate } from '@stacks/encryption';
 import BN from 'bn.js';
@@ -26,6 +25,7 @@ import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import { TokenVerifier, decodeToken } from 'jsontokens';
 import { Wallet, getAppPrivateKey } from '@stacks/wallet-sdk';
 import { TransactionPayloadWithAttachment } from '@store/recoil/transaction';
+import { TxResult } from '@extension/message-types';
 
 const getPostConditions = (
   postConditions?: (PostCondition | string)[]
@@ -160,7 +160,7 @@ export const finishTransaction = async ({
   tx: StacksTransaction;
   pendingTransaction: TransactionPayloadWithAttachment;
   nodeUrl: string;
-}): Promise<FinishedTxPayload> => {
+}): Promise<TxResult> => {
   const serialized = tx.serialize();
   const txRaw = `0x${serialized.toString('hex')}`;
 

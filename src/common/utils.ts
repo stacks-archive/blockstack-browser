@@ -1,7 +1,6 @@
 import React from 'react';
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
-import { FinishedTxPayload } from '@stacks/connect';
 import { isValidUrl } from './validate-url';
 import { getTab, deleteTabForRequest, StorageKey } from '@extension/storage';
 import {
@@ -9,6 +8,7 @@ import {
   MESSAGE_SOURCE,
   Methods,
   TransactionResponseMessage,
+  TxResult,
 } from '@extension/message-types';
 import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
 import { KEBAB_REGEX } from '@common/constants';
@@ -70,7 +70,7 @@ export const finalizeAuthResponse = ({
   }
 };
 
-export const finalizeTxSignature = (requestPayload: string, data: FinishedTxPayload) => {
+export const finalizeTxSignature = (requestPayload: string, data: TxResult) => {
   console.log(requestPayload, data);
   try {
     const tabId = getTab(StorageKey.transactionRequests, requestPayload);

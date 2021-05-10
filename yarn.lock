@@ -2414,29 +2414,48 @@
   dependencies:
     cross-fetch "^3.0.6"
 
-"@stacks/connect-react@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@stacks/connect-react/-/connect-react-3.0.3.tgz#8e82dab077f76feab10d5f623077157ffe099f3a"
-  integrity sha512-NI2XJjvaxcBW7DP3O6iNuN3YTCP0NGWI8laBMYaPRmVIGutMokbWXa47yGygwFHhfvFEysvakjQCmBWx5sR5Fw==
+"@stacks/connect-react@5.0.6-alpha.6860b0d.0":
+  version "5.0.6-alpha.6860b0d.0"
+  resolved "https://registry.yarnpkg.com/@stacks/connect-react/-/connect-react-5.0.6-alpha.6860b0d.0.tgz#6257433e62f54c1451623eb0e5bd70355fdab799"
+  integrity sha512-Pg8WXVSl8e7+Q7JYO9yU+JiBEDqHUkAZ3XKXu3JSai+cF/ulV5UXRmIPBVOT7ZGNZtHBeDI3h3emd7XVqwx59Q==
   dependencies:
     "@stacks/auth" "^1.0.2"
-    "@stacks/connect" "^5.0.3"
+    "@stacks/connect" "^5.0.6-alpha.6860b0d.0"
     jsontokens "^3.0.0"
 
-"@stacks/connect-ui@3.0.3", "@stacks/connect-ui@^3.0.3":
+"@stacks/connect-ui@3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@stacks/connect-ui/-/connect-ui-3.0.3.tgz#4a673b6345438bc27c12416aaaea2dd683cfd277"
   integrity sha512-EmiJ+3xEMSvT80y0DdPFcAJI9O5K8xLv2frEuvcf29SbjC2qiEcI+6bsTMRUv2MuPyRW5f6DAbwYVqs8sdzxZQ==
   dependencies:
     "@stencil/core" "^1.17.3"
 
-"@stacks/connect@5.0.3", "@stacks/connect@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@stacks/connect/-/connect-5.0.3.tgz#dbc4ee0a45e68e7e90e3528c972703048cfd8c36"
-  integrity sha512-iYIIvSJCvXofp+y2s87W0s7APzERtoSA1EQr1KdIQLAx8qGI9s0Z8znKo7jk8rg16C6/+p0i0SzeeUysaqI7rg==
+"@stacks/connect-ui@^5.0.6-alpha.6860b0d.0", "@stacks/connect-ui@^5.0.6-alpha.aa800db.0":
+  version "5.0.6-alpha.aa800db.0"
+  resolved "https://registry.yarnpkg.com/@stacks/connect-ui/-/connect-ui-5.0.6-alpha.aa800db.0.tgz#e3d2ece21d0a3f507a3754dc52745f41188b5f31"
+  integrity sha512-fC5xwhL9UalYMK/Gi/9SKWHpoZdwnsP4vOiKruWzcKmQ691zW6oXaSsUMxfOlBzmNkTj3R5Adfm1gY0/i1IPfw==
+  dependencies:
+    "@stencil/core" "^1.17.3"
+
+"@stacks/connect@5.0.6-alpha.6860b0d.0":
+  version "5.0.6-alpha.6860b0d.0"
+  resolved "https://registry.yarnpkg.com/@stacks/connect/-/connect-5.0.6-alpha.6860b0d.0.tgz#fa3d60ecb8d17f6ac67e4d7c7b407d9d196275a7"
+  integrity sha512-CcuFkBk07RFfNz1cepFyZLn2u7TBx3m0kerQY8h1fBEUkZAp5KXls5qj7ROoPdncb/5Sv69mh74tNZUkRTvk8g==
   dependencies:
     "@stacks/auth" "^1.0.2"
-    "@stacks/connect-ui" "^3.0.3"
+    "@stacks/connect-ui" "^5.0.6-alpha.6860b0d.0"
+    "@stacks/network" "^1.0.2"
+    "@stacks/transactions" "^1.1.1-alpha.0"
+    buffer "5.6.0"
+    jsontokens "^3.0.0"
+
+"@stacks/connect@^5.0.6-alpha.6860b0d.0":
+  version "5.0.6-alpha.aa800db.0"
+  resolved "https://registry.yarnpkg.com/@stacks/connect/-/connect-5.0.6-alpha.aa800db.0.tgz#92978586786df4d1bd84f2b7597e35c19560faec"
+  integrity sha512-rQE0Pwl80TjnPVX27MLBWkRD63lndFUVU7ct9BcqGJzeb8iUvxZzGd6d3J6TtSPZQ+j/uB6Qz02tY9FmLZlIqw==
+  dependencies:
+    "@stacks/auth" "^1.0.2"
+    "@stacks/connect-ui" "^5.0.6-alpha.aa800db.0"
     "@stacks/network" "^1.0.2"
     "@stacks/transactions" "^1.1.1-alpha.0"
     buffer "5.6.0"
