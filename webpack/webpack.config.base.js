@@ -25,21 +25,28 @@ const getSegmentKey = () => {
 };
 
 const getBranch = () => {
-  const branch = execSync(`git rev-parse --abbrev-ref HEAD`, { encoding: 'utf8' }).trim();
-  return branch;
+  try {
+    return execSync(`git rev-parse --abbrev-ref HEAD`, { encoding: 'utf8' }).trim();
+  } catch (e) {
+    console.warn(e);
+    return null;
+  }
 };
 
 const getCommit = () => {
-  const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
-  return commit;
+  try {
+    return execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+  } catch (e) {
+    console.warn(e);
+    return null;
+  }
 };
-
 /**
  * For CI builds, we add a random number after the patch version.
  */
 const getVersion = () => {
   const branch = getBranch();
-  if (branch === 'main') return _version;
+  if (branch === 'main' || !branch) return _version;
   return `${_version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
 };
 
