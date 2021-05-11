@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.6
+
+### Patch Changes
+
+- [#1139](https://github.com/blockstack/stacks-wallet-web/pull/1139) [`f00d1c14`](https://github.com/blockstack/stacks-wallet-web/commit/f00d1c144073dfc6bf806a5e27fd3427d9682ce8) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This fixes onboarding elements from being pushed to the bottom of the screen and popup by removing the automatic margin-top spacing.
+
+* [`86039691`](https://github.com/blockstack/stacks-wallet-web/commit/86039691ad4930bc22cf7fb30f1883d7e8fb1808) Thanks [@aulneau](https://github.com/aulneau)! - Made some fixes to the webpack config to better support building the extension from the DockerFile.
+
 ## 2.4.5
 
 ### Patch Changes
