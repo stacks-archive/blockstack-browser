@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.7
+
+### Patch Changes
+
+- [#1155](https://github.com/blockstack/stacks-wallet-web/pull/1155) [`fc2cc397`](https://github.com/blockstack/stacks-wallet-web/commit/fc2cc397eab04ff7428baea1f9d525d522cc00e7) Thanks [@aulneau](https://github.com/aulneau)! - Updates the github actions to break out the different jobs for each browser extension.
+
 ## 2.4.6
 
 ### Patch Changes
