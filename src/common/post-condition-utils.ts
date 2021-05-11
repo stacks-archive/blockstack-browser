@@ -1,4 +1,4 @@
-import { parsePrincipalString, PostCondition } from '@stacks/transactions';
+import { addressToString, parsePrincipalString, PostCondition } from '@stacks/transactions';
 import { postConditionFromString } from '@common/utils';
 
 /**
@@ -21,13 +21,14 @@ export function handlePostConditions(
   const payloadPrincipal = parsePrincipalString(payloadAddress);
   const currentAddressPrincipal = parsePrincipalString(currentAddress);
 
-  console.debug('Setting up post conditions for transaction request');
+  console.log('Setting up post conditions for transaction request');
   return postConditions.map((postCondition, index) => {
     const { principal, ...payload } = getPostCondition(postCondition);
+    console.log({ principal: addressToString(principal.address) });
     const sameType = payloadPrincipal.address.type === principal.address.type;
     const sameHash = payloadPrincipal.address.hash160 === principal.address.hash160;
     const isOriginatorAddress = sameHash && sameType;
-    console.debug(`[Post Conditions #${index + 1}]: isOriginatorAddress: ${isOriginatorAddress}`);
+    console.log(`[Post Conditions #${index + 1}]: isOriginatorAddress: ${isOriginatorAddress}`);
     return {
       ...payload,
       principal: isOriginatorAddress ? currentAddressPrincipal : principal,

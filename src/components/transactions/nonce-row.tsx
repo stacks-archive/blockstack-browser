@@ -1,29 +1,28 @@
 import { useTxState } from '@common/hooks/use-tx-state';
 import { LoadingRectangle } from '@components/loading-rectangle';
-import { Flex, Box, Text } from '@stacks/ui';
+import { Flex, Box, Text, Stack } from '@stacks/ui';
 import React from 'react';
+import { SpaceBetween } from '@components/space-between';
+import { Caption } from '@components/typography';
+import { getCVTypeString } from '@stacks/transactions';
 
-export const NonceRow: React.FC = () => {
+export const NonceRow: React.FC = props => {
   const { signedTransaction } = useTxState();
   return (
-    <Flex my="base">
-      <Box flexGrow={1}>
-        <Text display="block" fontSize={1}>
+    <SpaceBetween spacing="base-loose" {...props}>
+      <Stack flexShrink={0}>
+        <Text display="block" fontSize={2} fontWeight={500}>
           nonce
         </Text>
-        <Text textStyle="caption" color="ink.600" fontSize={0}>
-          uint
-        </Text>
-      </Box>
-      <Box>
-        {signedTransaction.value ? (
-          <Text fontSize={1} color="ink.600">
-            {signedTransaction.value.auth.spendingCondition?.nonce.toNumber()}
-          </Text>
-        ) : (
-          <LoadingRectangle height="14px" width="40px" />
-        )}
-      </Box>
-    </Flex>
+
+        <Caption>uint</Caption>
+      </Stack>
+
+      {signedTransaction.value ? (
+        <Caption lineHeight="1.6" wordBreak="break-all">
+          {signedTransaction.value.auth.spendingCondition?.nonce.toNumber()}
+        </Caption>
+      ) : null}
+    </SpaceBetween>
   );
 };

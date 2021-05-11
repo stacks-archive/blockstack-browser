@@ -12,8 +12,9 @@ enum Step {
 
 export const AccountGate: React.FC = memo(({ children }) => {
   const [step, setStep] = useState<Step>(Step.VIEW_KEY);
-  const { hasSetPassword, isSignedIn, encryptedSecretKey } = useWallet();
+  const { hasRehydratedVault, hasSetPassword, isSignedIn, encryptedSecretKey } = useWallet();
 
+  if (!hasRehydratedVault) return null;
   if (isSignedIn && hasSetPassword) return <>{children}</>;
 
   const needsToSetPassword = (isSignedIn || encryptedSecretKey) && !hasSetPassword;

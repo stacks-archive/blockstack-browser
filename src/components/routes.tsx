@@ -39,11 +39,12 @@ export const Route: React.FC<RouteProps> = ({ path, element }) => {
 };
 
 export const Routes: React.FC = () => {
-  const doChangeScreen = useDoChangeScreen();
   const { isSignedIn: signedIn, doFinishSignIn, encryptedSecretKey } = useWallet();
   const { isOnboardingInProgress } = useOnboardingState();
   const { search, pathname } = useLocation();
   const setLastSeen = useSetRecoilState(lastSeenStore);
+
+  const doChangeScreen = useDoChangeScreen();
   useSaveAuthRequest();
 
   const isSignedIn = signedIn && !isOnboardingInProgress;

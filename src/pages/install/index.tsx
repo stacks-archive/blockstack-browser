@@ -7,6 +7,7 @@ import { Link } from '@components/link';
 import { PopupContainer } from '@components/popup/container';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { Title, Body } from '@components/typography';
+import { Header } from '@components/header';
 
 const Actions: React.FC<StackProps> = props => {
   const { doMakeWallet } = useWallet();
@@ -35,7 +36,7 @@ const Actions: React.FC<StackProps> = props => {
 };
 
 export const Installed: React.FC = memo(() => (
-  <PopupContainer hideActions>
+  <PopupContainer header={<Header hideActions />}>
     <Stack spacing="extra-loose" flexGrow={1} justifyContent="center">
       <Stack width="100%" spacing="loose" textAlign="center" alignItems="center">
         <Title as="h1" fontWeight={500}>

@@ -37,7 +37,7 @@ const SizeStyles = css`
     body {
       height: unset !important;
       min-height: 552px !important;
-      max-height: 719px !important;
+      min-width: 440px !important;
       overflow: hidden;
     }
   }

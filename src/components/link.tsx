@@ -1,10 +1,7 @@
 import React, { useCallback } from 'react';
 import { Text, BoxProps, color } from '@stacks/ui';
 
-interface LinkProps extends BoxProps {
-  _hover?: BoxProps;
-  onClick: () => void;
-}
+export type LinkProps = BoxProps;
 
 export const buildEnterKeyEvent = (onClick: () => void) => {
   return useCallback(
@@ -17,30 +14,22 @@ export const buildEnterKeyEvent = (onClick: () => void) => {
   );
 };
 
-export const Link: React.FC<LinkProps> = ({
+export const Link: React.FC<BoxProps> = ({
   _hover = {},
   children,
   fontSize = '12px',
-  textStyle = 'caption.medium',
   onClick,
   ...rest
 }) => (
   <Text
     _hover={{ textDecoration: 'underline', cursor: 'pointer', ..._hover }}
     fontSize={fontSize}
-    textStyle={textStyle}
     color={color('brand')}
-    onKeyPress={buildEnterKeyEvent(onClick)}
+    onKeyPress={buildEnterKeyEvent(onClick as any)}
     onClick={onClick}
     tabIndex={0}
     {...rest}
   >
     {children}
   </Text>
-);
-
-export const MediumLink: React.FC<LinkProps> = ({ children, fontSize = '14px', ...rest }) => (
-  <Link fontSize={fontSize} {...rest}>
-    {children}
-  </Link>
 );

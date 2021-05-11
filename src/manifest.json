@@ -9,13 +9,19 @@
     "512": "assets/connect-logo/Stacks512w.png"
   },
   "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src <% DEV_OBJECT_SRC %>; frame-src 'none'; frame-ancestors 'none';",
-  "permissions": ["activeTab"],
+  "permissions": [
+    "activeTab"
+  ],
   "manifest_version": 2,
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": true
   },
-  "web_accessible_resources": ["inpage.js"],
+  "web_accessible_resources": [
+    "inpage.js"
+  ],
   "browser_action": {
     "default_title": "Stacks",
     "default_icon": "assets/connect-logo/Stacks128w.png",
@@ -36,8 +42,12 @@
   },
   "content_scripts": [
     {
-      "js": ["message-bus.js"],
-      "matches": ["*://*/*"]
+      "js": [
+        "message-bus.js"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
     }
   ],
   "browser_specific_settings": {

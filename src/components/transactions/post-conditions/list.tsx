@@ -1,116 +1,113 @@
 import React from 'react';
-import { Box, Flex, Text, PadlockIcon, BoxProps } from '@stacks/ui';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { Box, Circle, color, Flex, Stack } from '@stacks/ui';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
-  postConditionsStore,
-  showTxDetails,
   currentPostConditionIndexStore,
   pendingTransactionStore,
+  postConditionsStore,
+  showTxDetails,
 } from '@store/transaction';
-import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
 import { selectedAssetStore } from '@store/asset-search';
-import { PostConditionComponent, PostConditionBase } from './single';
+import { PostConditionComponent } from './single';
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';
+import { IconLock } from '@tabler/icons';
+import { Body } from '@components/typography';
+import { TransactionEventCard } from '@components/transactions/event-card';
+import { truncateMiddle } from '@stacks/ui-utils';
 
-export const PostConditions: React.FC = () => {
+function usePostconditionsState() {
   const showDetails = useRecoilValue(showTxDetails);
   const pendingTransaction = useRecoilValue(pendingTransactionStore);
   const setShowDetails = useSetRecoilState(showTxDetails);
   const postConditions = useRecoilValue(postConditionsStore);
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
-  const doChangeScreen = useDoChangeScreen();
 
-  const postConditionComponents = postConditions.map((pc, index) => {
-    return <PostConditionComponent pc={pc} key={`${pc.type}-${pc.conditionCode}`} index={index} />;
-  });
+  return {
+    showDetails,
+    pendingTransaction,
+    setShowDetails,
+    postConditions,
+    setCurrentPostConditionIndex,
+    setSelectedAsset,
+  };
+}
 
-  const getPostConditionsContent = () => {
-    if (
-      pendingTransaction?.txType === TransactionTypes.STXTransfer &&
-      postConditions.length === 0
-    ) {
-      return (
-        <PostConditionBase
-          title="transfer exactly"
-          iconChar="S"
-          iconString="STX"
-          amount={stacksValue({ value: pendingTransaction.amount, withTicker: false })}
-          ticker="STX"
-        />
-      );
-    }
-    if (postConditions.length > 0) {
-      return postConditionComponents;
-    }
-    return (
-      <Flex>
-        <Box>
-          <PadlockIcon size="40px" />
-        </Box>
-        <Box flexGrow={1} ml="base" pr="loose">
-          <Text fontSize={1}>
-            Besides the fee, no tokens or assets will be transferred from your account
-          </Text>
-        </Box>
-      </Flex>
-    );
-  };
-  const getRadiusProps = (): BoxProps => {
-    const radius = '12px';
-    return {
-      _first: {
-        borderTopRightRadius: radius,
-        borderTopLeftRadius: radius,
-      },
-      _last: {
-        borderBottomRightRadius: radius,
-        borderBottomLeftRadius: radius,
-      },
-    };
-  };
+function StxPostcondition() {
+  const { pendingTransaction } = usePostconditionsState();
+  if (!pendingTransaction || pendingTransaction.txType !== TransactionTypes.STXTransfer)
+    return null;
   return (
-    <Flex width="100%" flexDirection="column" my="loose">
-      <Box
-        borderColor="ink.150"
-        borderWidth="1px"
-        borderRadius="12px 12px 0 0"
-        width="100%"
-        {...getRadiusProps()}
-        p="loose"
-      >
-        {getPostConditionsContent()}
+    <TransactionEventCard
+      title="You'll send exactly"
+      iconChar="S"
+      icon="STX"
+      amount={stacksValue({ value: pendingTransaction.amount, withTicker: false })}
+      ticker="STX"
+      left="Stacks Token"
+      right={
+        pendingTransaction.txType === TransactionTypes.STXTransfer
+          ? `To ${truncateMiddle(pendingTransaction.recipient, 6)}`
+          : undefined
+      }
+    />
+  );
+}
+
+function NoPostconditions() {
+  return (
+    <Stack alignItems="center" spacing="base" p="base-loose" isInline>
+      <Circle bg={color('bg-4')} flexShrink={0}>
+        <IconLock />
+      </Circle>
+      <Box flexGrow={1}>
+        <Body>
+          No transfers (besides fees) will be made from your account or the transaction will abort.
+        </Body>
       </Box>
-      {pendingTransaction?.txType === TransactionTypes.STXTransfer ? null : (
-        <Box
-          borderColor="ink.150"
-          borderWidth="0 1px 1px 1px"
-          borderRadius="0 0 12px 12px"
-          {...getRadiusProps()}
-          width="100%"
-          p="loose"
-          textAlign="center"
-        >
-          <Text
-            color="blue"
-            cursor="pointer"
-            fontSize={1}
-            onClick={() => {
-              if (showDetails) {
-                setCurrentPostConditionIndex(undefined);
-                setSelectedAsset(undefined);
-                doChangeScreen(ScreenPaths.EDIT_POST_CONDITIONS);
-              } else {
-                setShowDetails(!showDetails);
-              }
-            }}
-          >
-            {showDetails ? 'Add a constraint' : 'View details'}
-            {' >'}
-          </Text>
-        </Box>
+    </Stack>
+  );
+}
+
+function PostConditionsList() {
+  const { postConditions } = usePostconditionsState();
+  return (
+    <>
+      {postConditions.map((pc, index) => (
+        <PostConditionComponent
+          pc={pc}
+          key={`${pc.type}-${pc.conditionCode}`}
+          isLast={index === postConditions.length - 1}
+        />
+      ))}
+    </>
+  );
+}
+
+export const PostConditions: React.FC = () => {
+  const { pendingTransaction, postConditions } = usePostconditionsState();
+
+  const hasPostConditions = postConditions.length > 0;
+
+  const isStxTransfer =
+    pendingTransaction?.txType === TransactionTypes.STXTransfer && !hasPostConditions;
+
+  return (
+    <Flex
+      border="4px solid"
+      borderColor={color('border')}
+      borderRadius="12px"
+      width="100%"
+      flexDirection="column"
+      my="loose"
+    >
+      {hasPostConditions ? (
+        <PostConditionsList />
+      ) : isStxTransfer ? (
+        <StxPostcondition />
+      ) : (
+        <NoPostconditions />
       )}
     </Flex>
   );

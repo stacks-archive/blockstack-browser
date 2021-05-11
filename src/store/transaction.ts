@@ -9,12 +9,18 @@ import {
   standardPrincipalCVFromAddress,
   uintCV,
 } from '@stacks/transactions';
-import { TransactionPayload, TransactionTypes } from '@stacks/connect';
+import {
+  ContractCallPayload,
+  ContractDeployPayload,
+  STXTransferPayload,
+  TransactionPayload,
+  TransactionTypes,
+} from '@stacks/connect';
 import { decodeToken } from 'jsontokens';
 import { atom, selector, selectorFamily } from 'recoil';
 import { generateTransaction } from '@common/transaction-utils';
 import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
-import { rpcClientStore, stacksNetworkStore } from '@store/networks';
+import { currentNetworkStore, rpcClientStore, stacksNetworkStore } from '@store/networks';
 import { accountBalancesStore, correctNonceStore } from './api';
 import { selectedAssetStore } from './asset-search';
 import BN from 'bn.js';
@@ -32,21 +38,36 @@ export const showTxDetails = atom<boolean>({
   default: true,
 });
 
-export const requestTokenStore = atom<string>({
+export const requestTokenStore = atom<string | null>({
   key: 'transaction.request-token',
-  default: '',
+  default: null,
 });
 
-function getPayload(requestToken: string): undefined | TransactionPayloadWithAttachment {
+function getPayload(requestToken: string) {
   if (!requestToken) return undefined;
   const token = decodeToken(requestToken);
-  return token.payload as unknown as TransactionPayloadWithAttachment;
+  const payload = token.payload as unknown as TransactionPayloadWithAttachment;
+
+  if (payload.txType === TransactionTypes.ContractCall)
+    return payload as ContractCallPayload & {
+      attachment?: string;
+    };
+  if (payload.txType === TransactionTypes.ContractDeploy)
+    return payload as ContractDeployPayload & {
+      attachment?: string;
+    };
+  if (payload.txType === TransactionTypes.STXTransfer)
+    return payload as STXTransferPayload & {
+      attachment?: string;
+    };
+  return payload;
 }
 
 export const transactionPayloadStore = selector({
   key: 'transaction.payload',
   get: ({ get }) => {
     const requestToken = get(requestTokenStore);
+    if (requestToken === null) return;
     return getPayload(requestToken);
   },
 });
@@ -55,11 +76,12 @@ export const pendingTransactionStore = selector({
   key: 'transaction.pending-transaction',
   get: ({ get }) => {
     const requestToken = get(requestTokenStore);
+    if (!requestToken) return undefined;
     const tx = getPayload(requestToken);
     if (!tx) return undefined;
     const stacksNetwork = get(stacksNetworkStore);
     const postConditions = get(postConditionsStore);
-    tx.postConditions = [...postConditions];
+    tx.postConditions = postConditions;
     tx.network = stacksNetwork;
     return tx;
   },
@@ -70,18 +92,17 @@ export const contractSourceStore = selector({
   get: async ({ get }) => {
     const tx = get(pendingTransactionStore);
     const rpcClient = get(rpcClientStore);
-    if (!tx) {
-      return '';
-    }
-    if (tx.txType === TransactionTypes.ContractCall) {
-      const source = await rpcClient.fetchContractSource({
+
+    if (!tx) return '';
+
+    if (tx.txType === TransactionTypes.ContractCall)
+      return rpcClient.fetchContractSource({
         contractName: tx.contractName,
         contractAddress: tx.contractAddress,
       });
-      return source;
-    } else if (tx.txType === TransactionTypes.ContractDeploy) {
-      return tx.codeBody;
-    }
+
+    if (tx.txType === TransactionTypes.ContractDeploy) return tx.codeBody;
+
     return '';
   },
 });
@@ -89,20 +110,30 @@ export const contractSourceStore = selector({
 export const contractInterfaceStore = selector({
   key: 'transaction.contract-interface',
   get: async ({ get }) => {
+    const payload = get(transactionPayloadStore);
     const tx = get(pendingTransactionStore);
+    const network = get(currentNetworkStore);
     const rpcClient = get(rpcClientStore);
     if (!tx) {
       return undefined;
     }
+    if (payload?.network && payload.network.chainId !== network.chainId) return undefined;
     if (tx.txType === TransactionTypes.ContractCall) {
       try {
-        const abi = await rpcClient.fetchContractInterface({
+        // TODO: replace with smartContract client from api client
+        return rpcClient.fetchContractInterface({
           contractName: tx.contractName,
           contractAddress: tx.contractAddress,
         });
-        return abi;
       } catch (error) {
-        throw `Unable to fetch interface for contract ${tx.contractAddress}.${tx.contractName}`;
+        // TODO: fix race condition
+        // we don't need to throw here
+        // the network switch can happen before or after this,
+        // and the interface can sometimes fail before landing on the correct network
+        // @see https://github.com/blockstack/stacks-wallet-web/issues/1174
+        console.log(
+          `Unable to fetch interface for contract ${tx.contractAddress}.${tx.contractName}`
+        );
       }
     }
     return undefined;
@@ -163,6 +194,10 @@ export const postConditionsStore = atom<PostCondition[]>({
   default: [],
 });
 
+export const postConditionsHasSetStore = atom<boolean>({
+  key: 'transaction.postConditions.hasSet',
+  default: false,
+});
 export const currentPostConditionIndexStore = atom<number | undefined>({
   key: 'transaction.currentPostConditionIndex',
   default: undefined,

@@ -1,6 +1,6 @@
-import { Flex, FlexProps } from '@stacks/ui';
+import { Stack, StackProps } from '@stacks/ui';
 import React from 'react';
 
-export const SpaceBetween: React.FC<FlexProps> = props => (
-  <Flex alignItems="center" justifyContent="space-between" {...props} />
+export const SpaceBetween: React.FC<StackProps> = props => (
+  <Stack isInline alignItems="center" justifyContent="space-between" {...props} />
 );

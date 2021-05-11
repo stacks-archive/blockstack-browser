@@ -19,6 +19,7 @@ import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { Network } from '@store/networks';
 import { STX_DECIMALS } from './constants';
+import { abbreviateNumber } from '@common/utils';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
   switch (type) {
@@ -48,16 +49,20 @@ export const stacksValue = ({
   value,
   fixedDecimals = false,
   withTicker = true,
+  abbreviate = false,
 }: {
   value: number | string;
   fixedDecimals?: boolean;
   withTicker?: boolean;
+  abbreviate?: boolean;
 }) => {
   const stacks = microStxToStx(value);
-  const stxString = fixedDecimals
-    ? stacks.toFormat(STX_DECIMALS)
-    : stacks.decimalPlaces(STX_DECIMALS).toFormat();
-  return `${stxString}${withTicker ? ' STX' : ''}`;
+  const stxAmount = fixedDecimals
+    ? parseFloat(stacks.toFormat(STX_DECIMALS))
+    : stacks.decimalPlaces(STX_DECIMALS).toNumber();
+  return `${abbreviate && stxAmount > 10000 ? abbreviateNumber(stxAmount) : stxAmount}${
+    withTicker ? ' STX' : ''
+  }`;
 };
 
 export const microStxToStx = (mStx: number | string) => {

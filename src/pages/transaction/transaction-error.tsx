@@ -8,6 +8,7 @@ import { useFetchBalances } from '@common/hooks/use-account-info';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Body } from '@components/typography';
+import { Header } from '@components/header';
 
 export enum TransactionErrorReason {
   StxTransferInsufficientFunds = 0,
@@ -27,7 +28,7 @@ export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) =>
   const balances = useFetchBalances();
 
   return (
-    <PopupContainer title="Unable to sign transaction.">
+    <PopupContainer header={<Header />}>
       <Box mt="loose" />
       {reason === TransactionErrorReason.StxTransferInsufficientFunds ? (
         <Box>
@@ -93,9 +94,6 @@ export const TransactionError: React.FC<TransactionErrorProps> = ({ reason }) =>
             </Text>
           </Box>
           <Box width="100%">
-            {/* <Text fontSize={1} fontWeight="500">
-          Current account:
-        </Text> */}
             <Text
               fontSize={2}
               fontWeight="600"

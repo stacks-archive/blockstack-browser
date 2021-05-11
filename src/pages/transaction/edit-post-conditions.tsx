@@ -26,6 +26,7 @@ import { useFormik } from 'formik';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import BN from 'bn.js';
 import { useWallet } from '@common/hooks/use-wallet';
+import { Header } from '@components/header';
 
 type PostConditionCode = FungibleConditionCode | NonFungibleConditionCode;
 
@@ -33,8 +34,12 @@ export const EditPostConditionsPage: React.FC = () => {
   const doChangeScreen = useDoChangeScreen();
   return (
     <PopupContainer
-      title="Add a constraint"
-      onClose={() => doChangeScreen(ScreenPaths.TRANSACTION_POPUP)}
+      header={
+        <Header
+          title="Add a constraint"
+          onClose={() => doChangeScreen(ScreenPaths.TRANSACTION_POPUP)}
+        />
+      }
     >
       <Suspense fallback={<TxLoading />}>
         <EditPostConditions />

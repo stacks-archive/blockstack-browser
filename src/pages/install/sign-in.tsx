@@ -5,6 +5,7 @@ import { ErrorLabel } from '@components/error-label';
 import { PopupContainer } from '@components/popup/container';
 import { Caption } from '@components/typography';
 import { useSignIn } from '@common/hooks/use-sign-in';
+import { Header } from '@components/header';
 
 export const InstalledSignIn: React.FC = () => {
   const { onBack, onKeyDown, onChange, onPaste, onSubmit, value, error, isLoading, ref } =
@@ -12,9 +13,7 @@ export const InstalledSignIn: React.FC = () => {
 
   return (
     <PopupContainer
-      title="Continue with your Secret Key"
-      onClose={onBack}
-      hideActions
+      header={<Header title="Continue with your Secret Key" onClose={onBack} hideActions />}
       key="sign-in"
     >
       <Stack spacing="loose">

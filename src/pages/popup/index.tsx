@@ -14,6 +14,7 @@ import { IconArrowUp, IconCopy, IconQrcode } from '@tabler/icons';
 import { useAssets } from '@common/hooks/use-assets';
 import { AccountAvatar } from '@components/account-avatar';
 import { truncateString } from '@common/utils';
+import { Header } from '@components/header';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
@@ -154,7 +155,7 @@ const PageTop: React.FC<StackProps> = memo(props => (
 ));
 
 export const PopupHome: React.FC = memo(() => (
-  <PopupContainer>
+  <PopupContainer header={<Header />}>
     <Stack spacing="loose">
       <PageTop />
       <AccountInfo />

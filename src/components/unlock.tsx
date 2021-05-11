@@ -4,6 +4,7 @@ import { Box, Button, Text, Input } from '@stacks/ui';
 import { PopupContainer } from './popup/container';
 import { buildEnterKeyEvent } from './link';
 import { ErrorLabel } from './error-label';
+import { Header } from '@components/header';
 
 export const Unlock: React.FC = () => {
   const { doUnlockWallet } = useWallet();
@@ -24,7 +25,7 @@ export const Unlock: React.FC = () => {
   }, [doUnlockWallet, password]);
 
   return (
-    <PopupContainer>
+    <PopupContainer header={<Header />}>
       <Box width="100%" mt="loose">
         <Text textStyle="body.large" display="block">
           Enter your password you used on this device to unlock your wallet.

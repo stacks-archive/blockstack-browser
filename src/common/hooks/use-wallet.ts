@@ -23,6 +23,7 @@ import {
   currentAccountStore,
   walletConfigStore,
   currentAccountStxAddressStore,
+  hasRehydratedVaultStore,
 } from '@store/wallet';
 import { StacksTransaction } from '@stacks/transactions';
 import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
@@ -33,6 +34,7 @@ import { latestBlockHeightStore, apiRevalidation } from '@store/api';
 import { useLoadable } from '@common/hooks/use-loadable';
 
 export const useWallet = () => {
+  const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
   const [wallet, setWallet] = useRecoilState(walletStore);
   const secretKey = useRecoilValue(secretKeyStore);
   const encryptedSecretKey = useRecoilValue(encryptedSecretKeyStore);
@@ -116,6 +118,7 @@ export const useWallet = () => {
   );
 
   return {
+    hasRehydratedVault,
     wallet,
     secretKey,
     isSignedIn,

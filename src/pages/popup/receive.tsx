@@ -10,6 +10,7 @@ import { Caption, Title } from '@components/typography';
 import { createQR } from '@vkontakte/vk-qr';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { Tooltip } from '@components/tooltip';
+import { Header } from '@components/header';
 
 const QRcode: React.FC<{ principal: string } & FlexProps> = memo(({ principal, ...rest }) => {
   const qrSvg = React.useMemo(
@@ -50,7 +51,9 @@ export const PopupReceive: React.FC = () => {
   const address = currentAccountStxAddress || '';
   const { onCopy, hasCopied } = useClipboard(address);
   return (
-    <PopupContainer title="Receive" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
+    <PopupContainer
+      header={<Header title="Receive" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)} />}
+    >
       <Toast show={hasCopied} />
       <Box mt="extra-loose" textAlign="center" mx="auto">
         <QRcode principal={address} />

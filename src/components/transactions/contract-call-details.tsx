@@ -1,21 +1,20 @@
 import React from 'react';
 import { useTxState } from '@common/hooks/use-tx-state';
-import { Box, Text, Flex } from '@stacks/ui';
+import { Stack, color, StackProps } from '@stacks/ui';
 import { Divider } from '@components/divider';
-import { truncateMiddle } from '@stacks/ui-utils';
-import { deserializeCV, cvToString, ClarityType, getCVTypeString } from '@stacks/transactions';
-import { LoadingRectangle } from '@components/loading-rectangle';
-import { NonceRow } from './nonce-row';
+import { deserializeCV, cvToString, getCVTypeString } from '@stacks/transactions';
 import { AttachmentRow } from './attachment-row';
-import { Link } from '@components/link';
 import { useExplorerLink } from '@common/hooks/use-explorer-link';
+import { Caption, Title } from '@components/typography';
+import { ContractPreview } from '@components/transactions/contract-preview';
+import { RowItem } from '@components/transactions/row-item';
 
 interface ArgumentProps {
   arg: string;
   index: number;
 }
 
-const Argument: React.FC<ArgumentProps> = ({ arg, index }) => {
+const Argument: React.FC<ArgumentProps> = ({ arg, index, ...rest }) => {
   const { pendingTransactionFunction } = useTxState();
   const argCV = deserializeCV(Buffer.from(arg, 'hex'));
   const strValue = cvToString(argCV);
@@ -23,34 +22,31 @@ const Argument: React.FC<ArgumentProps> = ({ arg, index }) => {
     pendingTransactionFunction.state === 'hasValue'
       ? pendingTransactionFunction.contents?.args[index].name
       : null;
-  const getCVString = () => {
-    if (argCV.type === ClarityType.PrincipalStandard) {
-      return truncateMiddle(strValue);
-    }
-    return strValue;
-  };
+
   return (
-    <Box mt="base" width="100%">
-      <Flex>
-        <Box flexGrow={1}>
-          {name ? (
-            <Text display="block" fontSize={1}>
-              {name}
-            </Text>
-          ) : (
-            <LoadingRectangle width="100px" height="14px" />
-          )}
-          <Text textStyle="caption" color="ink.600" fontSize={0}>
-            {getCVTypeString(argCV)}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize={1} color="ink.600" title={strValue}>
-            {getCVString()}
-          </Text>
-        </Box>
-      </Flex>
-    </Box>
+    <Stack spacing="base-loose" {...rest}>
+      <RowItem name={name} type={getCVTypeString(argCV)} value={strValue} />
+    </Stack>
+  );
+};
+
+const Arguments = (props: StackProps) => {
+  const { pendingTransaction } = useTxState();
+
+  if (!pendingTransaction || pendingTransaction.txType !== 'contract_call') {
+    return null;
+  }
+  const hasArgs = pendingTransaction.functionArgs.length > 0;
+  return (
+    <Stack divider={<Divider />} spacing="base" {...props}>
+      {hasArgs ? (
+        pendingTransaction.functionArgs.map((arg, index) => {
+          return <Argument key={`${arg}-${index}`} arg={arg} index={index} />;
+        })
+      ) : (
+        <Caption>There are no additional arguments passed for this function call.</Caption>
+      )}
+    </Stack>
   );
 };
 
@@ -61,48 +57,33 @@ export const ContractCallDetails: React.FC = () => {
     return null;
   }
 
-  const args = pendingTransaction.functionArgs.map((arg, index) => {
-    return <Argument key={`${arg}-${index}`} arg={arg} index={index} />;
-  });
-
   return (
-    <>
-      <Box my="base">
-        <Text fontWeight="500" display="block" fontSize={2}>
-          Contract
-        </Text>
-        <Link
-          onClick={() =>
-            handleOpenTxLink(
-              `${pendingTransaction.contractAddress}.${pendingTransaction.contractName}`
-            )
-          }
-          fontSize={1}
-          color="blue"
-        >
-          {truncateMiddle(pendingTransaction.contractAddress)}.{pendingTransaction.contractName}
-        </Link>
-      </Box>
-      <Divider />
-      <Box my="base">
-        <Text fontWeight="500" display="block" fontSize={2}>
-          Function
-        </Text>
-        <Text fontSize={1}>{pendingTransaction.functionName}</Text>
-      </Box>
-      <Divider />
-      <Box mt="base">
-        <Text fontWeight="500" display="block" fontSize={2}>
-          {pendingTransaction.functionArgs.length > 0 ? 'Arguments' : 'No arguments provided'}
-        </Text>
-      </Box>
-      <Box>
-        <Flex flexDirection="column" flexWrap="wrap" width="100%">
-          {args}
-        </Flex>
-      </Box>
-      <NonceRow />
-      <AttachmentRow />
-    </>
+    <Stack
+      spacing="loose"
+      border="4px solid"
+      borderColor={color('border')}
+      borderRadius="12px"
+      py="extra-loose"
+      px="base-loose"
+    >
+      <Title as="h2" fontWeight="500">
+        Function and arguments
+      </Title>
+
+      <ContractPreview
+        onClick={() =>
+          handleOpenTxLink(
+            `${pendingTransaction.contractAddress}.${pendingTransaction.contractName}`
+          )
+        }
+        contractAddress={pendingTransaction.contractAddress}
+        contractName={pendingTransaction.contractName}
+        functionName={pendingTransaction.functionName}
+      />
+      <Stack divider={<Divider />} spacing="base">
+        <Arguments />
+        {pendingTransaction?.attachment ? <AttachmentRow /> : null}
+      </Stack>
+    </Stack>
   );
 };

@@ -25,6 +25,11 @@ export const defaultNetworks: Networks = {
     name: 'Testnet',
     chainId: ChainID.Testnet,
   },
+  regtest: {
+    url: 'https://stacks-node-api.regtest.stacks.co',
+    name: 'Regtest',
+    chainId: ChainID.Testnet,
+  },
   localnet: {
     url: 'http://localhost:3999',
     name: 'Localnet',
@@ -57,9 +62,9 @@ export const currentTransactionVersion = selector({
   key: 'networks.transaction-version',
   get: ({ get }) => {
     const network = get(currentNetworkStore);
-    const transactionVersion =
-      network.chainId === ChainID.Mainnet ? TransactionVersion.Mainnet : TransactionVersion.Testnet;
-    return transactionVersion;
+    return network.chainId === ChainID.Mainnet
+      ? TransactionVersion.Mainnet
+      : TransactionVersion.Testnet;
   },
 });
 

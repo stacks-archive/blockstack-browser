@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box } from '@stacks/ui';
+import { Box, BoxProps, color } from '@stacks/ui';
 
-export const Divider: React.FC = () => (
-  <Box width="100%" my="tight" height="1px" backgroundColor="ink.150" />
+export const Divider: React.FC<BoxProps> = props => (
+  <Box width="100%" height="1px" bg={color('border')} {...props} />
 );

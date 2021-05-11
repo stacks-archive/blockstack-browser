@@ -49,10 +49,6 @@ export type AuthenticationResponseMessage = Message<
 
 export type TransactionRequestMessage = Message<Methods.transactionRequest, string>;
 
-// export interface TxResult extends SponsoredFinishedTxPayload {
-//   txId?: string;
-// }
-
 export type TxResult = SponsoredFinishedTxPayload | FinishedTxPayload;
 
 export type TransactionResponseMessage = Message<

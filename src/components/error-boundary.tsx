@@ -12,6 +12,7 @@ import {
 import { accountDataStore } from '@store/api';
 import { walletStore } from '@store/wallet';
 import { useRecoilValue } from 'recoil';
+import { Header } from '@components/header';
 
 const openGithubIssue = (loadable: ReturnType<typeof useLoadable>) => {
   const issueParams = new URLSearchParams();
@@ -82,7 +83,7 @@ export const ErrorBoundary: React.FC = ({ children }) => {
     const [loadable] = errorLoadables;
     const error = errorLoadables[0].errorOrThrow();
     return (
-      <PopupContainer title="Uh oh! Something went wrong.">
+      <PopupContainer header={<Header title="Uh oh! Something went wrong." />}>
         <Box my="extra-loose">
           <Text fontSize={2} fontFamily="mono">
             {String(error)}

@@ -4,6 +4,7 @@ import { Button, color, Stack, BoxProps, useClipboard, StackProps } from '@stack
 import { PopupContainer } from '@components/popup/container';
 import { Body, Text } from '@components/typography';
 import { Card } from '@components/card';
+import { Header } from '@components/header';
 
 export const SecretKeyMessage: React.FC<BoxProps> = props => {
   const { secretKey } = useWallet();
@@ -64,9 +65,9 @@ export const SaveYourKeyView: React.FC<{
   hideActions?: boolean;
 }> = memo(({ title, handleNext, hideActions, onClose }) => (
   <PopupContainer
-    onClose={onClose}
-    hideActions={hideActions}
-    title={title || 'Save your Secret Key'}
+    header={
+      <Header onClose={onClose} hideActions={hideActions} title={title || 'Save your Secret Key'} />
+    }
   >
     <Stack spacing="loose">
       <SecretKeyMessage />

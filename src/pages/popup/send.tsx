@@ -18,6 +18,7 @@ import { useRecoilValue } from 'recoil';
 import { selectedAssetStore } from '@store/asset-search';
 import { useAssets } from '@common/hooks/use-assets';
 import { getTicker } from '@common/utils';
+import { Header } from '@components/header';
 
 type Amount = number | '';
 
@@ -208,7 +209,9 @@ const Form = ({
   });
   return (
     <>
-      <PopupContainer title="Send" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
+      <PopupContainer
+        header={<Header title="Send" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)} />}
+      >
         <Stack
           spacing="loose"
           as="form"

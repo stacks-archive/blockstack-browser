@@ -10,6 +10,7 @@ import { USERNAMES_ENABLED } from '@common/constants';
 import { validatePassword, blankPasswordValidation } from '@common/validate-password';
 import { Body, Caption } from '@components/typography';
 import debounce from 'just-debounce-it';
+import { Header } from '@components/header';
 
 interface SetPasswordProps {
   redirect?: boolean;
@@ -90,7 +91,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
   }, [password, submit]);
 
   return (
-    <PopupContainer hideActions title="Set a password.">
+    <PopupContainer header={<Header hideActions title="Set a password." />}>
       <Stack spacing="loose">
         <Body className="onboarding-text">
           This password is for this device only. To access your account on a new device you will use

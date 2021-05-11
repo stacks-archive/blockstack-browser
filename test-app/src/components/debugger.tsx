@@ -53,6 +53,7 @@ export const Debugger = () => {
       contractName: 'faker',
       functionName: 'rawr',
       functionArgs: args,
+      attachment: 'This is an attachment',
       postConditions: [
         makeStandardSTXPostCondition(
           address || '',

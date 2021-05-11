@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { usePrevious } from '@stacks/ui';
 
-import { requestTokenStore } from '@store/transaction';
-import { currentAccountStxAddressStore } from '@store/wallet';
+import { requestTokenStore, transactionPayloadStore } from '@store/transaction';
+import { currentAccountStxAddressStore, hasRehydratedVaultStore } from '@store/wallet';
 
 import { useAccountSwitchCallback } from '@common/hooks/callbacks/use-account-switch-callback';
 import { usePostConditionsCallback } from '@common/hooks/callbacks/use-post-conditions-callback';
@@ -11,45 +11,55 @@ import { useNetworkSwitchCallback } from '@common/hooks/callbacks/use-network-sw
 import { useDecodeRequestCallback } from '@common/hooks/callbacks/use-decode-request-callback';
 
 export const useSetupTx = () => {
+  const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
+
   const [hasMounted, setHasMounted] = useState(false);
   const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressStore);
   const previousAccountStxAddress = usePrevious(currentAccountStxAddress);
   const requestToken = useRecoilValue(requestTokenStore);
+  const payload = useRecoilValue(transactionPayloadStore);
 
   const handleDecodeRequest = useDecodeRequestCallback();
   const handleNetworkSwitch = useNetworkSwitchCallback();
   const handleAccountSwitch = useAccountSwitchCallback();
   const handlePostConditions = usePostConditionsCallback();
 
-  useEffect(() => {
+  const handleInit = async () => {
+    if (!hasRehydratedVault) return;
     if (!requestToken) {
-      void handleDecodeRequest();
+      await handleDecodeRequest();
     }
-  }, [requestToken, handleDecodeRequest]);
-
-  useEffect(() => {
-    void handleNetworkSwitch();
-    void handleAccountSwitch();
-  }, [requestToken, handleNetworkSwitch, handleAccountSwitch]);
-
-  useEffect(() => {
-    if (requestToken && currentAccountStxAddress) {
-      if (
-        !hasMounted ||
-        !previousAccountStxAddress ||
-        previousAccountStxAddress !== currentAccountStxAddress
-      ) {
-        if (!hasMounted) {
-          setHasMounted(true);
+    if (payload) {
+      await Promise.all([handleNetworkSwitch(), handleAccountSwitch()]);
+      if (requestToken && currentAccountStxAddress) {
+        if (
+          !hasMounted ||
+          !previousAccountStxAddress ||
+          previousAccountStxAddress !== currentAccountStxAddress
+        ) {
+          if (!hasMounted) {
+            setHasMounted(true);
+          }
+          await handlePostConditions(true);
         }
-        void handlePostConditions(currentAccountStxAddress);
       }
     }
+  };
+
+  useEffect(() => {
+    void handleInit();
   }, [
+    payload,
+    handleInit,
     hasMounted,
     previousAccountStxAddress,
-    requestToken,
     currentAccountStxAddress,
     handlePostConditions,
+    requestToken,
+    handleDecodeRequest,
+    handleNetworkSwitch,
+    handleAccountSwitch,
   ]);
+
+  return !!(requestToken && payload && hasMounted);
 };

@@ -1,5 +1,5 @@
 import { CallbackInterface, useRecoilCallback } from 'recoil';
-import { transactionPayloadStore } from '@store/transaction';
+import { postConditionsHasSetStore, transactionPayloadStore } from '@store/transaction';
 import { currentAccountIndexStore, walletStore } from '@store/wallet';
 import { getStxAddress } from '@stacks/wallet-sdk';
 
@@ -20,6 +20,7 @@ function accountSwitchCallback({ snapshot, set }: CallbackInterface) {
     if (foundIndex !== undefined) {
       console.debug('switching to index', foundIndex);
       set(currentAccountIndexStore, foundIndex);
+      set(postConditionsHasSetStore, false);
     } else {
       console.warn(
         'No account matches the STX address provided in transaction request:',

@@ -6,6 +6,7 @@ import { PopupContainer } from '@components/popup/container';
 import { Caption } from '@components/typography';
 import { useMagicRecoveryCode } from '@common/hooks/use-magic-recovery-code';
 import { useMountEffect } from '@common/hooks/use-mount-effect';
+import { Header } from '@components/header';
 
 const Form: React.FC<StackProps> = memo(props => {
   const { onBack, onSubmit, onChange, password, error, isLoading } = useMagicRecoveryCode();
@@ -65,7 +66,7 @@ const Form: React.FC<StackProps> = memo(props => {
 export const MagicRecoveryCode: React.FC = memo(() => {
   const { onBack } = useMagicRecoveryCode();
   return (
-    <PopupContainer title="Enter your password" onClose={onBack} hideActions>
+    <PopupContainer header={<Header title="Enter your password" onClose={onBack} hideActions />}>
       <Caption>
         You entered a Magic Recovery Code. Enter the password you set when you first created your
         Blockstack ID.

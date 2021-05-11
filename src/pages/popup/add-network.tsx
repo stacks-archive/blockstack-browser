@@ -9,6 +9,7 @@ import { ScreenPaths } from '@store/types';
 import { isValidUrl } from '@common/validate-url';
 import { ChainID, fetchPrivate } from '@stacks/transactions';
 import { ErrorLabel } from '@components/error-label';
+import { Header } from '@components/header';
 
 export const AddNetwork: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,11 @@ export const AddNetwork: React.FC = () => {
   const setNetworkKey = useSetRecoilState(currentNetworkKeyStore);
 
   return (
-    <PopupContainer title="Add a network" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
+    <PopupContainer
+      header={
+        <Header title="Add a network" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)} />
+      }
+    >
       <Box mt="base">
         <Text fontSize={2}>
           Use this form to add a new instance of the{' '}
