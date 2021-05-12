@@ -6,10 +6,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  pre_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0
+        with:
+          access_token: ${{ github.token }}
+
   publish_chrome_extension:
     name: Publish Chrome extension
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'Version Packages')"
+    needs:
+      - pre_run
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,7 +38,10 @@ jobs:
 
       - name: Sign and Upload Production Chrome extension
         continue-on-error: true
-        run: yarn webstore upload --source stacks-wallet-chromium.zip --auto-publish
+        id: publish-chrome
+        run: |
+          yarn webstore upload --source stacks-wallet-chromium.zip --auto-publish
+          echo "::set-output name=PUBLISH_STATUS::${?}"
         env:
           EXTENSION_ID: ${{ secrets.CHROME_APP_ID }}
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
@@ -41,6 +54,8 @@ jobs:
     env:
       MINIFY_PRODUCTION_BUILD: true
     if: "contains(github.event.head_commit.message, 'Version Packages')"
+    needs:
+      - pre_run
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,7 +74,21 @@ jobs:
 
       - name: Sign and Upload Production Firefox extension
         continue-on-error: true
-        run: yarn web-ext-submit --channel=listed
+        id: publish-firefox
+        run: |
+          yarn web-ext-submit --channel=listed
+          echo "::set-output name=PUBLISH_STATUS::${?}"
         env:
           WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
+
+  post-run:
+    runs-on: ubuntu-latest
+    needs:
+      - publish_chrome_extension
+      - publish_firefox_extension
+    steps:
+      - name: Publish Statuses
+        run: |
+          echo "::warning::Firefox Publish Status: $([[ ${{ steps.publish-firefox.outputs.PUBLISH_STATUS }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
+          echo "::warning::Chrome Publish Status: $([[ ${{ steps.publish-chrome.outputs.PUBLISH_STATUS }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"

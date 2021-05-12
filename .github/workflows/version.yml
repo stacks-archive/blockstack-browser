@@ -10,10 +10,20 @@ env:
   COMMIT_EMAIL: 45208873+blockstack-devops@users.noreply.github.com
 
 jobs:
+  pre_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0
+        with:
+          access_token: ${{ github.token }}
+
   code_checks:
     name: Code checks
-    if: "!contains(github.event.head_commit.message, 'Version Packages')"
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'Version Packages')"
+    needs:
+      - pre_run
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -40,6 +50,8 @@ jobs:
     name: Integration tests
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Version Packages')"
+    needs:
+      - pre_run
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -65,7 +77,9 @@ jobs:
   version:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Version Packages')"
-    needs: [integration_tests, code_checks]
+    needs:
+      - integration_tests
+      - code_checks
     steps:
       - name: Checkout
         uses: actions/checkout@v2
