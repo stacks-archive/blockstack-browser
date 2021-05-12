@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.0
+
+### Minor Changes
+
+- [#1149](https://github.com/blockstack/stacks-wallet-web/pull/1149) [`8984f137`](https://github.com/blockstack/stacks-wallet-web/commit/8984f137f4fb7932ce569376685dbce6db50eeeb) Thanks [@aulneau](https://github.com/aulneau)! - This update removed all use of redux in our application in favor of Recoil.
+
 ## 2.5.0
 
 ### Minor Changes
