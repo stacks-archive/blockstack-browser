@@ -4933,7 +4933,7 @@ chrome-trace-event@^1.0.2:
   dependencies:
     tslib "^1.9.0"
 
-chrome-webstore-upload-cli@^1.2.1:
+chrome-webstore-upload-cli@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/chrome-webstore-upload-cli/-/chrome-webstore-upload-cli-1.2.1.tgz#5620435c1e1b0033f261530121cd0c35af68162b"
   integrity sha512-kIrGAo7Tb2mX3YLbS5EW2naM+Ps+LckQR0gUqLZ+mbn8FGg0npxtIBuZGqRQfAWshfIsNrBRXFKJ1pbaOGregA==
@@ -14129,14 +14129,14 @@ wcwidth@^1.0.0, wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-web-ext-submit@^6.1.0:
+web-ext-submit@6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/web-ext-submit/-/web-ext-submit-6.1.0.tgz#3172d6036324d2ee5bb795f751c173797f208cbe"
   integrity sha512-6SVhX9asJX1Tb3Euv4OhmwpxGIp824Cyduwlr5jMrqgz5hOTRh+z9dkWZQT4UrrH4nuajJIGmysYU25e/Hzh8w==
   dependencies:
     web-ext "^6.1.0"
 
-web-ext@^6.1.0:
+web-ext@6.1.0, web-ext@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/web-ext/-/web-ext-6.1.0.tgz#bbd3fb8d36c82de750f98596252220ae347d36e0"
   integrity sha512-f9sBuysFoCJAuS03wRtSBH8dPKQUZvCVT+AoqBW3tBBN6a92P0PyGF2lTwZJ5wrOOvXu7w2DvuAFOU6CnBugFw==
