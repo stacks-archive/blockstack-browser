@@ -1,6 +1,9 @@
 FROM debian:buster-slim as builder
 LABEL maintainer="ux@blockstack.com"
 
+ENV MINIFY_PRODUCTION_BUILD=true
+ENV EXT_ENV="prod"
+
 COPY . .
 RUN apt-get update -y && apt-get install -y build-essential python3 nodejs zip curl \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add - \
