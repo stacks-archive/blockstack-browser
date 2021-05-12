@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.5.0
+
+### Minor Changes
+
+- [#1110](https://github.com/blockstack/stacks-wallet-web/pull/1110) [`9cb73658`](https://github.com/blockstack/stacks-wallet-web/commit/9cb736581044a6b64eab3158e1eb604be622dfb2) Thanks [@agraebe](https://github.com/agraebe)! - Adds support for sponsored transactions. When a developer includes the option `sponsored: true` in a transaction request, the transaction will not be broadcasted. Instead, the developer will need to get the raw transaction and sign it as a sponsor, and then broadcast it.
+
+### Patch Changes
+
+- [#1161](https://github.com/blockstack/stacks-wallet-web/pull/1161) [`e28302b1`](https://github.com/blockstack/stacks-wallet-web/commit/e28302b1fb61cedc9279e4fdb25e14868dcce913) Thanks [@aulneau](https://github.com/aulneau)! - Updates our dependencies on @stacks/connect and @stacks/connect-react to the latest version of each.
+
+* [`3599f0d0`](https://github.com/blockstack/stacks-wallet-web/commit/3599f0d08db173467d30dcf87a3e50f136b59d52) Thanks [@aulneau](https://github.com/aulneau)! - Updates the dockerfile and github actions to improve out publishing workflow.
+
 ## 2.4.7
 
 ### Patch Changes
