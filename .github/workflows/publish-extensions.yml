@@ -82,7 +82,7 @@ jobs:
           WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
 
-  post-run:
+  post_run:
     runs-on: ubuntu-latest
     needs:
       - publish_chrome_extension
