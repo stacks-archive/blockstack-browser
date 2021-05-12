@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Extensions
 on:
   push:
     branches:
@@ -26,27 +26,14 @@ jobs:
       - name: Build extension
         run: sh build-ext.sh
 
-      - uses: actions/upload-artifact@v2
-        name: Upload Artifact - Chromium Extension Zip
-        with:
-          name: stacks-wallet-chromium
-          path: stacks-wallet-chromium.zip
-
-      - uses: Klemensas/chrome-extension-upload-action@1df3cdf4047a4789bc61a64a125994d8caf23572
-        with:
-          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          client-id: ${{ secrets.CHROME_CLIENT_ID }}
-          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          file-name: './stacks-wallet-chromium.zip'
-          app-id: ${{ secrets.CHROME_APP_ID }}
-          publish: true
-
-      - name: Upload Chromium extension to production
-        uses: google-github-actions/upload-cloud-storage@864317d33c42de84de94313c5f834802365977b0
-        with:
-          credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
-          path: ./stacks-wallet-chromium.zip
-          destination: wallet-extensions
+      - name: Sign and Upload Production Chrome extension
+        continue-on-error: true
+        run: yarn webstore upload --source stacks-wallet-chromium.zip --auto-publish
+        env:
+          EXTENSION_ID: ${{ secrets.CHROME_APP_ID }}
+          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
 
   publish_firefox_extension:
     name: Publish Firefox extension
@@ -70,19 +57,9 @@ jobs:
       - name: Build extension
         run: sh build-ext.sh
 
-      - name: Sign and Upload Production Firefox version
+      - name: Sign and Upload Production Firefox extension
         continue-on-error: true
-        run: yarn web-ext sign --channel=listed
+        run: yarn web-ext-submit --channel=listed
         env:
           WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
-      - name: Get Firefox addon filename
-        id: addon-file
-        run: echo "::set-output name=addon_path::$(find ./web-ext-artifacts -type f -iname "*.xpi" | tail -n1)"
-      - name: Rename Firefox addon file
-        run: cp ${{ steps.addon-file.outputs.addon_path }} stacks-wallet-firefox.xpi
-      - name: Upload Artifact - Firefox Add-On XPI
-        uses: actions/upload-artifact@v2
-        with:
-          name: stacks-wallet-firefox
-          path: stacks-wallet-firefox.xpi

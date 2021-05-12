@@ -12,3 +12,4 @@ tests/screenshots/*
 yarn-error.log
 stacks-wallet-chromium.zip
 packages
+web-ext-artifacts/
