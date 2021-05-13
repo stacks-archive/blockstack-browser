@@ -8,9 +8,10 @@ import {
 } from '../message-types';
 import { storePayload, StorageKey } from '../storage';
 import { vaultMessageHandler } from './vault-manager';
+import { IS_TEST_ENV } from '@common/constants';
 
 chrome.runtime.onInstalled.addListener(details => {
-  if (details.reason === 'install' && NODE_ENV !== 'test') {
+  if (details.reason === 'install' && !IS_TEST_ENV) {
     chrome.tabs.create({ url: chrome.runtime.getURL(`full-page.html#${ScreenPaths.INSTALLED}`) });
   }
 });
@@ -59,7 +60,7 @@ chrome.runtime.onMessage.addListener((message: MessageFromApp, sender, sendRespo
   return true;
 });
 
-if (NODE_ENV === 'test') {
+if (IS_TEST_ENV) {
   // expose a helper function to open a new tab with the wallet from tests
   (window as any).openOptionsPage = function (page: string) {
     const url = chrome.runtime.getURL(`full-page.html#${page}`);

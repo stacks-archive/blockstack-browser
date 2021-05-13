@@ -13,16 +13,6 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-// utils
-const getSegmentKey = () => {
-  // Netlify sets CONTEXT=production for production releases.
-  // https://docs.netlify.com/site-deploys/overview/#deploy-contexts
-  if (process.env.CONTEXT === 'production') {
-    return 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
-  }
-  return 'Cs2gImUHsghl4SZD8GB1xyFs23oaNAGa';
-};
-
 const getBranch = () => {
   try {
     const branch = execSync(`git rev-parse --abbrev-ref HEAD`, { encoding: 'utf8' }).trim();
@@ -58,14 +48,10 @@ const COMMIT_SHA = getCommit(BRANCH);
 const SRC_ROOT_PATH = path.join(__dirname, '../', 'src');
 const DIST_ROOT_PATH = path.join(__dirname, '../', 'dist');
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const WEB_BROWSER = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 const IS_DEV = NODE_ENV === 'development';
 const IS_PROD = !IS_DEV;
-
+const TEST_ENV = process.env.TEST_ENV || false;
 const ANALYZE_BUNDLE = process.env.ANALYZE === 'true';
-const SEGMENT_KEY = process.env.SEGMENT_KEY || getSegmentKey();
-const STATS_URL = process.env.STATS_URL || 'https://stats.blockstack.xyz';
-const EXT_ENV = process.env.EXT_ENV || 'web';
 
 // to measure speed :~)
 const smp = new SpeedMeasurePlugin({
@@ -117,12 +103,7 @@ const config = {
   output: {
     path: DIST_ROOT_PATH,
     chunkFilename: !IS_DEV ? '[name].[contenthash:8].chunk.js' : IS_DEV && '[name].chunk.js',
-    filename: () => {
-      if (EXT_ENV === 'prod' || IS_DEV) {
-        return '[name].js';
-      }
-      return '[name].[contenthash:8].js';
-    },
+    filename: () => '[name].js',
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json', '.d.ts'],
@@ -255,13 +236,10 @@ const config = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV),
-      WEB_BROWSER: JSON.stringify(WEB_BROWSER),
-      EXT_ENV: JSON.stringify(EXT_ENV),
-      SEGMENT_KEY: JSON.stringify(SEGMENT_KEY),
-      STATS_URL: JSON.stringify(STATS_URL),
       VERSION: JSON.stringify(VERSION),
       COMMIT_SHA: JSON.stringify(COMMIT_SHA),
       BRANCH: JSON.stringify(BRANCH),
+      TEST_ENV: JSON.stringify(TEST_ENV),
       'process.env.USERNAMES_ENABLED': JSON.stringify(process.env.USERNAMES_ENABLED || 'false'),
     }),
     new webpack.ProvidePlugin({
@@ -278,4 +256,7 @@ if (IS_PROD) {
   module.exports.plugins.push(
     new CleanWebpackPlugin({ verbose: true, dry: false, cleanStaleWebpackAssets: false })
   );
+}
+if (ANALYZE_BUNDLE) {
+  module.exports.plugins.push(new BundleAnalyzerPlugin());
 }

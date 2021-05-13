@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
-const {version: _version} = require('../../package.json');
-const {execSync} = require('child_process');
+const { version: _version } = require('../../package.json');
+const { execSync } = require('child_process');
 
 // plugins
 const WebpackBarPlugin = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-const {ESBuildPlugin} = require('esbuild-loader');
+const { ESBuildPlugin } = require('esbuild-loader');
 
 // utils
 const getSegmentKey = () => {
@@ -25,12 +25,12 @@ const getSegmentKey = () => {
 };
 
 const getBranch = () => {
-  const branch = execSync(`git rev-parse --abbrev-ref HEAD`, {encoding: 'utf8'}).trim();
+  const branch = execSync(`git rev-parse --abbrev-ref HEAD`, { encoding: 'utf8' }).trim();
   return branch;
 };
 
 const getCommit = () => {
-  const commit = execSync('git rev-parse --short HEAD', {encoding: 'utf8'}).trim();
+  const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
   return commit;
 };
 
@@ -76,22 +76,22 @@ const HTML_OPTIONS = {
 const HTML_PROD_OPTIONS = IS_DEV
   ? HTML_OPTIONS
   : {
-    ...HTML_OPTIONS,
-    minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeRedundantAttributes: true,
-      useShortDoctype: true,
-      removeEmptyAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      keepClosingSlash: true,
-      minifyJS: true,
-      minifyCSS: true,
-      minifyURLs: true,
-    },
-  };
+      ...HTML_OPTIONS,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    };
 
-const aliases = {}
+const aliases = {};
 
 const config = {
   entry: {
@@ -109,9 +109,11 @@ const config = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json', '.d.ts'],
-    plugins: [new TsconfigPathsPlugin({
-      configFile: path.resolve( './test-app/tsconfig.json')
-    })],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve('./test-app/tsconfig.json'),
+      }),
+    ],
     alias: aliases,
     fallback: {
       crypto: require.resolve('crypto-browserify'),
@@ -141,13 +143,13 @@ const config = {
               presets: [
                 [
                   '@babel/preset-env',
-                  {targets: {browsers: 'last 2 versions'}}, // or whatever your project requires
+                  { targets: { browsers: 'last 2 versions' } }, // or whatever your project requires
                 ],
                 '@babel/preset-typescript',
                 '@babel/preset-react',
               ],
               plugins: [
-                ['@babel/plugin-proposal-class-properties', {loose: true}],
+                ['@babel/plugin-proposal-class-properties', { loose: true }],
                 '@babel/plugin-transform-runtime',
                 '@babel/plugin-proposal-nullish-coalescing-operator',
                 '@babel/plugin-proposal-optional-chaining',
@@ -175,7 +177,6 @@ const config = {
   plugins: [
     new WebpackBarPlugin({}),
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
-    new ESBuildPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(SRC_ROOT_PATH, '../', 'public', 'html', 'index.html'),
       filename: 'index.html',
@@ -187,7 +188,7 @@ const config = {
           from: path.join(SRC_ROOT_PATH, '../', 'public', 'assets'),
           to: path.join(DIST_ROOT_PATH, 'assets'),
         },
-      ]
+      ],
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV),
@@ -198,7 +199,6 @@ const config = {
       COMMIT_SHA: JSON.stringify(COMMIT_SHA),
       BRANCH: JSON.stringify(BRANCH),
       'process.env.USERNAMES_ENABLED': JSON.stringify(process.env.USERNAMES_ENABLED || 'false'),
-      'process.env.NODE_ENV': `'${NODE_ENV}'`,
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
@@ -212,7 +212,7 @@ module.exports = smp.wrap(config);
 
 if (IS_PROD) {
   module.exports.plugins.push(
-    new CleanWebpackPlugin({verbose: true, dry: false, cleanStaleWebpackAssets: false})
+    new CleanWebpackPlugin({ verbose: true, dry: false, cleanStaleWebpackAssets: false })
   );
 }
 if (ANALYZE_BUNDLE) {
