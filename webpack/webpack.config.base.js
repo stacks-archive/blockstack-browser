@@ -34,7 +34,7 @@ const getCommit = branch => {
   }
 };
 /**
- * For CI builds, we add a random number after the patch version.
+ * For non main branch builds, we add a random number after the patch version.
  */
 const getVersion = branch => {
   if (branch === 'main' || !branch) return _version;
@@ -50,7 +50,7 @@ const DIST_ROOT_PATH = path.join(__dirname, '../', 'dist');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const IS_DEV = NODE_ENV === 'development';
 const IS_PROD = !IS_DEV;
-const TEST_ENV = process.env.TEST_ENV || false;
+const TEST_ENV = !!process.env.TEST_ENV;
 const ANALYZE_BUNDLE = process.env.ANALYZE === 'true';
 
 // to measure speed :~)
@@ -225,9 +225,8 @@ const config = {
               content = content.replace(csrTag, " 'wasm-eval'");
               content = content.replace(objSrcTag, "'none'");
             }
-            const fullVersion = getVersion();
-            console.log('Extension Version:', fullVersion);
-            content = content.replace(versionTag, fullVersion);
+            console.info('Extension Version:', VERSION);
+            content = content.replace(versionTag, VERSION);
             return Buffer.from(content);
           },
         },
@@ -239,8 +238,8 @@ const config = {
       VERSION: JSON.stringify(VERSION),
       COMMIT_SHA: JSON.stringify(COMMIT_SHA),
       BRANCH: JSON.stringify(BRANCH),
-      TEST_ENV: JSON.stringify(TEST_ENV),
       'process.env.USERNAMES_ENABLED': JSON.stringify(process.env.USERNAMES_ENABLED || 'false'),
+      'process.env.TEST_ENV': JSON.stringify(TEST_ENV ? 'true' : 'false'),
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
