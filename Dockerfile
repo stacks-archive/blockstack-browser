@@ -3,6 +3,7 @@ LABEL maintainer="ux@blockstack.com"
 
 ENV MINIFY_PRODUCTION_BUILD=true
 ENV EXT_ENV="prod"
+WORKDIR /src
 
 COPY . .
 RUN apt-get update -y && apt-get install -y build-essential python3 nodejs zip curl \
