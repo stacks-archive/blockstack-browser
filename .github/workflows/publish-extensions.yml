@@ -34,6 +34,9 @@ jobs:
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Install yarn dependencies
+        run: yarn --frozen-lockfile
+
       - name: Build project
         run: yarn build
 
@@ -73,6 +76,9 @@ jobs:
           path: |
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install yarn dependencies
+        run: yarn --frozen-lockfile
 
       - name: Build project
         run: yarn build
