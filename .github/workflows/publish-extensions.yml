@@ -33,6 +33,10 @@ jobs:
           path: |
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build project
+        run: yarn build
+
       - name: Build extension
         run: sh build-ext.sh
 
@@ -69,6 +73,10 @@ jobs:
           path: |
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build project
+        run: yarn build
+
       - name: Build extension
         run: sh build-ext.sh
 

@@ -18,6 +18,9 @@ runs:
     - name: App unit tests
       run: yarn test:unit
       shell: bash
+    - name: Build project
+      run: yarn build
+      shell: bash
     - name: Build extension
       run: sh build-ext.sh
       shell: bash
