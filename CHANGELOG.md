@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.7.0
+
+### Minor Changes
+
+- [#1168](https://github.com/blockstack/stacks-wallet-web/pull/1168) [`7ac4c8fe`](https://github.com/blockstack/stacks-wallet-web/commit/7ac4c8fe66d47fbad58983f240299713f808c900) Thanks [@aulneau](https://github.com/aulneau)! - This update fixes the positioning of the popup in relation to the primary window that fired the action
+
+### Patch Changes
+
+- [#1166](https://github.com/blockstack/stacks-wallet-web/pull/1166) [`5e124022`](https://github.com/blockstack/stacks-wallet-web/commit/5e124022a673e39a2c3191e8a2a23713337867e7) Thanks [@hstove](https://github.com/hstove)! - Removes the `COMMIT_SHA` global variable for production builds, to help with reproducible builds in any environment.
+
+* [#1171](https://github.com/blockstack/stacks-wallet-web/pull/1171) [`0814c1c6`](https://github.com/blockstack/stacks-wallet-web/commit/0814c1c6bbca6c12ac8b95f8d8b9a45a4857a157) Thanks [@aulneau](https://github.com/aulneau)! - This update cleans up the webpack config and updates many of our dependencies, and fixes some build related CI tasks
+
 ## 2.6.0
 
 ### Minor Changes
