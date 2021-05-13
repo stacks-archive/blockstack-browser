@@ -1,16 +1,4 @@
 #!/bin/sh
-# echo "🛠  Installing dependencies."
-# yarn
-# if [ $? -ne "0" ]; then 
-#   echo "yarn failed"
-#   exit 1
-# fi
-# echo "🛠  Compiling extension."
-# yarn build
-# if [ $? -ne "0" ]; then 
-#   echo "yarn build failed"
-#   exit 1
-# fi
 echo "🛠  Packaging Browser Extension"
 if [ -d ./dist ]; then
   cd dist
