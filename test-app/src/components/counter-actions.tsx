@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ButtonGroup, Box, Text } from '@stacks/ui';
 import { AppContext } from '@common/context';
-import { getAuthOrigin, getRPCClient, stacksNetwork as network } from '@common/utils';
+import { getRPCClient, stacksNetwork as network } from '@common/utils';
 import { deserializeCV, IntCV } from '@blockstack/stacks-transactions';
 import { useConnect } from '@stacks/connect-react';
 import { ExplorerLink } from '@components/explorer-link';
@@ -17,9 +17,7 @@ export const CounterActions: React.FC = () => {
   const callMethod = async (method: string) => {
     setError('');
     setLoading(true);
-    const authOrigin = getAuthOrigin();
     await doContractCall({
-      authOrigin,
       network,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       functionName: method,

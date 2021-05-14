@@ -22,11 +22,7 @@ export const Faucet = ({ address: _address = '' }: { address: string }) => {
   };
 
   const getServerURL = () => {
-    const { origin } = location;
-    if (origin.includes('localhost')) {
-      return 'http://localhost:3999';
-    }
-    return 'https://stacks-node-api.blockstack.org';
+    return 'https://stacks-node-api.stacks.co';
   };
 
   const waitForBalance = async (currentBalance: number, attempts: number) => {

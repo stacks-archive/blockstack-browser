@@ -5,18 +5,7 @@ import { StacksTestnet } from '@stacks/network';
 
 dayjs.extend(relativeTime);
 
-export const getAuthOrigin = () => {
-  if (location.port === '3001') {
-    return 'http://localhost:8081';
-  }
-  const authOrigin = process.env.AUTH_ORIGIN || 'http://localhost:8080';
-  return authOrigin;
-};
-
-let coreApiUrl = 'https://stacks-node-api.xenon.blockstack.org';
-if (location.origin.includes('localhost')) {
-  coreApiUrl = 'http://localhost:3999';
-}
+let coreApiUrl = 'https://stacks-node-api.stacks.co';
 
 export const getRPCClient = () => {
   return new RPCClient(coreApiUrl);

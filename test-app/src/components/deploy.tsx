@@ -1,5 +1,4 @@
 import React from 'react';
-import { getAuthOrigin } from '@common/utils';
 import { useConnect } from '@stacks/connect-react';
 import { SampleContracts } from '@common/contracts';
 import { Box, Button, Text } from '@stacks/ui';
@@ -7,15 +6,13 @@ import { ExplorerLink } from './explorer-link';
 
 export const Deploy = () => {
   const [tx, setTx] = React.useState('');
-  const authOrigin = getAuthOrigin();
   const { doContractDeploy, userSession } = useConnect();
   const handleSubmit = () =>
     doContractDeploy({
-      authOrigin,
       codeBody: SampleContracts[0].contractSource,
       contractName: SampleContracts[0].contractName,
       userSession,
-      finished: data => {
+      onFinish: data => {
         setTx(data.txId);
         console.log('finished!', data);
       },

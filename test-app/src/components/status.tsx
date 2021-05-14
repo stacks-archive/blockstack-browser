@@ -10,7 +10,7 @@ import {
   ClarityType,
   bufferCV,
 } from '@blockstack/stacks-transactions';
-import { getAuthOrigin, getRPCClient, stacksNetwork as network } from '@common/utils';
+import { getRPCClient, stacksNetwork as network } from '@common/utils';
 import { ContractCallTransaction } from '@blockstack/stacks-blockchain-sidecar-types';
 import { TxCard } from '@components/tx-card';
 import { useSTXAddress } from '@common/use-stx-address';
@@ -84,16 +84,14 @@ export const Status = () => {
   };
 
   const onSubmitWrite = async () => {
-    const authOrigin = getAuthOrigin();
     const statusArg = bufferCV(Buffer.from(status));
     await doContractCall({
-      authOrigin,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       functionName: 'write-status!',
       network,
       functionArgs: [statusArg],
       contractName: 'status',
-      finished: data => {
+      onFinish: data => {
         setTxId(data.txId);
         console.log('finished!', data);
       },

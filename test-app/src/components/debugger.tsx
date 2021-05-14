@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, Button, ButtonGroup } from '@stacks/ui';
-import { getAuthOrigin, stacksNetwork as network } from '@common/utils';
+import { stacksNetwork as network } from '@common/utils';
 import { demoTokenContract } from '@common/contracts';
 import { useSTXAddress } from '@common/use-stx-address';
 import { useConnect } from '@stacks/connect-react';
@@ -38,7 +38,6 @@ export const Debugger = () => {
 
   const callFaker = async () => {
     clearState();
-    const authOrigin = getAuthOrigin();
     const args = [
       uintCV(1234),
       intCV(-234),
@@ -50,7 +49,6 @@ export const Debugger = () => {
     ];
     await doContractCall({
       network,
-      authOrigin,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       contractName: 'faker',
       functionName: 'rawr',
@@ -72,7 +70,7 @@ export const Debugger = () => {
           )
         ),
       ],
-      finished: data => {
+      onFinish: data => {
         console.log('finished faker!', data);
         console.log(data.stacksTransaction.auth.spendingCondition?.nonce.toNumber());
         setState('Contract Call', data.txId);
@@ -82,14 +80,12 @@ export const Debugger = () => {
 
   const stxTransfer = async (amount: string) => {
     clearState();
-    const authOrigin = getAuthOrigin();
     await doSTXTransfer({
       network,
-      authOrigin,
       amount,
       memo: 'From demo app',
       recipient: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
-      finished: data => {
+      onFinish: data => {
         console.log('finished stx transfer!', data);
         setState('Stacks Transfer', data.txId);
       },
@@ -98,13 +94,11 @@ export const Debugger = () => {
 
   const deployContract = async () => {
     clearState();
-    const authOrigin = getAuthOrigin();
     await doContractDeploy({
       network,
-      authOrigin,
       contractName: `demo-deploy-${new Date().getTime().toString()}`,
       codeBody: demoTokenContract,
-      finished: data => {
+      onFinish: data => {
         console.log('finished stx transfer!', data);
         setState('Contract Deploy', data.txId);
       },
@@ -113,10 +107,8 @@ export const Debugger = () => {
 
   const callNullContract = async () => {
     clearState();
-    const authOrigin = getAuthOrigin();
     await doContractCall({
       network,
-      authOrigin,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       contractName: `connect-token-${new Date().getTime()}`,
       functionName: 'faucet',
@@ -126,15 +118,13 @@ export const Debugger = () => {
 
   const getFaucetTokens = async () => {
     clearState();
-    const authOrigin = getAuthOrigin();
     await doContractCall({
       network,
-      authOrigin,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       contractName: 'connect-token',
       functionName: 'faucet',
       functionArgs: [],
-      finished: data => {
+      onFinish: data => {
         console.log('finished faucet!', data);
         setState('Token Faucet', data.txId);
       },
