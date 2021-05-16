@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   createWalletGaiaConfig,
   getOrCreateWalletConfig,
@@ -75,6 +76,14 @@ export const useWallet = () => {
     []
   );
 
+  const handleCancelAuthentication = useCallback(() => {
+    if (!decodedAuthRequest || !authRequest) {
+      return;
+    }
+    const authResponse = 'cancel';
+    finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
+  }, [decodedAuthRequest, authRequest]);
+
   const doFinishSignIn = useRecoilCallback(
     ({ set, snapshot }) =>
       async (accountIndex: number) => {
@@ -136,6 +145,7 @@ export const useWallet = () => {
     doFinishSignIn,
     doSetLatestNonce,
     setWallet,
+    handleCancelAuthentication,
     ...vaultMessenger,
   };
 };

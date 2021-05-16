@@ -11,7 +11,7 @@ import {
 } from '@store/transaction';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { currentNetworkStore } from '@store/networks';
-import { finishTransaction } from '@common/transaction-utils';
+import { cancelTransaction, finishTransaction } from '@common/transaction-utils';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { finalizeTxSignature } from '@common/utils';
 
@@ -24,6 +24,29 @@ export const useTxState = () => {
   const pendingTransactionFunction = useLoadable(pendingTransactionFunctionSelector);
   const signedTransaction = useLoadable(signedTransactionStore);
   const isUnauthorizedTransaction = useRecoilValue(isUnauthorizedTransactionStore);
+
+  const handleCancelTransaction = useRecoilCallback(
+    ({ snapshot, set }) =>
+      async () => {
+        const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
+        const requestPayload = await snapshot.getPromise(requestTokenStore);
+        if (!pendingTransaction || !requestPayload) {
+          set(transactionBroadcastErrorStore, 'No pending transaction found.');
+          return;
+        }
+        const tx = await snapshot.getPromise(signedTransactionStore);
+        if (!tx) return;
+        try {
+          const result = await cancelTransaction({
+            tx,
+          });
+          finalizeTxSignature(requestPayload, result);
+        } catch (error) {
+          set(transactionBroadcastErrorStore, error.message);
+        }
+      },
+    []
+  );
 
   const doSubmitPendingTransaction = useRecoilCallback(
     ({ snapshot, set }) =>
@@ -58,6 +81,7 @@ export const useTxState = () => {
     contractSource,
     contractInterface,
     pendingTransactionFunction,
+    handleCancelTransaction,
     doSubmitPendingTransaction,
     broadcastError,
     isUnauthorizedTransaction,

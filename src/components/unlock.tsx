@@ -25,7 +25,7 @@ export const Unlock: React.FC = () => {
   }, [doUnlockWallet, password]);
 
   return (
-    <PopupContainer header={<Header />}>
+    <PopupContainer header={<Header />} requestType="auth">
       <Box width="100%" mt="loose">
         <Text textStyle="body.large" display="block">
           Enter your password you used on this device to unlock your wallet.

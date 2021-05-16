@@ -64,11 +64,15 @@ const provider: StacksProvider = {
       }
     );
     document.dispatchEvent(event);
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const handleMessage = (event: MessageEvent<AuthenticationResponseMessage>) => {
         if (!isValidEvent(event, Methods.authenticationResponse)) return;
         if (event.data.payload?.authenticationRequest !== authenticationRequest) return;
         window.removeEventListener('message', handleMessage);
+        if (event.data.payload.authenticationResponse === 'cancel') {
+          reject(event.data.payload.authenticationResponse);
+          return;
+        }
         resolve(event.data.payload.authenticationResponse);
       };
       window.addEventListener('message', handleMessage);
@@ -79,11 +83,15 @@ const provider: StacksProvider = {
       detail: { transactionRequest },
     });
     document.dispatchEvent(event);
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const handleMessage = (event: MessageEvent<TransactionResponseMessage>) => {
         if (!isValidEvent(event, Methods.transactionResponse)) return;
         if (event.data.payload?.transactionRequest !== transactionRequest) return;
         window.removeEventListener('message', handleMessage);
+        if (event.data.payload.transactionResponse.cancel) {
+          reject(event.data.payload.transactionResponse);
+          return;
+        }
         resolve(event.data.payload.transactionResponse);
       };
       window.addEventListener('message', handleMessage);

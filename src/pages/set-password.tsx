@@ -99,7 +99,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
     >
       {formik => (
         <Form>
-          <PopupContainer header={<Header hideActions title="Set a password" />}>
+          <PopupContainer header={<Header hideActions title="Set a password" />} requestType="auth">
             <Body className="onboarding-text">
               This password is for this device only. To access your account on a new device you will
               use your Secret Key.

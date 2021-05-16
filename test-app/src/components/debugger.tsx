@@ -115,6 +115,9 @@ export const Debugger = () => {
         console.log(data.stacksTransaction.auth.spendingCondition?.nonce.toNumber());
         setState('Contract Call', data.txId);
       },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
     });
   };
 
@@ -129,6 +132,9 @@ export const Debugger = () => {
         console.log('finished stx transfer!', data);
         setState('Stacks Transfer', data.txId);
       },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
     });
   };
 
@@ -141,6 +147,9 @@ export const Debugger = () => {
       onFinish: data => {
         console.log('finished stx transfer!', data);
         setState('Contract Deploy', data.txId);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
       },
     });
   };
@@ -168,8 +177,12 @@ export const Debugger = () => {
         console.log('finished faucet!', data);
         setState('Token Faucet', data.txId);
       },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
     });
   };
+
   return (
     <Box py={6}>
       <Text as="h2" textStyle="display.small">

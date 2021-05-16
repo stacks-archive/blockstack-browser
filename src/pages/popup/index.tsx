@@ -158,7 +158,7 @@ const PageTop: React.FC<StackProps> = memo(props => (
 ));
 
 export const PopupHome: React.FC = memo(() => (
-  <PopupContainer header={<Header />}>
+  <PopupContainer header={<Header />} requestType="auth">
     <Stack spacing="loose">
       <PageTop />
       <AccountInfo />

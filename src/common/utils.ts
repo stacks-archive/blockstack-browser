@@ -71,7 +71,6 @@ export const finalizeAuthResponse = ({
 };
 
 export const finalizeTxSignature = (requestPayload: string, data: TxResult) => {
-  console.log(requestPayload, data);
   try {
     const tabId = getTab(StorageKey.transactionRequests, requestPayload);
     const responseMessage: TransactionResponseMessage = {
@@ -84,7 +83,7 @@ export const finalizeTxSignature = (requestPayload: string, data: TxResult) => {
     };
     chrome.tabs.sendMessage(tabId, responseMessage);
     deleteTabForRequest(StorageKey.transactionRequests, requestPayload);
-    window.close();
+    if (!data.cancel) window.close();
   } catch (error) {
     console.debug('Failed to get Tab ID for transaction request:', requestPayload);
     throw new Error(

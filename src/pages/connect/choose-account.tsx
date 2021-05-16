@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Screen, ScreenBody } from '@screen';
 import { Title } from '@components/typography';
 import { Box } from '@stacks/ui';
@@ -31,10 +31,20 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const { decodedAuthRequest: authRequest } = useOnboardingState();
   const [accountIndex, setAccountIndex] = React.useState<number | undefined>();
+  const { handleCancelAuthentication } = useWallet();
 
   if (!wallet) {
     return <Navigate to={{ pathname: '/', hash: 'sign-up' }} screenPath={ScreenPaths.GENERATION} />;
   }
+
+  const handleUnmount = useCallback(async () => {
+    handleCancelAuthentication();
+  }, [handleCancelAuthentication]);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleUnmount);
+    return () => window.removeEventListener('beforeunload', handleUnmount);
+  }, [handleUnmount]);
 
   // TODO: refactor into util, create unit tests
   const didSelectAccount = ({ accountIndex }: { accountIndex: number }) => {

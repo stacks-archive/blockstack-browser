@@ -5,7 +5,7 @@ import { StacksTestnet } from '@stacks/network';
 
 dayjs.extend(relativeTime);
 
-let coreApiUrl = 'https://stacks-node-api.stacks.co';
+let coreApiUrl = 'https://stacks-node-api.testnet.stacks.co';
 
 export const getRPCClient = () => {
   return new RPCClient(coreApiUrl);

@@ -115,7 +115,7 @@ export const TransactionPage: React.FC = () => {
   if (!currentAccount || !pendingTransaction) throw new Error('Invalid code path.');
 
   return (
-    <PopupContainer header={<PopupHeader />}>
+    <PopupContainer header={<PopupHeader />} requestType="transaction">
       <Stack pt="extra-loose" spacing="base">
         <Title fontWeight="bold" as="h1">
           {pageTitle}

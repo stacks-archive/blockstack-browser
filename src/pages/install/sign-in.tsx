@@ -15,6 +15,7 @@ export const InstalledSignIn: React.FC = () => {
     <PopupContainer
       header={<Header title="Continue with your Secret Key" onClose={onBack} hideActions />}
       key="sign-in"
+      requestType="auth"
     >
       <Stack spacing="loose">
         <Caption className="onboarding-text">

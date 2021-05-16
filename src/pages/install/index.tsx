@@ -36,7 +36,7 @@ const Actions: React.FC<StackProps> = props => {
 };
 
 export const Installed: React.FC = memo(() => (
-  <PopupContainer header={<Header hideActions />}>
+  <PopupContainer header={<Header hideActions />} requestType="auth">
     <Stack spacing="extra-loose" flexGrow={1} justifyContent="center">
       <Stack width="100%" spacing="loose" textAlign="center" alignItems="center">
         <Title as="h1" fontWeight={500}>
