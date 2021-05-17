@@ -2,7 +2,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const { version: _version } = require('../package.json');
-const { execSync } = require('child_process');
 
 // plugins
 const WebpackBarPlugin = require('webpackbar');
@@ -13,38 +12,6 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-const getBranch = () => {
-  try {
-    const branch = execSync(`git rev-parse --abbrev-ref HEAD`, { encoding: 'utf8' }).trim();
-    if (branch === 'main') return null;
-    return branch;
-  } catch (e) {
-    console.warn(e);
-    return null;
-  }
-};
-
-const getCommit = branch => {
-  if (branch === 'main' || !branch) return null;
-  try {
-    return execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
-  } catch (e) {
-    console.warn(e);
-    return null;
-  }
-};
-/**
- * For non main branch builds, we add a random number after the patch version.
- */
-const getVersion = branch => {
-  if (branch === 'main' || !branch) return _version;
-  return `${_version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
-};
-
-const BRANCH = getBranch();
-const VERSION = getVersion(BRANCH);
-const COMMIT_SHA = getCommit(BRANCH);
-
 const SRC_ROOT_PATH = path.join(__dirname, '../', 'src');
 const DIST_ROOT_PATH = path.join(__dirname, '../', 'dist');
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -52,6 +19,21 @@ const IS_DEV = NODE_ENV === 'development';
 const IS_PROD = !IS_DEV;
 const TEST_ENV = !!process.env.TEST_ENV;
 const ANALYZE_BUNDLE = process.env.ANALYZE === 'true';
+const MAIN_BRANCH = 'refs/heads/main';
+const GITHUB_REF = process.env.GITHUB_REF;
+const GITHUB_SHA = process.env.GITHUB_SHA;
+
+/**
+ * For non main branch builds, we add a random number after the patch version.
+ */
+const getVersion = ref => {
+  if (ref === MAIN_BRANCH || !ref) return _version;
+  return `${_version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
+};
+
+const BRANCH = GITHUB_REF;
+const COMMIT_SHA = GITHUB_SHA;
+const VERSION = getVersion(BRANCH);
 
 // to measure speed :~)
 const smp = new SpeedMeasurePlugin({
