@@ -1,49 +1,37 @@
 import React from 'react';
-import { Box, Stack, StackProps } from '@stacks/ui';
-import { Text, Caption } from '@components/typography';
-import { AssetAvatar } from '@components/stx-avatar';
+import { StackProps } from '@stacks/ui';
+
+import { ftDecimals, stacksValue } from '@common/stacks-utils';
+import { AssetWithMeta } from '@store/tokens';
+import { getAssetName } from '@stacks/ui-utils';
+import { AssetItem } from '@components/asset-item';
+import { getTicker } from '@common/utils';
 
 interface AssetRowProps extends StackProps {
-  name: string;
-  contractAddress?: string;
-  friendlyName: string;
-  value: string;
-  subtitle: string;
+  asset: AssetWithMeta;
 }
 
 export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, ref) => {
-  const { name, contractAddress, friendlyName, value, subtitle, ...rest } = props;
-  return (
-    <Stack
-      spacing="base"
-      isInline
-      alignItems="center"
-      flexWrap="wrap"
-      flexDirection="row"
-      cursor="pointer"
-      width="100%"
-      {...rest}
-      ref={ref}
-    >
-      <AssetAvatar
-        useStx={name === 'STX' || name === 'Stacks Token'}
-        gradientString={contractAddress || name}
-        mr="tight"
-        size="36px"
-        color="white"
-      >
-        {friendlyName[0]}
-      </AssetAvatar>
+  const { asset, ...rest } = props;
+  const { name, contractAddress, type, meta, subtitle, balance } = asset;
 
-      <Stack spacing="tight" flexGrow={1}>
-        <Text>{friendlyName}</Text>
-        <Caption variant="c2">{subtitle}</Caption>
-      </Stack>
-      <Box textAlign="right" pt="tight">
-        <Text fontWeight="400" color="ink.1000">
-          {value}
-        </Text>
-      </Box>
-    </Stack>
+  const friendlyName = type === 'ft' ? meta?.name || getAssetName(name) : name;
+  const symbol = type === 'ft' ? meta?.symbol || getTicker(friendlyName) : subtitle;
+  const value =
+    type === 'ft'
+      ? ftDecimals(balance, meta?.decimals || 0)
+      : type === 'stx'
+      ? stacksValue({ value: balance, withTicker: false })
+      : balance;
+
+  return (
+    <AssetItem
+      ref={ref}
+      avatar={name === 'stx' ? 'stx' : type === 'ft' ? `${contractAddress}.${friendlyName}` : name}
+      title={friendlyName}
+      caption={symbol}
+      amount={value}
+      {...rest}
+    />
   );
 });

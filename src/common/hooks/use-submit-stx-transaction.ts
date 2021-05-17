@@ -12,6 +12,7 @@ import { useCallback } from 'react';
 import { ScreenPaths } from '@store/types';
 import { useRevalidateApi } from '@common/hooks/use-revalidate-api';
 import { toast } from 'react-hot-toast';
+import { useHomeTabs } from '@common/hooks/use-home-tabs';
 
 function getErrorMessage(
   reason: TxBroadcastResultRejected['reason'] | 'ConflictingNonceInMempool'
@@ -44,6 +45,7 @@ export function useHandleSubmitTransaction({
   const { setIsLoading, setIsIdle } = useLoading(loadingKey);
   const stacksNetwork = useRecoilValue(stacksNetworkStore);
   const revalidate = useRevalidateApi();
+  const { setActiveTabActivity } = useHomeTabs();
 
   return useCallback(async () => {
     setIsLoading();
@@ -63,8 +65,11 @@ export function useHandleSubmitTransaction({
     }
     onClose();
     setIsIdle();
+    // switch active tab to activity
+    setActiveTabActivity();
     doChangeScreen(ScreenPaths.HOME);
   }, [
+    setActiveTabActivity,
     revalidate,
     doChangeScreen,
     doSetLatestNonce,

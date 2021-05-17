@@ -1,7 +1,10 @@
+import { TransactionTypes } from '@stacks/connect';
 import React from 'react';
 import { addressToString, PostCondition } from '@stacks/transactions';
+
 import { truncateMiddle } from '@stacks/ui-utils';
 import { getPostConditionTitle } from '@common/stacks-utils';
+
 import { usePendingTransaction } from '@common/hooks/use-pending-transaction';
 import { TransactionEventCard } from '@components/transactions/event-card';
 import { useCurrentAccount } from '@common/hooks/use-current-account';
@@ -11,7 +14,6 @@ import {
   getPostConditionCodeMessage,
   getSymbolFromPostCondition,
 } from '@common/postcondition-utils';
-import { TransactionTypes } from '@stacks/connect';
 
 interface PostConditionProps {
   pc: PostCondition;
@@ -33,13 +35,13 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
       pendingTransaction.contractAddress === address) ||
     address.includes('.');
 
-  // TODO: fetch asset info in SIP 10 branch
   if (!pendingTransaction) return null;
 
   const message = pc.conditionCode
     ? `${getPostConditionCodeMessage(
         pc.conditionCode,
         isSending
+        // TODO: fetch asset info in SIP 10 branch
       )} ${amount} ${ticker} or the transaction will abort.`
     : undefined;
 

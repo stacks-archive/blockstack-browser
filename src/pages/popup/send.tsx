@@ -11,14 +11,12 @@ import { microStxToStx, validateAddressChain, validateStacksAddress } from '@com
 import { ErrorLabel } from '@components/error-label';
 import { AssetSearch } from '@components/asset-search/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
-import { RPCClient } from '@stacks/rpc-client';
 import { useWallet } from '@common/hooks/use-wallet';
-import { getAssetStringParts } from '@stacks/ui-utils';
-import { useRecoilValue } from 'recoil';
-import { selectedAssetStore } from '@store/asset-search';
 import { useAssets } from '@common/hooks/use-assets';
-import { getTicker } from '@common/utils';
 import { Header } from '@components/header';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
+import { isSip10Transfer } from '@common/token-utils';
+import { useRevalidateApi } from '@common/hooks/use-revalidate-api';
 
 type Amount = number | '';
 
@@ -30,23 +28,20 @@ interface FormValues {
 const useValidateForm = ({ setAssetError }: { setAssetError: (error: string) => void }) => {
   const { currentNetwork, currentAccountStxAddress } = useWallet();
   const balances = useFetchBalances();
-  const selectedAsset = useRecoilValue(selectedAssetStore);
+  const { selectedAsset } = useSelectedAsset();
 
   return async ({ recipient, amount }: { recipient: string; amount: string | number }) => {
     const errors: FormikErrors<FormValues> = {};
     if (!validateAddressChain(recipient, currentNetwork)) {
       errors.recipient = 'The address is for the incorrect Stacks network';
-    }
-    if (!validateStacksAddress(recipient)) {
+    } else if (!validateStacksAddress(recipient)) {
       errors.recipient = 'The address you provided is not valid.';
-    }
-    if (recipient === currentAccountStxAddress) {
+    } else if (recipient === currentAccountStxAddress) {
       errors.recipient = 'Cannot send to yourself.';
     }
     if (amount === '') {
       errors.amount = 'You must specify an amount.';
-    }
-    if (amount <= 0) {
+    } else if (amount <= 0) {
       errors.amount = 'Must be more than zero.';
     }
     if (selectedAsset) {
@@ -60,30 +55,22 @@ const useValidateForm = ({ setAssetError }: { setAssetError: (error: string) => 
         }
       }
       if (selectedAsset.type === 'ft') {
-        const { address, contractName } = getAssetStringParts(selectedAsset.contractAddress);
-        if (amount.toString().includes('.')) {
-          errors.amount = 'When sending a fungible token, amount must be an integer.';
+        // we do a fetch when getting decimals to determine if the token implements the trait
+        // if it is false, we know that it does not conform
+        if (selectedAsset.meta?.ftTrait === false) {
+          setAssetError('This token does not conform to the fungible token trait (SIP 10)');
         }
-        try {
-          const rpcClient = new RPCClient(currentNetwork.url);
-          const contractInterface = await rpcClient.fetchContractInterface({
-            contractAddress: address,
+        // if it's exactly null, we are not sure
+        else if (selectedAsset.meta?.ftTrait === null) {
+          const { contractAddress, contractName } = selectedAsset;
+          const isSip10 = await isSip10Transfer({
+            contractAddress,
             contractName,
+            networkUrl: currentNetwork.url,
           });
-          const transferFunction = contractInterface.functions.find(func => {
-            const correctName = func.name === 'transfer';
-            const [recipientArg, amountArg] = func.args;
-            const correctRecipient =
-              recipientArg?.name === 'recipient' && recipientArg?.type === 'principal';
-            const correctAmount = amountArg?.name === 'amount' && amountArg?.type === 'uint128';
-            return correctName && correctRecipient && correctAmount && func.args.length === 2;
-          });
-          if (!transferFunction) {
-            setAssetError('The contract you specified does not have a `transfer` function.');
+          if ('error' in isSip10) {
+            setAssetError(isSip10.error);
           }
-        } catch (error) {
-          console.error(error);
-          setAssetError('Unable to fetch contract details.');
         }
       }
     } else {
@@ -106,15 +93,15 @@ function useSendForm({
   assetError?: string;
 }) {
   const balances = useFetchBalances();
-  const selectedAsset = useRecoilValue(selectedAssetStore);
+  const { selectedAsset, balance } = useSelectedAsset();
   const previous = usePrevious(selectedAsset);
   const assets = useAssets();
 
   useEffect(() => {
-    if (assets.length === 1 && ref.current) {
+    if (assets.value?.length === 1 && ref.current) {
       ref?.current?.focus?.();
     }
-  }, [ref, assets.length]);
+  }, [ref, assets.value?.length]);
 
   useEffect(() => {
     if (assetError && previous !== selectedAsset) {
@@ -133,33 +120,31 @@ function useSendForm({
       const stx = microStxToStx(balances.value.stx.balance);
       setFieldValue('amount', stx.toNumber());
     } else {
-      const token = Object.keys(balances.value.fungible_tokens).find(contract => {
-        return contract.startsWith(selectedAsset.contractAddress);
-      });
-      if (token) {
-        setFieldValue('amount', balances.value.fungible_tokens[token].balance);
-      }
+      setFieldValue('amount', balance);
     }
   };
 
   const handleOnKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const hasDecimals = typeof selectedAsset?.meta?.decimals === 'number';
     const { key } = event;
-    if (key.length > 1) {
-      return;
-    }
     const value = event.currentTarget.value;
-    // no leading zeros
-    if (key === '0' && value.length === 0) return event.preventDefault();
-    // only allow decimal if STX
+    // leading zeros
+    if (
+      selectedAsset?.type !== 'stx' &&
+      // if no leading 0 of we don't know the status of decimals
+      ((key === '0' && value.length === 0 && !hasDecimals) ||
+        // only one leading zero allowed
+        (key === '0' && value[0] === '0'))
+    )
+      return event.preventDefault();
+    // decimals check
     if (key === '.') {
-      if (selectedAsset?.type !== 'stx') return event.preventDefault();
+      if (!hasDecimals && selectedAsset?.type !== 'stx') return event.preventDefault();
       const hasPeriod = value.includes('.');
+      // only one period allowed
       if (hasPeriod && key === '.') {
         return event.preventDefault();
       }
-    }
-    if (!/^[0-9]|\.+$/.test(key)) {
-      return event.preventDefault();
     }
   };
 
@@ -180,22 +165,18 @@ const Form = ({
   setFieldValue,
   setAssetError,
   setSubmitting,
+  setErrors,
 }: {
   assetError: string | undefined;
   setAssetError: (error: string | undefined) => void;
 } & FormikProps<FormValues>) => {
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const revalidate = useRevalidateApi();
   const ref = useRef();
 
   const assets = useAssets();
   const balances = useFetchBalances();
-  const selectedAsset = useRecoilValue(selectedAssetStore);
-
-  const isStx = selectedAsset?.type === 'stx';
-  const placeholder = !selectedAsset
-    ? 'Select an asset'
-    : isStx
-    ? '0.000000 STX'
-    : `0 ${getTicker(selectedAsset.name)}`;
+  const { selectedAsset, placeholder } = useSelectedAsset();
 
   const doChangeScreen = useDoChangeScreen();
 
@@ -207,6 +188,12 @@ const Form = ({
     isSubmitting,
     setSubmitting,
   });
+
+  const onChange = (e: React.ChangeEvent<any>) => {
+    setErrors({});
+    handleChange(e);
+    setHasSubmitted(false);
+  };
   return (
     <>
       <PopupContainer
@@ -240,11 +227,11 @@ const Form = ({
                   width="100%"
                   placeholder={placeholder}
                   min="0"
-                  autoFocus={assets.length === 1}
+                  autoFocus={assets.value?.length === 1}
                   ref={ref as any}
                   value={values.amount}
                   onKeyDown={handleOnKeyDown}
-                  onChange={handleChange}
+                  onChange={onChange}
                   autoComplete="off"
                   name="amount"
                 />
@@ -263,7 +250,7 @@ const Form = ({
               </Box>
             </InputGroup>
 
-            {errors.amount && (
+            {hasSubmitted && errors.amount && (
               <ErrorLabel>
                 <Text textStyle="caption">{errors.amount}</Text>
               </ErrorLabel>
@@ -287,28 +274,40 @@ const Form = ({
                 width="100%"
                 name="recipient"
                 value={values.recipient}
-                onChange={handleChange}
+                onChange={onChange}
                 placeholder="Enter an address"
                 autoComplete="off"
               />
             </InputGroup>
-            {errors.recipient ? (
+            {hasSubmitted && errors.recipient ? (
               <ErrorLabel>
                 <Text textStyle="caption">{errors.recipient}</Text>
               </ErrorLabel>
             ) : null}
           </Box>
+
           <Box mt="auto">
-            {assetError ? (
+            {hasSubmitted && assetError ? (
               <ErrorLabel mb="base">
                 <Text textStyle="caption">{assetError}</Text>
               </ErrorLabel>
             ) : null}
             <Button
               width="100%"
-              onClick={handleSubmit}
+              onClick={async () => {
+                await revalidate(); // we want up to date data
+                handleSubmit();
+                setHasSubmitted(true);
+              }}
               isLoading={!assetError && (isValidating || isSubmitting)}
-              isDisabled={!!(assetError || isValidating || isSubmitting)}
+              isDisabled={
+                !!(
+                  assetError ||
+                  (hasSubmitted && Object.keys(errors).length) ||
+                  isValidating ||
+                  isSubmitting
+                )
+              }
             >
               Preview
             </Button>
@@ -333,16 +332,17 @@ export const PopupSend: React.FC = () => {
     setAssetError,
   });
 
-  return assets.length ? (
+  return assets?.value?.length ? (
     <Formik
       initialValues={initialValues}
       onSubmit={() => {
         if (!assetError) {
           setShowing(true);
-        } else {
         }
       }}
       validateOnChange={false}
+      validateOnBlur={false}
+      validateOnMount={false}
       validate={onValidate}
     >
       {props => (

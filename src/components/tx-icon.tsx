@@ -6,7 +6,6 @@ import {
   IconLayoutList,
   IconMoodSad,
   IconPlus,
-  IconUser,
 } from '@tabler/icons';
 import { Box, BoxProps, Circle, color, DynamicColorCircle, StxNexus } from '@stacks/ui';
 import FunctionIcon from 'mdi-react/FunctionIcon';
@@ -79,7 +78,7 @@ const ItemIconWrapper: React.FC<
     transaction: Tx;
   } & BoxProps
 > = ({ icon: Icon, transaction, ...rest }) => (
-  <Circle position="relative" size="42px" bg={color('invert')} color={color('bg')} {...rest}>
+  <Circle position="relative" size="36px" bg={color('invert')} color={color('bg')} {...rest}>
     <Box size="20px" as={Icon} />
     <TypeIcon transaction={transaction} />
   </Circle>
@@ -90,13 +89,24 @@ export const TxItemIcon: React.FC<{ transaction: Tx }> = ({ transaction, ...rest
     case 'coinbase':
       return <ItemIconWrapper icon={IconLayoutList} transaction={transaction} {...rest} />;
     case 'smart_contract':
-      return <ItemIconWrapper icon={IconUser} transaction={transaction} {...rest} />;
+      return (
+        <DynamicColorCircle
+          position="relative"
+          string={`${transaction.smart_contract.contract_id}`}
+          backgroundSize="200%"
+          size="36px"
+          {...rest}
+        >
+          <TypeIcon transaction={transaction} />
+        </DynamicColorCircle>
+      );
     case 'contract_call':
       return (
         <DynamicColorCircle
           position="relative"
           string={`${transaction.contract_call.contract_id}::${transaction.contract_call.function_name}`}
           backgroundSize="200%"
+          size="36px"
           {...rest}
         >
           <TypeIcon transaction={transaction} />

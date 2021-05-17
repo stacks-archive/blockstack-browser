@@ -1,44 +1,36 @@
-import React from 'react';
-import { Text, Box, BoxProps, Stack, StackProps } from '@stacks/ui';
-import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { AssetRow } from '../asset-row';
+import React, { memo } from 'react';
+import type { StackProps } from '@stacks/ui';
+
 import { getAssetStringParts } from '@stacks/ui-utils';
-import { getTicker } from '@common/utils';
+import { useFetchAccountData } from '@common/hooks/use-account-info';
+import { AssetItem } from '@components/asset-item';
+import { Stack } from '@stacks/ui';
 
-const NoCollectibles: React.FC<BoxProps> = props => (
-  <Box width="100%" py="extra-loose" my="extra-loose" textAlign="center" {...props}>
-    <Text fontSize={2} display="block" mb="extra-tight" color="ink.600" fontWeight="500">
-      You don't own any collectibles.
-    </Text>
-  </Box>
-);
+export const CollectibleAssets = memo((props: StackProps) => {
+  const accountData = useFetchAccountData();
+  if (!accountData.value) return null;
 
-interface CollectibleAssetProps extends StackProps {
-  balances: AddressBalanceResponse;
-}
-
-export const CollectibleAssets: React.FC<CollectibleAssetProps> = ({ balances, ...props }) => {
+  const balances = accountData.value.balances;
   const noCollectibles = Object.keys(balances.non_fungible_tokens).length === 0;
-  if (noCollectibles) {
-    return <NoCollectibles {...props} />;
-  }
 
-  const collectibles = Object.keys(balances.non_fungible_tokens).map(key => {
-    const collectible = balances.non_fungible_tokens[key];
-    const { assetName } = getAssetStringParts(key);
-    return (
-      <AssetRow
-        name={key}
-        friendlyName={assetName}
-        key={key}
-        value={collectible.count}
-        subtitle={getTicker(assetName)}
-      />
-    );
-  });
+  if (noCollectibles) return null;
+  const keys = Object.keys(balances.non_fungible_tokens);
+
   return (
-    <Stack pt="base" spacing="base" {...props}>
-      {collectibles}
+    <Stack {...props}>
+      {keys.map(key => {
+        const collectible = balances.non_fungible_tokens[key];
+        const { assetName, contractName } = getAssetStringParts(key);
+        return (
+          <AssetItem
+            amount={collectible.count}
+            avatar={key}
+            title={assetName}
+            caption={contractName}
+            key={key}
+          />
+        );
+      })}
     </Stack>
   );
-};
+});

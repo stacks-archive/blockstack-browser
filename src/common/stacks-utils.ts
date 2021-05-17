@@ -60,14 +60,30 @@ export const stacksValue = ({
   const stxAmount = fixedDecimals
     ? parseFloat(stacks.toFormat(STX_DECIMALS))
     : stacks.decimalPlaces(STX_DECIMALS).toNumber();
-  return `${abbreviate && stxAmount > 10000 ? abbreviateNumber(stxAmount) : stxAmount}${
-    withTicker ? ' STX' : ''
-  }`;
+  return `${
+    abbreviate && stxAmount > 10000
+      ? abbreviateNumber(stxAmount)
+      : stxAmount.toLocaleString('en-US', {
+          maximumFractionDigits: fixedDecimals ? STX_DECIMALS : 3,
+        })
+  }${withTicker ? ' STX' : ''}`;
 };
 
 export const microStxToStx = (mStx: number | string) => {
   const microStacks = new BigNumber(mStx);
   return microStacks.shiftedBy(-STX_DECIMALS);
+};
+
+export const ftDecimals = (value: number | string, decimals: number) => {
+  const amount = new BigNumber(value);
+  return amount
+    .shiftedBy(-decimals)
+    .toNumber()
+    .toLocaleString('en-US', { maximumFractionDigits: decimals });
+};
+export const ftUnshiftDecimals = (value: number | string, decimals: number) => {
+  const amount = new BigNumber(value);
+  return amount.shiftedBy(decimals).toNumber();
 };
 
 export const stxToMicroStx = (stx: number | string) => {

@@ -17,12 +17,12 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { TransactionError, TransactionErrorReason } from './transaction-error';
 import { AuthType } from '@stacks/transactions';
 import BigNumber from 'bignumber.js';
-import { Caption, Text, Title } from '@components/typography';
+import { Caption, Title } from '@components/typography';
 import { useOrigin } from '@common/hooks/use-origin';
 import { SpaceBetween } from '@components/space-between';
-import { useCurrentNetwork } from '@common/hooks/use-current-network';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { PopupHeader } from '@components/transactions/popup-header';
+import { NetworkRowItem } from '@components/network-row-item';
 
 export const TxLoading: React.FC = () => {
   return (
@@ -148,7 +148,6 @@ function ActionBar(props: StackProps) {
     await doSubmitPendingTransaction();
     setIsSubmitting(false);
   }, [setIsSubmitting, doSubmitPendingTransaction]);
-  const { isTestnet } = useCurrentNetwork();
   const { setShowNetworks } = useDrawers();
   return (
     <Stack mt="auto" pt="loose" spacing="loose" bg={color('bg')} {...props}>
@@ -161,29 +160,7 @@ function ActionBar(props: StackProps) {
         </SpaceBetween>
         <SpaceBetween>
           <Caption>Network</Caption>
-          <Stack
-            alignItems="center"
-            isInline
-            spacing="4px"
-            color={isTestnet ? color('feedback-alert') : color('text-caption')}
-            onClick={() => setShowNetworks(true)}
-            _hover={{
-              cursor: 'pointer',
-              opacity: 0.7,
-            }}
-          >
-            {isTestnet && (
-              <Text
-                transform="translateY(1px)"
-                display="block"
-                fontSize="0.65rem"
-                color="currentColor"
-              >
-                ○
-              </Text>
-            )}
-            <Caption color="currentColor">{isTestnet ? 'Testnet' : 'Mainnet'}</Caption>
-          </Stack>
+          <NetworkRowItem onClick={() => setShowNetworks(true)} />
         </SpaceBetween>
       </Stack>
       <Button

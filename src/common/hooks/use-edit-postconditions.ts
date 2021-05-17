@@ -1,27 +1,29 @@
 import { useSetRecoilState } from 'recoil';
 import { currentPostConditionIndexStore, postConditionsStore } from '@store/transaction';
-import { Asset, selectedAssetStore } from '@store/asset-search';
+import { selectedAssetIdState } from '@store/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useCallback } from 'react';
 import { addressToString, PostCondition, PostConditionType } from '@stacks/transactions';
 import { toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';
 import { ScreenPaths } from '@store/types';
+import { AssetWithMeta } from '@store/tokens';
 
 function useEditPostConditions({ pc, index }: { pc: PostCondition; index: number }) {
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
-  const setSelectedAsset = useSetRecoilState(selectedAssetStore);
+  const setSelectedAsset = useSetRecoilState(selectedAssetIdState);
   const balancesLoadable = useFetchBalances();
   const doChangeScreen = useDoChangeScreen();
   const balancesJSON = JSON.stringify(balancesLoadable.value);
   return useCallback(() => {
     setCurrentPostConditionIndex(index);
-    let asset: Asset | undefined = undefined;
+    let asset: AssetWithMeta | undefined = undefined;
     const balances = JSON.parse(balancesJSON);
     if (pc.conditionType === PostConditionType.STX) {
       asset = {
         name: 'Stacks Token',
         contractAddress: '',
+        contractName: '',
         balance: toHumanReadableStx(balances?.stx.balance || '0'),
         subtitle: '',
         type: 'stx',
@@ -36,11 +38,12 @@ function useEditPostConditions({ pc, index }: { pc: PostCondition; index: number
         type: 'ft',
         subtitle: `${truncateMiddle(addressToString(assetInfo.address))}.${assetInfo.contractName}`,
         contractAddress: address,
+        contractName: assetInfo.contractName.content,
         name: assetInfo.assetName.content,
         balance,
-      };
+      } as AssetWithMeta;
     }
-    setSelectedAsset(asset);
+    setSelectedAsset(asset?.name);
     doChangeScreen(ScreenPaths.EDIT_POST_CONDITIONS);
   }, [balancesJSON, setCurrentPostConditionIndex, doChangeScreen, index, pc, setSelectedAsset]);
 }

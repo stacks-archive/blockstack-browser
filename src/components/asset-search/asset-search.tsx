@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, Flex, Input } from '@stacks/ui';
 import { useCombobox } from 'downshift';
-import { useFetchBalances } from '@common/hooks/use-account-info';
-import { Asset, searchInputStore, selectedAssetStore } from '@store/asset-search';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { searchInputStore } from '@store/asset-search';
+import { useRecoilState } from 'recoil';
 import { LoadingRectangle } from '../loading-rectangle';
 import { AssetResult } from './asset-search-result';
 import { SelectedAsset } from './selected-asset';
 import { useAssets } from '@common/hooks/use-assets';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
+import { AssetWithMeta } from '@store/tokens';
 
 export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus, ...rest }) => {
   const assets = useAssets();
 
-  const selectedAsset = useRecoilValue(selectedAssetStore);
-  const setSelectedAsset = useSetRecoilState(selectedAssetStore);
+  const { selectedAsset, handleUpdateSelectedAsset } = useSelectedAsset();
+
   const [searchInput, setSearchInput] = useRecoilState(searchInputStore);
-  const [searchResults, setSearchResults] = useState<Asset[]>(assets);
+  const [searchResults, setSearchResults] = useState<AssetWithMeta[]>(assets.value || []);
 
   const {
     isOpen,
@@ -36,17 +37,18 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
       return item?.contractAddress || item?.name || '';
     },
     onSelectedItemChange: ({ selectedItem }) => {
-      setSelectedAsset(selectedItem || undefined);
+      handleUpdateSelectedAsset(selectedItem || undefined);
     },
   });
 
   useEffect(() => {
-    setSearchResults(assets);
-  }, [assets]);
+    assets.value && setSearchResults(assets.value);
+  }, [assets, searchResults]);
 
   const labelRef = React.useRef(null);
   const comboRef = React.useRef(null);
 
+  if (assets.isLoading) return null;
   const results = searchResults.map((asset, index) => {
     return (
       <AssetResult
@@ -56,7 +58,7 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
         highlighted={highlightedIndex === index}
         {...getItemProps({ item: asset, index })}
         onClick={() => {
-          setSelectedAsset(asset);
+          handleUpdateSelectedAsset(asset);
         }}
       />
     );
@@ -83,9 +85,12 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
           onChange={(e: React.FormEvent<HTMLInputElement>) => {
             const { value } = e.currentTarget;
             setSearchInput(value);
-            setSearchResults(
-              assets.filter(item => item.name.toLowerCase().includes(value.toLowerCase() || ''))
-            );
+            assets.value &&
+              setSearchResults(
+                assets.value.filter(item =>
+                  item.name.toLowerCase().includes(value.toLowerCase() || '')
+                )
+              );
           }}
           width="100%"
           placeholder="Search for an asset"
@@ -115,21 +120,20 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
 };
 
 export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus, ...rest }) => {
-  const balancesLoadable = useFetchBalances();
-  const [selectedAsset, setSelectedAsset] = useRecoilState(selectedAssetStore);
+  const { selectedAsset, handleUpdateSelectedAsset } = useSelectedAsset();
   const assets = useAssets();
 
   useEffect(() => {
-    if (assets.length === 1 && !selectedAsset) {
-      setSelectedAsset(assets[0]);
+    if (assets.value && assets.value.length === 1 && !selectedAsset) {
+      handleUpdateSelectedAsset(assets.value[0]);
     }
-  }, [setSelectedAsset, assets, selectedAsset]);
+  }, [handleUpdateSelectedAsset, assets, selectedAsset]);
 
-  if (selectedAsset) {
-    return <SelectedAsset hideArrow={assets.length === 1} {...rest} />;
+  if (assets.value && selectedAsset) {
+    return <SelectedAsset hideArrow={assets?.value.length === 1} {...rest} />;
   }
 
-  if (balancesLoadable.state === 'loading' && !balancesLoadable.value) {
+  if (assets.isLoading) {
     return (
       <Box {...rest}>
         <LoadingRectangle width="80%" height="32px" />

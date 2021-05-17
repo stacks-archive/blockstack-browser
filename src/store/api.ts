@@ -10,7 +10,7 @@ import BN from 'bn.js';
 import { fetchFromSidecar } from '@common/api/fetch';
 import { fetcher } from '@common/wrapped-fetch';
 
-const DEFAULT_POLL_RATE = 10000;
+const DEFAULT_POLL_RATE = 8000;
 
 export const apiRevalidation = atom({
   key: 'api.revalidation',
@@ -42,6 +42,7 @@ export const accountInfoStore = selector<{ balance: BN; nonce: number }>({
   key: 'wallet.account-info',
   get: async ({ get }) => {
     get(apiRevalidation);
+    get(intervalStore(DEFAULT_POLL_RATE));
     const address = get(currentAccountStxAddressStore);
     if (!address) {
       throw new Error('Cannot get account info when logged out.');
@@ -88,36 +89,63 @@ export const latestBlockHeightStore = selector({
   },
 });
 
-export const correctNonceStore = selector({
+export const correctNonceState = selector({
   key: 'api.correct-nonce',
   get: ({ get }) => {
     get(apiRevalidation);
 
-    const { account, lastTx, accountData, address } = get(
+    const { account, lastConfirmedTx, accountData, address } = get(
       waitForAll({
         account: accountInfoStore,
-        lastTx: latestNonceStore,
+        lastConfirmedTx: latestNonceStore,
         accountData: accountDataStore,
         address: currentAccountStxAddressStore,
       })
     );
 
-    // pending transactions sent by current address
+    // most recent pending transactions sent by current address
     const latestPendingTx = accountData?.pendingTransactions?.filter(
       tx => tx.sender_address === address
     )?.[0];
-    // see if they have any pending or confirmed transactions
-    const hasTransactions = !!latestPendingTx || lastTx.blockHeight > 0;
 
-    const latestNonce = hasTransactions
-      ? // if they do, use the greater of the two
-        latestPendingTx && latestPendingTx.nonce > lastTx.nonce
-        ? latestPendingTx.nonce + 1
-        : lastTx.nonce + 1
-      : // if they don't, default to 0
-        0;
+    // oldest pending transactions sent by current address
+    const oldestPendingTx = accountData?.pendingTransactions?.length
+      ? accountData?.pendingTransactions?.filter(tx => tx.sender_address === address)?.[
+          accountData?.pendingTransactions?.length - 1
+        ]
+      : undefined;
 
-    return latestNonce > account.nonce ? latestNonce : account.nonce;
+    // they have any pending or confirmed transactions
+    const hasTransactions = !!latestPendingTx || !!lastConfirmedTx;
+
+    if (!hasTransactions || !account || account.nonce === 0) return 0;
+
+    // if the oldest pending tx is more than 1 above the account nonce, it's likely there was
+    // a race condition such that the client didn't have the most up to date pending tx
+    // if this is true, we should rely on the account nonce
+    const hasNonceMismatch = oldestPendingTx
+      ? oldestPendingTx.nonce > lastConfirmedTx.nonce + 1
+      : false;
+
+    // if they do have a miss match, let's use the account nonce
+    if (hasNonceMismatch) return account.nonce;
+
+    // otherwise, without micro-blocks, the account nonce will likely be out of date compared
+    // and not be incremented based on pending transactions
+    const pendingNonce = (latestPendingTx && latestPendingTx.nonce) || 0;
+    const usePendingNonce = pendingNonce > lastConfirmedTx.nonce;
+
+    // if they have a last confirmed transaction (but no pending)
+    // and it's greater than account nonce, we should use that one
+    // else we will use the account nonce
+    const useLastTxNonce = hasTransactions && lastConfirmedTx.nonce + 1 > account.nonce;
+    const lastConfirmedNonce = useLastTxNonce ? lastConfirmedTx.nonce + 1 : account.nonce;
+
+    return usePendingNonce
+      ? // if pending nonce is greater, use that
+        pendingNonce + 1
+      : // else we use the last confirmed nonce
+        lastConfirmedNonce;
   },
 });
 

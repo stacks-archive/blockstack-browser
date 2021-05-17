@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import packageJson from '../../package.json';
 import { ThemeProvider, ColorModeProvider } from '@stacks/ui';
 import { RecoilRoot } from 'recoil';
+
 import { theme } from '@common/theme';
 import { Routes } from '@components/routes';
 import { HashRouter as Router } from 'react-router-dom';

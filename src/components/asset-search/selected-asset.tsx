@@ -1,47 +1,31 @@
-import { useFetchBalances } from '@common/hooks/use-account-info';
 import { AssetAvatar } from '@components/stx-avatar';
 import { Box, ChevronIcon, Text, color, Stack, StackProps } from '@stacks/ui';
-import { stacksValue } from '@common/stacks-utils';
-import { selectedAssetStore, searchInputStore } from '@store/asset-search';
-import BigNumber from 'bignumber.js';
-import React, { useMemo } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+
+import { searchInputStore } from '@store/asset-search';
+
+import React from 'react';
+import { useSetRecoilState } from 'recoil';
 import { Caption } from '@components/typography';
-import { getTicker } from '@common/utils';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
 export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
   hideArrow,
   ...rest
 }) => {
-  const balancesLoadable = useFetchBalances();
-  const selectedAsset = useRecoilValue(selectedAssetStore);
-  const setSelectedAsset = useSetRecoilState(selectedAssetStore);
+  const { selectedAsset, balance, ticker, name, handleUpdateSelectedAsset } = useSelectedAsset();
   const setSearchInput = useSetRecoilState(searchInputStore);
-
-  const balance = useMemo<string | undefined>(() => {
-    const balances = balancesLoadable.value;
-    if (!selectedAsset || !balances) return;
-    if (selectedAsset.type === 'stx') {
-      return stacksValue({ value: balances.stx.balance });
-    } else {
-      const token = Object.keys(balances.fungible_tokens).find(contract => {
-        return contract.startsWith(selectedAsset.contractAddress);
-      });
-      if (token) {
-        const balanceBN = new BigNumber(balances.fungible_tokens[token].balance);
-        return balanceBN.toFormat();
-      }
-    }
-    return;
-  }, [selectedAsset, balancesLoadable]);
 
   if (!selectedAsset) {
     return null;
   }
-  const { name, contractAddress } = selectedAsset;
-
+  const { contractAddress } = selectedAsset;
   const isStx = name === 'Stacks Token';
-  const ticker = isStx ? 'STX' : getTicker(name);
+
+  const handleClear = () => {
+    setSearchInput('');
+    handleUpdateSelectedAsset(undefined);
+  };
+
   return (
     <Stack spacing="tight" flexDirection="column" {...rest}>
       <Text display="block" fontSize={1} fontWeight="500" mb="tight">
@@ -57,8 +41,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
         userSelect="none"
         onClick={() => {
           if (!hideArrow) {
-            setSearchInput('');
-            setSelectedAsset(undefined);
+            handleClear();
           }
         }}
       >
@@ -70,7 +53,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
             size="36px"
             color="white"
           >
-            {name[0]}
+            {name?.[0]}
           </AssetAvatar>
 
           <Stack flexGrow={1}>
@@ -88,8 +71,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
                 cursor="pointer"
                 opacity={0.7}
                 onClick={() => {
-                  setSearchInput('');
-                  setSelectedAsset(undefined);
+                  handleClear();
                 }}
               />
             </Box>
@@ -98,7 +80,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = ({
       </Box>
       {balance && (
         <Caption variant="c2">
-          Balance: {balance} {!isStx && ticker}
+          Balance: {balance} {ticker}
         </Caption>
       )}
     </Stack>

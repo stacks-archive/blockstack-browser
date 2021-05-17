@@ -7,7 +7,6 @@ import {
   postConditionsStore,
   showTxDetails,
 } from '@store/transaction';
-import { selectedAssetStore } from '@store/asset-search';
 import { PostConditionComponent } from './single';
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';
@@ -15,6 +14,7 @@ import { IconLock } from '@tabler/icons';
 import { Body } from '@components/typography';
 import { TransactionEventCard } from '@components/transactions/event-card';
 import { truncateMiddle } from '@stacks/ui-utils';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
 function usePostconditionsState() {
   const showDetails = useRecoilValue(showTxDetails);
@@ -22,7 +22,7 @@ function usePostconditionsState() {
   const setShowDetails = useSetRecoilState(showTxDetails);
   const postConditions = useRecoilValue(postConditionsStore);
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
-  const setSelectedAsset = useSetRecoilState(selectedAssetStore);
+  const { handleUpdateSelectedAsset } = useSelectedAsset();
 
   return {
     showDetails,
@@ -30,7 +30,7 @@ function usePostconditionsState() {
     setShowDetails,
     postConditions,
     setCurrentPostConditionIndex,
-    setSelectedAsset,
+    handleUpdateSelectedAsset,
   };
 }
 

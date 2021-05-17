@@ -10,7 +10,6 @@ import {
 } from '@store/transaction';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/types';
-import { selectedAssetStore } from '@store/asset-search';
 import { AssetSearch } from '@components/asset-search/asset-search';
 import { object, string, number } from 'yup';
 import {
@@ -27,6 +26,7 @@ import { getAssetStringParts } from '@stacks/ui-utils';
 import BN from 'bn.js';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Header } from '@components/header';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
 type PostConditionCode = FungibleConditionCode | NonFungibleConditionCode;
 
@@ -58,7 +58,7 @@ export const EditPostConditions: React.FC = () => {
   const postConditions = useRecoilValue(postConditionsStore);
   const currentPostCondition = useRecoilValue(currentPostConditionStore);
   const currentPostConditionIndex = useRecoilValue(currentPostConditionIndexStore);
-  const selectedAsset = useRecoilValue(selectedAssetStore);
+  const { selectedAsset } = useSelectedAsset();
   const { currentAccountStxAddress } = useWallet();
   const doChangeScreen = useDoChangeScreen();
 

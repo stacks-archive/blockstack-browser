@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
 import { AssetRow } from '@components/asset-row';
 import type { StackProps } from '@stacks/ui';
-import { Asset } from '@store/asset-search';
+import { AssetWithMeta } from '@store/tokens';
 
 interface AssetResultProps extends StackProps {
-  asset: Asset;
+  asset: AssetWithMeta;
   highlighted: boolean;
   index: number;
 }
@@ -16,11 +16,7 @@ export const AssetResult = forwardRef<HTMLDivElement, AssetResultProps>((props, 
     <AssetRow
       ref={ref}
       key={`${asset.contractAddress}.${asset.type}`}
-      name={asset.name}
-      contractAddress={asset.contractAddress || asset.name}
-      subtitle={asset.subtitle}
-      friendlyName={asset.name}
-      value={asset.balance}
+      asset={asset}
       backgroundColor={highlighted ? 'ink.150' : 'white'}
       p="base-tight"
       {...rest}

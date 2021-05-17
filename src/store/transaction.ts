@@ -21,7 +21,7 @@ import { atom, selector, selectorFamily } from 'recoil';
 import { generateTransaction } from '@common/transaction-utils';
 import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
 import { currentNetworkStore, rpcClientStore, stacksNetworkStore } from '@store/networks';
-import { accountBalancesStore, correctNonceStore } from './api';
+import { accountBalancesStore, correctNonceState } from './api';
 import { selectedAssetStore } from './asset-search';
 import BN from 'bn.js';
 import { stxToMicroStx } from '@common/stacks-utils';
@@ -178,7 +178,7 @@ export const signedTransactionStore = selector({
       console.error('Unable to get signed transaction - no pending transaction found.');
       return undefined;
     }
-    const nonce = get(correctNonceStore);
+    const nonce = get(correctNonceState);
     const tx = await generateTransaction({
       senderKey: account.stxPrivateKey,
       nonce,

@@ -3,10 +3,10 @@ import type {
   Transaction,
   MempoolTransaction,
   TransactionEventFungibleAsset,
+  CoinbaseTransaction,
 } from '@blockstack/stacks-blockchain-api-types';
-import { Box, BoxProps, color, Stack, transition } from '@stacks/ui';
-import { getTxTypeName, isPendingTx, truncateMiddle } from '@stacks/ui-utils';
-import { useHover } from 'use-events';
+import { Box, BoxProps, color, Stack } from '@stacks/ui';
+import { getContractName, isPendingTx, truncateMiddle } from '@stacks/ui-utils';
 import BigNumber from 'bignumber.js';
 
 import { stacksValue } from '@common/stacks-utils';
@@ -16,6 +16,8 @@ import { Caption, Title } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';
 import { TxItemIcon } from '@components/tx-icon';
 import { Tooltip } from '@components/tooltip';
+import { useCurrentAccount } from '@common/hooks/use-current-account';
+import { usePressable } from '@components/item-hover';
 
 type Tx = MempoolTransaction | Transaction;
 
@@ -27,9 +29,12 @@ const getAssetTransfer = (tx: Tx): TransactionEventFungibleAsset | null => {
   return transfer;
 };
 
-const getTxValue = (tx: Tx): number | string | null => {
+const getTxValue = (tx: Tx, isOriginator: boolean): number | string | null => {
   if (tx.tx_type === 'token_transfer') {
-    return stacksValue({ value: tx.token_transfer.amount });
+    return `${isOriginator ? '-' : ''}${stacksValue({
+      value: tx.token_transfer.amount,
+      withTicker: false,
+    })}`;
   }
   const transfer = getAssetTransfer(tx);
   if (transfer) return new BigNumber(transfer.asset.amount).toFormat();
@@ -84,12 +89,30 @@ const Status: React.FC<{ transaction: Tx } & BoxProps> = ({ transaction, ...rest
 };
 
 export const TxItem: React.FC<TxItemProps & BoxProps> = ({ transaction, ...rest }) => {
-  const [isHovered, bind] = useHover();
+  const [component, bind] = usePressable(true);
   const { handleOpenTxLink } = useExplorerLink();
+  const { stxAddress } = useCurrentAccount();
 
   if (!transaction) {
     return null;
   }
+
+  const isOriginator = transaction.sender_address === stxAddress;
+
+  const getTxTitle = (tx: Tx) => {
+    switch (tx.tx_type) {
+      case 'token_transfer':
+        return 'Stacks Token';
+      case 'contract_call':
+        return tx.contract_call.function_name;
+      case 'smart_contract':
+        return getContractName(tx.smart_contract.contract_id);
+      case 'coinbase':
+        return `Coinbase ${(tx as CoinbaseTransaction).block_height}`;
+      case 'poison_microblock':
+        return 'Poison Microblock';
+    }
+  };
 
   return (
     <Box
@@ -99,37 +122,27 @@ export const TxItem: React.FC<TxItemProps & BoxProps> = ({ transaction, ...rest 
       {...bind}
       {...rest}
     >
-      <Stack
-        py="tight"
-        alignItems="center"
-        spacing="base-loose"
-        isInline
-        position="relative"
-        zIndex={2}
-      >
+      <Stack alignItems="center" spacing="base-loose" isInline position="relative" zIndex={2}>
         <TxItemIcon transaction={transaction} />
         <Stack flexGrow={1} spacing="base-tight">
           <SpaceBetween>
-            <Title as="h3">{getTxTypeName(transaction as any)}</Title>
-            <Title as="h3">{getTxValue(transaction)}</Title>
+            <Title as="h3">{getTxTitle(transaction as any)}</Title>
+            <Title as="h3">{getTxValue(transaction, isOriginator)}</Title>
           </SpaceBetween>
           <Stack isInline>
             <Status transaction={transaction} />
+            {transaction.tx_type === 'token_transfer' ? (
+              isOriginator ? (
+                <Caption variant="c2">Sent</Caption>
+              ) : (
+                <Caption variant="c2">Received</Caption>
+              )
+            ) : null}
             <Caption variant="c2">{getTxCaption(transaction)}</Caption>
           </Stack>
         </Stack>
       </Stack>
-      <Box
-        opacity={isHovered ? 1 : 0}
-        transition={transition}
-        borderRadius="8px"
-        position="absolute"
-        size="calc(100% + 24px)"
-        left="-12px"
-        top="-12px"
-        bg={color('bg-4')}
-        zIndex={1}
-      />
+      {component}
     </Box>
   );
 };

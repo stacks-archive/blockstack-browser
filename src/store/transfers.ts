@@ -1,10 +1,8 @@
-// A recoil selector used for creating internal transactions
 import { selector } from 'recoil';
 import { selectedAssetStore } from '@store/asset-search';
 import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
 import { stacksNetworkStore } from '@store/networks';
-import { accountBalancesStore, correctNonceStore } from '@store/api';
-import { getAssetStringParts } from '@stacks/ui-utils';
+import { accountBalancesStore, correctNonceState } from '@store/api';
 
 export const makeFungibleTokenTransferState = selector({
   key: 'transaction.internal-transaction-asset',
@@ -14,13 +12,9 @@ export const makeFungibleTokenTransferState = selector({
     const network = get(stacksNetworkStore);
     const balances = get(accountBalancesStore);
     const stxAddress = get(currentAccountStxAddressStore);
-    const nonce = get(correctNonceStore);
+    const nonce = get(correctNonceState);
     if (asset && currentAccount && stxAddress) {
-      const {
-        address: contractAddress,
-        contractName,
-        assetName,
-      } = getAssetStringParts(asset.contractAddress);
+      const { contractName, contractAddress, name: assetName } = asset;
       return {
         asset,
         stxAddress,
@@ -32,6 +26,8 @@ export const makeFungibleTokenTransferState = selector({
         contractAddress,
         contractName,
       };
+    } else {
+      console.error('[makeFungibleTokenTransferState]: malformed state');
     }
 
     return;

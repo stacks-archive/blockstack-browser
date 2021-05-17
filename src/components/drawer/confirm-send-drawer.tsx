@@ -1,19 +1,19 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Stack, StackProps } from '@stacks/ui';
-import { Caption, Text } from '@components/typography';
-import { Tooltip } from '@components/tooltip';
+import { Button, color, Flex, Stack, StackProps } from '@stacks/ui';
+import { Caption } from '@components/typography';
 import { BaseDrawer, BaseDrawerProps } from './index';
 import { StacksTransaction } from '@stacks/transactions';
 import { stacksValue } from '@common/stacks-utils';
 import { useHandleSubmitTransaction } from '@common/hooks/use-submit-stx-transaction';
-import { LoadingRectangle } from '@components/loading-rectangle';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { useLoading } from '@common/hooks/use-loading';
 
 import { useMakeTransferEffect } from '@common/hooks/use-make-stx-transfer';
-import { useRecoilValue } from 'recoil';
-import { selectedAssetStore } from '@store/asset-search';
-import { getTicker } from '@common/utils';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
+import { TransactionEventCard } from '@components/transactions/event-card';
+import { useCurrentAccount } from '@common/hooks/use-current-account';
+import { SpaceBetween } from '@components/space-between';
+import { NetworkRowItem } from '@components/network-row-item';
 
 interface ConfirmSendDrawerProps extends BaseDrawerProps {
   amount: number;
@@ -30,43 +30,31 @@ const TransactionDetails: React.FC<
     recipient: string;
   } & StackProps
 > = ({ amount, nonce, fee, recipient, ...rest }) => {
-  const asset = useRecoilValue(selectedAssetStore);
-  const ticker = asset && asset.type !== 'stx' ? getTicker(asset.name) : 'STX';
+  const { ticker } = useSelectedAsset();
+  const { stxAddress } = useCurrentAccount();
+  const { selectedAsset } = useSelectedAsset();
   return (
-    <Stack spacing="loose" {...rest}>
-      <Stack width="100%" px="extra-loose">
-        <Caption>Amount</Caption>
-        <Text>
-          {amount} {ticker}
-        </Text>
-      </Stack>
-      <Stack width="100%" px="extra-loose">
-        <Caption>Recipient</Caption>
-        <Tooltip label={recipient}>
-          <Text>{truncateMiddle(recipient, 12)}</Text>
-        </Tooltip>
-      </Stack>
-      <Stack width="100%" px="extra-loose">
-        <Caption>Nonce</Caption>
-        {typeof nonce !== 'undefined' ? (
-          <Text>{String(nonce)}</Text>
-        ) : (
-          <LoadingRectangle height="14px" width="80px" />
-        )}
-      </Stack>
-      <Stack width="100%" px="extra-loose">
-        <Caption>Fee</Caption>
-        {fee ? (
-          <Text>
-            {stacksValue({
-              value: fee || 0,
-            })}
-          </Text>
-        ) : (
-          <LoadingRectangle height="14px" width="80px" />
-        )}
-      </Stack>
-    </Stack>
+    <Flex
+      border="4px solid"
+      borderColor={color('border')}
+      borderRadius="12px"
+      width="100%"
+      flexDirection="column"
+      {...rest}
+    >
+      <TransactionEventCard
+        amount={amount}
+        icon={
+          selectedAsset?.contractAddress
+            ? selectedAsset.contractAddress + '.' + selectedAsset.contractName
+            : 'STX'
+        }
+        ticker={ticker || 'STX'}
+        title="You will transfer extactly"
+        left={stxAddress ? `From ${truncateMiddle(stxAddress)}` : undefined}
+        right={`To ${truncateMiddle(recipient)}`}
+      />
+    </Flex>
   );
 };
 
@@ -81,8 +69,9 @@ const Actions: React.FC<{ transaction: StacksTransaction | null; handleCancel: (
     loadingKey: LOADING_KEY,
   });
   return (
-    <Stack spacing="base" pb="loose" width="100%" px="extra-loose">
+    <Stack spacing="base" width="100%">
       <Button
+        borderRadius="12px"
         mode="primary"
         isDisabled={!transaction || isLoading}
         onClick={() => {
@@ -91,9 +80,6 @@ const Actions: React.FC<{ transaction: StacksTransaction | null; handleCancel: (
         isLoading={!transaction || isLoading}
       >
         Send
-      </Button>
-      <Button mode="tertiary" onClick={handleCancel}>
-        Cancel
       </Button>
     </Stack>
   );
@@ -121,15 +107,29 @@ export const ConfirmSendDrawer: React.FC<Omit<ConfirmSendDrawerProps, 'title'>> 
     onClose();
   }, [setTransaction, onClose]);
 
+  const fee = transaction?.auth.spendingCondition?.fee?.toNumber();
+
   return (
     <BaseDrawer title="Confirm transfer" isShowing={isShowing} onClose={handleCancel}>
-      <Stack pt="tight" spacing="extra-loose">
+      <Stack pb="extra-loose" px="loose" spacing="extra-loose">
         <TransactionDetails
           amount={amount}
           recipient={recipient}
           nonce={transaction?.auth.spendingCondition?.nonce.toNumber()}
           fee={transaction?.auth.spendingCondition?.fee?.toNumber()}
         />
+        <Stack spacing="base">
+          <SpaceBetween>
+            <Caption>Fees</Caption>
+            <Caption>
+              {(fee && stacksValue({ value: fee, fixedDecimals: true, withTicker: true })) || '--'}
+            </Caption>
+          </SpaceBetween>
+          <SpaceBetween>
+            <Caption>Network</Caption>
+            <NetworkRowItem />
+          </SpaceBetween>
+        </Stack>
         <Actions transaction={transaction} handleCancel={handleCancel} />
       </Stack>
     </BaseDrawer>

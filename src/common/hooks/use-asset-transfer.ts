@@ -11,6 +11,8 @@ import {
 import BN from 'bn.js';
 import { useRecoilCallback } from 'recoil';
 import { makeFungibleTokenTransferState } from '@store/transfers';
+import { selectedAssetStore } from '@store/asset-search';
+import { ftUnshiftDecimals } from '@common/stacks-utils';
 
 interface PostConditionsOptions {
   contractAddress: string;
@@ -35,7 +37,8 @@ function makePostCondition(options: PostConditionsOptions): PostCondition {
 export function useMakeAssetTransfer() {
   return useRecoilCallback(({ snapshot }) => async ({ amount, recipient }) => {
     const assetTransferState = await snapshot.getPromise(makeFungibleTokenTransferState);
-    if (!assetTransferState) return;
+    const selectedAsset = await snapshot.getPromise(selectedAssetStore);
+    if (!assetTransferState || !selectedAsset) return;
     const {
       balances,
       network,
@@ -53,13 +56,18 @@ export function useMakeAssetTransfer() {
       return contract.startsWith(contractAddress);
     });
 
+    const realAmount =
+      selectedAsset.type === 'ft'
+        ? ftUnshiftDecimals(amount, selectedAsset?.meta?.decimals || 0)
+        : amount;
+
     const postConditionOptions = tokenBalanceKey
       ? {
           contractAddress,
           contractName,
           assetName,
           stxAddress,
-          amount,
+          amount: realAmount,
         }
       : undefined;
 
@@ -67,7 +75,7 @@ export function useMakeAssetTransfer() {
 
     // (transfer (uint principal principal) (response bool uint))
     const functionArgs = [
-      uintCV(amount),
+      uintCV(realAmount),
       standardPrincipalCVFromAddress(createAddress(stxAddress)),
       standardPrincipalCVFromAddress(createAddress(recipient)),
     ];

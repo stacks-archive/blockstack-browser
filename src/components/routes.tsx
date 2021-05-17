@@ -96,7 +96,9 @@ export const Routes: React.FC = () => {
         <PopupHome />
       </AccountGateRoute>
       <AccountGateRoute path={ScreenPaths.POPUP_SEND}>
-        <PopupSend />
+        <React.Suspense fallback={<></>}>
+          <PopupSend />
+        </React.Suspense>
       </AccountGateRoute>
       <AccountGateRoute path={ScreenPaths.POPUP_RECEIVE}>
         <PopupReceive />

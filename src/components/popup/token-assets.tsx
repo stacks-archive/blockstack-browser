@@ -1,72 +1,92 @@
-import React from 'react';
-import { Text, Box, BoxProps, Stack } from '@stacks/ui';
-import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { stacksValue } from '@common/stacks-utils';
-import { getTicker } from '@common/utils';
-import { useWallet } from '@common/hooks/use-wallet';
+import React, { memo } from 'react';
+import { Box, Stack, StackProps, Circle, color, Button, useClipboard } from '@stacks/ui';
 import { AssetRow } from '../asset-row';
-import { STACKS_MARKETS_URL } from '@common/constants';
-import { getAssetStringParts } from '@stacks/ui-utils';
+import { useFungibleTokenState, useStxTokenState } from '@common/hooks/use-assets';
+import { Caption } from '@components/typography';
+import { SpaceBetween } from '@components/space-between';
+import { CollectibleAssets } from '@components/popup/collectible-assets';
+import { useAccountBalances } from '@common/hooks/use-account-balances';
+import { NoAssetsEmptyIllustration } from '@components/vector/no-assets';
+import { useCurrentAccount } from '@common/hooks/use-current-account';
 
-const NoTokens: React.FC<BoxProps> = props => {
-  const { currentNetworkKey } = useWallet();
-  return (
-    <Box width="100%" py="extra-loose" my="extra-loose" textAlign="center" {...props}>
-      <Text color="ink.600" fontSize={2} display="block" mb="extra-tight" fontWeight="500">
-        You don't own any tokens.
-      </Text>
-      {currentNetworkKey === 'mainnet' ? (
-        <Text
-          as="a"
-          href={STACKS_MARKETS_URL}
-          target="_blank"
-          rel="noreferrer noopener"
-          fontSize={2}
-          color="blue"
-          textDecoration="none"
-          fontWeight="500"
-        >
-          Buy Stacks Token
-        </Text>
-      ) : null}
-    </Box>
-  );
-};
-
-interface TokenAssetProps extends BoxProps {
-  balances: AddressBalanceResponse;
-}
-export const TokenAssets: React.FC<TokenAssetProps> = ({ balances, ...props }) => {
-  const noTokens =
-    balances.stx.balance === '0' && Object.keys(balances.fungible_tokens).length === 0;
-  if (noTokens) {
-    return <NoTokens {...props} />;
-  }
-
-  const fungibleTokens = Object.keys(balances.fungible_tokens).map(key => {
-    const token = balances.fungible_tokens[key];
-    const { assetName } = getAssetStringParts(key);
-    return (
-      <AssetRow
-        name={key}
-        friendlyName={assetName}
-        key={key}
-        value={token.balance}
-        subtitle={getTicker(assetName)}
-      />
-    );
-  });
-  return (
-    <Box width="100%" {...props}>
-      <Stack pt="base" spacing="base" flexWrap="wrap" flexDirection="column">
-        <AssetRow
-          name="STX"
-          friendlyName="Stacks Token"
-          value={stacksValue({ value: balances.stx.balance, withTicker: false })}
-          subtitle="STX"
-        />
-        <Stack spacing="base">{fungibleTokens}</Stack>
+const LoadingAssetRowItem = memo((props: StackProps) => (
+  <SpaceBetween {...props}>
+    <Stack spacing="base" isInline>
+      <Circle size="36px" bg={color('bg-4')} />
+      <Stack>
+        <Box height="14px" width="125px" bg={color('bg-4')} />
+        <Box height="10px" width="64px" bg={color('bg-4')} />
       </Stack>
-    </Box>
+    </Stack>
+    <Box height="16px" width="32px" bg={color('bg-4')} />
+  </SpaceBetween>
+));
+
+function FungibleAssets(props: StackProps) {
+  const fungibleTokens = useFungibleTokenState();
+  const balances = useAccountBalances();
+  if (!balances) return null;
+
+  const fungibleTokensLoading = !fungibleTokens.value && fungibleTokens.state === 'loading';
+
+  const ftCount = Object.keys(balances.fungible_tokens);
+  const noTokens = ftCount.length === 0;
+
+  if (noTokens) return null;
+  return (
+    <Stack spacing="loose" {...props}>
+      {fungibleTokensLoading
+        ? ftCount.map(item => <LoadingAssetRowItem key={item} />)
+        : fungibleTokens?.value?.map(asset => <AssetRow key={asset.name} asset={asset} />)}
+    </Stack>
   );
-};
+}
+
+function NoAssets(props: StackProps) {
+  const { stxAddress } = useCurrentAccount();
+  const { onCopy, hasCopied } = useClipboard(stxAddress || '');
+  return (
+    <Stack
+      py="extra-loose"
+      spacing="extra-loose"
+      justifyContent="center"
+      alignItems="center"
+      {...props}
+    >
+      <NoAssetsEmptyIllustration maxWidth="120px" />
+      <Caption maxWidth="23ch" textAlign="center">
+        Get started by sending some STX to your wallet.
+      </Caption>
+      <Button
+        bg="#EEF2FB"
+        _hover={{ bg: '#E5EBFA' }}
+        color={color('brand')}
+        borderRadius="12px"
+        onClick={onCopy}
+      >
+        {hasCopied ? 'Copied!' : 'Copy address'}
+      </Button>
+    </Stack>
+  );
+}
+
+export const TokenAssets: React.FC<StackProps> = memo(({ ...props }) => {
+  const stxTokens = useStxTokenState();
+  const balances = useAccountBalances();
+  if (!balances) return null;
+
+  const noAssets =
+    !stxTokens.value &&
+    Object.keys(balances.fungible_tokens).length === 0 &&
+    Object.keys(balances.non_fungible_tokens).length === 0;
+
+  return noAssets ? (
+    <NoAssets {...props} />
+  ) : (
+    <Stack pb="extra-loose" spacing="extra-loose" {...props}>
+      {stxTokens.value && <AssetRow asset={stxTokens.value} />}
+      <FungibleAssets />
+      <CollectibleAssets spacing="extra-loose" />
+    </Stack>
+  );
+});

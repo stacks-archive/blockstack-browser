@@ -1,14 +1,14 @@
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 import { stacksNetworkStore } from '@store/networks';
 import { currentAccountStore } from '@store/wallet';
-import { correctNonceStore } from '@store/api';
+import { correctNonceState } from '@store/api';
 import { makeSTXTokenTransfer, StacksTransaction } from '@stacks/transactions';
 import BN from 'bn.js';
 import { stxToMicroStx } from '@stacks/ui-utils';
 import { useLoading } from '@common/hooks/use-loading';
 import { useEffect } from 'react';
 import { useMakeAssetTransfer } from '@common/hooks/use-asset-transfer';
-import { selectedAssetStore } from '@store/asset-search';
+import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
 interface TokenTransferParams {
   amount: number;
@@ -20,7 +20,7 @@ export function useMakeStxTransfer() {
     const { amount, recipient } = params;
     const stacksNetwork = await snapshot.getPromise(stacksNetworkStore);
     const account = await snapshot.getPromise(currentAccountStore);
-    const nonce = await snapshot.getPromise(correctNonceStore);
+    const nonce = await snapshot.getPromise(correctNonceState);
 
     if (!account) return;
 
@@ -50,14 +50,15 @@ export function useMakeTransferEffect({
   loadingKey: string;
 }) {
   const { isLoading, setIsLoading, setIsIdle } = useLoading(loadingKey);
-  const asset = useRecoilValue(selectedAssetStore);
+  const { selectedAsset } = useSelectedAsset();
   const handleMakeStxTransaction = useMakeStxTransfer();
   const handleMakeFtTransaction = useMakeAssetTransfer();
-  const isActive = isShowing && amount && recipient;
-  const notLoaded = !transaction && !isLoading;
+  const isActive = isShowing && !!amount && !!recipient;
+  const notLoaded = selectedAsset && !transaction && !isLoading;
 
   useEffect(() => {
-    const method = asset?.type === 'stx' ? handleMakeStxTransaction : handleMakeFtTransaction;
+    const method =
+      selectedAsset?.type === 'stx' ? handleMakeStxTransaction : handleMakeFtTransaction;
     if (isActive) {
       if (notLoaded) {
         setIsLoading();
@@ -73,7 +74,7 @@ export function useMakeTransferEffect({
       }
     }
   }, [
-    asset?.type,
+    selectedAsset?.type,
     handleMakeFtTransaction,
     isActive,
     notLoaded,

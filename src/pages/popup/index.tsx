@@ -6,7 +6,6 @@ import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/types';
 import { useWallet } from '@common/hooks/use-wallet';
-import { AccountInfo } from '@components/popup/account-info';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { Caption, Title } from '@components/typography';
 import { truncateMiddle } from '@stacks/ui-utils';
@@ -16,6 +15,7 @@ import { AccountAvatar } from '@components/account-avatar';
 import { truncateString } from '@common/utils';
 import { Header } from '@components/header';
 import { useAccountNames } from '@common/hooks/use-account-names';
+import { BalancesAndActivity } from '@components/popup/balances-and-activity';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
@@ -62,7 +62,7 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
   const assets = useAssets();
 
   const isSend = kind === 'send';
-  const sendDisabled = isSend && assets.length === 0;
+  const sendDisabled = !assets.value || (isSend && assets.value?.length === 0);
 
   const handleClick = useCallback(() => {
     doChangeScreen(path);
@@ -86,6 +86,7 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
         ref={ref}
         isDisabled={sendDisabled}
         onClick={isSend ? handleClick : undefined}
+        borderRadius="12px"
         {...rest}
       >
         <Flex onClick={!isSend ? handleClick : undefined} position="relative" zIndex={2}>
@@ -159,9 +160,9 @@ const PageTop: React.FC<StackProps> = memo(props => (
 
 export const PopupHome: React.FC = memo(() => (
   <PopupContainer header={<Header />} requestType="auth">
-    <Stack spacing="loose">
+    <Stack flexGrow={1} spacing="loose">
       <PageTop />
-      <AccountInfo />
+      <BalancesAndActivity />;
     </Stack>
   </PopupContainer>
 ));
