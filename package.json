@@ -29,7 +29,7 @@
     "serve:test": "yarn http-server ./test-app/dist -p 3001 -s",
     "typecheck": "tsc --noEmit"
   },
-  "version": "2.7.0",
+  "version": "2.7.1",
   "author": "Blockstack PBC",
   "dependencies": {
     "@changesets/changelog-github": "0.4.0",

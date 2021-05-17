@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.7.1
+
+### Patch Changes
+
+- [#1173](https://github.com/blockstack/stacks-wallet-web/pull/1173) [`c6d18b45`](https://github.com/blockstack/stacks-wallet-web/commit/c6d18b4507eab3420ce29946c6bad15a11769e41) Thanks [@aulneau](https://github.com/aulneau)! - This removes any git commands and instead relies on default env vars provided by github actions. If they don't exist, they aren't used.
+
 ## 2.7.0
 
 ### Minor Changes
