@@ -17,6 +17,7 @@ const config = require('./webpack.config.dev');
 const excludeEntriesToHotReload = ['message-bus.js'];
 
 const NODE_ENV = process.env.NODE_ENV;
+
 const PORT = process.env.PORT || '8080';
 
 Object.keys(config.entry).forEach(entryName => {

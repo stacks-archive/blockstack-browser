@@ -1,5 +1,5 @@
 {
-  "name": "Stacks Wallet",
+  "name": "<% NAME %>",
   "author": "Hiro PBC",
   "version": "<% VERSION %>",
   "description": "Stacks Wallet. Use the Stacks blockchain to access privacy-friendly apps, and keep data in your control.",

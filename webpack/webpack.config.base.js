@@ -2,9 +2,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const { version: _version } = require('../package.json');
+const generateManifest = require('../scripts/generate-manifest');
 
 // plugins
 const WebpackBarPlugin = require('webpackbar');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -185,32 +187,17 @@ const config = {
       filename: 'full-page.html',
       ...HTML_PROD_OPTIONS,
     }),
+    new GenerateJsonPlugin(
+      'manifest.json',
+      generateManifest(VERSION),
+      undefined,
+      2 // space tabs
+    ),
     new CopyWebpackPlugin({
       patterns: [
         {
           from: path.join(SRC_ROOT_PATH, '../', 'public', 'assets'),
           to: path.join(DIST_ROOT_PATH, 'assets'),
-        },
-        {
-          from: path.join(SRC_ROOT_PATH, 'manifest.json'),
-          to: path.join(DIST_ROOT_PATH, 'manifest.json'),
-          toType: 'file',
-          transform(content, path) {
-            const csrTag = '<% DEV_CSR %>';
-            const objSrcTag = '<% DEV_OBJECT_SRC %>';
-            const versionTag = '<% VERSION %>';
-            content = content.toString();
-            if (IS_DEV) {
-              content = content.replace(csrTag, " 'unsafe-eval'");
-              content = content.replace(objSrcTag, "'self'");
-            } else {
-              content = content.replace(csrTag, " 'wasm-eval'");
-              content = content.replace(objSrcTag, "'none'");
-            }
-            console.info('Extension Version:', VERSION);
-            content = content.replace(versionTag, VERSION);
-            return Buffer.from(content);
-          },
         },
         { from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' },
       ],
