@@ -1,10 +1,8 @@
 import { useTxState } from '@common/hooks/use-tx-state';
-import { LoadingRectangle } from '@components/loading-rectangle';
-import { Flex, Box, Text, Stack } from '@stacks/ui';
+import { Text, Stack } from '@stacks/ui';
 import React from 'react';
 import { SpaceBetween } from '@components/space-between';
 import { Caption } from '@components/typography';
-import { getCVTypeString } from '@stacks/transactions';
 
 export const NonceRow: React.FC = props => {
   const { signedTransaction } = useTxState();

@@ -30,7 +30,7 @@ export const useTxState = () => {
       async () => {
         const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
         const requestPayload = await snapshot.getPromise(requestTokenStore);
-        if (!pendingTransaction) {
+        if (!pendingTransaction || !requestPayload) {
           set(transactionBroadcastErrorStore, 'No pending transaction found.');
           return;
         }
