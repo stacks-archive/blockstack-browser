@@ -95,41 +95,37 @@ In general, you should not update the version of the wallet (found in `package.j
 
 ## Production
 
-### Building browser extensions
+### Build from source
 
-From the root of this repository, in the command line, run:
+Run the following from within this repository's root directory if you've pulled it with Git:
 
 ```bash
 sh build-ext.sh
 ```
 
-The extension will be packaged as `stacks-wallet-chromium.zip` inside this folder.
+Alternatively, run the following if you've downloaded the source code as a zip file from GitHub:
 
-#### Optional: use Docker
+```
+docker build -f Dockerfile -t stacks-wallet-web . \
+  && docker run -d --name stacks-wallet-web stacks-wallet-web \
+  && docker cp stacks-wallet-web:stacks-wallet-chromium.zip . \
+  && docker rm -f stacks-wallet-web
+```
 
-1. Build the docker image locally:
-   ```bash
-   docker build . -t stacks-wallet-web
-   ```
-2. Copy the built extensions to your local machine:
-   ```bash
-   docker run -d --name stacks-wallet-web stacks-wallet-web && docker cp stacks-wallet-web:stacks-wallet-chromium.zip . && docker rm -f stacks-wallet-web
-   ```
+The extension will be packaged as `stacks-wallet-chromium.zip`.
 
-### Install browser extension from source
+### Install from source
 
 First, unzip the `stacks-wallet-chromium.zip` file that was generated in the previous step.
 
-#### Chromium
-
-Use these steps when using a Chromium browser, like Chrome, Brave, and Edge.
+Then for Chrome, Brave or Edge:
 
 1. Go to: `chrome://extensions`
 2. Toggle: **"developer mode"** on.
 3. Click on: **"Load unpacked"**
 4. Select the new directory that was unzipped from `stacks-wallet-chromium.zip`.
 
-#### Firefox
+Alternatively, for Firefox:
 
 1. Go to: `about:debugging`
 2. Click on **"This Firefox"**
