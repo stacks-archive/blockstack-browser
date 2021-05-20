@@ -24,20 +24,8 @@ function postConditionsCallback({ snapshot, set }: CallbackInterface) {
     const { stxAddress, postConditions } = payload;
 
     if (hasSet || !currentAddress) return;
-    if (existingPostConditions.length) {
-      if (stxAddress && useCurrentAddress) {
-        // we have existing post conditions, lets ensure
-        // the principal(s) are set correctly
-        const newConditions = handlePostConditions(
-          existingPostConditions,
-          stxAddress,
-          currentAddress
-        );
-        set(postConditionsStore, newConditions);
-        set(postConditionsHasSetStore, true);
-        return;
-      }
-    } else if (postConditions && postConditions.length) {
+
+    if (!hasSet && postConditions && postConditions.length) {
       if (stxAddress && useCurrentAddress) {
         // we have yet to set the post conditions to the store
         // let's ensure the principal(s) are set correctly
@@ -53,6 +41,19 @@ function postConditionsCallback({ snapshot, set }: CallbackInterface) {
       set(postConditionsStore, newConditions);
       set(postConditionsHasSetStore, true);
       return;
+    } else if (!hasSet && existingPostConditions.length) {
+      if (stxAddress && useCurrentAddress) {
+        // we have existing post conditions, lets ensure
+        // the principal(s) are set correctly
+        const newConditions = handlePostConditions(
+          existingPostConditions,
+          stxAddress,
+          currentAddress
+        );
+        set(postConditionsStore, newConditions);
+        set(postConditionsHasSetStore, true);
+        return;
+      }
     }
   };
 }

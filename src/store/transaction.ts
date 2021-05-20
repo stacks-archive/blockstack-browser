@@ -79,10 +79,10 @@ export const pendingTransactionStore = selector({
     if (!requestToken) return undefined;
     const tx = getPayload(requestToken);
     if (!tx) return undefined;
-    const stacksNetwork = get(stacksNetworkStore);
+    const network = get(stacksNetworkStore);
     const postConditions = get(postConditionsStore);
     tx.postConditions = postConditions;
-    tx.network = stacksNetwork;
+    tx.network = network;
     return tx;
   },
 });
