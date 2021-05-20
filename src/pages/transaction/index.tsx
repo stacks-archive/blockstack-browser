@@ -56,7 +56,7 @@ export const FeeValue = () => {
   );
 };
 
-function useError() {
+function useTransactionError() {
   const { pendingTransaction, broadcastError, isUnauthorizedTransaction } = useTxState();
   const { currentAccount } = useWallet();
   const balances = useFetchBalances();
@@ -81,7 +81,7 @@ function useError() {
   }, [balances, currentAccount, pendingTransaction, broadcastError, isUnauthorizedTransaction]);
 }
 
-function usePageTitle() {
+function useTransactionPageTitle() {
   const { pendingTransaction } = useTxState();
   const txType = pendingTransaction?.txType;
   return useMemo(() => {
@@ -100,8 +100,8 @@ export const TransactionPage: React.FC = () => {
   const { pendingTransaction } = useTxState();
   const { currentAccount } = useWallet();
   const origin = useOrigin();
-  const pageTitle = usePageTitle();
-  const error = useError();
+  const pageTitle = useTransactionPageTitle();
+  const error = useTransactionError();
   const showDetails = useRecoilValue(showTxDetails);
   const appName = pendingTransaction?.appDetails?.name;
 

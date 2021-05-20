@@ -252,3 +252,15 @@ export const abbreviateNumber = (n: number) => {
   if (n >= 1e12) return +(n / 1e12).toFixed(2) + 'T';
   return n;
 };
+
+export function isHex(hex: string): boolean {
+  const regexp = /^[0-9a-fA-F]+$/;
+  return regexp.test(hex);
+}
+
+export function hexToHumanReadable(hex: string) {
+  if (!isHex(hex)) return hex;
+  const buff = Buffer.from(hex, 'hex');
+  if (isUtf8(buff)) return buff.toString('utf8');
+  return `0x${hex}`;
+}

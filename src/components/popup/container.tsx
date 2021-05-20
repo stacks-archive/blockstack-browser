@@ -10,7 +10,6 @@ interface PopupHomeProps {
 
 export const PopupContainer: React.FC<PopupHomeProps> = memo(({ children, header }) => {
   const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
-
   if (!hasRehydratedVault) {
     console.error('No hasRehydratedVault, rendered null');
   }

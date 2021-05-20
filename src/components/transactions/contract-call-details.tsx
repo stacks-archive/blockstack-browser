@@ -14,7 +14,7 @@ interface ArgumentProps {
   index: number;
 }
 
-const Argument: React.FC<ArgumentProps> = ({ arg, index, ...rest }) => {
+const FunctionArgumentRow: React.FC<ArgumentProps> = ({ arg, index, ...rest }) => {
   const { pendingTransactionFunction } = useTxState();
   const argCV = deserializeCV(Buffer.from(arg, 'hex'));
   const strValue = cvToString(argCV);
@@ -23,14 +23,10 @@ const Argument: React.FC<ArgumentProps> = ({ arg, index, ...rest }) => {
       ? pendingTransactionFunction.contents?.args[index].name
       : null;
 
-  return (
-    <Stack spacing="base-loose" {...rest}>
-      <RowItem name={name} type={getCVTypeString(argCV)} value={strValue} />
-    </Stack>
-  );
+  return <RowItem name={name} type={getCVTypeString(argCV)} value={strValue} {...rest} />;
 };
 
-const Arguments = (props: StackProps) => {
+const FunctionArgumentsList = (props: StackProps) => {
   const { pendingTransaction } = useTxState();
 
   if (!pendingTransaction || pendingTransaction.txType !== 'contract_call') {
@@ -41,7 +37,7 @@ const Arguments = (props: StackProps) => {
     <Stack divider={<Divider />} spacing="base" {...props}>
       {hasArgs ? (
         pendingTransaction.functionArgs.map((arg, index) => {
-          return <Argument key={`${arg}-${index}`} arg={arg} index={index} />;
+          return <FunctionArgumentRow key={`${arg}-${index}`} arg={arg} index={index} />;
         })
       ) : (
         <Caption>There are no additional arguments passed for this function call.</Caption>
@@ -81,7 +77,7 @@ export const ContractCallDetails: React.FC = () => {
         functionName={pendingTransaction.functionName}
       />
       <Stack divider={<Divider />} spacing="base">
-        <Arguments />
+        <FunctionArgumentsList />
         {pendingTransaction?.attachment ? <AttachmentRow /> : null}
       </Stack>
     </Stack>

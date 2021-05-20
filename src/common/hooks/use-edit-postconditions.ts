@@ -8,7 +8,7 @@ import { addressToString, PostCondition, PostConditionType } from '@stacks/trans
 import { toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';
 import { ScreenPaths } from '@store/types';
 
-function useEditPostcondition({ pc, index }: { pc: PostCondition; index: number }) {
+function useEditPostConditions({ pc, index }: { pc: PostCondition; index: number }) {
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetStore);
   const balancesLoadable = useFetchBalances();
@@ -45,9 +45,9 @@ function useEditPostcondition({ pc, index }: { pc: PostCondition; index: number 
   }, [balancesJSON, setCurrentPostConditionIndex, doChangeScreen, index, pc, setSelectedAsset]);
 }
 
-export function usePostconditionActions(pc: PostCondition, index: number) {
+export function usePostConditionActions(pc: PostCondition, index: number) {
   const setPostConditions = useSetRecoilState(postConditionsStore);
-  const editPostCondition = useEditPostcondition({ pc, index });
+  const editPostCondition = useEditPostConditions({ pc, index });
 
   const removePostCondition = useCallback(() => {
     setPostConditions(pcs => {
