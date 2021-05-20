@@ -3,6 +3,7 @@ const baseConfig = require('./webpack.config.base');
 
 const config = {
   ...baseConfig,
+  devtool: 'eval-source-map',
   mode: 'development',
   output: {
     ...baseConfig.output,
@@ -16,8 +17,6 @@ const config = {
     removeEmptyChunks: false,
     splitChunks: false,
   },
-  devtool: 'eval', // fastest
-  plugins: [...baseConfig.plugins],
 };
 
 module.exports = config;

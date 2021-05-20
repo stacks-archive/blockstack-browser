@@ -6,7 +6,6 @@ tests/screenshots/*
 .env
 .next
 .idea
-.vscode
 .DS_Store
 .vercel
 yarn-error.log

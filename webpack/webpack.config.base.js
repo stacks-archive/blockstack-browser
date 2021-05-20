@@ -164,7 +164,6 @@ const config = {
     contentBase: './dist',
     historyApiFallback: true,
   },
-  devtool: 'cheap-module-source-map',
   watch: false,
   plugins: [
     new WebpackBarPlugin({}),
