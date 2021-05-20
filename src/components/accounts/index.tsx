@@ -10,6 +10,7 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { truncateMiddle } from '@stacks/ui-utils';
+import { useAccountNames } from '@common/hooks/use-account-names';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -31,8 +32,10 @@ const AccountItem: React.FC<AccountItemProps> = ({
   ...rest
 }) => {
   const { decodedAuthRequest } = useOnboardingState();
+  const names = useAccountNames();
   const loading = address === selectedAddress;
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
+  const name = names.value?.[account.index]?.names?.[0] || getAccountDisplayName(account);
   return (
     <Flex alignItems="center" {...rest}>
       <Stack textAlign="left" spacing="2px">
@@ -45,7 +48,7 @@ const AccountItem: React.FC<AccountItemProps> = ({
           style={{ wordBreak: 'break-word' }}
           {...getLoadingProps(showLoadingProps)}
         >
-          {getAccountDisplayName(account)}
+          {name}
         </Text>
         <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
           {truncateMiddle(address as string, 6)}
@@ -74,7 +77,6 @@ export const Accounts: React.FC<AccountsProps> = ({
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { decodedAuthRequest } = useOnboardingState();
   const doChangeScreen = useDoChangeScreen();
-
   useEffect(() => {
     if (typeof accountIndex === 'undefined' && selectedAddress) {
       setSelectedAddress(null);
