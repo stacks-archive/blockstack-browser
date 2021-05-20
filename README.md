@@ -105,6 +105,7 @@ sh build-ext.sh
 
 Alternatively, run the following if you've downloaded the source code as a zip file from GitHub:
 
+#### Optional: Use docker
 ```
 docker build -f Dockerfile -t stacks-wallet-web . \
   && docker run -d --name stacks-wallet-web stacks-wallet-web \
