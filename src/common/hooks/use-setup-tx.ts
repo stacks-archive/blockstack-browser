@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { usePrevious } from '@stacks/ui';
 
@@ -24,7 +24,7 @@ export const useSetupTx = () => {
   const handleAccountSwitch = useAccountSwitchCallback();
   const handlePostConditions = usePostConditionsCallback();
 
-  const handleInit = async () => {
+  const handleInit = useCallback(async () => {
     if (!hasRehydratedVault) return;
     if (!requestToken) {
       await handleDecodeRequest();
@@ -44,7 +44,19 @@ export const useSetupTx = () => {
         }
       }
     }
-  };
+  }, [
+    hasRehydratedVault,
+    hasMounted,
+    payload,
+    requestToken,
+    previousAccountStxAddress,
+    setHasMounted,
+    currentAccountStxAddress,
+    handlePostConditions,
+    handleDecodeRequest,
+    handleNetworkSwitch,
+    handleAccountSwitch,
+  ]);
 
   useEffect(() => {
     void handleInit();
