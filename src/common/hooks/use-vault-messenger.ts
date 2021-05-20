@@ -89,7 +89,11 @@ export const useVaultMessenger = () => {
     method: Methods.createNewAccount,
     payload: undefined,
   });
-  const doSignOut = messageWrapper({ method: Methods.signOut, payload: undefined });
+  const handleSignOut = messageWrapper({ method: Methods.signOut, payload: undefined });
+  const doSignOut = async () => {
+    await handleSignOut();
+    localStorage.clear();
+  };
   const doLockWallet = messageWrapper({ method: Methods.lockWallet, payload: undefined });
 
   return {
