@@ -108,13 +108,13 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
 const UserAccount: React.FC<StackProps> = memo(props => {
   const names = useAccountNames();
   const { currentAccount, currentAccountStxAddress } = useWallet();
-  if (!currentAccount || !currentAccountStxAddress || !names.value) {
+  if (!currentAccount || !currentAccountStxAddress) {
     console.error('Error! Homepage rendered without account state, which should never happen.');
     return null;
   }
   const nameCharLimit = 18;
   const name =
-    names.value?.[currentAccount.index]?.names?.[0] || getAccountDisplayName(currentAccount);
+    names?.value?.[currentAccount.index]?.names?.[0] || getAccountDisplayName(currentAccount);
   const isLong = name.length > nameCharLimit;
   const displayName = truncateString(name, nameCharLimit);
 
