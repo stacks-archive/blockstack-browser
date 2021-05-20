@@ -6,11 +6,12 @@ import { usePendingTransaction } from '@common/hooks/use-pending-transaction';
 import { TransactionEventCard } from '@components/transactions/event-card';
 import { useCurrentAccount } from '@common/hooks/use-current-account';
 import {
-  getPostConditionCodeMessage,
   getAmountFromPostCondition,
   getIconStringFromPostCondition,
+  getPostConditionCodeMessage,
   getSymbolFromPostCondition,
 } from '@common/postcondition-utils';
+import { TransactionTypes } from '@stacks/connect';
 
 interface PostConditionProps {
   pc: PostCondition;
@@ -26,7 +27,11 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
   const amount = getAmountFromPostCondition(pc);
   const address = addressToString(pc.principal.address);
   const isSending = address === stxAddress;
-  const isContractPrincipal = address.includes('.');
+
+  const isContractPrincipal =
+    (pendingTransaction?.txType == TransactionTypes.ContractCall &&
+      pendingTransaction.contractAddress === address) ||
+    address.includes('.');
 
   // TODO: fetch asset info in SIP 10 branch
   if (!pendingTransaction) return null;
