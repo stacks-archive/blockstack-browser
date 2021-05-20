@@ -15,6 +15,7 @@ import { useAssets } from '@common/hooks/use-assets';
 import { AccountAvatar } from '@components/account-avatar';
 import { truncateString } from '@common/utils';
 import { Header } from '@components/header';
+import { useAccountNames } from '@common/hooks/use-account-names';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
@@ -105,19 +106,21 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
 });
 
 const UserAccount: React.FC<StackProps> = memo(props => {
+  const names = useAccountNames();
   const { currentAccount, currentAccountStxAddress } = useWallet();
-  if (!currentAccount || !currentAccountStxAddress) {
+  if (!currentAccount || !currentAccountStxAddress || !names.value) {
     console.error('Error! Homepage rendered without account state, which should never happen.');
     return null;
   }
   const nameCharLimit = 18;
-  const name = getAccountDisplayName(currentAccount);
+  const name =
+    names.value?.[currentAccount.index]?.names?.[0] || getAccountDisplayName(currentAccount);
   const isLong = name.length > nameCharLimit;
   const displayName = truncateString(name, nameCharLimit);
 
   return (
     <Stack spacing="base-tight" alignItems="center" isInline {...props}>
-      <AccountAvatar flexShrink={0} account={currentAccount} />
+      <AccountAvatar name={name} flexShrink={0} account={currentAccount} />
       <Stack overflow="hidden" display="block" alignItems="flex-start" spacing="base-tight">
         <Box>
           <Tooltip label={isLong ? name : undefined}>

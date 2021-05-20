@@ -10,6 +10,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
 import { IconCheck } from '@tabler/icons';
 import { AccountAvatar } from '@components/account-avatar';
+import { useAccountNames } from '@common/hooks/use-account-names';
 
 interface SwitchAccountProps {
   close: () => void;
@@ -39,11 +40,15 @@ const useSwitchAccount = (handleClose: () => void) => {
 // eslint-disable-next-line no-warning-comments
 // TODO: this page is nearly identical to the network switcher abstract it out into a shared component
 const AccountList: React.FC<{ handleClose: () => void }> = memo(({ handleClose }) => {
+  const names = useAccountNames();
   const { accounts, handleSwitchAccount, transactionVersion, getIsActive } =
     useSwitchAccount(handleClose);
+  if (!names.value) return null;
   return (
     <>
       {accounts.map((account, index) => {
+        const name = names.value?.[index]?.names?.[0] || getAccountDisplayName(account);
+
         return (
           <SpaceBetween
             width="100%"
@@ -57,10 +62,10 @@ const AccountList: React.FC<{ handleClose: () => void }> = memo(({ handleClose }
             onClick={() => handleSwitchAccount(index)}
           >
             <Stack isInline alignItems="center" spacing="base">
-              <AccountAvatar account={account} />
+              <AccountAvatar name={name} account={account} />
               <Stack spacing="base-tight">
                 <Title fontSize={2} lineHeight="1rem" fontWeight="400">
-                  {getAccountDisplayName(account)}
+                  {name}
                 </Title>
                 <Caption>
                   {truncateMiddle(
