@@ -102,4 +102,3 @@ const provider: StacksProvider = {
 };
 
 window.StacksProvider = provider;
-window.BlockstackProvider = provider;
