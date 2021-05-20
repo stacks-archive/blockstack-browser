@@ -67,14 +67,12 @@ export const stacksValue = ({
 
 export const microStxToStx = (mStx: number | string) => {
   const microStacks = new BigNumber(mStx);
-  const stacks = microStacks.shiftedBy(-STX_DECIMALS);
-  return stacks;
+  return microStacks.shiftedBy(-STX_DECIMALS);
 };
 
 export const stxToMicroStx = (stx: number | string) => {
   const stxBN = new BigNumber(stx);
-  const micro = stxBN.shiftedBy(STX_DECIMALS);
-  return micro;
+  return stxBN.shiftedBy(STX_DECIMALS);
 };
 
 export const validateStacksAddress = (stacksAddress: string): boolean => {
@@ -104,15 +102,12 @@ export const getFungibleTitle = (code: FungibleConditionCode) => {
 };
 
 export const getPostConditionTitle = (pc: PostCondition) => {
-  if (
-    pc.conditionType === PostConditionType.STX ||
-    pc.conditionType === PostConditionType.Fungible
-  ) {
+  if (pc.conditionType === PostConditionType.STX || pc.conditionType === PostConditionType.Fungible)
     return getFungibleTitle(pc.conditionCode);
-  } else {
-    if (pc.conditionCode === NonFungibleConditionCode.DoesNotOwn) return 'do not own';
-    if (pc.conditionCode === NonFungibleConditionCode.Owns) return 'own';
-  }
+
+  if (pc.conditionCode === NonFungibleConditionCode.DoesNotOwn) return 'will transfer';
+  if (pc.conditionCode === NonFungibleConditionCode.Owns) return 'will keep';
+
   return '';
 };
 
@@ -122,21 +117,14 @@ export const makeAssetInfo = (assetIdentifier: string) => {
     contractName,
     assetName,
   } = getAssetStringParts(assetIdentifier);
-  const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
-  return assetInfo;
+  return createAssetInfo(contractAddress, contractName, assetName);
 };
 
 export function validateAddressChain(address: string, currentNetwork: Network) {
   const prefix = address.substr(0, 2);
-  if (currentNetwork.chainId === ChainID.Testnet) {
-    return prefix === 'SN' || prefix === 'ST';
-  }
-  if (currentNetwork.chainId === ChainID.Mainnet) {
-    return prefix === 'SM' || prefix === 'SP';
-  }
+  if (currentNetwork.chainId === ChainID.Testnet) return prefix === 'SN' || prefix === 'ST';
+  if (currentNetwork.chainId === ChainID.Mainnet) return prefix === 'SM' || prefix === 'SP';
   return false;
 }
 
-export const getTicker = (assetName: string) => {
-  return assetName.slice(0, 3).toUpperCase();
-};
+export const getTicker = (assetName: string) => assetName.slice(0, 3).toUpperCase();

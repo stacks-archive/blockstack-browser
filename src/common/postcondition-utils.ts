@@ -52,9 +52,9 @@ export function getPostConditionCodeMessage(
       return `${sender} will transfer at most`;
 
     case NonFungibleConditionCode.DoesNotOwn:
-      return `${sender} will not own`;
+      return `${sender} will transfer`;
 
     case NonFungibleConditionCode.Owns:
-      return `${sender} will own`;
+      return `${sender} will keep or receive`;
   }
 }

@@ -26,6 +26,8 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
   const amount = getAmountFromPostCondition(pc);
   const address = addressToString(pc.principal.address);
   const isSending = address === stxAddress;
+  const isContractPrincipal = address.includes('.');
+
   // TODO: fetch asset info in SIP 10 branch
   if (!pendingTransaction) return null;
 
@@ -39,7 +41,9 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
   return (
     <>
       <TransactionEventCard
-        title={`${isSending ? 'You' : 'The contract will'} ${title}`}
+        title={`${
+          isContractPrincipal ? 'The contract ' : isSending ? 'You ' : 'Another address '
+        } ${title}`}
         right={`${isSending ? 'From' : 'To'} ${truncateMiddle(
           addressToString(pc.principal.address),
           4

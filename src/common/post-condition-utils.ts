@@ -24,10 +24,10 @@ export function handlePostConditions(
   console.log('Setting up post conditions for transaction request');
   return postConditions.map((postCondition, index) => {
     const { principal, ...payload } = getPostCondition(postCondition);
-    console.log({ principal: addressToString(principal.address) });
     const sameType = payloadPrincipal.address.type === principal.address.type;
     const sameHash = payloadPrincipal.address.hash160 === principal.address.hash160;
     const isOriginatorAddress = sameHash && sameType;
+    console.log(`[Post Conditions #${index + 1}]: address: ${addressToString(principal.address)}`);
     console.log(`[Post Conditions #${index + 1}]: isOriginatorAddress: ${isOriginatorAddress}`);
     return {
       ...payload,

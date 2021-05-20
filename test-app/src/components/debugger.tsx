@@ -16,6 +16,11 @@ import {
   makeStandardFungiblePostCondition,
   createAssetInfo,
   FungibleConditionCode,
+  bufferCVFromString,
+  noneCV,
+  createNonFungiblePostCondition,
+  NonFungibleConditionCode,
+  tupleCV,
 } from '@stacks/transactions';
 import { ExplorerLink } from './explorer-link';
 import BN from 'bn.js';
@@ -34,6 +39,40 @@ export const Debugger = () => {
   const setState = (type: string, id: string) => {
     setTxId(id);
     setTxType(type);
+  };
+
+  const callBnsTransfer = async () => {
+    // this will fail because the address does not own the name
+    clearState();
+    const args = [
+      bufferCVFromString('id'), // namespace
+      bufferCVFromString('stella'), // name
+      standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'), // recipient
+      noneCV(), // zonefile
+    ];
+    await doContractCall({
+      network,
+      contractAddress: 'ST000000000000000000002AMW42H',
+      contractName: 'bns',
+      functionName: 'name-transfer',
+      functionArgs: args,
+      attachment: 'This is an attachment',
+      postConditions: [
+        createNonFungiblePostCondition(
+          address || '', // the sender
+          NonFungibleConditionCode.DoesNotOwn, // will not own this NFT anymore
+          createAssetInfo('ST000000000000000000002AMW42H', 'bns', 'names'), // bns NFT
+          tupleCV({
+            name: bufferCVFromString('stella'),
+            namespace: bufferCVFromString('id'),
+          }) // the name
+        ),
+      ],
+      onFinish: data => {
+        console.log('finished bns call!', data);
+        setState('Contract Call', data.txId);
+      },
+    });
   };
 
   const callFaker = async () => {
@@ -156,9 +195,9 @@ export const Debugger = () => {
           <Button mt={3} onClick={() => stxTransfer('102')}>
             STX transfer
           </Button>
-          {/* <Button mt={3} onClick={() => stxTransfer((1000000 * 1000000).toString())}>
-            Big STX transfer
-          </Button> */}
+          <Button mt={3} onClick={callBnsTransfer}>
+            NFT with postconditions (will fail)
+          </Button>
           <Button mt={3} onClick={deployContract}>
             Contract deploy
           </Button>
