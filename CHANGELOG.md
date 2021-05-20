@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.8.0
+
+### Minor Changes
+
+- [#1193](https://github.com/blockstack/stacks-wallet-web/pull/1193) [`0e3619ea`](https://github.com/blockstack/stacks-wallet-web/commit/0e3619eadfbed22c5a7668c0518cf0c5928ca085) Thanks [@aulneau](https://github.com/aulneau)! - This update refactors and improve much of the UI and functionality of the transaction signing popup. Fixes these issues: #1172 #1165 #1146 #1115 #1147.
+
+### Patch Changes
+
+- [#1194](https://github.com/blockstack/stacks-wallet-web/pull/1194) [`c331563a`](https://github.com/blockstack/stacks-wallet-web/commit/c331563aefe2a37d7161a7998e5ed19190483db1) Thanks [@aulneau](https://github.com/aulneau)! - This update adds initial support for fetching and dispaying names associated with a given account stx address.
+
+* [#1200](https://github.com/blockstack/stacks-wallet-web/pull/1200) [`5d863cb8`](https://github.com/blockstack/stacks-wallet-web/commit/5d863cb8a21bf85ddef0a267a31ddbe184d65c42) Thanks [@aulneau](https://github.com/aulneau)! - This update removes the `BlockstackProvider` that the extension would inejct into apps. This is to allow apps that are still using legacy auth (`app.blockstack.org`) to work without needing to update to the extension. Other apps should be on the latest versions of connect that no longer use `BlockstackProvider`, but instead use `StacksProvider`.
+
+- [#1178](https://github.com/blockstack/stacks-wallet-web/pull/1178) [`3c26a6b8`](https://github.com/blockstack/stacks-wallet-web/commit/3c26a6b88b3095b20444cccd8efbebf93f2098d4) Thanks [@aulneau](https://github.com/aulneau)! - This fixes a bug with the positioning of the popup to fallback to the default window object if the chrome extension api window is not available.
+
 ## 2.7.1
 
 ### Patch Changes
