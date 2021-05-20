@@ -16,15 +16,16 @@ function makeKey(networkUrl: string, address: string): string {
   return `${networkUrl}__${address}`;
 }
 
-function getLocalNames(networkUrl: string, address: string): string[] | null {
+function getLocalNames(networkUrl: string, address: string): [string[], number] | null {
   const key = makeKey(networkUrl, address);
   const value = localStorage.getItem(key);
-  return value ? JSON.parse(value) : null;
+  if (!value) return null;
+  return JSON.parse(value);
 }
 
-function setLocalNames(networkUrl: string, address: string, names: string[]): void {
+function setLocalNames(networkUrl: string, address: string, data: [string[], number]): void {
   const key = makeKey(networkUrl, address);
-  return localStorage.setItem(key, JSON.stringify(names));
+  return localStorage.setItem(key, JSON.stringify(data));
 }
 
 interface AccountName {
@@ -34,6 +35,8 @@ interface AccountName {
 }
 
 type AccountNameState = AccountName[] | null;
+
+const STALE_TIME = 30 * 60 * 1000; // 30 min
 
 export const accountNameState = selector<AccountNameState>({
   key: 'names',
@@ -51,21 +54,25 @@ export const accountNameState = selector<AccountNameState>({
       });
 
       // let's try to find any saved names first
-      const localNames = getLocalNames(network.url, address);
+      const local = getLocalNames(network.url, address);
 
-      if (localNames?.length) {
-        return {
-          address,
-          index: account.index,
-          names: localNames,
-        };
+      if (local) {
+        const [names, timestamp] = local;
+        const now = Date.now();
+        const isStale = now - timestamp > STALE_TIME;
+        if (!isStale)
+          return {
+            address,
+            index: account.index,
+            names,
+          };
       }
 
       try {
         const names = await fetchNamesByAddress(network.url, address);
         if (names?.length) {
           // persist them for next time
-          setLocalNames(network.url, address, names);
+          setLocalNames(network.url, address, [names, Date.now()]);
         }
         return {
           address,
