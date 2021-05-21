@@ -8,13 +8,15 @@ export const APP_PORT = 'app-messenger' as const;
 
 //
 // Content Script <-> Background messaging
-export enum InternalMethods {
+export enum ExternalMethods {
   transactionRequest = 'transactionRequest',
-  authenticationRequest = 'authenticationRequest',
   transactionResponse = 'transactionResponse',
+  authenticationRequest = 'authenticationRequest',
   authenticationResponse = 'authenticationResponse',
+}
+
+export enum InternalMethods {
   walletRequest = 'walletRequest',
-  walletResponse = 'walletResponse',
   makeWallet = 'makeWallet',
   storeSeed = 'storeSeed',
   createNewAccount = 'createNewAccount',
@@ -26,32 +28,34 @@ export enum InternalMethods {
   switchAccount = 'switchAccount',
 }
 
+export type ExtentionMethods = InternalMethods | ExternalMethods;
+
 export interface MessageBase {
   source: typeof MESSAGE_SOURCE;
-  method: InternalMethods;
+  method: ExtentionMethods;
 }
 
-interface Message<M extends InternalMethods, P> extends MessageBase {
+interface Message<M extends ExtentionMethods, P> extends MessageBase {
   method: M;
   payload: P;
 }
 
-export type AuthenticationRequestMessage = Message<InternalMethods.authenticationRequest, string>;
+export type AuthenticationRequestMessage = Message<ExternalMethods.authenticationRequest, string>;
 
 export type AuthenticationResponseMessage = Message<
-  InternalMethods.authenticationResponse,
+  ExternalMethods.authenticationResponse,
   {
     authenticationRequest: string;
     authenticationResponse: string;
   }
 >;
 
-export type TransactionRequestMessage = Message<InternalMethods.transactionRequest, string>;
+export type TransactionRequestMessage = Message<ExternalMethods.transactionRequest, string>;
 
 export type TxResult = SponsoredFinishedTxPayload | FinishedTxPayload;
 
 export type TransactionResponseMessage = Message<
-  InternalMethods.transactionResponse,
+  ExternalMethods.transactionResponse,
   {
     transactionRequest: string;
     transactionResponse: TxResult;
@@ -64,7 +68,7 @@ export type MessageToContentScript = AuthenticationResponseMessage | Transaction
 
 //
 // Popup <-> BackgroundScript
-type AppMessage<M extends InternalMethods, P> = Omit<Message<M, P>, 'source'>;
+type AppMessage<M extends ExtentionMethods, P> = Omit<Message<M, P>, 'source'>;
 
 export type WalletRequest = AppMessage<InternalMethods.walletRequest, undefined>;
 export type MakeWallet = AppMessage<InternalMethods.makeWallet, undefined>;
@@ -79,7 +83,7 @@ export type UnlockWallet = AppMessage<InternalMethods.unlockWallet, string>;
 export type LockWallet = AppMessage<InternalMethods.lockWallet, undefined>;
 export type SwitchAccount = AppMessage<InternalMethods.switchAccount, number>;
 
-export type VaultMessageFromApp =
+export type VaultActions =
   | WalletRequest
   | MakeWallet
   | StoreSeed

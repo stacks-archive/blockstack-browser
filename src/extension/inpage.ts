@@ -3,14 +3,14 @@ import {
   AuthenticationRequestEventDetails,
   AuthenticationResponseMessage,
   DomEventName,
-  InternalMethods,
+  ExternalMethods,
   MESSAGE_SOURCE,
   TransactionRequestEventDetails,
   MessageToContentScript,
   TransactionResponseMessage,
 } from './message-types';
 
-type CallableMethods = keyof typeof InternalMethods;
+type CallableMethods = keyof typeof ExternalMethods;
 
 interface ExtensionResponse {
   source: 'blockstack-extension';
@@ -71,7 +71,7 @@ const provider: StacksProvider = {
     document.dispatchEvent(event);
     return new Promise((resolve, reject) => {
       const handleMessage = (event: MessageEvent<AuthenticationResponseMessage>) => {
-        if (!isValidEvent(event, InternalMethods.authenticationResponse)) return;
+        if (!isValidEvent(event, ExternalMethods.authenticationResponse)) return;
         if (event.data.payload?.authenticationRequest !== authenticationRequest) return;
         window.removeEventListener('message', handleMessage);
         if (event.data.payload.authenticationResponse === 'cancel') {
@@ -90,7 +90,7 @@ const provider: StacksProvider = {
     document.dispatchEvent(event);
     return new Promise((resolve, reject) => {
       const handleMessage = (event: MessageEvent<TransactionResponseMessage>) => {
-        if (!isValidEvent(event, InternalMethods.transactionResponse)) return;
+        if (!isValidEvent(event, ExternalMethods.transactionResponse)) return;
         if (event.data.payload?.transactionRequest !== transactionRequest) return;
         window.removeEventListener('message', handleMessage);
         if (event.data.payload.transactionResponse.cancel) {

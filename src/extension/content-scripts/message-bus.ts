@@ -2,7 +2,7 @@ import { ScreenPaths } from '@store/types';
 import { getEventSourceWindow } from '../../common/utils';
 import {
   MessageFromContentScript,
-  InternalMethods,
+  ExternalMethods,
   AuthenticationRequestEvent,
   DomEventName,
   TransactionRequestEvent,
@@ -62,7 +62,7 @@ document.addEventListener(DomEventName.authenticationRequest, ((
     path: ScreenPaths.GENERATION,
     payload: event.detail.authenticationRequest,
     urlParam: 'authRequest',
-    method: InternalMethods.authenticationRequest,
+    method: ExternalMethods.authenticationRequest,
   });
 }) as EventListener);
 
@@ -71,7 +71,7 @@ document.addEventListener(DomEventName.transactionRequest, ((event: TransactionR
     path: ScreenPaths.TRANSACTION_POPUP,
     payload: event.detail.transactionRequest,
     urlParam: 'request',
-    method: InternalMethods.transactionRequest,
+    method: ExternalMethods.transactionRequest,
   });
 }) as EventListener);
 

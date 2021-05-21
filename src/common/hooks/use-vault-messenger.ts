@@ -1,6 +1,6 @@
 import {
   InternalMethods,
-  VaultMessageFromApp,
+  VaultActions,
   SetPassword,
   StoreSeed,
   UnlockWallet,
@@ -19,7 +19,7 @@ import {
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
 
-const innerMessageWrapper = async (message: VaultMessageFromApp, set: Set) => {
+const innerMessageWrapper = async (message: VaultActions, set: Set) => {
   return new Promise<InMemoryVault>((resolve, reject) => {
     chrome.runtime.sendMessage(message, (vaultOrError: InMemoryVault | Error) => {
       if ('hasSetPassword' in vaultOrError) {
@@ -38,7 +38,7 @@ const innerMessageWrapper = async (message: VaultMessageFromApp, set: Set) => {
   });
 };
 
-const messageWrapper = (message: VaultMessageFromApp) => {
+const messageWrapper = (message: VaultActions) => {
   return useRecoilCallback(
     ({ set }) =>
       () =>

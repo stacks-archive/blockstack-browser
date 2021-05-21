@@ -9,7 +9,7 @@ import {
 } from '@stacks/wallet-sdk';
 
 import { gaiaUrl } from '@common/constants';
-import { VaultMessageFromApp, InternalMethods } from '@extension/message-types';
+import { VaultActions, InternalMethods } from '@extension/message-types';
 import { decryptMnemonic, encryptMnemonic } from '@extension/crypto/mnemonic-encryption';
 import { DEFAULT_PASSWORD } from '@store/types';
 
@@ -60,7 +60,7 @@ function persistOptional(storageKey: string, value?: string) {
   }
 }
 
-export async function vaultMessageHandler(message: VaultMessageFromApp) {
+export async function vaultMessageHandler(message: VaultActions) {
   inMemoryVault = await vaultReducer(message);
   persistOptional(encryptedKeyIdentifier, inMemoryVault.encryptedSecretKey);
   persistOptional(saltIdentifier, inMemoryVault.salt);
@@ -92,11 +92,11 @@ async function storeSeed(secretKey: string, password?: string): Promise<InMemory
 // Ensure that TS will flag unhandled messages,
 // and will throw at runtime
 function throwUnhandledMethod(message: never): never;
-function throwUnhandledMethod(message: VaultMessageFromApp) {
+function throwUnhandledMethod(message: VaultActions) {
   throw new Error(`Unhandled message: ${JSON.stringify(message, null, 2)}`);
 }
 
-export const vaultReducer = async (message: VaultMessageFromApp): Promise<InMemoryVault> => {
+export const vaultReducer = async (message: VaultActions): Promise<InMemoryVault> => {
   switch (message.method) {
     case InternalMethods.walletRequest:
       return {
