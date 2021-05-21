@@ -2,7 +2,7 @@ import { popupCenter } from '@common/popup';
 import { ScreenPaths } from '@store/types';
 import {
   CONTENT_SCRIPT_PORT,
-  MessageFromApp,
+  VaultMessageFromApp,
   MessageFromContentScript,
   Methods,
 } from '../message-types';
@@ -52,7 +52,7 @@ chrome.runtime.onConnect.addListener(port => {
   }
 });
 
-chrome.runtime.onMessage.addListener((message: MessageFromApp, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: VaultMessageFromApp, sender, sendResponse) => {
   // Only respond to internal messages from our UI, not content scripts in other applications
   if (!sender.url?.startsWith(chrome.runtime.getURL(''))) return;
   void vaultMessageHandler(message).then(sendResponse).catch(sendResponse);

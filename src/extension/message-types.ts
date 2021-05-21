@@ -85,7 +85,7 @@ export type LockWallet = AppMessage<Methods.lockWallet, undefined>;
 
 export type SwitchAccount = AppMessage<Methods.switchAccount, number>;
 
-export type MessageFromApp =
+export type VaultMessageFromApp =
   | WalletRequest
   | MakeWallet
   | StoreSeed
