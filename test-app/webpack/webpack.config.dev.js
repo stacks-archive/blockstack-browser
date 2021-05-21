@@ -16,7 +16,6 @@ const config = {
     removeEmptyChunks: false,
     splitChunks: false,
   },
-  devtool: 'eval', // fastest
 };
 
 module.exports = config;
