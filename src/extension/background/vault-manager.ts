@@ -9,7 +9,7 @@ import {
 } from '@stacks/wallet-sdk';
 
 import { gaiaUrl } from '@common/constants';
-import { VaultMessageFromApp, Methods } from '@extension/message-types';
+import { VaultMessageFromApp, InternalMethods } from '@extension/message-types';
 import { decryptMnemonic, encryptMnemonic } from '@extension/crypto/mnemonic-encryption';
 import { DEFAULT_PASSWORD } from '@store/types';
 
@@ -98,11 +98,11 @@ function throwUnhandledMethod(message: VaultMessageFromApp) {
 
 export const vaultReducer = async (message: VaultMessageFromApp): Promise<InMemoryVault> => {
   switch (message.method) {
-    case Methods.walletRequest:
+    case InternalMethods.walletRequest:
       return {
         ...inMemoryVault,
       };
-    case Methods.makeWallet: {
+    case InternalMethods.makeWallet: {
       const secretKey = generateSecretKey(256);
       const _wallet = await generateWallet({ secretKey, password: DEFAULT_PASSWORD });
       return {
@@ -112,11 +112,11 @@ export const vaultReducer = async (message: VaultMessageFromApp): Promise<InMemo
         currentAccountIndex: 0,
       };
     }
-    case Methods.storeSeed: {
+    case InternalMethods.storeSeed: {
       const { secretKey, password } = message.payload;
       return storeSeed(secretKey, password);
     }
-    case Methods.createNewAccount: {
+    case InternalMethods.createNewAccount: {
       const { secretKey, wallet } = inMemoryVault;
       if (!secretKey || !wallet) {
         throw 'Unable to create a new account - not logged in.';
@@ -136,12 +136,12 @@ export const vaultReducer = async (message: VaultMessageFromApp): Promise<InMemo
         currentAccountIndex: newWallet.accounts.length - 1,
       };
     }
-    case Methods.signOut: {
+    case InternalMethods.signOut: {
       return {
         ...defaultVault,
       };
     }
-    case Methods.setPassword: {
+    case InternalMethods.setPassword: {
       const { payload: password } = message;
       const { secretKey } = inMemoryVault;
       if (!secretKey) {
@@ -155,7 +155,7 @@ export const vaultReducer = async (message: VaultMessageFromApp): Promise<InMemo
         hasSetPassword: true,
       };
     }
-    case Methods.unlockWallet: {
+    case InternalMethods.unlockWallet: {
       const { payload: password } = message;
       const { encryptedSecretKey, salt } = inMemoryVault;
       if (!encryptedSecretKey) {
@@ -173,14 +173,14 @@ export const vaultReducer = async (message: VaultMessageFromApp): Promise<InMemo
         encryptedSecretKey: decryptedData.encryptedSecretKey,
       };
     }
-    case Methods.lockWallet: {
+    case InternalMethods.lockWallet: {
       return {
         ...inMemoryVault,
         wallet: undefined,
         secretKey: undefined,
       };
     }
-    case Methods.switchAccount: {
+    case InternalMethods.switchAccount: {
       const { wallet } = inMemoryVault;
       const newIndex = message.payload;
       const accountNumber = (newIndex as number) + 1;

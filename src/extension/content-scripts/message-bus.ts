@@ -1,7 +1,8 @@
+import { ScreenPaths } from '@store/types';
 import { getEventSourceWindow } from '../../common/utils';
 import {
   MessageFromContentScript,
-  Methods,
+  InternalMethods,
   AuthenticationRequestEvent,
   DomEventName,
   TransactionRequestEvent,
@@ -9,9 +10,12 @@ import {
   MESSAGE_SOURCE,
   CONTENT_SCRIPT_PORT,
 } from '../message-types';
-import { ScreenPaths } from '@store/types';
 
 const backgroundPort = chrome.runtime.connect({ name: CONTENT_SCRIPT_PORT });
+
+function sendMessageToBackground(message: MessageFromContentScript) {
+  backgroundPort.postMessage(message);
+}
 
 /**
  * Legacy messaging to work with older versions of connect
@@ -36,52 +40,50 @@ window.addEventListener('message', event => {
   }
 });
 
-function sendMessage(message: MessageFromContentScript) {
-  backgroundPort.postMessage(message);
-}
-
-function handleDomEvent({
-  payload,
-  method,
-}: {
+interface ForwardDomEventToBackgroundArgs {
   payload: string;
   method: MessageFromContentScript['method'];
   urlParam: string;
   path: ScreenPaths;
-}) {
-  sendMessage({
+}
+function forwardDomEventToBackground({ payload, method }: ForwardDomEventToBackgroundArgs) {
+  sendMessageToBackground({
     method,
     payload,
     source: MESSAGE_SOURCE,
   });
 }
 
+// Listen for `CustomEvent`s coming from website
 document.addEventListener(DomEventName.authenticationRequest, ((
   event: AuthenticationRequestEvent
 ) => {
-  handleDomEvent({
+  forwardDomEventToBackground({
     path: ScreenPaths.GENERATION,
     payload: event.detail.authenticationRequest,
     urlParam: 'authRequest',
-    method: Methods.authenticationRequest,
+    method: InternalMethods.authenticationRequest,
   });
 }) as EventListener);
 
 document.addEventListener(DomEventName.transactionRequest, ((event: TransactionRequestEvent) => {
-  handleDomEvent({
+  forwardDomEventToBackground({
     path: ScreenPaths.TRANSACTION_POPUP,
     payload: event.detail.transactionRequest,
     urlParam: 'request',
-    method: Methods.transactionRequest,
+    method: InternalMethods.transactionRequest,
   });
 }) as EventListener);
 
+// Background script --> Content script
 chrome.runtime.onMessage.addListener((message: MessageToContentScript) => {
   if (message.source === MESSAGE_SOURCE) {
+    // Forward to webpage
     window.postMessage(message, window.location.origin);
   }
 });
 
+// Inject inpage script
 const inpage = document.createElement('script');
 inpage.src = chrome.runtime.getURL('inpage.js');
 inpage.id = 'stacks-wallet-provider';

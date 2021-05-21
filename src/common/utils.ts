@@ -6,7 +6,7 @@ import { getTab, deleteTabForRequest, StorageKey } from '@extension/storage';
 import {
   AuthenticationResponseMessage,
   MESSAGE_SOURCE,
-  Methods,
+  InternalMethods,
   TransactionResponseMessage,
   TxResult,
 } from '@extension/message-types';
@@ -57,7 +57,7 @@ export const finalizeAuthResponse = ({
         authenticationRequest: authRequest,
         authenticationResponse: authResponse,
       },
-      method: Methods.authenticationResponse,
+      method: InternalMethods.authenticationResponse,
     };
     chrome.tabs.sendMessage(tabId, responseMessage);
     deleteTabForRequest(StorageKey.authenticationRequests, authRequest);
@@ -75,7 +75,7 @@ export const finalizeTxSignature = (requestPayload: string, data: TxResult) => {
     const tabId = getTab(StorageKey.transactionRequests, requestPayload);
     const responseMessage: TransactionResponseMessage = {
       source: MESSAGE_SOURCE,
-      method: Methods.transactionResponse,
+      method: InternalMethods.transactionResponse,
       payload: {
         transactionRequest: requestPayload,
         transactionResponse: data,

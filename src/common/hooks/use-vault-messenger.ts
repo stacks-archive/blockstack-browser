@@ -1,5 +1,5 @@
 import {
-  Methods,
+  InternalMethods,
   VaultMessageFromApp,
   SetPassword,
   StoreSeed,
@@ -50,7 +50,7 @@ const messageWrapper = (message: VaultMessageFromApp) => {
 export const useVaultMessenger = () => {
   const doSetPassword = useRecoilCallback(({ set }) => (password: string) => {
     const message: SetPassword = {
-      method: Methods.setPassword,
+      method: InternalMethods.setPassword,
       payload: password,
     };
     return innerMessageWrapper(message, set);
@@ -58,7 +58,7 @@ export const useVaultMessenger = () => {
 
   const doStoreSeed = useRecoilCallback(({ set }) => (secretKey: string, password?: string) => {
     const message: StoreSeed = {
-      method: Methods.storeSeed,
+      method: InternalMethods.storeSeed,
       payload: {
         secretKey,
         password,
@@ -69,7 +69,7 @@ export const useVaultMessenger = () => {
 
   const doUnlockWallet = useRecoilCallback(({ set }) => (password: string) => {
     const message: UnlockWallet = {
-      method: Methods.unlockWallet,
+      method: InternalMethods.unlockWallet,
       payload: password,
     };
     return innerMessageWrapper(message, set);
@@ -77,24 +77,24 @@ export const useVaultMessenger = () => {
 
   const doSwitchAccount = useRecoilCallback(({ set }) => (index: number) => {
     const message: SwitchAccount = {
-      method: Methods.switchAccount,
+      method: InternalMethods.switchAccount,
       payload: index,
     };
     return innerMessageWrapper(message, set);
   });
 
-  const getWallet = messageWrapper({ method: Methods.walletRequest, payload: undefined });
-  const doMakeWallet = messageWrapper({ method: Methods.makeWallet, payload: undefined });
+  const getWallet = messageWrapper({ method: InternalMethods.walletRequest, payload: undefined });
+  const doMakeWallet = messageWrapper({ method: InternalMethods.makeWallet, payload: undefined });
   const doCreateNewAccount = messageWrapper({
-    method: Methods.createNewAccount,
+    method: InternalMethods.createNewAccount,
     payload: undefined,
   });
-  const handleSignOut = messageWrapper({ method: Methods.signOut, payload: undefined });
+  const handleSignOut = messageWrapper({ method: InternalMethods.signOut, payload: undefined });
   const doSignOut = async () => {
     await handleSignOut();
     localStorage.clear();
   };
-  const doLockWallet = messageWrapper({ method: Methods.lockWallet, payload: undefined });
+  const doLockWallet = messageWrapper({ method: InternalMethods.lockWallet, payload: undefined });
 
   return {
     getWallet,

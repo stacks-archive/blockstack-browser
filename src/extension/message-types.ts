@@ -1,7 +1,4 @@
 import { FinishedTxPayload, SponsoredFinishedTxPayload } from '@stacks/connect';
-/**
- * Content Script <-> Background messaging
- */
 
 export const MESSAGE_SOURCE = 'stacks-wallet' as const;
 
@@ -9,7 +6,9 @@ export const CONTENT_SCRIPT_PORT = 'content-script-messenger' as const;
 
 export const APP_PORT = 'app-messenger' as const;
 
-export enum Methods {
+//
+// Content Script <-> Background messaging
+export enum InternalMethods {
   transactionRequest = 'transactionRequest',
   authenticationRequest = 'authenticationRequest',
   transactionResponse = 'transactionResponse',
@@ -29,30 +28,30 @@ export enum Methods {
 
 export interface MessageBase {
   source: typeof MESSAGE_SOURCE;
-  method: Methods;
+  method: InternalMethods;
 }
 
-interface Message<M extends Methods, P> extends MessageBase {
+interface Message<M extends InternalMethods, P> extends MessageBase {
   method: M;
   payload: P;
 }
 
-export type AuthenticationRequestMessage = Message<Methods.authenticationRequest, string>;
+export type AuthenticationRequestMessage = Message<InternalMethods.authenticationRequest, string>;
 
 export type AuthenticationResponseMessage = Message<
-  Methods.authenticationResponse,
+  InternalMethods.authenticationResponse,
   {
     authenticationRequest: string;
     authenticationResponse: string;
   }
 >;
 
-export type TransactionRequestMessage = Message<Methods.transactionRequest, string>;
+export type TransactionRequestMessage = Message<InternalMethods.transactionRequest, string>;
 
 export type TxResult = SponsoredFinishedTxPayload | FinishedTxPayload;
 
 export type TransactionResponseMessage = Message<
-  Methods.transactionResponse,
+  InternalMethods.transactionResponse,
   {
     transactionRequest: string;
     transactionResponse: TxResult;
@@ -63,27 +62,22 @@ export type MessageFromContentScript = AuthenticationRequestMessage | Transactio
 
 export type MessageToContentScript = AuthenticationResponseMessage | TransactionResponseMessage;
 
-/** App <-> BackgroundScript */
+//
+// Popup <-> BackgroundScript
+type AppMessage<M extends InternalMethods, P> = Omit<Message<M, P>, 'source'>;
 
-type AppMessage<M extends Methods, P> = Omit<Message<M, P>, 'source'>;
-
-export type WalletRequest = AppMessage<Methods.walletRequest, undefined>;
-
-export type MakeWallet = AppMessage<Methods.makeWallet, undefined>;
-
-export type StoreSeed = AppMessage<Methods.storeSeed, { secretKey: string; password?: string }>;
-
-export type CreateNewAccount = AppMessage<Methods.createNewAccount, undefined>;
-
-export type SignOut = AppMessage<Methods.signOut, undefined>;
-
-export type SetPassword = AppMessage<Methods.setPassword, string>;
-
-export type UnlockWallet = AppMessage<Methods.unlockWallet, string>;
-
-export type LockWallet = AppMessage<Methods.lockWallet, undefined>;
-
-export type SwitchAccount = AppMessage<Methods.switchAccount, number>;
+export type WalletRequest = AppMessage<InternalMethods.walletRequest, undefined>;
+export type MakeWallet = AppMessage<InternalMethods.makeWallet, undefined>;
+export type StoreSeed = AppMessage<
+  InternalMethods.storeSeed,
+  { secretKey: string; password?: string }
+>;
+export type CreateNewAccount = AppMessage<InternalMethods.createNewAccount, undefined>;
+export type SignOut = AppMessage<InternalMethods.signOut, undefined>;
+export type SetPassword = AppMessage<InternalMethods.setPassword, string>;
+export type UnlockWallet = AppMessage<InternalMethods.unlockWallet, string>;
+export type LockWallet = AppMessage<InternalMethods.lockWallet, undefined>;
+export type SwitchAccount = AppMessage<InternalMethods.switchAccount, number>;
 
 export type VaultMessageFromApp =
   | WalletRequest
@@ -96,10 +90,8 @@ export type VaultMessageFromApp =
   | SwitchAccount
   | LockWallet;
 
-/**
- * Inpage script <-> Content script
- */
-
+//
+// Inpage script <-> Content script
 export enum DomEventName {
   authenticationRequest = 'stacksAuthenticationRequest',
   transactionRequest = 'stacksTransactionRequest',
@@ -108,13 +100,11 @@ export enum DomEventName {
 export interface AuthenticationRequestEventDetails {
   authenticationRequest: string;
 }
-
 export type AuthenticationRequestEvent = CustomEvent<AuthenticationRequestEventDetails>;
 
 export interface TransactionRequestEventDetails {
   transactionRequest: string;
 }
-
 export type TransactionRequestEvent = CustomEvent<TransactionRequestEventDetails>;
 
 export type DomEvent = TransactionRequestEvent | AuthenticationRequestEvent;

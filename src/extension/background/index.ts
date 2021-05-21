@@ -4,7 +4,7 @@ import {
   CONTENT_SCRIPT_PORT,
   VaultMessageFromApp,
   MessageFromContentScript,
-  Methods,
+  InternalMethods,
 } from '../message-types';
 import { storePayload, StorageKey } from '../storage';
 import { vaultMessageHandler } from './vault-manager';
@@ -21,7 +21,7 @@ chrome.runtime.onConnect.addListener(port => {
     port.onMessage.addListener((message: MessageFromContentScript, port) => {
       const { payload } = message;
       switch (message.method) {
-        case Methods.authenticationRequest: {
+        case InternalMethods.authenticationRequest: {
           void storePayload({
             payload,
             storageKey: StorageKey.authenticationRequests,
@@ -33,7 +33,7 @@ chrome.runtime.onConnect.addListener(port => {
           popupCenter({ url: `/popup.html#${path}?${urlParams.toString()}` });
           break;
         }
-        case Methods.transactionRequest: {
+        case InternalMethods.transactionRequest: {
           void storePayload({
             payload,
             storageKey: StorageKey.transactionRequests,

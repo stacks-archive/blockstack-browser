@@ -3,20 +3,25 @@ import {
   AuthenticationRequestEventDetails,
   AuthenticationResponseMessage,
   DomEventName,
-  Methods,
+  InternalMethods,
   MESSAGE_SOURCE,
   TransactionRequestEventDetails,
   MessageToContentScript,
   TransactionResponseMessage,
 } from './message-types';
 
-interface Response {
+type CallableMethods = keyof typeof InternalMethods;
+
+interface ExtensionResponse {
   source: 'blockstack-extension';
-  method: string;
+  method: CallableMethods;
   [key: string]: any;
 }
 
-const callAndReceive = async (methodName: string, opts: any = {}): Promise<Response> => {
+const callAndReceive = async (
+  methodName: CallableMethods | 'getURL',
+  opts: any = {}
+): Promise<ExtensionResponse> => {
   return new Promise((resolve, reject) => {
     console.log(`BlockstackApp.${methodName}:`, opts);
     const timeout = setTimeout(() => {
@@ -66,7 +71,7 @@ const provider: StacksProvider = {
     document.dispatchEvent(event);
     return new Promise((resolve, reject) => {
       const handleMessage = (event: MessageEvent<AuthenticationResponseMessage>) => {
-        if (!isValidEvent(event, Methods.authenticationResponse)) return;
+        if (!isValidEvent(event, InternalMethods.authenticationResponse)) return;
         if (event.data.payload?.authenticationRequest !== authenticationRequest) return;
         window.removeEventListener('message', handleMessage);
         if (event.data.payload.authenticationResponse === 'cancel') {
@@ -85,7 +90,7 @@ const provider: StacksProvider = {
     document.dispatchEvent(event);
     return new Promise((resolve, reject) => {
       const handleMessage = (event: MessageEvent<TransactionResponseMessage>) => {
-        if (!isValidEvent(event, Methods.transactionResponse)) return;
+        if (!isValidEvent(event, InternalMethods.transactionResponse)) return;
         if (event.data.payload?.transactionRequest !== transactionRequest) return;
         window.removeEventListener('message', handleMessage);
         if (event.data.payload.transactionResponse.cancel) {
