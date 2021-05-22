@@ -2,16 +2,16 @@ import React from 'react';
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 import { isValidUrl } from './validate-url';
-import { getTab, deleteTabForRequest, StorageKey } from '@extension/storage';
-import {
-  AuthenticationResponseMessage,
-  MESSAGE_SOURCE,
-  ExternalMethods,
-  TransactionResponseMessage,
-  TxResult,
-} from '@extension/message-types';
+import { getTab, deleteTabForRequest, StorageKey } from 'storage';
 import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
 import { KEBAB_REGEX } from '@common/constants';
+import {
+  AuthenticationResponseMessage,
+  ExternalMethods,
+  MESSAGE_SOURCE,
+  TransactionResponseMessage,
+  TxResult,
+} from '@content-scripts/message-types';
 
 function kebabCase(str: string) {
   return str.replace(KEBAB_REGEX, match => '-' + match.toLowerCase());

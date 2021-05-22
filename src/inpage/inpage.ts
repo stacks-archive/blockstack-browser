@@ -1,14 +1,16 @@
 import { StacksProvider } from '@stacks/connect';
 import {
   AuthenticationRequestEventDetails,
-  AuthenticationResponseMessage,
   DomEventName,
-  ExternalMethods,
-  MESSAGE_SOURCE,
   TransactionRequestEventDetails,
+} from '@inpage/inpage-types';
+import {
+  AuthenticationResponseMessage,
+  ExternalMethods,
   MessageToContentScript,
+  MESSAGE_SOURCE,
   TransactionResponseMessage,
-} from './message-types';
+} from '@content-scripts/message-types';
 
 type CallableMethods = keyof typeof ExternalMethods;
 

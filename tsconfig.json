@@ -28,7 +28,9 @@
       "@containers/*": ["containers/*"],
       "@common/*": ["common/*"],
       "@screen": ["components/screen/index"],
-      "@extension/*": ["extension/*"],
+      "@background/*": ["background/*"],
+      "@content-scripts/*": ["content-scripts/*"],
+      "@inpage/*": ["inpage/*"],
       "@pages/*": ["pages/*"]
     },
     "baseUrl": "src",

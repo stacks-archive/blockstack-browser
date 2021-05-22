@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
 import { decodeToken } from 'jsontokens';
-import { getRequestOrigin, StorageKey } from '@extension/storage';
+import { getRequestOrigin, StorageKey } from 'storage';
 import { DecodedAuthRequest } from '@common/dev/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { ScreenPaths } from '@store/types';

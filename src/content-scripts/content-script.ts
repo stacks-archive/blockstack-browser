@@ -1,25 +1,23 @@
+/*
+ Extensions that read or write to web pages utilize a content script. The content script
+ contains JavaScript that executes in the contexts of a page that has been loaded into
+ the browser. Content scripts read and modify the DOM of web pages the browser visits.
+ */
 import { ScreenPaths } from '@store/types';
-import { getEventSourceWindow } from '../../common/utils';
+import { getEventSourceWindow } from '@common/utils';
 import {
-  MessageFromContentScript,
   ExternalMethods,
+  MessageFromContentScript,
+  MessageToContentScript,
+  MESSAGE_SOURCE,
+} from '@content-scripts/message-types';
+import {
   AuthenticationRequestEvent,
   DomEventName,
   TransactionRequestEvent,
-  MessageToContentScript,
-  MESSAGE_SOURCE,
-  CONTENT_SCRIPT_PORT,
-} from '../message-types';
+} from '@inpage/inpage-types';
 
-const backgroundPort = chrome.runtime.connect({ name: CONTENT_SCRIPT_PORT });
-
-function sendMessageToBackground(message: MessageFromContentScript) {
-  backgroundPort.postMessage(message);
-}
-
-/**
- * Legacy messaging to work with older versions of connect
- */
+// Legacy messaging to work with older versions of Connect
 window.addEventListener('message', event => {
   const { data } = event;
   if (data.source === 'blockstack-app') {
@@ -40,12 +38,32 @@ window.addEventListener('message', event => {
   }
 });
 
+export const CONTENT_SCRIPT_PORT = 'content-script' as const;
+
+// Connection to background script - fires onConnect event in background script
+// and establishes two-way communication
+const backgroundPort = chrome.runtime.connect({ name: CONTENT_SCRIPT_PORT });
+
+// Sends message to background script that an event has fired
+function sendMessageToBackground(message: MessageFromContentScript) {
+  backgroundPort.postMessage(message);
+}
+
+// Receives message from background script to execute in browser
+chrome.runtime.onMessage.addListener((message: MessageToContentScript) => {
+  if (message.source === MESSAGE_SOURCE) {
+    // Forward to web app (browser)
+    window.postMessage(message, window.location.origin);
+  }
+});
+
 interface ForwardDomEventToBackgroundArgs {
   payload: string;
   method: MessageFromContentScript['method'];
   urlParam: string;
   path: ScreenPaths;
 }
+
 function forwardDomEventToBackground({ payload, method }: ForwardDomEventToBackgroundArgs) {
   sendMessageToBackground({
     method,
@@ -54,7 +72,7 @@ function forwardDomEventToBackground({ payload, method }: ForwardDomEventToBackg
   });
 }
 
-// Listen for `CustomEvent`s coming from website
+// Listen for a CustomEvent (auth request) coming from the web app
 document.addEventListener(DomEventName.authenticationRequest, ((
   event: AuthenticationRequestEvent
 ) => {
@@ -66,6 +84,7 @@ document.addEventListener(DomEventName.authenticationRequest, ((
   });
 }) as EventListener);
 
+// Listen for a CustomEvent (transaction request) coming from the web app
 document.addEventListener(DomEventName.transactionRequest, ((event: TransactionRequestEvent) => {
   forwardDomEventToBackground({
     path: ScreenPaths.TRANSACTION_POPUP,
@@ -75,15 +94,7 @@ document.addEventListener(DomEventName.transactionRequest, ((event: TransactionR
   });
 }) as EventListener);
 
-// Background script --> Content script
-chrome.runtime.onMessage.addListener((message: MessageToContentScript) => {
-  if (message.source === MESSAGE_SOURCE) {
-    // Forward to webpage
-    window.postMessage(message, window.location.origin);
-  }
-});
-
-// Inject inpage script
+// Inject inpage script (Stacks Provider)
 const inpage = document.createElement('script');
 inpage.src = chrome.runtime.getURL('inpage.js');
 inpage.id = 'stacks-wallet-provider';

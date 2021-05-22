@@ -1,17 +1,28 @@
-import { popupCenter } from '@common/popup';
+/*
+  The background script is the extension's event handler; it contains listeners for browser
+  events that are important to the extension. It lies dormant until an event is fired then
+  performs the instructed logic. An effective background script is only loaded when it is
+  needed and unloaded when it goes idle.
+ */
+import { popupCenter } from 'background/popup';
 import { ScreenPaths } from '@store/types';
-import { CONTENT_SCRIPT_PORT, ExternalMethods, MessageFromContentScript } from '../message-types';
 import { storePayload, StorageKey } from '../storage';
-import { vaultMessageHandler } from './vault-manager';
+import { vaultMessageHandler } from '@background/vault';
 import { IS_TEST_ENV } from '@common/constants';
+import { CONTENT_SCRIPT_PORT } from '@content-scripts/content-script';
+import { VaultActions } from '@background/vault-types';
+import { ExternalMethods, MessageFromContentScript } from '@content-scripts/message-types';
 
+// Listen for install event
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install' && !IS_TEST_ENV) {
     chrome.tabs.create({ url: chrome.runtime.getURL(`full-page.html#${ScreenPaths.INSTALLED}`) });
   }
 });
 
+// Listen for connection to the content-script - port for two-way communication
 chrome.runtime.onConnect.addListener(port => {
+  // Listen for auth and transaction events
   if (port.name === CONTENT_SCRIPT_PORT) {
     port.onMessage.addListener((message: MessageFromContentScript, port) => {
       const { payload } = message;
@@ -47,7 +58,8 @@ chrome.runtime.onConnect.addListener(port => {
   }
 });
 
-chrome.runtime.onMessage.addListener((message: VaultMessageFromApp, sender, sendResponse) => {
+// Listen for events triggered by the background memory vault
+chrome.runtime.onMessage.addListener((message: VaultActions, sender, sendResponse) => {
   // Only respond to internal messages from our UI, not content scripts in other applications
   if (!sender.url?.startsWith(chrome.runtime.getURL(''))) return;
   void vaultMessageHandler(message).then(sendResponse).catch(sendResponse);
@@ -56,7 +68,7 @@ chrome.runtime.onMessage.addListener((message: VaultMessageFromApp, sender, send
 });
 
 if (IS_TEST_ENV) {
-  // expose a helper function to open a new tab with the wallet from tests
+  // Expose a helper function to open a new tab with the wallet from tests
   (window as any).openOptionsPage = function (page: string) {
     const url = chrome.runtime.getURL(`full-page.html#${page}`);
     return url;

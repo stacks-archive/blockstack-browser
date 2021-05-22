@@ -1,12 +1,10 @@
 import {
-  InternalMethods,
   VaultActions,
   SetPassword,
   StoreSeed,
   UnlockWallet,
   SwitchAccount,
-} from '@extension/message-types';
-import type { InMemoryVault } from '@extension/background/vault-manager';
+} from '@background/vault-types';
 import { RecoilState, useRecoilCallback } from 'recoil';
 import {
   hasSetPasswordStore,
@@ -16,6 +14,8 @@ import {
   encryptedSecretKeyStore,
   hasRehydratedVaultStore,
 } from '@store/wallet';
+import { InMemoryVault } from '@background/vault';
+import { InternalMethods } from '@content-scripts/message-types';
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
 
@@ -83,7 +83,7 @@ export const useVaultMessenger = () => {
     return innerMessageWrapper(message, set);
   });
 
-  const getWallet = messageWrapper({ method: InternalMethods.walletRequest, payload: undefined });
+  const getWallet = messageWrapper({ method: InternalMethods.getWallet, payload: undefined });
   const doMakeWallet = messageWrapper({ method: InternalMethods.makeWallet, payload: undefined });
   const doCreateNewAccount = messageWrapper({
     method: InternalMethods.createNewAccount,

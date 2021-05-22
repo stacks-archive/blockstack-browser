@@ -1,7 +1,3 @@
-/**
- * Authentication and Transaction Requests
- */
-
 export enum StorageKey {
   'authenticationRequests',
   'transactionRequests',

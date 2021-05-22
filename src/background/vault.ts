@@ -9,13 +9,12 @@ import {
 } from '@stacks/wallet-sdk';
 
 import { gaiaUrl } from '@common/constants';
-import { VaultActions, InternalMethods } from '@extension/message-types';
-import { decryptMnemonic, encryptMnemonic } from '@extension/crypto/mnemonic-encryption';
+import { VaultActions } from '@background/vault-types';
+import { decryptMnemonic, encryptMnemonic } from 'background/crypto/mnemonic-encryption';
 import { DEFAULT_PASSWORD } from '@store/types';
+import { InternalMethods } from '@content-scripts/message-types';
 
-/**
- * Manage a wallet instance, stored in memory in the background script
- */
+// In-memory (background) wallet instance
 export interface InMemoryVault {
   encryptedSecretKey?: string;
   salt?: string;
@@ -89,16 +88,16 @@ async function storeSeed(secretKey: string, password?: string): Promise<InMemory
   };
 }
 
-// Ensure that TS will flag unhandled messages,
-// and will throw at runtime
+// Ensure that TS will flag unhandled messages and will throw at runtime
 function throwUnhandledMethod(message: never): never;
 function throwUnhandledMethod(message: VaultActions) {
   throw new Error(`Unhandled message: ${JSON.stringify(message, null, 2)}`);
 }
 
+// Reducer to manage the state of the vault
 export const vaultReducer = async (message: VaultActions): Promise<InMemoryVault> => {
   switch (message.method) {
-    case InternalMethods.walletRequest:
+    case InternalMethods.getWallet:
       return {
         ...inMemoryVault,
       };

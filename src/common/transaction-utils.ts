@@ -24,8 +24,8 @@ import BN from 'bn.js';
 import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import { TokenVerifier, decodeToken } from 'jsontokens';
 import { Wallet, getAppPrivateKey } from '@stacks/wallet-sdk';
-import type { TxResult } from '@extension/message-types';
 import type { TransactionPayloadWithAttachment } from '@store/transaction';
+import { TxResult } from '@content-scripts/message-types';
 
 const getPostConditions = (
   postConditions?: (PostCondition | string)[]

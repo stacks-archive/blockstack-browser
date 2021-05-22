@@ -2,7 +2,7 @@ import { useRecoilCallback } from 'recoil';
 import { isUnauthorizedTransactionStore, requestTokenStore } from '@store/transaction';
 import { useLocation } from 'react-router-dom';
 import { walletStore } from '@store/wallet';
-import { getRequestOrigin, StorageKey } from '@extension/storage';
+import { getRequestOrigin, StorageKey } from 'storage';
 import { verifyTxRequest } from '@common/transaction-utils';
 
 export function useDecodeRequestCallback() {

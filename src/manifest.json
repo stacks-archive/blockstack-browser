@@ -43,7 +43,7 @@
   "content_scripts": [
     {
       "js": [
-        "message-bus.js"
+        "content-script.js"
       ],
       "matches": [
         "*://*/*"

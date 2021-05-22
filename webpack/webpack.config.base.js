@@ -79,9 +79,9 @@ const aliases = IS_DEV
 
 const config = {
   entry: {
-    background: path.join(SRC_ROOT_PATH, 'extension', 'background', 'index.ts'),
-    inpage: path.join(SRC_ROOT_PATH, 'extension', 'inpage.ts'),
-    'message-bus': path.join(SRC_ROOT_PATH, 'extension', 'content-scripts', 'message-bus.ts'),
+    background: path.join(SRC_ROOT_PATH, 'background', 'background.ts'),
+    inpage: path.join(SRC_ROOT_PATH, 'inpage', 'inpage.ts'),
+    'content-script': path.join(SRC_ROOT_PATH, 'content-scripts', 'content-script.ts'),
     index: path.join(SRC_ROOT_PATH, 'index.tsx'),
   },
   output: {

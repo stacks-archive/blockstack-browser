@@ -1,4 +1,4 @@
-import { getRequestOrigin, StorageKey } from '@extension/storage';
+import { getRequestOrigin, StorageKey } from 'storage';
 import { useRecoilValue } from 'recoil';
 import { requestTokenStore } from '@store/transaction';
 
