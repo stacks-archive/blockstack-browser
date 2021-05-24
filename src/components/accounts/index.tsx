@@ -7,10 +7,10 @@ import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
-import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
+import { getStxAddress, Account } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { useAccountNames } from '@common/hooks/use-account-names';
+import { useAccountDisplayName } from '@common/hooks/use-account-names';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -32,10 +32,9 @@ const AccountItem: React.FC<AccountItemProps> = ({
   ...rest
 }) => {
   const { decodedAuthRequest } = useOnboardingState();
-  const names = useAccountNames();
+  const name = useAccountDisplayName();
   const loading = address === selectedAddress;
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
-  const name = names.value?.[account.index]?.names?.[0] || getAccountDisplayName(account);
   return (
     <Flex alignItems="center" {...rest}>
       <Stack textAlign="left" spacing="2px">
