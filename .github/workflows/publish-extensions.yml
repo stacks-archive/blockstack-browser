@@ -20,6 +20,8 @@ jobs:
     if: "contains(github.event.head_commit.message, 'Version Packages')"
     needs:
       - pre_run
+    outputs:
+      publish_status: ${{ steps.publish-chrome.outputs.publish_status }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -48,7 +50,7 @@ jobs:
         id: publish-chrome
         run: |
           yarn webstore upload --source stacks-wallet-chromium.zip --auto-publish
-          echo "::set-output name=PUBLISH_STATUS::${?}"
+          echo "::set-output name=publish_status::${?}"
         env:
           EXTENSION_ID: ${{ secrets.CHROME_APP_ID }}
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
@@ -63,6 +65,8 @@ jobs:
     if: "contains(github.event.head_commit.message, 'Version Packages')"
     needs:
       - pre_run
+    outputs:
+      publish_status: ${{ steps.publish-firefox.outputs.publish_status }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -91,7 +95,7 @@ jobs:
         id: publish-firefox
         run: |
           yarn web-ext-submit --channel=listed
-          echo "::set-output name=PUBLISH_STATUS::${?}"
+          echo "::set-output name=publish_status::${?}"
         env:
           WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
@@ -104,5 +108,5 @@ jobs:
     steps:
       - name: Publish Statuses
         run: |
-          echo "::warning::Firefox Publish Status: $([[ ${{ steps.publish-firefox.outputs.PUBLISH_STATUS }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
-          echo "::warning::Chrome Publish Status: $([[ ${{ steps.publish-chrome.outputs.PUBLISH_STATUS }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
+          echo "::warning::Firefox Publish Status: $([[ ${{ needs.publish_firefox_extension.outputs.publish_status }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
+          echo "::warning::Chrome Publish Status: $([[ ${{ needs.publish_chrome_extension.outputs.publish_status }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
