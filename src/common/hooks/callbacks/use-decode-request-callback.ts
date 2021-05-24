@@ -1,8 +1,9 @@
 import { useRecoilCallback } from 'recoil';
 import { isUnauthorizedTransactionStore, requestTokenStore } from '@store/transaction';
 import { useLocation } from 'react-router-dom';
-import { walletStore } from '@store/wallet';
 import { getRequestOrigin, StorageKey } from 'storage';
+import { walletState } from '@store/wallet';
+
 import { verifyTxRequest } from '@common/transaction-utils';
 
 export function useDecodeRequestCallback() {
@@ -16,7 +17,7 @@ export function useDecodeRequestCallback() {
           throw 'Invalid transaction request parameter';
         }
 
-        const wallet = await snapshot.getPromise(walletStore);
+        const wallet = await snapshot.getPromise(walletState);
         const origin = getRequestOrigin(StorageKey.transactionRequests, requestToken);
         if (!wallet || !origin) return;
 

@@ -3,7 +3,7 @@ import { Box, Fade, Button, Stack, color } from '@stacks/ui';
 import { Title, Caption } from '@components/typography';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { accountDrawerStep, AccountStep } from '@store/drawers';
+import { accountDrawerStep, AccountStep } from '@store/ui';
 import { getAccountDisplayName, getStxAddress } from '@stacks/wallet-sdk';
 import { currentTransactionVersion } from '@store/networks';
 import { truncateMiddle } from '@stacks/ui-utils';

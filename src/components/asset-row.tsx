@@ -2,7 +2,7 @@ import React from 'react';
 import { StackProps } from '@stacks/ui';
 
 import { ftDecimals, stacksValue } from '@common/stacks-utils';
-import { AssetWithMeta } from '@store/tokens';
+import type { AssetWithMeta } from '@store/assets/types';
 import { getAssetName } from '@stacks/ui-utils';
 import { AssetItem } from '@components/asset-item';
 import { getTicker } from '@common/utils';

@@ -9,7 +9,7 @@ import { useLoading } from '@common/hooks/use-loading';
 import { useRecoilValue } from 'recoil';
 import { stacksNetworkStore } from '@store/networks';
 import { useCallback } from 'react';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useRevalidateApi } from '@common/hooks/use-revalidate-api';
 import { toast } from 'react-hot-toast';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';

@@ -4,7 +4,7 @@ import { Box, Button } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { Text } from '@components/typography';
 
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { Header } from '@components/header';
 

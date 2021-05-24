@@ -1,4 +1,4 @@
-import { accountBalancesStore, accountDataStore } from '@store/api';
+import { accountBalancesStore, accountDataStore } from '@store/accounts';
 import { useLoadable } from './use-loadable';
 
 export const useFetchAccountData = () => {

@@ -4,8 +4,8 @@ import { Formik, FormikProps } from 'formik';
 import { PopupContainer } from '@components/popup/container';
 import { ConfirmSendDrawer } from '@components/drawer/confirm-send-drawer';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
 
+import { ScreenPaths } from '@store/common/types';
 import { ErrorLabel } from '@components/error-label';
 import { AssetSearch } from '@components/asset-search/asset-search';
 

@@ -7,15 +7,15 @@ import {
 } from '@background/vault-types';
 import { RecoilState, useRecoilCallback } from 'recoil';
 import {
-  hasSetPasswordStore,
-  walletStore,
-  secretKeyStore,
-  currentAccountIndexStore,
+  hasSetPasswordState,
+  walletState,
+  secretKeyState,
   encryptedSecretKeyStore,
   hasRehydratedVaultStore,
 } from '@store/wallet';
 import { InMemoryVault } from '@background/vault';
 import { InternalMethods } from '@content-scripts/message-types';
+import { currentAccountIndexStore } from '@store/accounts';
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
 
@@ -25,9 +25,9 @@ const innerMessageWrapper = async (message: VaultActions, set: Set) => {
       if ('hasSetPassword' in vaultOrError) {
         const vault = vaultOrError;
         set(hasRehydratedVaultStore, true);
-        set(hasSetPasswordStore, vault.hasSetPassword);
-        set(walletStore, vault.wallet);
-        set(secretKeyStore, vault.secretKey);
+        set(hasSetPasswordState, vault.hasSetPassword);
+        set(walletState, vault.wallet);
+        set(secretKeyState, vault.secretKey);
         set(currentAccountIndexStore, vault.currentAccountIndex);
         set(encryptedSecretKeyStore, vault.encryptedSecretKey);
         resolve(vault);

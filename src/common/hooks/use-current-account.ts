@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
+import { currentAccountStore, currentAccountStxAddressStore } from '@store/accounts';
 
 export function useCurrentAccount() {
   const accountInfo = useRecoilValue(currentAccountStore);

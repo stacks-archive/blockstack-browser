@@ -4,7 +4,7 @@ import { Tooltip } from '@components/tooltip';
 import type { ButtonProps } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { Caption, Title } from '@components/typography';

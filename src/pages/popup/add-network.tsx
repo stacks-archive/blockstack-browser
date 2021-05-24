@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import { currentNetworkKeyStore, networksStore } from '@store/networks';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { isValidUrl } from '@common/validate-url';
 import { ChainID, fetchPrivate } from '@stacks/transactions';
 import { ErrorLabel } from '@components/error-label';

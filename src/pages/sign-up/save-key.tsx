@@ -3,7 +3,7 @@ import { Screen, ScreenBody, ScreenActions, Title, ScreenHeader } from '@screen'
 import { Button, Text } from '@stacks/ui';
 import { Collapse } from '@components/collapse';
 import { faqs } from '@common/onboarding-data';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 

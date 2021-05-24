@@ -1,4 +1,4 @@
-import { accountNameState } from '@store/names';
+import { accountNameState } from '@store/accounts/names';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { useCurrentAccount } from '@common/hooks/use-current-account';
 import { Account } from '@stacks/wallet-sdk';

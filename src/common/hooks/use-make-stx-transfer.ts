@@ -1,7 +1,7 @@
 import { useRecoilCallback, waitForAll } from 'recoil';
 import { stacksNetworkStore } from '@store/networks';
-import { currentAccountStore } from '@store/wallet';
-import { correctNonceState } from '@store/api';
+import { currentAccountStore } from '@store/accounts';
+import { correctNonceState } from '@store/accounts/nonce';
 import { makeSTXTokenTransfer, StacksTransaction } from '@stacks/transactions';
 import BN from 'bn.js';
 import { stxToMicroStx } from '@stacks/ui-utils';

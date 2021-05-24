@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { DecodedAuthRequest } from '@common/dev/types';
 
 export interface OnboardingState {
@@ -16,6 +16,21 @@ export interface OnboardingState {
   onboardingPath?: ScreenPaths;
 }
 
+export const magicRecoveryCodePasswordState = atom({
+  key: 'seed.magic-recovery-code.password',
+  default: '',
+});
+
+export const seedInputState = atom({
+  key: 'seed.input',
+  default: '',
+});
+
+export const seedInputErrorState = atom<string | undefined>({
+  key: 'seed.input.error',
+  default: undefined,
+});
+
 export const currentScreenState = atom<ScreenPaths>({
   key: 'onboarding.screen',
   default: ScreenPaths.GENERATION,
@@ -26,7 +41,7 @@ export const secretKeyState = atom({
   default: null,
 });
 
-export const magicRecoveryCodeState = atom({
+export const magicRecoveryCodeState = atom<null | string>({
   key: 'onboarding.magicRecoveryCode',
   default: null,
 });

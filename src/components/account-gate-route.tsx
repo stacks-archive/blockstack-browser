@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Route } from 'react-router-dom';
 import { ErrorBoundary } from '@components/error-boundary';
 import { AccountGate } from '@components/account-gate';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 
 interface AccountGateRouteProps {
   path: ScreenPaths;

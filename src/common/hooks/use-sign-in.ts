@@ -1,5 +1,5 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { magicRecoveryCodeState, seedInputErrorState, seedInputState } from '@store/seed';
+import { magicRecoveryCodeState, seedInputErrorState, seedInputState } from '@store/onboarding';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
@@ -8,7 +8,7 @@ import {
   validateAndCleanRecoveryInput,
   hasLineReturn,
 } from '@common/utils';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useLoading } from '@common/hooks/use-loading';
 
 export function useSignIn() {

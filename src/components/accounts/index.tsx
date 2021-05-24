@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Flex, FlexProps, Spinner, color, Stack } from '@stacks/ui';
 import { Caption, Text, Title } from '@components/typography';
-import { ScreenPaths } from '@store/types';
+
+import { ScreenPaths } from '@store/common/types';
+
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';

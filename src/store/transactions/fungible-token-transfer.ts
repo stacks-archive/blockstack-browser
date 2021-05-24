@@ -1,8 +1,12 @@
 import { selector } from 'recoil';
-import { selectedAssetStore } from '@store/asset-search';
-import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
+import { selectedAssetStore } from '@store/assets/asset-search';
+import {
+  accountBalancesStore,
+  currentAccountStore,
+  currentAccountStxAddressStore,
+} from '@store/accounts';
 import { stacksNetworkStore } from '@store/networks';
-import { accountBalancesStore, correctNonceState } from '@store/api';
+import { correctNonceState } from '@store/accounts/nonce';
 
 export const makeFungibleTokenTransferState = selector({
   key: 'transaction.internal-transaction-asset',

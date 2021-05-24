@@ -5,9 +5,13 @@ import { decodeToken } from 'jsontokens';
 
 import { DecodedAuthRequest } from '@common/dev/types';
 import { useWallet } from '@common/hooks/use-wallet';
+
 import { authRequestState, currentScreenState } from '@store/onboarding';
-import { ScreenPaths } from '@store/types';
+
 import { getRequestOrigin, StorageKey } from '../../../storage';
+
+import { ScreenPaths } from '@store/common/types';
+
 import { useOnboardingState } from '../use-onboarding-state';
 
 export function useSaveAuthRequest() {

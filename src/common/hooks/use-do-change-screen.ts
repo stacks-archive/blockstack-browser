@@ -1,4 +1,4 @@
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';

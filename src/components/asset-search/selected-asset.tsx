@@ -1,7 +1,7 @@
 import { AssetAvatar } from '@components/stx-avatar';
 import { Box, ChevronIcon, Text, color, Stack, StackProps, BoxProps } from '@stacks/ui';
 
-import { searchInputStore } from '@store/asset-search';
+import { searchInputStore } from '@store/assets/asset-search';
 
 import React, { memo, useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';

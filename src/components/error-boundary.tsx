@@ -9,8 +9,8 @@ import {
   signedTransactionStore,
   pendingTransactionStore,
 } from '@store/transaction';
-import { accountDataStore } from '@store/api';
-import { walletStore } from '@store/wallet';
+import { accountDataStore } from '@store/accounts';
+import { walletState } from '@store/wallet';
 import { useRecoilValue } from 'recoil';
 import { Header } from '@components/header';
 
@@ -59,7 +59,7 @@ type Loadables = ReturnType<typeof useLoadable>[];
  */
 export const ErrorBoundary: React.FC = ({ children }) => {
   const pendingTransaction = useRecoilValue(pendingTransactionStore);
-  const wallet = useRecoilValue(walletStore);
+  const wallet = useRecoilValue(walletState);
   let loadables: Loadables = [];
   const walletLoadables: Loadables = [useLoadable(accountDataStore)];
   const txLoadables: Loadables = [

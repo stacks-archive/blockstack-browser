@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { loadingState } from '@store/loading';
+import { loadingState } from '@store/ui';
 
 export function useLoading(key: string) {
   const [state, setState] = useRecoilState(loadingState(key));

@@ -5,7 +5,7 @@ import { CreateAccount } from './create-account';
 import { AddUsername } from './add-username';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useRecoilCallback } from 'recoil';
-import { AccountStep, showAccountsStore, accountDrawerStep } from '@store/drawers';
+import { AccountStep, showAccountsStore, accountDrawerStep } from '@store/ui';
 
 export const AccountsDrawer: React.FC = () => {
   const { accountStep } = useDrawers();

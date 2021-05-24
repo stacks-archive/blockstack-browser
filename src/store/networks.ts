@@ -1,8 +1,12 @@
 import { atom, selector } from 'recoil';
-import { localStorageEffect } from './index';
+import { localStorageEffect } from './common/utils';
 import RPCClient from '@stacks/rpc-client';
 import { ChainID, TransactionVersion } from '@stacks/transactions';
 import { StacksNetwork, StacksTestnet, StacksMainnet } from '@stacks/network';
+import { BlockListResponse, CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
+import { fetchFromSidecar } from '@common/api/fetch';
+import { fetcher } from '@common/wrapped-fetch';
+import { apiRevalidation } from '@store/common/api';
 
 export interface Network {
   url: string;
@@ -84,5 +88,32 @@ export const stacksNetworkStore = selector<StacksNetwork>({
       network.chainId === ChainID.Testnet ? new StacksTestnet() : new StacksMainnet();
     stacksNetwork.coreApiUrl = network.url;
     return stacksNetwork;
+  },
+});
+
+export const latestBlockHeightStore = selector({
+  key: 'api.latest-block-height',
+  get: async ({ get }) => {
+    const { url } = get(currentNetworkStore);
+    const blocksResponse: BlockListResponse = await fetchFromSidecar(url)('/block');
+    const [block] = blocksResponse.results;
+    return block.height;
+  },
+});
+
+export const chainInfoStore = selector({
+  key: 'api.chain-info',
+  get: async ({ get }) => {
+    get(apiRevalidation);
+    const { url } = get(currentNetworkStore);
+    const infoUrl = `${url}/v2/info`;
+    try {
+      const res = await fetcher(infoUrl);
+      if (!res.ok) throw `Unable to fetch chain data from ${infoUrl}`;
+      const info: CoreNodeInfoResponse = await res.json();
+      return info;
+    } catch (error) {
+      throw `Unable to fetch chain data from ${infoUrl}`;
+    }
   },
 });

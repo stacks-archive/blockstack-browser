@@ -1,13 +1,13 @@
 import { useSetRecoilState } from 'recoil';
 import { currentPostConditionIndexStore, postConditionsStore } from '@store/transaction';
-import { selectedAssetIdState } from '@store/asset-search';
+import { selectedAssetIdState } from '@store/assets/asset-search';
 import { useFetchBalances } from '@common/hooks/use-account-info';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useCallback } from 'react';
 import { addressToString, PostCondition, PostConditionType } from '@stacks/transactions';
 import { toHumanReadableStx, truncateMiddle } from '@stacks/ui-utils';
-import { ScreenPaths } from '@store/types';
-import { AssetWithMeta } from '@store/tokens';
+import { ScreenPaths } from '@store/common/types';
+import { AssetWithMeta } from '@store/assets/types';
 
 function useEditPostConditions({ pc, index }: { pc: PostCondition; index: number }) {
   const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);

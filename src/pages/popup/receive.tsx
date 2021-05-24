@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Box, Button, color, useClipboard, Flex, FlexProps, Stack } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Toast } from '@components/toast';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';

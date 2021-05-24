@@ -15,7 +15,7 @@ import { AddNetwork } from '@pages/popup/add-network';
 import { EditPostConditionsPage } from '@pages/transaction/edit-post-conditions';
 import { SetPasswordPage } from '@pages/set-password';
 
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';

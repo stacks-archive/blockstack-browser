@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+
 import { assetsState, AssetWithMeta } from '@store/tokens';
 import { getFullyQualifiedAssetName } from '@common/hooks/use-selected-asset';
 

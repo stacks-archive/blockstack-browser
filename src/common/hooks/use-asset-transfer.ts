@@ -14,8 +14,8 @@ import {
 } from '@stacks/transactions';
 import BN from 'bn.js';
 import { useRecoilCallback } from 'recoil';
-import { makeFungibleTokenTransferState } from '@store/transfers';
-import { selectedAssetStore } from '@store/asset-search';
+import { makeFungibleTokenTransferState } from '@store/transactions/fungible-token-transfer';
+import { selectedAssetStore } from '@store/assets/asset-search';
 import { ftUnshiftDecimals } from '@common/stacks-utils';
 
 interface PostConditionsOptions {

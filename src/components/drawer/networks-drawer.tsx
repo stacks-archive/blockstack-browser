@@ -5,9 +5,9 @@ import { ControlledDrawer } from './controlled';
 import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { currentNetworkKeyStore } from '@store/networks';
-import { showNetworksStore } from '@store/drawers';
+import { showNetworksStore } from '@store/ui';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { Caption, Title } from '@components/typography';
 

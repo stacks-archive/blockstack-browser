@@ -3,7 +3,8 @@ import { useRecoilValue } from 'recoil';
 import { usePrevious } from '@stacks/ui';
 
 import { requestTokenStore, transactionPayloadStore } from '@store/transaction';
-import { currentAccountStxAddressStore, hasRehydratedVaultStore } from '@store/wallet';
+import { currentAccountStxAddressStore } from '@store/accounts';
+import { hasRehydratedVaultStore } from '@store/wallet';
 
 import { useAccountSwitchCallback } from '@common/hooks/callbacks/use-account-switch-callback';
 import { usePostConditionsCallback } from '@common/hooks/callbacks/use-post-conditions-callback';

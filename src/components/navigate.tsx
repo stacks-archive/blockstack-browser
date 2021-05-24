@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useNavigate, ToOptions } from 'react-router-dom';
 
 interface NavigateProps {

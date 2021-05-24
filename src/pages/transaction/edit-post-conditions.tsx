@@ -10,7 +10,7 @@ import {
   currentPostConditionIndexStore,
 } from '@store/transaction';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { AssetSearch } from '@components/asset-search/asset-search';
 import { object, string, number } from 'yup';
 import {

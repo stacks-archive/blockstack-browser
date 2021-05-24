@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
-import { magicRecoveryCodePasswordState, magicRecoveryCodeState } from '@store/seed';
+import { magicRecoveryCodePasswordState, magicRecoveryCodeState } from '@store/onboarding';
 import { useLoading } from '@common/hooks/use-loading';
 import { useWallet } from '@common/hooks/use-wallet';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { USERNAMES_ENABLED } from '@common/constants';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { decrypt } from '@stacks/wallet-sdk';
 
 export function useMagicRecoveryCode() {
@@ -33,6 +33,7 @@ export function useMagicRecoveryCode() {
   }, [doChangeScreen, decodedAuthRequest, doFinishSignIn]);
 
   const handleSubmit = useCallback(async () => {
+    if (!magicRecoveryCode) throw Error('No magic recovery seed');
     setIsLoading();
     try {
       const codeBuffer = Buffer.from(magicRecoveryCode, 'base64');

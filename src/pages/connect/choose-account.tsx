@@ -6,7 +6,7 @@ import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
 import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
 import { gaiaUrl } from '@common/constants';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
 import { isValidUrl } from '@common/validate-url';

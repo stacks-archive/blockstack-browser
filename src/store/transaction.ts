@@ -19,13 +19,17 @@ import {
 import { decodeToken } from 'jsontokens';
 import { atom, selector, selectorFamily } from 'recoil';
 import { generateTransaction } from '@common/transaction-utils';
-import { currentAccountStore, currentAccountStxAddressStore } from '@store/wallet';
+import {
+  accountBalancesStore,
+  currentAccountStore,
+  currentAccountStxAddressStore,
+} from '@store/accounts';
 import { currentNetworkStore, rpcClientStore, stacksNetworkStore } from '@store/networks';
-import { accountBalancesStore, correctNonceState } from './api';
-import { selectedAssetStore } from './asset-search';
+import { selectedAssetStore } from './assets/asset-search';
 import BN from 'bn.js';
 import { stxToMicroStx } from '@common/stacks-utils';
 import { getAssetStringParts } from '@stacks/ui-utils';
+import { correctNonceState } from '@store/accounts/nonce';
 
 export type TransactionPayloadWithAttachment = TransactionPayload & {
   attachment?: string;

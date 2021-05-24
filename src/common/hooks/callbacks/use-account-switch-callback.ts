@@ -1,13 +1,14 @@
 import { CallbackInterface, useRecoilCallback } from 'recoil';
 import { postConditionsHasSetStore, transactionPayloadStore } from '@store/transaction';
-import { currentAccountIndexStore, walletStore } from '@store/wallet';
+import { walletState } from '@store/wallet';
+import { currentAccountIndexStore } from '@store/accounts';
 import { getStxAddress } from '@stacks/wallet-sdk';
 
 function accountSwitchCallback({ snapshot, set }: CallbackInterface) {
   return async () => {
     const payload = await snapshot.getPromise(transactionPayloadStore);
     if (!payload?.stxAddress || !payload.network) return;
-    const wallet = await snapshot.getPromise(walletStore);
+    const wallet = await snapshot.getPromise(walletState);
     if (!wallet) return;
     const transactionVersion = payload.network.version;
     let foundIndex: number | undefined = undefined;

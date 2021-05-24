@@ -6,7 +6,7 @@
   https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#background_script
  */
 import { popupCenter } from '@background/popup';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { storePayload, StorageKey } from '../storage';
 import { vaultMessageHandler } from '@background/vault';
 import { IS_TEST_ENV } from '@common/constants';

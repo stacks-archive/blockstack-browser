@@ -2,7 +2,7 @@ import React, { useState, useCallback, memo } from 'react';
 import { Button, Stack, StackProps } from '@stacks/ui';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 import { Link } from '@components/link';
 import { PopupContainer } from '@components/popup/container';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';

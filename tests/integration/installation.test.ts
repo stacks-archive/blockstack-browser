@@ -1,7 +1,7 @@
 import { BrowserDriver, createTestSelector, randomString, setupBrowser } from './utils';
 import { SECRET_KEY } from '../mocks';
 import { WalletPage } from './page-objects/wallet.page';
-import { ScreenPaths } from '@store/types';
+import { ScreenPaths } from '@store/common/types';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);

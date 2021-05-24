@@ -1,7 +1,7 @@
 import { useSetRecoilState } from 'recoil';
 import { useLoadable } from '@common/hooks/use-loadable';
-import { selectedAssetIdState, selectedAssetStore } from '@store/asset-search';
-import { AssetWithMeta } from '@store/tokens';
+import { selectedAssetIdState, selectedAssetStore } from '@store/assets/asset-search';
+import { AssetWithMeta } from '@store/assets/types';
 import { getTicker } from '@common/utils';
 import { useCallback, useMemo } from 'react';
 import { ftDecimals, stacksValue } from '@common/stacks-utils';

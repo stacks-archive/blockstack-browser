@@ -1,7 +1,7 @@
 import React, { memo, useMemo, forwardRef } from 'react';
 import { Box, Fade, Text, Flex, Input, color, Stack, StackProps } from '@stacks/ui';
 import { useCombobox } from 'downshift';
-import { searchInputStore } from '@store/asset-search';
+import { searchInputStore } from '@store/assets/asset-search';
 import { useRecoilState } from 'recoil';
 import { SelectedAsset } from './selected-asset';
 import { useTransferableAssets } from '@common/hooks/use-assets';

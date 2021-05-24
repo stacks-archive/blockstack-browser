@@ -3,7 +3,7 @@ import { getStxAddress } from '@stacks/wallet-sdk';
 
 import { fetcher } from '@common/wrapped-fetch';
 
-import { accountsStore } from '@store/wallet';
+import { accountsState } from './index';
 import { currentNetworkStore, currentTransactionVersion } from '@store/networks';
 
 async function fetchNamesByAddress(networkUrl: string, address: string): Promise<string[]> {
@@ -41,7 +41,7 @@ const STALE_TIME = 30 * 60 * 1000; // 30 min
 export const accountNameState = selector<AccountNameState>({
   key: 'names',
   get: async ({ get }) => {
-    const accounts = get(accountsStore);
+    const accounts = get(accountsState);
     const network = get(currentNetworkStore);
     const transactionVersion = get(currentTransactionVersion);
 

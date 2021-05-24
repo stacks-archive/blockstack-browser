@@ -13,17 +13,14 @@ import {
   currentNetworkStore,
   networksStore,
   currentTransactionVersion,
+  latestBlockHeightStore,
 } from '@store/networks';
 import {
-  walletStore,
+  walletState,
   encryptedSecretKeyStore,
-  secretKeyStore,
-  hasSetPasswordStore,
-  latestNoncesStore,
-  currentAccountIndexStore,
-  currentAccountStore,
+  secretKeyState,
+  hasSetPasswordState,
   walletConfigStore,
-  currentAccountStxAddressStore,
   hasRehydratedVaultStore,
 } from '@store/wallet';
 import { StacksTransaction } from '@stacks/transactions';
@@ -31,16 +28,22 @@ import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
-import { latestBlockHeightStore, apiRevalidation } from '@store/api';
+import { apiRevalidation } from '@store/common/api';
 import { useLoadable } from '@common/hooks/use-loadable';
+import {
+  currentAccountIndexStore,
+  currentAccountStore,
+  currentAccountStxAddressStore,
+} from '@store/accounts';
+import { latestNoncesState } from '@store/accounts/nonce';
 
 export const useWallet = () => {
   const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
-  const [wallet, setWallet] = useRecoilState(walletStore);
-  const secretKey = useRecoilValue(secretKeyStore);
+  const [wallet, setWallet] = useRecoilState(walletState);
+  const secretKey = useRecoilValue(secretKeyState);
   const encryptedSecretKey = useRecoilValue(encryptedSecretKeyStore);
   const currentAccountIndex = useRecoilValue(currentAccountIndexStore);
-  const hasSetPassword = useRecoilValue(hasSetPasswordStore);
+  const hasSetPassword = useRecoilValue(hasSetPasswordState);
   const currentAccount = useRecoilValue(currentAccountStore);
   const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressStore);
   const transactionVersion = useRecoilValue(currentTransactionVersion);
@@ -67,7 +70,7 @@ export const useWallet = () => {
           const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
           const network = await snapshot.getPromise(currentNetworkStore);
           const address = await snapshot.getPromise(currentAccountStxAddressStore);
-          set(latestNoncesStore([network.url, address || '']), () => ({
+          set(latestNoncesState([network.url, address || '']), () => ({
             blockHeight,
             nonce: newNonce,
           }));
@@ -87,7 +90,7 @@ export const useWallet = () => {
   const doFinishSignIn = useRecoilCallback(
     ({ set, snapshot }) =>
       async (accountIndex: number) => {
-        const wallet = await snapshot.getPromise(walletStore);
+        const wallet = await snapshot.getPromise(walletState);
         const account = wallet?.accounts[accountIndex];
         if (!decodedAuthRequest || !authRequest || !account || !wallet) {
           console.error('Uh oh! Finished onboarding without auth info.');

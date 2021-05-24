@@ -5,7 +5,7 @@ import {
   transactionPayloadStore,
 } from '@store/transaction';
 import { getPostCondition, handlePostConditions } from '@common/post-condition-utils';
-import { currentAccountStxAddressStore } from '@store/wallet';
+import { currentAccountStxAddressStore } from '@store/accounts';
 
 export function usePostConditionsCallback() {
   return useRecoilCallback(postConditionsCallback, []);
