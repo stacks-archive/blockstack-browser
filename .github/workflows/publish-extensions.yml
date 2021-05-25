@@ -100,6 +100,29 @@ jobs:
           WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
 
+      - name: Create Issue for Firefox Manual Step 
+        id: create-firefox-issue
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/FIREFOX_ISSUE_TEMPLATE.md
+          update_existing: true
+
+      - name: Add Issue to Backlog
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          project-location: hirosystems
+          project-name: UserX Kanban
+          column-name: 📥 Backlog
+          issue-number: ${{ steps.create-firefox-issue.outputs.number }}
+
+      - name: Firefox Issue Status
+        run: |
+          echo "Created issue number: ${{ steps.create-firefox-issue.outputs.number }}"
+          echo "Created: ${{ steps.create-firefox-issue.outputs.url }}"
+
   post_run:
     runs-on: ubuntu-latest
     needs:
