@@ -186,6 +186,8 @@
     "yup": "0.32.9"
   },
   "resolutions": {
+    "**/**/dns-packet": "5.2.2",
+    "**/**/browserslist": "4.16.5",
     "@stacks/ui": "7.8.0",
     "@stacks/ui-core": "7.3.0",
     "@stacks/ui-theme": "7.5.0",

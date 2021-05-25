@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { debounce } from 'ts-debounce';
-import { Button, Input, Stack } from '@stacks/ui';
+import { Box, Button, Input, Stack } from '@stacks/ui';
 import { Form, Formik } from 'formik';
 import * as yup from 'yup';
 import { PopupContainer } from '@components/popup/container';
@@ -86,7 +86,6 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
           if (typeof value !== 'string') return false;
           const result = validatePassword(value);
           setStrengthResult(result);
-          console.log(result);
           return result.meetsAllStrengthRequirements;
         }, HUMAN_REACTION_DEBOUNCE_TIME),
       }),
@@ -101,18 +100,18 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
       {formik => (
         <Form>
           <PopupContainer header={<Header hideActions title="Set a password" />}>
-            <Stack spacing="loose">
-              <Body className="onboarding-text">
-                This password is for this device only. To access your account on a new device you
-                will use your Secret Key.
-              </Body>
+            <Body className="onboarding-text">
+              This password is for this device only. To access your account on a new device you will
+              use your Secret Key.
+            </Body>
+            {formik.submitCount && !strengthResult.meetsAllStrengthRequirements ? (
+              <Caption fontSize={0} mt="base-loose">
+                Please use a stronger password before continuing. Longer than 12 characters, with
+                symbols, numbers, and words.
+              </Caption>
+            ) : null}
+            <Box mt="loose">
               <Stack spacing="loose" width="100%">
-                {formik.submitCount && !strengthResult.meetsAllStrengthRequirements ? (
-                  <Caption fontSize={0}>
-                    Please use a stronger password before continuing. Longer than 12 characters,
-                    with symbols, numbers, and words.
-                  </Caption>
-                ) : null}
                 <Input
                   name="password"
                   placeholder={placeholder || 'Set a password'}
@@ -120,19 +119,21 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
                   width="100%"
                   type="password"
                   data-test="set-password"
+                  autoFocus
+                  value={formik.values.password}
                   onChange={formik.handleChange}
                 />
                 <Button
                   type="submit"
                   width="100%"
-                  isLoading={loading}
+                  isLoading={loading || formik.isSubmitting}
                   isDisabled={loading}
                   data-test="set-password-done"
                 >
                   Done
                 </Button>
               </Stack>
-            </Stack>
+            </Box>
           </PopupContainer>
         </Form>
       )}
