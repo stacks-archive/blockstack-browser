@@ -5,5 +5,9 @@ const hiroHeaders: HeadersInit = {
 
 export function fetcher(input: RequestInfo, init: RequestInit = {}) {
   const initHeaders = init.headers || {};
-  return fetch(input, { ...init, headers: { ...initHeaders, ...hiroHeaders } });
+  return fetch(input, {
+    credentials: 'omit',
+    ...init,
+    headers: { ...initHeaders, ...hiroHeaders },
+  });
 }

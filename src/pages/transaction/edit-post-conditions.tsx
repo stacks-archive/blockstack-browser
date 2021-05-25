@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // @ts-nocheck TODO: actually use this page
+=======
+// @ts-nocheck
+>>>>>>> 3805c0e8 (refactor: continue refactor)
 import React, { Suspense, useEffect } from 'react';
 import { Box, Button, Flex, Text, Input } from '@stacks/ui';
 import { TxLoading } from '@pages/transaction';

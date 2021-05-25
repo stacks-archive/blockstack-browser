@@ -1,41 +1,19 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import { Box, Fade, Button, Stack, color } from '@stacks/ui';
 import { Title, Caption } from '@components/typography';
-import { useWallet } from '@common/hooks/use-wallet';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { accountDrawerStep, AccountStep } from '@store/ui';
 import { getAccountDisplayName, getStxAddress } from '@stacks/wallet-sdk';
-import { currentTransactionVersion } from '@store/networks';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
 import { IconCheck } from '@tabler/icons';
 import { AccountAvatar } from '@components/account-avatar';
 import { useAccountNames } from '@common/hooks/use-account-names';
+import { useSwitchAccount } from '@common/hooks/use-switch-account';
 
 interface SwitchAccountProps {
   close: () => void;
 }
-
-const TIMEOUT = 350;
-
-const useSwitchAccount = (handleClose: () => void) => {
-  const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
-  const transactionVersion = useRecoilValue(currentTransactionVersion);
-
-  const handleSwitchAccount = useCallback(
-    async index => {
-      await doSwitchAccount(index);
-      window.setTimeout(() => {
-        handleClose();
-      }, TIMEOUT);
-    },
-    [doSwitchAccount, handleClose]
-  );
-
-  const accounts = wallet?.accounts || [];
-  const getIsActive = (index: number) => index === currentAccountIndex;
-  return { accounts, handleSwitchAccount, getIsActive, transactionVersion };
-};
 
 // eslint-disable-next-line no-warning-comments
 // TODO: this page is nearly identical to the network switcher abstract it out into a shared component

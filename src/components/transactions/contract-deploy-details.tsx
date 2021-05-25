@@ -8,6 +8,7 @@ import { Caption, Title } from '@components/typography';
 import { Divider } from '@components/divider';
 import { ContractPreview } from '@components/transactions/contract-preview';
 import { RowItem } from '@components/transactions/row-item';
+import { useTransactionRequest } from '@common/hooks/use-transaction';
 
 function ContractCodeSection() {
   const { pendingTransaction } = useTxState();
@@ -50,7 +51,7 @@ function TabButton({ isActive, ...props }: { isActive?: boolean } & BoxProps) {
 }
 
 export const ContractDeployDetails: React.FC = () => {
-  const { pendingTransaction } = useTxState();
+  const pendingTransaction = useTransactionRequest();
   const { currentAccount, currentAccountStxAddress } = useWallet();
   const [tab, setTab] = useState<'details' | 'code'>('details');
   if (

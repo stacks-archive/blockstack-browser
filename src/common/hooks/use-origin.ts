@@ -1,13 +1,8 @@
 import { useRecoilValue } from 'recoil';
-import { requestTokenStore } from '@store/transaction';
 import { getRequestOrigin, StorageKey } from '../../storage';
+import { requestTokenState } from '@store/transactions/requests';
 
 export function useOrigin() {
-  const requestToken = useRecoilValue(requestTokenStore);
-  if (!requestToken) return null;
-  try {
-    return getRequestOrigin(StorageKey.transactionRequests, requestToken);
-  } catch (e) {
-    return null;
-  }
+  const requestToken = useRecoilValue(requestTokenState);
+  return requestToken ? getRequestOrigin(StorageKey.transactionRequests, requestToken) : null;
 }

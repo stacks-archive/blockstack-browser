@@ -1,13 +1,13 @@
 import React from 'react';
-import { useTxState } from '@common/hooks/use-tx-state';
 import { color, Stack } from '@stacks/ui';
 import { AttachmentRow } from './attachment-row';
 import { RowItem } from '@components/transactions/row-item';
 import { Title } from '@components/typography';
 import { Divider } from '@components/divider';
+import { useTransactionRequest } from '@common/hooks/use-transaction';
 
 export const StxTransferDetails: React.FC = () => {
-  const { pendingTransaction } = useTxState();
+  const pendingTransaction = useTransactionRequest();
   if (!pendingTransaction || pendingTransaction.txType !== 'token_transfer') {
     return null;
   }

@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
-import { pendingTransactionStore } from '@store/transaction';
+import { pendingTransactionState } from '@store/transactions';
 
 export function usePendingTransaction() {
-  return useRecoilValue(pendingTransactionStore);
+  return useRecoilValue(pendingTransactionState);
 }

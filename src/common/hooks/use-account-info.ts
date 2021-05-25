@@ -1,10 +1,10 @@
-import { accountBalancesStore, accountDataStore } from '@store/accounts';
+import { accountBalancesState, accountDataState } from '@store/accounts';
 import { useLoadable } from './use-loadable';
 
 export const useFetchAccountData = () => {
-  return useLoadable(accountDataStore);
+  return useLoadable(accountDataState);
 };
 
 export const useFetchBalances = () => {
-  return useLoadable(accountBalancesStore);
+  return useLoadable(accountBalancesState);
 };

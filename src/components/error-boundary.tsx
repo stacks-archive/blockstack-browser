@@ -2,17 +2,12 @@ import React from 'react';
 import { PopupContainer } from '@components/popup/container';
 import { Box, Text, Button } from '@stacks/ui';
 import { useLoadable } from '@common/hooks/use-loadable';
-import {
-  contractSourceStore,
-  contractInterfaceStore,
-  pendingTransactionFunctionSelector,
-  signedTransactionStore,
-  pendingTransactionStore,
-} from '@store/transaction';
-import { accountDataStore } from '@store/accounts';
+import { accountDataState } from '@store/accounts';
 import { walletState } from '@store/wallet';
 import { useRecoilValue } from 'recoil';
 import { Header } from '@components/header';
+import { useTransactionRequest } from '@common/hooks/use-transaction';
+import { signedTransactionState } from '@store/transactions';
 
 const openGithubIssue = (loadable: ReturnType<typeof useLoadable>) => {
   const issueParams = new URLSearchParams();
@@ -58,16 +53,11 @@ type Loadables = ReturnType<typeof useLoadable>[];
  *
  */
 export const ErrorBoundary: React.FC = ({ children }) => {
-  const pendingTransaction = useRecoilValue(pendingTransactionStore);
+  const pendingTransaction = useTransactionRequest();
   const wallet = useRecoilValue(walletState);
   let loadables: Loadables = [];
-  const walletLoadables: Loadables = [useLoadable(accountDataStore)];
-  const txLoadables: Loadables = [
-    useLoadable(contractSourceStore),
-    useLoadable(contractInterfaceStore),
-    useLoadable(pendingTransactionFunctionSelector),
-    useLoadable(signedTransactionStore),
-  ];
+  const walletLoadables: Loadables = [useLoadable(accountDataState)];
+  const txLoadables: Loadables = [useLoadable(signedTransactionState)];
 
   if (wallet) {
     loadables = loadables.concat(walletLoadables);
@@ -81,6 +71,7 @@ export const ErrorBoundary: React.FC = ({ children }) => {
 
   if (errorLoadables.length > 0) {
     const [loadable] = errorLoadables;
+    console.log(errorLoadables);
     const error = errorLoadables[0].errorOrThrow();
     return (
       <PopupContainer header={<Header title="Uh oh! Something went wrong." />}>

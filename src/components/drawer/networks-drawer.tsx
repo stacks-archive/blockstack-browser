@@ -6,7 +6,7 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/common/types';
-import { currentNetworkKeyStore } from '@store/networks';
+import { currentNetworkKeyState } from '@store/networks';
 import { showNetworksStore } from '@store/ui';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { Caption, Title } from '@components/typography';
@@ -14,7 +14,7 @@ import { Caption, Title } from '@components/typography';
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();
   const { networks, currentNetworkKey } = useWallet();
-  const setCurrentNetworkKey = useSetRecoilState(currentNetworkKeyStore);
+  const setCurrentNetworkKey = useSetRecoilState(currentNetworkKeyState);
 
   const network = networks[item];
   const delayToShowCheckmarkMotion = 350;

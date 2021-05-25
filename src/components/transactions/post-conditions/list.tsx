@@ -1,12 +1,6 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { Box, Circle, color, Flex, Stack } from '@stacks/ui';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  currentPostConditionIndexStore,
-  pendingTransactionStore,
-  postConditionsStore,
-  showTxDetails,
-} from '@store/transaction';
+import { useRecoilValue } from 'recoil';
 import { PostConditionComponent } from './single';
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';
@@ -14,28 +8,12 @@ import { IconLock } from '@tabler/icons';
 import { Body } from '@components/typography';
 import { TransactionEventCard } from '@components/transactions/event-card';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { useSelectedAsset } from '@common/hooks/use-selected-asset';
-
-function usePostconditionsState() {
-  const showDetails = useRecoilValue(showTxDetails);
-  const pendingTransaction = useRecoilValue(pendingTransactionStore);
-  const setShowDetails = useSetRecoilState(showTxDetails);
-  const postConditions = useRecoilValue(postConditionsStore);
-  const setCurrentPostConditionIndex = useSetRecoilState(currentPostConditionIndexStore);
-  const { handleUpdateSelectedAsset } = useSelectedAsset();
-
-  return {
-    showDetails,
-    pendingTransaction,
-    setShowDetails,
-    postConditions,
-    setCurrentPostConditionIndex,
-    handleUpdateSelectedAsset,
-  };
-}
+import { useLoadable } from '@common/hooks/use-loadable';
+import { postConditionsState } from '@store/transactions';
+import { useTransactionRequest } from '@common/hooks/use-transaction';
 
 function StxPostcondition() {
-  const { pendingTransaction } = usePostconditionsState();
+  const pendingTransaction = useTransactionRequest();
   if (!pendingTransaction || pendingTransaction.txType !== TransactionTypes.STXTransfer)
     return null;
   return (
@@ -70,11 +48,12 @@ function NoPostconditions() {
   );
 }
 
-function PostConditionsList() {
-  const { postConditions } = usePostconditionsState();
+const PostConditionsList = memo(() => {
+  const postConditions = useRecoilValue(postConditionsState);
+
   return (
     <>
-      {postConditions.map((pc, index) => (
+      {postConditions?.map((pc, index) => (
         <PostConditionComponent
           pc={pc}
           key={`${pc.type}-${pc.conditionCode}`}
@@ -83,15 +62,19 @@ function PostConditionsList() {
       ))}
     </>
   );
-}
+});
 
-export const PostConditions: React.FC = () => {
-  const { pendingTransaction, postConditions } = usePostconditionsState();
-
-  const hasPostConditions = postConditions.length > 0;
-
+export const PostConditions: React.FC = memo(() => {
+  const { value: postConditions } = useLoadable(postConditionsState);
+  const pendingTransaction = useTransactionRequest();
+  const hasPostConditions = useMemo(
+    () => postConditions && postConditions?.length > 0,
+    [postConditions]
+  );
   const isStxTransfer =
     pendingTransaction?.txType === TransactionTypes.STXTransfer && !hasPostConditions;
+
+  if (!postConditions || !pendingTransaction) return <></>;
 
   return (
     <Flex
@@ -111,4 +94,4 @@ export const PostConditions: React.FC = () => {
       )}
     </Flex>
   );
-};
+});

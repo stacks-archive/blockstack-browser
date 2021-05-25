@@ -1,6 +1,6 @@
 import { selector, selectorFamily } from 'recoil';
-import { currentNetworkStore } from '@store/networks';
-import { accountBalancesStore } from '@store/accounts';
+import { currentNetworkState } from '@store/networks';
+import { accountBalancesState } from '@store/accounts';
 import {
   fetchFungibleTokenMetaData,
   fetchSip10Status,
@@ -24,7 +24,7 @@ export const assetSip10ImplementationState = selectorFamily<
   get:
     ({ contractName, contractAddress }) =>
     async ({ get }) => {
-      const network = get(currentNetworkStore);
+      const network = get(currentNetworkState);
       const chain = getNetworkChain(network);
       try {
         return fetchSip10Status({
@@ -55,7 +55,7 @@ export const assetMetaDataState = selectorFamily<
         })
       );
       if (isImplemented || isImplemented === null) {
-        const network = get(currentNetworkStore);
+        const network = get(currentNetworkState);
         const localData = getLocalData(network.url, contractAddress, contractName);
         if (localData) {
           return {
@@ -83,7 +83,7 @@ export const assetMetaDataState = selectorFamily<
 export const assetsState = selector<AssetWithMeta[] | undefined>({
   key: 'assets',
   get: async ({ get }) => {
-    const balance = get(accountBalancesStore);
+    const balance = get(accountBalancesState);
     if (!balance) return;
     const assets = transformAssets(balance);
     const _assets: AssetWithMeta[] = (await Promise.all(
@@ -128,7 +128,7 @@ export const nonFungibleTokensState = selector({
 export const stxTokenState = selector({
   key: 'assets.stx',
   get: ({ get }) => {
-    const balances = get(accountBalancesStore);
+    const balances = get(accountBalancesState);
     if (!balances || balances.stx.balance === '0') return;
     return {
       type: 'stx',

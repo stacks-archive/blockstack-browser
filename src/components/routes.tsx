@@ -19,7 +19,7 @@ import { ScreenPaths } from '@store/common/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
-import { useSaveAuthRequest } from '@common/hooks/callbacks/use-save-auth-request-callback';
+import { useSaveAuthRequest } from '@common/hooks/use-save-auth-request-callback';
 import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 import { Navigate } from '@components/navigate';
 import { AccountGate } from '@components/account-gate';

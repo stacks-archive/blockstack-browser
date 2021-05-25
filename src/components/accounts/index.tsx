@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, FlexProps, Spinner, color, Stack } from '@stacks/ui';
-import { Caption, Text, Title } from '@components/typography';
+import { color, Flex, FlexProps, Spinner, Stack } from '@stacks/ui';
+import { Caption, Title, Text } from '@components/typography';
 
-import { ScreenPaths } from '@store/common/types';
-
-import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
-import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { useAccountDisplayName, useAccountNames } from '@common/hooks/use-account-names';
+import { accountsWithAddressState } from '@store/accounts';
+import { useLoadable } from '@common/hooks/use-loadable';
+import { Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { AccountAvatar } from '@components/account-avatar';
 import { SpaceBetween } from '@components/space-between';
+import { useAccountDisplayName, useAccountNames } from '@common/hooks/use-account-names';
+import { ScreenPaths } from '@store/common/types';
+import { PlusInCircle } from '@components/icons/plus-in-circle';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -28,7 +29,7 @@ interface AccountItemProps extends FlexProps {
   account: Account;
 }
 
-const AccountItem: React.FC<AccountItemProps> = ({
+export const AccountItem: React.FC<AccountItemProps> = ({
   address,
   selectedAddress,
   account,
@@ -36,7 +37,6 @@ const AccountItem: React.FC<AccountItemProps> = ({
 }) => {
   const { decodedAuthRequest } = useOnboardingState();
   const name = useAccountDisplayName(account);
-
   const loading = address === selectedAddress;
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   return (
@@ -73,7 +73,8 @@ export const Accounts: React.FC<AccountsProps> = ({
   next,
   ...rest
 }) => {
-  const { wallet, transactionVersion } = useWallet();
+  const { wallet } = useWallet();
+  const { value: accounts } = useLoadable(accountsWithAddressState);
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { decodedAuthRequest } = useOnboardingState();
   const doChangeScreen = useDoChangeScreen();
@@ -83,15 +84,7 @@ export const Accounts: React.FC<AccountsProps> = ({
     }
   }, [accountIndex, setSelectedAddress, selectedAddress]);
   const names = useAccountNames();
-  if (!wallet) return null;
-
-  const accounts = wallet.accounts.map(account => ({
-    ...account,
-    stxAddress: getStxAddress({ account, transactionVersion }),
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    number: account.index + 1,
-  }));
-
+  if (!wallet || !accounts) return null;
   const disableSelect = !decodedAuthRequest || !!selectedAddress;
 
   return (
@@ -101,21 +94,21 @@ export const Accounts: React.FC<AccountsProps> = ({
 
         return (
           <ListItem
-            key={account.stxAddress}
+            key={account.address}
             isFirst={index === 0}
             cursor={disableSelect ? 'not-allowed' : 'pointer'}
-            iconComponent={() => <AccountAvatar account={account} name={name} />}
+            iconComponent={() => <AccountAvatar account={account} name={name} mr={3} />}
             hasAction={!!next && selectedAddress === null}
-            data-test={`account-${(account?.username || account?.stxAddress).split('.')[0]}`}
+            data-test={`account-${(account.username || account.address).split('.')[0]}`}
             onClick={() => {
               if (!next) return;
               if (selectedAddress) return;
-              setSelectedAddress(account?.stxAddress);
+              setSelectedAddress(account.address);
               next(index);
             }}
           >
             <AccountItem
-              address={account.stxAddress}
+              address={account.address}
               selectedAddress={selectedAddress}
               data-test={`account-index-${index}`}
               account={account}

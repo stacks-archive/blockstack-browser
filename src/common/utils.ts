@@ -4,7 +4,6 @@ import { wordlists } from 'bip39';
 import { isValidUrl } from './validate-url';
 import { getTab, deleteTabForRequest, StorageKey } from '../storage';
 import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
-import { KEBAB_REGEX } from '@common/constants';
 import {
   AuthenticationResponseMessage,
   ExternalMethods,
@@ -12,6 +11,9 @@ import {
   TransactionResponseMessage,
   TxResult,
 } from '@content-scripts/message-types';
+
+import { KEBAB_REGEX, Network } from '@common/constants';
+import { StacksNetwork } from '@stacks/network';
 
 function kebabCase(str: string) {
   return str.replace(KEBAB_REGEX, match => '-' + match.toLowerCase());
@@ -264,4 +266,18 @@ export function hexToHumanReadable(hex: string) {
   const buff = Buffer.from(hex, 'hex');
   if (isUtf8(buff)) return buff.toString('utf8');
   return `0x${hex}`;
+}
+
+export function findMatchingNetworkKey(
+  txNetwork: StacksNetwork,
+  networks: Record<string, Network>
+) {
+  if (!networks) return;
+  const newNetworkKey = Object.keys(networks).find((key: string) => {
+    const network = networks[key] as Network;
+    return network.url === txNetwork?.coreApiUrl || network.chainId === txNetwork?.chainId;
+  });
+
+  if (newNetworkKey) return newNetworkKey;
+  return null;
 }

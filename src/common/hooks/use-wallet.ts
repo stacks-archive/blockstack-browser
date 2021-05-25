@@ -9,11 +9,11 @@ import {
 import { useRecoilValue, useRecoilState, useRecoilCallback } from 'recoil';
 import { gaiaUrl } from '@common/constants';
 import {
-  currentNetworkKeyStore,
-  currentNetworkStore,
-  networksStore,
-  currentTransactionVersion,
-  latestBlockHeightStore,
+  currentNetworkKeyState,
+  currentNetworkState,
+  networksState,
+  networkTransactionVersionState,
+  latestBlockHeightState,
 } from '@store/networks';
 import {
   walletState,
@@ -28,14 +28,15 @@ import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
-import { apiRevalidation } from '@store/common/api';
+import { apiRevalidation } from '@store/common/api-helpers';
 import { useLoadable } from '@common/hooks/use-loadable';
 import {
   currentAccountIndexStore,
-  currentAccountStore,
-  currentAccountStxAddressStore,
+  currentAccountState,
+  currentAccountStxAddressState,
 } from '@store/accounts';
 import { latestNoncesState } from '@store/accounts/nonce';
+import { bytesToText } from '@store/common/utils';
 
 export const useWallet = () => {
   const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
@@ -44,12 +45,12 @@ export const useWallet = () => {
   const encryptedSecretKey = useRecoilValue(encryptedSecretKeyStore);
   const currentAccountIndex = useRecoilValue(currentAccountIndexStore);
   const hasSetPassword = useRecoilValue(hasSetPasswordState);
-  const currentAccount = useRecoilValue(currentAccountStore);
-  const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressStore);
-  const transactionVersion = useRecoilValue(currentTransactionVersion);
-  const networks = useRecoilValue(networksStore);
-  const currentNetwork = useRecoilValue(currentNetworkStore);
-  const currentNetworkKey = useRecoilValue(currentNetworkKeyStore);
+  const currentAccount = useRecoilValue(currentAccountState);
+  const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressState);
+  const transactionVersion = useRecoilValue(networkTransactionVersionState);
+  const networks = useRecoilValue(networksState);
+  const currentNetwork = useRecoilValue(currentNetworkState);
+  const currentNetworkKey = useRecoilValue(currentNetworkKeyState);
   const walletConfig = useLoadable(walletConfigStore);
   const vaultMessenger = useVaultMessenger();
 
@@ -67,9 +68,9 @@ export const useWallet = () => {
         const newNonce = tx.auth.spendingCondition?.nonce.toNumber();
         if (newNonce !== undefined) {
           set(apiRevalidation, current => (current as number) + 1);
-          const blockHeight = await snapshot.getPromise(latestBlockHeightStore);
-          const network = await snapshot.getPromise(currentNetworkStore);
-          const address = await snapshot.getPromise(currentAccountStxAddressStore);
+          const blockHeight = await snapshot.getPromise(latestBlockHeightState);
+          const network = await snapshot.getPromise(currentNetworkState);
+          const address = await snapshot.getPromise(currentAccountStxAddressState);
           set(latestNoncesState([network.url, address || '']), () => ({
             blockHeight,
             nonce: newNonce,
@@ -132,7 +133,7 @@ export const useWallet = () => {
   return {
     hasRehydratedVault,
     wallet,
-    secretKey,
+    secretKey: secretKey ? bytesToText(secretKey) : undefined,
     isSignedIn,
     currentAccount,
     currentAccountIndex,

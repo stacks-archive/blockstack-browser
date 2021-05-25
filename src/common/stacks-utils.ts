@@ -17,7 +17,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
-import { Network } from '@store/networks';
+import { Network } from './constants';
 import { STX_DECIMALS } from './constants';
 import { abbreviateNumber } from '@common/utils';
 
@@ -47,7 +47,7 @@ export const encodeContractCallArgument = ({ type, value }: ContractCallArgument
 
 export const stacksValue = ({
   value,
-  fixedDecimals = false,
+  fixedDecimals = true,
   withTicker = true,
   abbreviate = false,
 }: {

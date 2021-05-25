@@ -1,13 +1,13 @@
 import React, { memo, useMemo } from 'react';
 import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
 import { useRecoilValue } from 'recoil';
-import { currentNetworkStore } from '@store/networks';
+import { currentNetworkState } from '@store/networks';
 import { ChainID } from '@stacks/transactions';
 import { IconFlask } from '@tabler/icons';
 import { useDrawers } from '@common/hooks/use-drawers';
 
 export const NetworkModeBadge: React.FC<FlexProps> = memo(props => {
-  const { chainId } = useRecoilValue(currentNetworkStore);
+  const { chainId } = useRecoilValue(currentNetworkState);
   const isTestnet = useMemo(() => chainId === ChainID.Testnet, [chainId]);
   const { setShowNetworks } = useDrawers();
 

@@ -11,6 +11,7 @@ import { VaultLoader } from '@components/vault-loader';
 import { AccountsDrawer } from './drawer/accounts';
 import { NetworksDrawer } from './drawer/networks-drawer';
 import { Toaster } from 'react-hot-toast';
+import { DebugObserver } from '@components/debug-observer';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -19,6 +20,7 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <RecoilRoot>
+        <DebugObserver />
         <ColorModeProvider defaultMode="light">
           <>
             <GlobalStyles />

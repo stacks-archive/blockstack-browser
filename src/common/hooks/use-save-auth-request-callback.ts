@@ -2,17 +2,12 @@ import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { decodeToken } from 'jsontokens';
-
 import { DecodedAuthRequest } from '@common/dev/types';
 import { useWallet } from '@common/hooks/use-wallet';
-
-import { authRequestState, currentScreenState } from '@store/onboarding';
-
-import { getRequestOrigin, StorageKey } from '../../../storage';
-
+import { getRequestOrigin, StorageKey } from 'storage';
 import { ScreenPaths } from '@store/common/types';
-
-import { useOnboardingState } from '../use-onboarding-state';
+import { useOnboardingState } from './use-onboarding-state';
+import { authRequestState, currentScreenState } from '@store/onboarding';
 
 export function useSaveAuthRequest() {
   const { wallet } = useWallet();

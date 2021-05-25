@@ -1,9 +1,9 @@
 import { Configuration, SmartContractsApi } from '@stacks/blockchain-api-client';
 import { ChainID, cvToString, hexToCV } from '@stacks/transactions';
 import { SIP_010 } from '@common/constants';
-import { Asset, FungibleTokenOptions } from '@store/assets/types';
-import { Network } from '@store/networks';
-import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
+import type { Asset, FungibleTokenOptions } from '@store/assets/types';
+import type { Network } from '@common/constants';
+import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
 
 export async function callReadOnlyFunction({

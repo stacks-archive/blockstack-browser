@@ -126,12 +126,12 @@ export const generateTransaction = async ({
   txData: TransactionPayload;
 }) => {
   let tx: StacksTransaction | null = null;
+  console.log('generate', txData, nonce);
   if (!txData.network?.getTransferFeeEstimateApiUrl) {
-    const network =
+    txData.network =
       txData.network?.version === TransactionVersion.Mainnet
         ? new StacksMainnet()
         : new StacksTestnet();
-    txData.network = network;
   }
   switch (txData.txType) {
     case TransactionTypes.ContractCall:
@@ -152,24 +152,25 @@ export const generateTransaction = async ({
   return tx;
 };
 
+interface FinishTransactionOptions {
+  tx: StacksTransaction;
+  pendingTransaction: TransactionPayloadWithAttachment;
+  nodeUrl: string;
+}
+
 export const finishTransaction = async ({
   tx,
   pendingTransaction,
   nodeUrl,
-}: {
-  tx: StacksTransaction;
-  pendingTransaction: TransactionPayloadWithAttachment;
-  nodeUrl: string;
-}): Promise<TxResult> => {
+}: FinishTransactionOptions): Promise<TxResult> => {
   const serialized = tx.serialize();
   const txRaw = `0x${serialized.toString('hex')}`;
 
   // if sponsored, return raw tx
-  if (tx.auth.authType === AuthType.Sponsored) {
+  if (tx.auth.authType === AuthType.Sponsored)
     return {
       txRaw,
     };
-  }
 
   const response = await broadcastRawTransaction(
     serialized,

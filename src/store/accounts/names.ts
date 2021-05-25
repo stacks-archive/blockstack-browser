@@ -4,7 +4,7 @@ import { getStxAddress } from '@stacks/wallet-sdk';
 import { fetcher } from '@common/wrapped-fetch';
 
 import { accountsState } from './index';
-import { currentNetworkStore, currentTransactionVersion } from '@store/networks';
+import { currentNetworkState, networkTransactionVersionState } from '@store/networks';
 
 async function fetchNamesByAddress(networkUrl: string, address: string): Promise<string[]> {
   const res = await fetcher(networkUrl + `/v1/addresses/stacks/${address}`);
@@ -42,8 +42,8 @@ export const accountNameState = selector<AccountNameState>({
   key: 'names',
   get: async ({ get }) => {
     const accounts = get(accountsState);
-    const network = get(currentNetworkStore);
-    const transactionVersion = get(currentTransactionVersion);
+    const network = get(currentNetworkState);
+    const transactionVersion = get(networkTransactionVersionState);
 
     if (!network || !accounts) return null;
 

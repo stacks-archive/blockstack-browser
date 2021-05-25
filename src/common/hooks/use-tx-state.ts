@@ -1,56 +1,63 @@
 import { useWallet } from './use-wallet';
-import {
-  contractSourceStore,
-  contractInterfaceStore,
-  pendingTransactionStore,
-  signedTransactionStore,
-  pendingTransactionFunctionSelector,
-  transactionBroadcastErrorStore,
-  requestTokenStore,
-  isUnauthorizedTransactionStore,
-} from '@store/transaction';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { currentNetworkStore } from '@store/networks';
+import { transactionBroadcastErrorState, isUnauthorizedTransactionState } from '@store/transaction';
+import { useRecoilCallback, useRecoilValue, waitForAll } from 'recoil';
+import { currentNetworkState } from '@store/networks';
 import { finishTransaction } from '@common/transaction-utils';
-import { useLoadable } from '@common/hooks/use-loadable';
 import { finalizeTxSignature } from '@common/utils';
+import {
+  useSignedTransaction,
+  useTransactionContractInterface,
+  useTransactionContractSource,
+  useTransactionFunction,
+  useTransactionRequest,
+} from '@common/hooks/use-transaction';
+import { signedTransactionState } from '@store/transactions';
+import { requestTokenPayloadState, requestTokenState } from '@store/transactions/requests';
 
-export const useTxState = () => {
+export function useHandleSubmitPendingTransaction() {
   const { doSetLatestNonce } = useWallet();
-  const broadcastError = useRecoilValue(transactionBroadcastErrorStore);
-  const pendingTransaction = useRecoilValue(pendingTransactionStore);
-  const contractSource = useLoadable(contractSourceStore);
-  const contractInterface = useLoadable(contractInterfaceStore);
-  const pendingTransactionFunction = useLoadable(pendingTransactionFunctionSelector);
-  const signedTransaction = useLoadable(signedTransactionStore);
-  const isUnauthorizedTransaction = useRecoilValue(isUnauthorizedTransactionStore);
-
-  const doSubmitPendingTransaction = useRecoilCallback(
+  return useRecoilCallback(
     ({ snapshot, set }) =>
       async () => {
-        const pendingTransaction = await snapshot.getPromise(pendingTransactionStore);
-        const requestPayload = await snapshot.getPromise(requestTokenStore);
-        if (!pendingTransaction || !requestPayload) {
-          set(transactionBroadcastErrorStore, 'No pending transaction found.');
+        const { tx, pendingTransaction, requestToken, network } = await snapshot.getPromise(
+          waitForAll({
+            tx: signedTransactionState,
+            pendingTransaction: requestTokenPayloadState,
+            requestToken: requestTokenState,
+            network: currentNetworkState,
+          })
+        );
+
+        if (!pendingTransaction || !requestToken || !tx) {
+          set(transactionBroadcastErrorState, 'No pending transaction found.');
           return;
         }
-        const tx = await snapshot.getPromise(signedTransactionStore);
-        const currentNetwork = await snapshot.getPromise(currentNetworkStore);
-        if (!tx) return;
         try {
           const result = await finishTransaction({
             tx,
             pendingTransaction,
-            nodeUrl: currentNetwork.url,
+            nodeUrl: network.url,
           });
           await doSetLatestNonce(tx);
-          finalizeTxSignature(requestPayload, result);
+          finalizeTxSignature(requestToken, result);
         } catch (error) {
-          set(transactionBroadcastErrorStore, error.message);
+          set(transactionBroadcastErrorState, error.message);
         }
       },
     [doSetLatestNonce]
   );
+}
+
+export const useTxState = () => {
+  const pendingTransaction = useTransactionRequest();
+  const contractInterface = useTransactionContractInterface();
+  const pendingTransactionFunction = useTransactionFunction();
+  const signedTransaction = useSignedTransaction();
+  const contractSource = useTransactionContractSource();
+  const handleSubmitPendingTransaction = useHandleSubmitPendingTransaction();
+
+  const broadcastError = useRecoilValue(transactionBroadcastErrorState);
+  const isUnauthorizedTransaction = useRecoilValue(isUnauthorizedTransactionState);
 
   return {
     pendingTransaction,
@@ -58,7 +65,7 @@ export const useTxState = () => {
     contractSource,
     contractInterface,
     pendingTransactionFunction,
-    doSubmitPendingTransaction,
+    handleSubmitPendingTransaction,
     broadcastError,
     isUnauthorizedTransaction,
   };

@@ -8,7 +8,7 @@ import {
 } from '@stacks/wallet-sdk';
 import { gaiaUrl } from '@common/constants';
 
-export const secretKeyState = atom<string | undefined>({
+export const secretKeyState = atom<Uint8Array | undefined>({
   key: 'wallet.secret-key',
   default: undefined,
 });
@@ -39,9 +39,7 @@ export const walletConfigStore = selector<WalletConfig | null>({
   key: 'wallet.wallet-config',
   get: async ({ get }) => {
     const wallet = get(walletState);
-    if (!wallet) {
-      return null;
-    }
+    if (!wallet) return null;
     const gaiaHubConfig = await createWalletGaiaConfig({ wallet, gaiaHubUrl: gaiaUrl });
     return fetchWalletConfig({ wallet, gaiaHubConfig });
   },

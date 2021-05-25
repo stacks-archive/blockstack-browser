@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useSetRecoilState } from 'recoil';
 import { currentPostConditionIndexStore, postConditionsStore } from '@store/transaction';
 import { selectedAssetIdState } from '@store/assets/asset-search';

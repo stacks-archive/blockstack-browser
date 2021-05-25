@@ -1,3 +1,5 @@
+import { ChainID } from '@stacks/transactions';
+
 export const gaiaUrl = 'https://hub.blockstack.org';
 
 export const transition = 'all .2s cubic-bezier(.215,.61,.355,1)';
@@ -31,3 +33,36 @@ export const SIP_010 = {
     trait: 'ft-trait',
   },
 };
+
+export interface Network {
+  url: string;
+  name: string;
+  chainId: ChainID;
+}
+
+export interface Networks {
+  [key: string]: Network;
+}
+
+export const defaultNetworks: Networks = {
+  mainnet: {
+    url: 'https://stacks-node-api.mainnet.stacks.co',
+    name: 'Mainnet',
+    chainId: ChainID.Mainnet,
+  },
+  testnet: {
+    url: 'https://stacks-node-api.testnet.stacks.co',
+    name: 'Testnet',
+    chainId: ChainID.Testnet,
+  },
+  regtest: {
+    url: 'https://stacks-node-api.regtest.stacks.co',
+    name: 'Regtest',
+    chainId: ChainID.Testnet,
+  },
+  localnet: {
+    url: 'http://localhost:3999',
+    name: 'Localnet',
+    chainId: ChainID.Testnet,
+  },
+} as const;

@@ -1,8 +1,8 @@
 import { atomFamily, selector, waitForAll } from 'recoil';
 import { localStorageEffect } from '@store/common/utils';
-import { currentNetworkStore } from '@store/networks';
-import { accountDataStore, currentAccountStxAddressStore } from '@store/accounts/index';
-import { apiRevalidation } from '@store/common/api';
+import { currentNetworkState } from '@store/networks';
+import { accountDataState, currentAccountStxAddressState } from '@store/accounts/index';
+import { apiRevalidation } from '@store/common/api-helpers';
 import { accountInfoStore } from '@store/accounts/index';
 
 export const latestNoncesState = atomFamily<
@@ -20,8 +20,8 @@ export const latestNoncesState = atomFamily<
 export const latestNonceState = selector({
   key: 'wallet.latest-nonce',
   get: ({ get }) => {
-    const network = get(currentNetworkStore);
-    const address = get(currentAccountStxAddressStore);
+    const network = get(currentNetworkState);
+    const address = get(currentAccountStxAddressState);
     return get(latestNoncesState([network.url, address || '']));
   },
 });
@@ -35,8 +35,8 @@ export const correctNonceState = selector({
       waitForAll({
         account: accountInfoStore,
         lastConfirmedTx: latestNonceState,
-        accountData: accountDataStore,
-        address: currentAccountStxAddressStore,
+        accountData: accountDataState,
+        address: currentAccountStxAddressState,
       })
     );
 

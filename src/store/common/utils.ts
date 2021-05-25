@@ -62,3 +62,10 @@ export const localStorageEffect =
       });
     }
   };
+export function textToBytes(content: string) {
+  return new TextEncoder().encode(content);
+}
+
+export function bytesToText(buffer: Uint8Array) {
+  return new TextDecoder().decode(buffer);
+}

@@ -1,89 +1,64 @@
-import { atom, selector } from 'recoil';
+import { atom, selector, waitForAll } from 'recoil';
 import { localStorageEffect } from './common/utils';
-import RPCClient from '@stacks/rpc-client';
 import { ChainID, TransactionVersion } from '@stacks/transactions';
 import { StacksNetwork, StacksTestnet, StacksMainnet } from '@stacks/network';
-import { BlockListResponse, CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
-import { fetchFromSidecar } from '@common/api/fetch';
-import { fetcher } from '@common/wrapped-fetch';
-import { apiRevalidation } from '@store/common/api';
+import { apiRevalidation } from '@store/common/api-helpers';
+import { transactionRequestNetwork } from '@store/transactions/requests';
+import { findMatchingNetworkKey } from '@common/utils';
+import { defaultNetworks, Networks } from '@common/constants';
+import { blocksApiClientState, infoApiClientState } from '@store/common/api-clients';
 
-export interface Network {
-  url: string;
-  name: string;
-  chainId: ChainID;
-}
-
-interface Networks {
-  [key: string]: Network;
-}
-
-export const defaultNetworks: Networks = {
-  mainnet: {
-    url: 'https://stacks-node-api.mainnet.stacks.co',
-    name: 'Mainnet',
-    chainId: ChainID.Mainnet,
-  },
-  testnet: {
-    url: 'https://stacks-node-api.testnet.stacks.co',
-    name: 'Testnet',
-    chainId: ChainID.Testnet,
-  },
-  regtest: {
-    url: 'https://stacks-node-api.regtest.stacks.co',
-    name: 'Regtest',
-    chainId: ChainID.Testnet,
-  },
-  localnet: {
-    url: 'http://localhost:3999',
-    name: 'Localnet',
-    chainId: ChainID.Testnet,
-  },
-};
-
-export const currentNetworkKeyStore = atom({
-  key: 'networks.current-key-v2',
-  default: 'mainnet',
-  effects_UNSTABLE: [localStorageEffect()],
-});
-
-export const networksStore = atom<Networks>({
-  key: 'networks.networks-v3',
+export const networksState = atom<Networks>({
+  key: 'networks',
   default: defaultNetworks,
   effects_UNSTABLE: [localStorageEffect()],
 });
 
-export const currentNetworkStore = selector({
+export const currentNetworkKeyState = atom({
+  key: 'networks.current-key',
+  default: selector({
+    key: 'networks.current-key.default',
+    get: ({ get }) => {
+      const { networks, txNetwork } = get(
+        waitForAll({
+          networks: networksState,
+          txNetwork: transactionRequestNetwork,
+        })
+      );
+      if (txNetwork && networks && Object.keys(networks).length > 0) {
+        const newKey = findMatchingNetworkKey(txNetwork, networks);
+        if (newKey) return newKey;
+      }
+      return 'mainnet';
+    },
+  }),
+});
+
+export const currentNetworkState = selector({
   key: 'networks.current-network',
   get: ({ get }) => {
-    const networks = get(networksStore);
-    const key = get(currentNetworkKeyStore);
+    const { networks, key } = get(
+      waitForAll({
+        networks: networksState,
+        key: currentNetworkKeyState,
+      })
+    );
     return networks[key];
   },
 });
 
-export const currentTransactionVersion = selector({
+export const networkTransactionVersionState = selector({
   key: 'networks.transaction-version',
-  get: ({ get }) => {
-    const network = get(currentNetworkStore);
-    return network.chainId === ChainID.Mainnet
+  get: ({ get }) =>
+    get(currentNetworkState).chainId === ChainID.Mainnet
       ? TransactionVersion.Mainnet
-      : TransactionVersion.Testnet;
-  },
-});
-
-export const rpcClientStore = selector({
-  key: 'networks.rpc-client',
-  get: ({ get }) => {
-    const network = get(currentNetworkStore);
-    return new RPCClient(network.url);
-  },
+      : TransactionVersion.Testnet,
 });
 
 export const stacksNetworkStore = selector<StacksNetwork>({
   key: 'networks.stacks-network',
   get: ({ get }) => {
-    const network = get(currentNetworkStore);
+    const network = get(currentNetworkState);
     const stacksNetwork =
       network.chainId === ChainID.Testnet ? new StacksTestnet() : new StacksMainnet();
     stacksNetwork.coreApiUrl = network.url;
@@ -91,29 +66,20 @@ export const stacksNetworkStore = selector<StacksNetwork>({
   },
 });
 
-export const latestBlockHeightStore = selector({
+export const latestBlockHeightState = selector({
   key: 'api.latest-block-height',
   get: async ({ get }) => {
-    const { url } = get(currentNetworkStore);
-    const blocksResponse: BlockListResponse = await fetchFromSidecar(url)('/block');
-    const [block] = blocksResponse.results;
-    return block.height;
+    const client = get(blocksApiClientState);
+    const data = await client.getBlockList({});
+    return data?.results?.[0]?.height;
   },
 });
 
-export const chainInfoStore = selector({
-  key: 'api.chain-info',
+export const networkInfoState = selector({
+  key: 'api.network-info',
   get: async ({ get }) => {
     get(apiRevalidation);
-    const { url } = get(currentNetworkStore);
-    const infoUrl = `${url}/v2/info`;
-    try {
-      const res = await fetcher(infoUrl);
-      if (!res.ok) throw `Unable to fetch chain data from ${infoUrl}`;
-      const info: CoreNodeInfoResponse = await res.json();
-      return info;
-    } catch (error) {
-      throw `Unable to fetch chain data from ${infoUrl}`;
-    }
+    const client = get(infoApiClientState);
+    return client.getCoreApiInfo();
   },
 });

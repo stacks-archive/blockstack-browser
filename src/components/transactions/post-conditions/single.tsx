@@ -5,7 +5,6 @@ import { addressToString, PostCondition } from '@stacks/transactions';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { ftDecimals, getPostConditionTitle } from '@common/stacks-utils';
 
-import { usePendingTransaction } from '@common/hooks/use-pending-transaction';
 import { TransactionEventCard } from '@components/transactions/event-card';
 import { useCurrentAccount } from '@common/hooks/use-current-account';
 import {
@@ -15,6 +14,7 @@ import {
   getSymbolFromPostCondition,
   useAssetInfoFromPostCondition,
 } from '@common/postcondition-utils';
+import { useTransactionRequest } from '@common/hooks/use-transaction';
 
 interface PostConditionProps {
   pc: PostCondition;
@@ -24,7 +24,7 @@ interface PostConditionProps {
 export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLast }) => {
   const { stxAddress } = useCurrentAccount();
   const asset = useAssetInfoFromPostCondition(pc);
-  const pendingTransaction = usePendingTransaction();
+  const pendingTransaction = useTransactionRequest();
   const title = getPostConditionTitle(pc);
   const iconString = getIconStringFromPostCondition(pc);
   const _ticker = getSymbolFromPostCondition(pc);

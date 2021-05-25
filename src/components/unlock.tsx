@@ -18,7 +18,6 @@ export const Unlock: React.FC = () => {
     try {
       await doUnlockWallet(password);
     } catch (error) {
-      console.error(error);
       setError('The password you entered is invalid.');
     }
     setLoading(false);
