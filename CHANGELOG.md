@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.9.0
+
+### Minor Changes
+
+- [#1175](https://github.com/blockstack/stacks-wallet-web/pull/1175) [`09c9b857`](https://github.com/blockstack/stacks-wallet-web/commit/09c9b857bffab754381703df1314b19fc7fb9ca6) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This adds firing an event when a user cancels an auth or transaction popup which triggers calling an onCancel callback function.
+
+### Patch Changes
+
+- [#1214](https://github.com/blockstack/stacks-wallet-web/pull/1214) [`71524bfc`](https://github.com/blockstack/stacks-wallet-web/commit/71524bfcb1e22792f9429d3fbe11238254ee7da0) Thanks [@kyranjamie](https://github.com/kyranjamie)! - Fixes #1204, where a rerender issues causes users in the onboarding flow to enter a prohibative glitch. Credit to community member @whoabuddy for reporting
+
 ## 2.8.0
 
 ### Minor Changes
