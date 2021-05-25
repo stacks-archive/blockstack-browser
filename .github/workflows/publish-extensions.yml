@@ -113,7 +113,7 @@ jobs:
         uses: peter-evans/create-or-update-project-card@v1
         with:
           token: ${{ secrets.GH_TOKEN }}
-          project-location: hirosystems
+          project-location: blockstack
           project-name: UserX Kanban
           column-name: 📥 Backlog
           issue-number: ${{ steps.create-firefox-issue.outputs.number }}
