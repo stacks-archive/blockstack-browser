@@ -114,7 +114,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           project-location: blockstack
-          project-name: UserX Kanban
+          project-name: 👟 UserX Kanban
           column-name: 📥 Backlog
           issue-number: ${{ steps.create-firefox-issue.outputs.number }}
 
