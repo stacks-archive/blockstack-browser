@@ -1,17 +1,18 @@
 import React, { memo } from 'react';
-import { useCurrentAccount } from '@common/hooks/use-current-account';
+import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import { color, Stack, useClipboard } from '@stacks/ui';
-import { useTransactionRequest } from '@common/hooks/use-transaction';
-import { useFetchBalances } from '@common/hooks/use-account-info';
+import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { Caption } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';
 import { stacksValue } from '@common/stacks-utils';
 import { STXTransferPayload, TransactionTypes } from '@stacks/connect';
 import { useCurrentNetwork } from '@common/hooks/use-current-network';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { useTxState } from '@common/hooks/use-tx-state';
 import { ErrorMessage } from '@components/transactions/error';
 import { useDrawers } from '@common/hooks/use-drawers';
+import { useRecoilValue } from 'recoil';
+import { transactionBroadcastErrorState } from '@store/transactions';
 
 export const FeeInsufficientFundsErrorMessage = memo(props => {
   const currentAccount = useCurrentAccount();
@@ -108,7 +109,7 @@ export const UnauthorizedErrorMessage = memo(props => {
 });
 
 export const BroadcastErrorMessage = memo(props => {
-  const { broadcastError } = useTxState();
+  const broadcastError = useRecoilValue(transactionBroadcastErrorState);
   if (!broadcastError) return null;
   return (
     <ErrorMessage

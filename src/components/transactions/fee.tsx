@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useSignedTransaction } from '@common/hooks/use-transaction';
+import { useSignedTransaction } from '@common/hooks/transaction/use-transaction';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { AuthType } from '@stacks/transactions';
 import { stacksValue } from '@common/stacks-utils';

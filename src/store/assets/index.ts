@@ -11,6 +11,15 @@ import {
 } from '@store/assets/utils';
 import { AssetWithMeta, FtMeta } from '@store/assets/types';
 
+enum KEYS {
+  IS_SIP_010_COMPLIANT = 'assets/IS_SIP_010_COMPLIANT',
+  META_DATA = 'assets/META_DATA',
+  ASSETS = 'assets/ASSETS',
+  FUNGIBLE_TOKENS = 'assets/FUNGIBLE_TOKENS',
+  NON_FUNGIBLE_TOKENS = 'assets/NON_FUNGIBLE_TOKENS',
+  STX_TOKEN = 'assets/STX_TOKEN',
+}
+
 // SIP 010 implementation state
 //
 // This atom will fetch the state of a given token and return
@@ -20,7 +29,7 @@ export const assetSip10ImplementationState = selectorFamily<
   boolean | null,
   { contractName: string; contractAddress: string }
 >({
-  key: 'asset.sip-010-compliant',
+  key: KEYS.IS_SIP_010_COMPLIANT,
   get:
     ({ contractName, contractAddress }) =>
     async ({ get }) => {
@@ -44,7 +53,7 @@ export const assetMetaDataState = selectorFamily<
   FtMeta | null,
   { contractName: string; contractAddress: string }
 >({
-  key: 'asset.meta-data',
+  key: KEYS.META_DATA,
   get:
     ({ contractName, contractAddress }) =>
     async ({ get }) => {
@@ -81,7 +90,7 @@ export const assetMetaDataState = selectorFamily<
 });
 
 export const assetsState = selector<AssetWithMeta[] | undefined>({
-  key: 'assets',
+  key: KEYS.ASSETS,
   get: async ({ get }) => {
     const balance = get(accountBalancesState);
     if (!balance) return;
@@ -110,7 +119,7 @@ export const assetsState = selector<AssetWithMeta[] | undefined>({
 });
 
 export const fungibleTokensState = selector({
-  key: 'assets.ft',
+  key: KEYS.FUNGIBLE_TOKENS,
   get: ({ get }) => {
     const assets = get(assetsState);
     return assets?.filter(asset => asset.type === 'ft');
@@ -118,7 +127,7 @@ export const fungibleTokensState = selector({
 });
 
 export const nonFungibleTokensState = selector({
-  key: 'assets.nft',
+  key: KEYS.NON_FUNGIBLE_TOKENS,
   get: ({ get }) => {
     const assets = get(assetsState);
     return assets?.filter(asset => asset.type !== 'nft');
@@ -126,7 +135,7 @@ export const nonFungibleTokensState = selector({
 });
 
 export const stxTokenState = selector({
-  key: 'assets.stx',
+  key: KEYS.STX_TOKEN,
   get: ({ get }) => {
     const balances = get(accountBalancesState);
     if (!balances || balances.stx.balance === '0') return;

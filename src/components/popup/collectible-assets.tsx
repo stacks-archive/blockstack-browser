@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import type { StackProps } from '@stacks/ui';
 
 import { getAssetStringParts } from '@stacks/ui-utils';
-import { useFetchAccountData } from '@common/hooks/use-account-info';
+import { useFetchAccountData } from '@common/hooks/account/use-account-info';
 import { AssetItem } from '@components/asset-item';
 import { Stack } from '@stacks/ui';
 

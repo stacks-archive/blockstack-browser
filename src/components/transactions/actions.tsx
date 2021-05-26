@@ -5,15 +5,19 @@ import { useDrawers } from '@common/hooks/use-drawers';
 import { SpaceBetween } from '@components/space-between';
 import { Caption } from '@components/typography';
 import { NetworkRowItem } from '@components/network-row-item';
-import { useTransactionError } from '@common/hooks/use-transaction-error';
+import { useTransactionError } from '@common/hooks/transaction/use-transaction-error';
 import { FeeComponent } from '@components/transactions/fee';
-import { useSignedTransaction } from '@common/hooks/use-transaction';
-import { useHandleSubmitPendingTransaction } from '@common/hooks/use-tx-state';
+import { useSignedTransaction } from '@common/hooks/transaction/use-transaction';
 import { TransactionErrorReason } from '@pages/transaction/transaction-error';
 import { FiAlertTriangle } from 'react-icons/fi';
+import { useRecoilValue } from 'recoil';
+import { useTransactionBroadcast } from '@common/hooks/transaction/use-transaction-broadcast';
+import { transactionBroadcastErrorState } from '@store/transactions';
 
 const MinimalErrorMessage = memo((props: StackProps) => {
   const error = useTransactionError();
+  const broadcastError = useRecoilValue(transactionBroadcastErrorState);
+
   if (!error) return null;
 
   const getTitle = () => {
@@ -27,7 +31,7 @@ const MinimalErrorMessage = memo((props: StackProps) => {
         case TransactionErrorReason.FeeInsufficientFunds:
           return 'Insufficient balance';
         case TransactionErrorReason.BroadcastError:
-          return 'Broadcast error';
+          return `Broadcast error: ${JSON.stringify(broadcastError)}`;
         case TransactionErrorReason.Generic:
           return 'Something went wrong';
       }
@@ -43,7 +47,7 @@ const MinimalErrorMessage = memo((props: StackProps) => {
 });
 
 export const TransactionsActions = memo((props: StackProps) => {
-  const handleSubmitPendingTransaction = useHandleSubmitPendingTransaction();
+  const handleBroadcastTransaction = useTransactionBroadcast();
   const signedTransaction = useSignedTransaction();
   const { setShowNetworks } = useDrawers();
   const error = useTransactionError();
@@ -51,9 +55,9 @@ export const TransactionsActions = memo((props: StackProps) => {
 
   const handleSubmit = useCallback(async () => {
     setIsLoading();
-    await handleSubmitPendingTransaction();
+    await handleBroadcastTransaction();
     setIsIdle();
-  }, [setIsLoading, setIsIdle, handleSubmitPendingTransaction]);
+  }, [setIsLoading, setIsIdle, handleBroadcastTransaction]);
 
   return (
     <Stack mt="auto" pt="loose" spacing="loose" bg={color('bg')} {...props}>

@@ -1,16 +1,10 @@
 import { selector } from 'recoil';
 import { getStxAddress } from '@stacks/wallet-sdk';
 
-import { fetcher } from '@common/wrapped-fetch';
-
 import { accountsState } from './index';
-import { currentNetworkState, networkTransactionVersionState } from '@store/networks';
-
-async function fetchNamesByAddress(networkUrl: string, address: string): Promise<string[]> {
-  const res = await fetcher(networkUrl + `/v1/addresses/stacks/${address}`);
-  const data = await res.json();
-  return data?.names || [];
-}
+import { currentNetworkState } from '@store/networks';
+import { transactionNetworkVersionState } from '@store/transactions';
+import { fetchNamesByAddress } from '@common/api/names';
 
 function makeKey(networkUrl: string, address: string): string {
   return `${networkUrl}__${address}`;
@@ -38,12 +32,16 @@ type AccountNameState = AccountName[] | null;
 
 const STALE_TIME = 30 * 60 * 1000; // 30 min
 
+enum KEYS {
+  NAMES = 'account/NAMES',
+}
+
 export const accountNameState = selector<AccountNameState>({
-  key: 'names',
+  key: KEYS.NAMES,
   get: async ({ get }) => {
     const accounts = get(accountsState);
     const network = get(currentNetworkState);
-    const transactionVersion = get(networkTransactionVersionState);
+    const transactionVersion = get(transactionNetworkVersionState);
 
     if (!network || !accounts) return null;
 

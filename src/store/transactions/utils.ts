@@ -5,7 +5,7 @@ import {
   STXTransferPayload,
   TransactionTypes,
 } from '@stacks/connect';
-import { TransactionPayloadWithAttachment } from '@store/transaction';
+import { TransactionPayloadWithAttachment } from '@store/transactions/index';
 
 export function getPayloadFromToken(requestToken: string) {
   if (!requestToken) return undefined;

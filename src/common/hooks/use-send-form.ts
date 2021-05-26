@@ -1,5 +1,5 @@
 import { FormikProps } from 'formik';
-import { useFetchBalances } from '@common/hooks/use-account-info';
+import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { usePrevious } from '@stacks/ui';
 import { useAssets } from '@common/hooks/use-assets';

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useTransactionError } from '@common/hooks/use-transaction-error';
+import { useTransactionError } from '@common/hooks/transaction/use-transaction-error';
 import {
   BroadcastErrorMessage,
   FeeInsufficientFundsErrorMessage,

@@ -9,16 +9,16 @@ import { gaiaUrl } from '@common/constants';
 import { ScreenPaths } from '@store/common/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
-import { isValidUrl } from '@common/validate-url';
+import { isValidUrl } from '@common/validation/validate-url';
 import {
   createWalletGaiaConfig,
   updateWalletConfig,
   WalletConfig,
   ConfigApp,
 } from '@stacks/wallet-sdk';
-import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { Header } from '@components/header';
-import { useAppDetails } from '@common/hooks/useAppDetails';
+import { useAppDetails } from '@common/hooks/auth/use-app-details';
 
 interface ChooseAccountProps {
   next: (accountIndex: number) => void;

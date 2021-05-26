@@ -1,15 +1,15 @@
 import { useWallet } from '@common/hooks/use-wallet';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { hasSwitchedAccountsState, transactionAccountIndexState } from '@store/accounts';
-import { networkTransactionVersionState } from '@store/networks';
 import { useCallback } from 'react';
+import { transactionNetworkVersionState } from '@store/transactions';
 
 const TIMEOUT = 350;
 
 export const useSwitchAccount = (callback?: () => void) => {
   const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
   const txIndex = useRecoilValue(transactionAccountIndexState);
-  const transactionVersion = useRecoilValue(networkTransactionVersionState);
+  const transactionVersion = useRecoilValue(transactionNetworkVersionState);
   const [hasSwitched, setHasSwitched] = useRecoilState(hasSwitchedAccountsState);
 
   const handleSwitchAccount = useCallback(

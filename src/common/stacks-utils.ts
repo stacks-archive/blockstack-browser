@@ -1,49 +1,9 @@
-import { ContractCallArgument, ContractCallArgumentType } from '@stacks/connect';
-import {
-  uintCV,
-  intCV,
-  falseCV,
-  trueCV,
-  contractPrincipalCV,
-  standardPrincipalCV,
-  bufferCV,
-  createAssetInfo,
-  PostConditionType,
-  PostCondition,
-  FungibleConditionCode,
-  NonFungibleConditionCode,
-  ChainID,
-} from '@stacks/transactions';
+import { ChainID, createAssetInfo } from '@stacks/transactions';
 import BigNumber from 'bignumber.js';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
-import { Network } from './constants';
-import { STX_DECIMALS } from './constants';
+import { Network, STX_DECIMALS } from './constants';
 import { abbreviateNumber } from '@common/utils';
-
-export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
-  switch (type) {
-    case ContractCallArgumentType.UINT:
-      return uintCV(value);
-    case ContractCallArgumentType.INT:
-      return intCV(value);
-    case ContractCallArgumentType.BOOL:
-      if (value === 'false' || value === '0') return falseCV();
-      else if (value === 'true' || value === '1') return trueCV();
-      else throw new Error(`Unexpected Clarity bool value: ${JSON.stringify(value)}`);
-    case ContractCallArgumentType.PRINCIPAL:
-      if (value.includes('.')) {
-        const [addr, name] = value.split('.');
-        return contractPrincipalCV(addr, name);
-      } else {
-        return standardPrincipalCV(value);
-      }
-    case ContractCallArgumentType.BUFFER:
-      return bufferCV(Buffer.from(value));
-    default:
-      throw new Error(`Unexpected Clarity type: ${type}`);
-  }
-};
 
 export const stacksValue = ({
   value,
@@ -98,33 +58,6 @@ export const validateStacksAddress = (stacksAddress: string): boolean => {
   } catch (e) {
     return false;
   }
-};
-
-export const getFungibleTitle = (code: FungibleConditionCode) => {
-  switch (code) {
-    case FungibleConditionCode.Equal:
-      return 'transfer exactly';
-    case FungibleConditionCode.Greater:
-      return 'transfer more than';
-    case FungibleConditionCode.GreaterEqual:
-      return 'transfer equal to or greater than';
-    case FungibleConditionCode.Less:
-      return 'transfer less than';
-    case FungibleConditionCode.LessEqual:
-      return 'transfer less than or equal to';
-    default:
-      return '';
-  }
-};
-
-export const getPostConditionTitle = (pc: PostCondition) => {
-  if (pc.conditionType === PostConditionType.STX || pc.conditionType === PostConditionType.Fungible)
-    return getFungibleTitle(pc.conditionCode);
-
-  if (pc.conditionCode === NonFungibleConditionCode.DoesNotOwn) return 'will transfer';
-  if (pc.conditionCode === NonFungibleConditionCode.Owns) return 'will keep';
-
-  return '';
 };
 
 export const makeAssetInfo = (assetIdentifier: string) => {

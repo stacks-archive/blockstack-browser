@@ -6,7 +6,7 @@ import { currentNetworkKeyState, networksState } from '@store/networks';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/common/types';
-import { isValidUrl } from '@common/validate-url';
+import { isValidUrl } from '@common/validation/validate-url';
 import { ChainID, fetchPrivate } from '@stacks/transactions';
 import { ErrorLabel } from '@components/error-label';
 import { Header } from '@components/header';

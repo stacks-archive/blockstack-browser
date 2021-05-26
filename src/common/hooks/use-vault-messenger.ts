@@ -15,7 +15,7 @@ import {
 } from '@store/wallet';
 import { InMemoryVault } from '@background/vault';
 import { InternalMethods } from '@content-scripts/message-types';
-import { currentAccountIndexStore } from '@store/accounts';
+import { currentAccountIndexState } from '@store/accounts';
 import { textToBytes } from '@store/common/utils';
 
 type Set = <T>(store: RecoilState<T>, value: T) => void;
@@ -29,7 +29,7 @@ const innerMessageWrapper = async (message: VaultActions, set: Set) => {
         set(hasSetPasswordState, vault.hasSetPassword);
         set(walletState, vault.wallet);
         set(secretKeyState, vault.secretKey ? textToBytes(vault.secretKey) : undefined);
-        set(currentAccountIndexStore, vault.currentAccountIndex);
+        set(currentAccountIndexState, vault.currentAccountIndex);
         set(encryptedSecretKeyStore, vault.encryptedSecretKey);
         resolve(vault);
       } else {

@@ -1,19 +1,20 @@
 import { useRecoilCallback } from 'recoil';
-import { requestTokenStore, transactionBroadcastErrorStore } from '@store/transaction';
+import { requestTokenState } from '@store/transactions/requests';
 import { finalizeTxSignature } from '@common/utils';
+import { transactionBroadcastErrorState } from '@store/transactions';
 
 export function useOnCancel() {
   return useRecoilCallback(({ snapshot, set }) => async () => {
-    const requestPayload = await snapshot.getPromise(requestTokenStore);
-    if (!requestPayload) {
-      set(transactionBroadcastErrorStore, 'No pending transaction found.');
+    const requestToken = await snapshot.getPromise(requestTokenState);
+    if (!requestToken) {
+      set(transactionBroadcastErrorState, 'No pending transaction found.');
       return;
     }
     try {
       const result = 'cancel';
-      finalizeTxSignature(requestPayload, result);
+      finalizeTxSignature(requestToken, result);
     } catch (error) {
-      set(transactionBroadcastErrorStore, error.message);
+      set(transactionBroadcastErrorState, error.message);
     }
   });
 }

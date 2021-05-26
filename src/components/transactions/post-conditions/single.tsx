@@ -3,18 +3,20 @@ import React from 'react';
 import { addressToString, PostCondition } from '@stacks/transactions';
 
 import { truncateMiddle } from '@stacks/ui-utils';
-import { ftDecimals, getPostConditionTitle } from '@common/stacks-utils';
+
+import { ftDecimals } from '@common/stacks-utils';
 
 import { TransactionEventCard } from '@components/transactions/event-card';
-import { useCurrentAccount } from '@common/hooks/use-current-account';
+import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import {
   getAmountFromPostCondition,
   getIconStringFromPostCondition,
   getPostConditionCodeMessage,
+  getPostConditionTitle,
   getSymbolFromPostCondition,
   useAssetInfoFromPostCondition,
-} from '@common/postcondition-utils';
-import { useTransactionRequest } from '@common/hooks/use-transaction';
+} from '@common/transactions/postcondition-utils';
+import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
 
 interface PostConditionProps {
   pc: PostCondition;

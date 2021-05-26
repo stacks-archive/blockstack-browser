@@ -5,14 +5,17 @@ import { Caption, Title, Text } from '@components/typography';
 import { ListItem } from './list-item';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
-import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+
 import { truncateMiddle } from '@stacks/ui-utils';
+import { Account, getAccountDisplayName } from '@stacks/wallet-sdk';
+import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
+import { useAccountDisplayName, useAccountNames } from '@common/hooks/account/use-account-names';
+
 import { accountsWithAddressState } from '@store/accounts';
 import { useLoadable } from '@common/hooks/use-loadable';
-import { Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { AccountAvatar } from '@components/account-avatar';
 import { SpaceBetween } from '@components/space-between';
-import { useAccountDisplayName, useAccountNames } from '@common/hooks/use-account-names';
+
 import { ScreenPaths } from '@store/common/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 

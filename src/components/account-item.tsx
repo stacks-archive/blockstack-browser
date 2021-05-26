@@ -4,7 +4,7 @@ import { AccountAvatar } from '@components/account-avatar';
 import { Caption, Title } from '@components/typography';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
-import { useAccountNames } from '@common/hooks/use-account-names';
+import { useAccountNames } from '@common/hooks/account/use-account-names';
 import { AccountWithAddress } from '@store/accounts';
 
 export const AccountItem = memo(({ account, ...rest }: { account: AccountWithAddress }) => {

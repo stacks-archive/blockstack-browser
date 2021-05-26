@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Text } from '@stacks/ui';
 import { AppIcon } from '../app-icon';
-import { useAppDetails } from '@common/hooks/useAppDetails';
+import { useAppDetails } from '@common/hooks/auth/use-app-details';
 
 export interface ScreenHeaderProps {
   title?: string | JSX.Element;

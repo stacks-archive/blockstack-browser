@@ -8,8 +8,8 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
 import { IconCheck } from '@tabler/icons';
 import { AccountAvatar } from '@components/account-avatar';
-import { useAccountNames } from '@common/hooks/use-account-names';
-import { useSwitchAccount } from '@common/hooks/use-switch-account';
+import { useAccountNames } from '@common/hooks/account/use-account-names';
+import { useSwitchAccount } from '@common/hooks/account/use-switch-account';
 
 interface SwitchAccountProps {
   close: () => void;

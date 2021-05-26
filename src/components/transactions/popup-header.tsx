@@ -1,5 +1,5 @@
 import { useWallet } from '@common/hooks/use-wallet';
-import { useFetchBalances } from '@common/hooks/use-account-info';
+import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { Box, color, Stack, Text } from '@stacks/ui';
 import { AccountAvatar } from '@components/account-avatar';
 import { Caption, Title } from '@components/typography';
@@ -7,7 +7,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { stacksValue } from '@common/stacks-utils';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import React from 'react';
-import { useAccountDisplayName } from '@common/hooks/use-account-names';
+import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 
 export function PopupHeader() {
   const { currentAccount, currentAccountStxAddress } = useWallet();

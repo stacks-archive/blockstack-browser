@@ -6,7 +6,7 @@ import type { StackProps } from '@stacks/ui';
 import { Caption } from '@components/typography';
 import { NoActivityIllustration } from '@components/vector/no-activity';
 import { Tabs } from '@components/tabs';
-import { useAccountActivity } from '@common/hooks/use-account-activity';
+import { useAccountActivity } from '@common/hooks/account/use-account-activity';
 import { TxItem } from '@components/popup/tx-item';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';
 

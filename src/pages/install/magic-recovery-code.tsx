@@ -4,7 +4,7 @@ import { Text, Button, Input, Stack, StackProps } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { PopupContainer } from '@components/popup/container';
 import { Caption } from '@components/typography';
-import { useMagicRecoveryCode } from '@common/hooks/use-magic-recovery-code';
+import { useMagicRecoveryCode } from '@common/hooks/auth/use-magic-recovery-code';
 import { useMountEffect } from '@common/hooks/use-mount-effect';
 import { Header } from '@components/header';
 

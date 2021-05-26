@@ -1,4 +1,4 @@
-import { useFetchAccountData } from '@common/hooks/use-account-info';
+import { useFetchAccountData } from '@common/hooks/account/use-account-info';
 
 export function useAccountBalances() {
   const accountData = useFetchAccountData();

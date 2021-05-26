@@ -2,7 +2,7 @@ import {
   MempoolTransaction,
   MempoolTransactionListResponse,
 } from '@blockstack/stacks-blockchain-api-types';
-import { fetcher } from '@common/wrapped-fetch';
+import { fetcher } from '@common/api/wrapped-fetch';
 
 interface GetKeyOptions {
   index: number;

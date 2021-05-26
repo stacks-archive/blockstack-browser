@@ -1,7 +1,7 @@
 import { accountNameState } from '@store/accounts/names';
 import { useLoadable } from '@common/hooks/use-loadable';
-import { useCurrentAccount } from '@common/hooks/use-current-account';
 import { Account } from '@stacks/wallet-sdk';
+import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 
 export function useAccountNames() {
   return useLoadable(accountNameState);

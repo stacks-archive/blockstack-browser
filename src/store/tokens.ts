@@ -1,7 +1,7 @@
 import { selector, selectorFamily, waitForAll } from 'recoil';
 import { SmartContractsApi, Configuration } from '@stacks/blockchain-api-client';
-import { currentNetworkStore, rpcClientStore } from '@store/networks';
-import { accountBalancesStore } from '@store/api';
+import { currentNetworkState } from '@store/networks';
+import { accountBalancesState } from '@store/accounts';
 import { ChainID, cvToString, hexToCV } from '@stacks/transactions';
 
 import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
@@ -9,7 +9,8 @@ import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
 import { SIP_010 } from '@common/constants';
 import { ContractInterface, ContractInterfaceFunction } from '@stacks/rpc-client';
 import { isSip10Transfer, SIP010TransferResponse } from '@common/token-utils';
-import { fetcher } from '@common/wrapped-fetch';
+import { fetcher } from '@common/api/wrapped-fetch';
+import { smartContractClientState } from '@store/common/api-clients';
 
 interface ContractPrincipal {
   contractName: string;
@@ -181,7 +182,7 @@ export const assetSip10ImplementationState = selectorFamily<
   get:
     ({ contractName, contractAddress }) =>
     async ({ get }) => {
-      const network = get(currentNetworkStore);
+      const network = get(currentNetworkState);
       const chain = network.url.includes('regtest')
         ? 'regtest'
         : network.chainId === ChainID.Testnet
@@ -222,8 +223,9 @@ const assetContractInterface = selectorFamily<ContractInterface, Readonly<Contra
   get:
     ({ contractName, contractAddress }) =>
     async ({ get }) => {
-      const network = get(currentNetworkStore);
-      const rpcClient = get(rpcClientStore);
+      const network = get(currentNetworkState);
+      const client = get(smartContractClientState);
+
       const local = getLocalData({
         networkUrl: network.url,
         address: contractAddress,
@@ -232,7 +234,7 @@ const assetContractInterface = selectorFamily<ContractInterface, Readonly<Contra
       });
 
       if (local) return local;
-      const data = await rpcClient.fetchContractInterface({
+      const data = await client.getContractInterface({
         contractName,
         contractAddress,
       });
@@ -258,7 +260,7 @@ const assetMetaDataMethods = selectorFamily<
   get:
     ({ contractName, contractAddress }) =>
     async ({ get }) => {
-      const network = get(currentNetworkStore);
+      const network = get(currentNetworkState);
 
       const local = getLocalData({
         networkUrl: network.url,
@@ -311,7 +313,7 @@ export const assetMetaDataState = selectorFamily<
           contractName,
         })
       );
-      const network = get(currentNetworkStore);
+      const network = get(currentNetworkState);
       const localData = getLocalData({
         networkUrl: network.url,
         address: contractAddress,
@@ -421,7 +423,7 @@ const assetItemState = selectorFamily<AssetWithMeta, Readonly<Asset>>({
 export const assetsState = selector<AssetWithMeta[] | undefined>({
   key: 'assets.base',
   get: async ({ get }) => {
-    const balance = get(accountBalancesStore);
+    const balance = get(accountBalancesState);
     if (!balance) return;
     const assets = transformAssets(balance);
     return get(waitForAll(assets.map(asset => assetItemState(asset))));
@@ -450,7 +452,7 @@ export const nonFungibleTokensState = selector({
 export const stxTokenState = selector({
   key: 'assets.stx',
   get: ({ get }) => {
-    const balances = get(accountBalancesStore);
+    const balances = get(accountBalancesState);
     if (!balances || balances.stx.balance === '0') return;
     return {
       type: 'stx',

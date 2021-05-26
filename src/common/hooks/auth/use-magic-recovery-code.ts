@@ -3,7 +3,7 @@ import { magicRecoveryCodePasswordState, magicRecoveryCodeState } from '@store/o
 import { useLoading } from '@common/hooks/use-loading';
 import { useWallet } from '@common/hooks/use-wallet';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { ScreenPaths } from '@store/common/types';

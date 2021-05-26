@@ -2,7 +2,7 @@ import { BoxProps, color, Circle } from '@stacks/ui';
 import React from 'react';
 import { Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 
-import { useAccountGradient } from '@common/hooks/use-account-gradient';
+import { useAccountGradient } from '@common/hooks/account/use-account-gradient';
 
 export const AccountAvatar: React.FC<{ account: Account; name?: string } & BoxProps> = ({
   account,

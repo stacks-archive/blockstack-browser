@@ -1,9 +1,9 @@
 import React from 'react';
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
-import { isValidUrl } from './validate-url';
-import { getTab, deleteTabForRequest, StorageKey } from '../storage';
 import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
+import { isValidUrl } from './validation/validate-url';
+import { getTab, deleteTabForRequest, StorageKey } from 'storage';
 import {
   AuthenticationResponseMessage,
   ExternalMethods,
@@ -272,12 +272,23 @@ export function findMatchingNetworkKey(
   txNetwork: StacksNetwork,
   networks: Record<string, Network>
 ) {
-  if (!networks) return;
-  const newNetworkKey = Object.keys(networks).find((key: string) => {
+  if (!networks || !txNetwork) return;
+
+  const keys = Object.keys(networks);
+
+  // first try to search for an _exact_ url match
+  const exactUrlMatch = keys.find((key: string) => {
+    const network = networks[key] as Network;
+    return network.url === txNetwork.coreApiUrl;
+  });
+  if (exactUrlMatch) return exactUrlMatch;
+
+  // else check for a matching chain id (testnet/mainnet)
+  const chainIdMatch = keys.find((key: string) => {
     const network = networks[key] as Network;
     return network.url === txNetwork?.coreApiUrl || network.chainId === txNetwork?.chainId;
   });
+  if (chainIdMatch) return chainIdMatch;
 
-  if (newNetworkKey) return newNetworkKey;
   return null;
 }

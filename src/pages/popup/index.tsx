@@ -14,7 +14,7 @@ import { useAssets } from '@common/hooks/use-assets';
 import { AccountAvatar } from '@components/account-avatar';
 import { truncateString } from '@common/utils';
 import { Header } from '@components/header';
-import { useAccountNames } from '@common/hooks/use-account-names';
+import { useAccountNames } from '@common/hooks/account/use-account-names';
 import { BalancesAndActivity } from '@components/popup/balances-and-activity';
 
 interface TxButtonProps extends ButtonProps {

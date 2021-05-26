@@ -10,7 +10,7 @@ import { TransactionEventCard } from '@components/transactions/event-card';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { postConditionsState } from '@store/transactions';
-import { useTransactionRequest } from '@common/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
 
 function StxPostcondition() {
   const pendingTransaction = useTransactionRequest();

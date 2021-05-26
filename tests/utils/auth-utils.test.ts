@@ -1,4 +1,4 @@
-import { isValidUrl } from '@common/validate-url';
+import { isValidUrl } from '@common/validation/validate-url';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import bigListOfNaughtyStrings from 'blns';

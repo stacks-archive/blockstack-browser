@@ -3,12 +3,19 @@ import { atom, selector } from 'recoil';
 import { assetsState, AssetWithMeta } from '@store/tokens';
 import { getFullyQualifiedAssetName } from '@common/hooks/use-selected-asset';
 
+enum KEYS {
+  ASSET_ID = 'asset-search/ASSET_ID',
+  ASSET = 'asset-search/ASSET',
+  INPUT = 'asset-search/INPUT',
+}
+
 export const selectedAssetIdState = atom<string | undefined>({
-  key: 'asset-search.asset-id',
+  key: KEYS.ASSET_ID,
   default: undefined,
 });
+
 export const selectedAssetStore = selector<AssetWithMeta | undefined>({
-  key: 'asset-search.asset',
+  key: KEYS.ASSET,
   get: ({ get }) => {
     const fqn = get(selectedAssetIdState);
     const assets = get(assetsState);
@@ -17,7 +24,7 @@ export const selectedAssetStore = selector<AssetWithMeta | undefined>({
 });
 
 export const searchInputStore = atom<string>({
-  key: 'asset-search.input',
+  key: KEYS.INPUT,
   default: '',
 });
 

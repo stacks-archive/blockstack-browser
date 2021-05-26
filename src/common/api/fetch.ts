@@ -1,4 +1,4 @@
-import { fetcher } from '@common/wrapped-fetch';
+import { fetcher } from '@common/api/wrapped-fetch';
 
 export const withApiServer = (apiServer: string) => (path?: string) =>
   path ? apiServer + path : apiServer;

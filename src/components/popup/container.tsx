@@ -1,10 +1,12 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import { Flex, color } from '@stacks/ui';
+import { Flex, color, Button } from '@stacks/ui';
 import { SettingsPopover } from './settings-popover';
 import { useRecoilValue } from 'recoil';
 import { hasRehydratedVaultStore } from '@store/wallet';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnCancel } from '@common/hooks/use-on-cancel';
+import { usePendingTransaction } from '@common/hooks/transaction/use-pending-transaction';
+import { useAuthRequest } from '@common/hooks/auth/use-auth-request';
 
 interface PopupHomeProps {
   header?: any;
@@ -14,6 +16,8 @@ interface PopupHomeProps {
 export const PopupContainer: React.FC<PopupHomeProps> = memo(
   ({ children, header, requestType }) => {
     const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
+    const pendingTx = usePendingTransaction();
+    const { authRequest } = useAuthRequest();
     const handleCancelTransaction = useOnCancel();
     const { handleCancelAuthentication } = useWallet();
 
@@ -26,13 +30,12 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
      * the request promise to fail; triggering an onCancel callback function.
      */
     const handleUnmount = useCallback(async () => {
-      if (requestType === 'auth') {
+      if (requestType === 'transaction' || !!pendingTx) {
+        await handleCancelTransaction();
+      } else if (requestType === 'auth' || !!authRequest) {
         handleCancelAuthentication();
       }
-      if (requestType === 'transaction') {
-        await handleCancelTransaction();
-      }
-    }, [requestType, handleCancelAuthentication, handleCancelTransaction]);
+    }, [requestType, handleCancelAuthentication, authRequest, pendingTx, handleCancelTransaction]);
 
     useEffect(() => {
       window.addEventListener('beforeunload', handleUnmount);
@@ -53,6 +56,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
       >
         {header && header}
         <SettingsPopover />
+        <Button onClick={() => handleUnmount()}>cancel</Button>
         <Flex
           flexDirection="column"
           flexGrow={1}

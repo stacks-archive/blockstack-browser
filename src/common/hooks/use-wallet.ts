@@ -12,7 +12,6 @@ import {
   currentNetworkKeyState,
   currentNetworkState,
   networksState,
-  networkTransactionVersionState,
   latestBlockHeightState,
 } from '@store/networks';
 import {
@@ -26,28 +25,29 @@ import {
 import { StacksTransaction } from '@stacks/transactions';
 import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
-import { useOnboardingState } from './use-onboarding-state';
+import { useOnboardingState } from './auth/use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
 import { apiRevalidation } from '@store/common/api-helpers';
 import { useLoadable } from '@common/hooks/use-loadable';
 import {
-  currentAccountIndexStore,
+  currentAccountIndexState,
   currentAccountState,
   currentAccountStxAddressState,
 } from '@store/accounts';
-import { latestNoncesState } from '@store/accounts/nonce';
+import { localNoncesState } from '@store/accounts/nonce';
 import { bytesToText } from '@store/common/utils';
+import { transactionNetworkVersionState } from '@store/transactions';
 
 export const useWallet = () => {
   const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
   const [wallet, setWallet] = useRecoilState(walletState);
   const secretKey = useRecoilValue(secretKeyState);
   const encryptedSecretKey = useRecoilValue(encryptedSecretKeyStore);
-  const currentAccountIndex = useRecoilValue(currentAccountIndexStore);
+  const currentAccountIndex = useRecoilValue(currentAccountIndexState);
   const hasSetPassword = useRecoilValue(hasSetPasswordState);
   const currentAccount = useRecoilValue(currentAccountState);
   const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressState);
-  const transactionVersion = useRecoilValue(networkTransactionVersionState);
+  const transactionVersion = useRecoilValue(transactionNetworkVersionState);
   const networks = useRecoilValue(networksState);
   const currentNetwork = useRecoilValue(currentNetworkState);
   const currentNetworkKey = useRecoilValue(currentNetworkKeyState);
@@ -71,7 +71,7 @@ export const useWallet = () => {
           const blockHeight = await snapshot.getPromise(latestBlockHeightState);
           const network = await snapshot.getPromise(currentNetworkState);
           const address = await snapshot.getPromise(currentAccountStxAddressState);
-          set(latestNoncesState([network.url, address || '']), () => ({
+          set(localNoncesState([network.url, address || '']), () => ({
             blockHeight,
             nonce: newNonce,
           }));
@@ -124,7 +124,7 @@ export const useWallet = () => {
           scopes: decodedAuthRequest.scopes,
           account,
         });
-        set(currentAccountIndexStore, accountIndex);
+        set(currentAccountIndexState, accountIndex);
         finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
       },
     [decodedAuthRequest, authRequest, appName, appIcon]

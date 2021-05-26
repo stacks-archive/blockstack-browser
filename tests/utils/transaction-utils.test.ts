@@ -1,9 +1,5 @@
 import '../setup';
-import {
-  generateTransaction,
-  UNAUTHORIZED_TX_REQUEST,
-  verifyTxRequest,
-} from '@common/transaction-utils';
+import { generateSignedTransaction } from '@common/transactions/transactions';
 import {
   PostConditionMode,
   makeStandardFungiblePostCondition,
@@ -20,6 +16,7 @@ import BN from 'bn.js';
 import { decodeToken } from 'jsontokens';
 import { TX_REQUEST, TEST_WALLET } from '../mocks';
 import { getAppPrivateKey } from '@stacks/wallet-sdk';
+import { UNAUTHORIZED_TX_REQUEST, verifyTxRequest } from '@common/transactions/requests';
 
 (window as any).fetch = jest.fn(() => ({
   text: () => Promise.resolve(1),
@@ -72,8 +69,8 @@ describe('generated transactions', () => {
   test('can handle encoded payload', async () => {
     const txDataToken = await generateContractCallToken();
     const token = decodeToken(txDataToken);
-    const txData = (token.payload as unknown) as TransactionPayload;
-    const tx = await generateTransaction({
+    const txData = token.payload as unknown as TransactionPayload;
+    const tx = await generateSignedTransaction({
       txData,
       senderKey: '8721c6a5237f5e8d361161a7855aa56885a3e19e2ea6ee268fb14eabc5e2ed9001',
       nonce: 0,

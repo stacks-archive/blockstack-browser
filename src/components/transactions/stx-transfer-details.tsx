@@ -4,7 +4,7 @@ import { AttachmentRow } from './attachment-row';
 import { RowItem } from '@components/transactions/row-item';
 import { Title } from '@components/typography';
 import { Divider } from '@components/divider';
-import { useTransactionRequest } from '@common/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
 
 export const StxTransferDetails: React.FC = () => {
   const pendingTransaction = useTransactionRequest();

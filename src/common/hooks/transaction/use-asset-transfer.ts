@@ -1,4 +1,5 @@
 import {
+  AnchorMode,
   bufferCVFromString,
   ClarityValue,
   createAddress,
@@ -96,6 +97,7 @@ export function useMakeAssetTransfer() {
       contractName,
       postConditions,
       nonce: new BN(nonce, 10),
+      anchorMode: AnchorMode.Any,
     };
 
     return makeContractCall(txOptions);

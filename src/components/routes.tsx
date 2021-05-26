@@ -4,7 +4,7 @@ import { OnboardingPassword, SaveKey } from '@pages/sign-up';
 import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
 import { Username } from '@pages/username';
 import { SaveYourKeyView } from '@components/save-your-key-view';
-import { ChooseAccount } from '@pages/connect';
+import { ChooseAccount } from '@pages/choose-account';
 import { TransactionPage } from '@pages/transaction';
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
@@ -12,14 +12,13 @@ import { PopupHome } from '@pages/popup';
 import { PopupSend } from '@pages/popup/send';
 import { PopupReceive } from '@pages/popup/receive';
 import { AddNetwork } from '@pages/popup/add-network';
-import { EditPostConditionsPage } from '@pages/transaction/edit-post-conditions';
 import { SetPasswordPage } from '@pages/set-password';
 
 import { ScreenPaths } from '@store/common/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
-import { useOnboardingState } from '@common/hooks/use-onboarding-state';
-import { useSaveAuthRequest } from '@common/hooks/use-save-auth-request-callback';
+import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
+import { useSaveAuthRequest } from '@common/hooks/auth/use-save-auth-request-callback';
 import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 import { Navigate } from '@components/navigate';
 import { AccountGate } from '@components/account-gate';
@@ -148,9 +147,6 @@ export const Routes: React.FC = () => {
       {/* Transactions */}
       <AccountGateRoute path={ScreenPaths.TRANSACTION_POPUP}>
         <TransactionPage />
-      </AccountGateRoute>
-      <AccountGateRoute path={ScreenPaths.EDIT_POST_CONDITIONS}>
-        <EditPostConditionsPage />
       </AccountGateRoute>
     </RoutesDom>
   );

@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { useTxState } from '@common/hooks/use-tx-state';
 import { CodeBlock, Stack, color, BoxProps } from '@stacks/ui';
-import { useWallet } from '@common/hooks/use-wallet';
 import { Prism } from '@common/clarity-prism';
+import { useWallet } from '@common/hooks/use-wallet';
 import { AttachmentRow } from './attachment-row';
 import { Caption, Title } from '@components/typography';
 import { Divider } from '@components/divider';
 import { ContractPreview } from '@components/transactions/contract-preview';
 import { RowItem } from '@components/transactions/row-item';
-import { useTransactionRequest } from '@common/hooks/use-transaction';
+import { usePendingTransaction } from '@common/hooks/transaction/use-pending-transaction';
 
 function ContractCodeSection() {
-  const { pendingTransaction } = useTxState();
+  const pendingTransaction = usePendingTransaction();
   const { currentAccount, currentAccountStxAddress } = useWallet();
   if (
     !pendingTransaction ||
@@ -51,7 +50,7 @@ function TabButton({ isActive, ...props }: { isActive?: boolean } & BoxProps) {
 }
 
 export const ContractDeployDetails: React.FC = () => {
-  const pendingTransaction = useTransactionRequest();
+  const pendingTransaction = usePendingTransaction();
   const { currentAccount, currentAccountStxAddress } = useWallet();
   const [tab, setTab] = useState<'details' | 'code'>('details');
   if (

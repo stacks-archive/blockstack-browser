@@ -4,7 +4,7 @@ import { Text, Button, Input, Stack, color } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { PopupContainer } from '@components/popup/container';
 import { Caption } from '@components/typography';
-import { useSignIn } from '@common/hooks/use-sign-in';
+import { useSignIn } from '@common/hooks/auth/use-sign-in';
 import { Header } from '@components/header';
 
 export const InstalledSignIn: React.FC = () => {

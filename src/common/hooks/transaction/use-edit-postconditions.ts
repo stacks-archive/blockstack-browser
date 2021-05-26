@@ -2,7 +2,7 @@
 import { useSetRecoilState } from 'recoil';
 import { currentPostConditionIndexStore, postConditionsStore } from '@store/transaction';
 import { selectedAssetIdState } from '@store/assets/asset-search';
-import { useFetchBalances } from '@common/hooks/use-account-info';
+import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useCallback } from 'react';
 import { addressToString, PostCondition, PostConditionType } from '@stacks/transactions';

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Spinner, Flex, Text, color } from '@stacks/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@screen';
 
-import { useAppDetails } from '@common/hooks/useAppDetails';
+import { useAppDetails } from '@common/hooks/auth/use-app-details';
 
 import { useWallet } from '@common/hooks/use-wallet';
 import { useSetRecoilState } from 'recoil';

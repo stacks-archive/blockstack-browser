@@ -1,7 +1,7 @@
 import { Box, color, Input, InputGroup, Stack, StackProps, Text } from '@stacks/ui';
 import React, { memo } from 'react';
 import { useAssets } from '@common/hooks/use-assets';
-import { useFetchBalances } from '@common/hooks/use-account-info';
+import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { ErrorLabel } from '@components/error-label';
 import { useSendAmountFieldActions } from '@common/hooks/use-send-form';

@@ -5,7 +5,7 @@ import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/common/types';
 import { Link } from '@components/link';
 import { PopupContainer } from '@components/popup/container';
-import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { Title, Body } from '@components/typography';
 import { Header } from '@components/header';
 

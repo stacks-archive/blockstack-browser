@@ -7,7 +7,7 @@ import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useLoading } from '@common/hooks/use-loading';
 import { useRecoilValue } from 'recoil';
-import { stacksNetworkStore } from '@store/networks';
+import { currentStacksNetworkState } from '@store/networks';
 import { useCallback } from 'react';
 import { ScreenPaths } from '@store/common/types';
 import { useRevalidateApi } from '@common/hooks/use-revalidate-api';
@@ -43,7 +43,7 @@ export function useHandleSubmitTransaction({
   const doChangeScreen = useDoChangeScreen();
   const { doSetLatestNonce } = useWallet();
   const { setIsLoading, setIsIdle } = useLoading(loadingKey);
-  const stacksNetwork = useRecoilValue(stacksNetworkStore);
+  const stacksNetwork = useRecoilValue(currentStacksNetworkState);
   const revalidate = useRevalidateApi();
   const { setActiveTabActivity } = useHomeTabs();
 

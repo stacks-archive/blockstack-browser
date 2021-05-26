@@ -6,7 +6,7 @@ import { accountDataState } from '@store/accounts';
 import { walletState } from '@store/wallet';
 import { useRecoilValue } from 'recoil';
 import { Header } from '@components/header';
-import { useTransactionRequest } from '@common/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
 import { signedTransactionState } from '@store/transactions';
 
 const openGithubIssue = (loadable: ReturnType<typeof useLoadable>) => {

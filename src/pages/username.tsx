@@ -4,7 +4,7 @@ import { PopupContainer } from '@components/popup/container';
 import { useWallet } from '@common/hooks/use-wallet';
 import { buildEnterKeyEvent } from '@components/link';
 // import { ErrorLabel } from '@components/error-label';
-import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { Header } from '@components/header';
 
 export const Username: React.FC = () => {

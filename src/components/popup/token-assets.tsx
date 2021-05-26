@@ -5,9 +5,9 @@ import { useFungibleTokenState, useStxTokenState } from '@common/hooks/use-asset
 import { Caption } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';
 import { CollectibleAssets } from '@components/popup/collectible-assets';
-import { useAccountBalances } from '@common/hooks/use-account-balances';
+import { useAccountBalances } from '@common/hooks/account/use-account-balances';
 import { NoAssetsEmptyIllustration } from '@components/vector/no-assets';
-import { useCurrentAccount } from '@common/hooks/use-current-account';
+import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 
 const LoadingAssetRowItem = memo((props: StackProps) => (
   <SpaceBetween {...props}>

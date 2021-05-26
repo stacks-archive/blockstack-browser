@@ -1,4 +1,4 @@
-import { useSignedTransaction } from '@common/hooks/use-transaction';
+import { useSignedTransaction } from '@common/hooks/transaction/use-transaction';
 import { AuthType } from '@stacks/transactions';
 
 export function useTransactionFee() {
