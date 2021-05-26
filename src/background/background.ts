@@ -4,7 +4,7 @@
   performs the instructed logic. An effective background script is only loaded when it is
   needed and unloaded when it goes idle.
  */
-import { popupCenter } from 'background/popup';
+import { popupCenter } from '@background/popup';
 import { ScreenPaths } from '@store/types';
 import { storePayload, StorageKey } from '../storage';
 import { vaultMessageHandler } from '@background/vault';

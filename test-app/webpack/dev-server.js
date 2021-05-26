@@ -14,7 +14,7 @@ const config = require('./webpack.config.dev');
 
 // This is important, allows for fast refresh to work
 // we don't want to inject our fast refresh helpers into everything
-const excludeEntriesToHotReload = ['message-bus.js'];
+const excludeEntriesToHotReload = ['content-script.js'];
 
 const NODE_ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || '3000';

@@ -32,7 +32,7 @@ const manifest = {
   },
   content_scripts: [
     {
-      js: ['message-bus.js'],
+      js: ['content-script.js'],
       matches: ['*://*/*'],
     },
   ],

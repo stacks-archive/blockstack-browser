@@ -1,6 +1,6 @@
-import { getRequestOrigin, StorageKey } from 'storage';
 import { useRecoilValue } from 'recoil';
 import { requestTokenStore } from '@store/transaction';
+import { getRequestOrigin, StorageKey } from '../../storage';
 
 export function useOrigin() {
   const requestToken = useRecoilValue(requestTokenStore);

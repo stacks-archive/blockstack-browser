@@ -10,7 +10,7 @@ import {
 
 import { gaiaUrl } from '@common/constants';
 import { VaultActions } from '@background/vault-types';
-import { decryptMnemonic, encryptMnemonic } from 'background/crypto/mnemonic-encryption';
+import { decryptMnemonic, encryptMnemonic } from '@background/crypto/mnemonic-encryption';
 import { DEFAULT_PASSWORD } from '@store/types';
 import { InternalMethods } from '@content-scripts/message-types';
 

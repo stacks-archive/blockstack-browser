@@ -2,7 +2,7 @@ import React from 'react';
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 import { isValidUrl } from './validate-url';
-import { getTab, deleteTabForRequest, StorageKey } from 'storage';
+import { getTab, deleteTabForRequest, StorageKey } from '../storage';
 import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
 import { KEBAB_REGEX } from '@common/constants';
 import {
