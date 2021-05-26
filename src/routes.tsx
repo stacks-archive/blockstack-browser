@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 
-import { OnboardingPassword, SaveKey } from '@pages/sign-up';
 import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
 import { Username } from '@pages/username';
 import { ChooseAccount } from '@pages/choose-account';
@@ -40,7 +39,7 @@ export const Route: React.FC<RouteProps> = ({ path, element }) => {
 export const Routes: React.FC = () => {
   const { isSignedIn: signedIn, encryptedSecretKey } = useWallet();
   const { isOnboardingInProgress } = useOnboardingState();
-  const { search, pathname } = useLocation();
+  const { pathname } = useLocation();
   const setLastSeen = useSetRecoilState(lastSeenStore);
 
   const doChangeScreen = useDoChangeScreen();
@@ -54,19 +53,6 @@ export const Routes: React.FC = () => {
     setLastSeen(new Date().getTime());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-
-  const getSignUpElement = () => {
-    if (isLocked) return <Unlock />;
-    if (isSignedIn) {
-      return (
-        <Navigate
-          to={`${ScreenPaths.CHOOSE_ACCOUNT}${search}`}
-          screenPath={ScreenPaths.CHOOSE_ACCOUNT}
-        />
-      );
-    }
-    return <Installed />;
-  };
 
   const getHomeComponent = useCallback(() => {
     if (isSignedIn || encryptedSecretKey) {
@@ -107,28 +93,6 @@ export const Routes: React.FC = () => {
       </AccountGateRoute>
       <RouterRoute path={ScreenPaths.ADD_NETWORK} element={<AddNetwork />} />
       <Route path={ScreenPaths.SET_PASSWORD} element={<SetPasswordPage redirect />} />
-      {/*Sign Up*/}
-      <Route path={ScreenPaths.GENERATION} element={getSignUpElement()} />
-      <Route
-        path={ScreenPaths.SAVE_KEY}
-        element={
-          <SaveKey
-            next={() => {
-              doChangeScreen(ScreenPaths.ONBOARDING_PASSWORD);
-            }}
-          />
-        }
-      />
-      <Route
-        path={ScreenPaths.ONBOARDING_PASSWORD}
-        element={
-          <OnboardingPassword
-            next={() => {
-              doChangeScreen(ScreenPaths.USERNAME);
-            }}
-          />
-        }
-      />
       <Route path={ScreenPaths.USERNAME} element={<Username />} />
       {/*Sign In*/}
       <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />

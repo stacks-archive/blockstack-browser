@@ -37,4 +37,5 @@ module.exports = {
     '^.+\\.jsx?$': 'babel-jest',
     '^.+\\.tsx?$': 'ts-jest',
   },
+  testEnvironment: 'jsdom',
 };
