@@ -1,6 +1,6 @@
 import { ExtensionMethods, InternalMethods, Message } from '@content-scripts/message-types';
 
-/*
+/**
  * Vault <-> Background Script
  */
 export type VaultMessage<M extends ExtensionMethods, P> = Omit<Message<M, P>, 'source'>;

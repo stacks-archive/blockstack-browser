@@ -1,4 +1,4 @@
-/*
+/**
  * Inpage Script (Stacks Provider) <-> Content Script
  */
 export enum DomEventName {

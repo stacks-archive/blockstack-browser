@@ -29,7 +29,7 @@ interface BaseMessage {
   method: ExtensionMethods;
 }
 
-/*
+/**
  * Content Script <-> Background Script
  */
 export interface Message<M extends ExtensionMethods, P> extends BaseMessage {

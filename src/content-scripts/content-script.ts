@@ -1,7 +1,8 @@
-/*
+/**
  Extensions that read or write to web pages utilize a content script. The content script
  contains JavaScript that executes in the contexts of a page that has been loaded into
  the browser. Content scripts read and modify the DOM of web pages the browser visits.
+ https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#contentScripts
  */
 import { ScreenPaths } from '@store/types';
 import { getEventSourceWindow } from '@common/utils';
