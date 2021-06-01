@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Flex, FlexProps, Spinner, color, Stack } from '@stacks/ui';
-import { Caption, Text } from '@components/typography';
+import { Caption, Text, Title } from '@components/typography';
 import { ScreenPaths } from '@store/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
-import { AccountAvatar } from './account-avatar';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
-import { getStxAddress, Account } from '@stacks/wallet-sdk';
+import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { useAccountDisplayName } from '@common/hooks/use-account-names';
+import { useAccountDisplayName, useAccountNames } from '@common/hooks/use-account-names';
+import { AccountAvatar } from '@components/account-avatar';
+import { SpaceBetween } from '@components/space-between';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -32,31 +33,29 @@ const AccountItem: React.FC<AccountItemProps> = ({
   ...rest
 }) => {
   const { decodedAuthRequest } = useOnboardingState();
-  const name = useAccountDisplayName();
+  const name = useAccountDisplayName(account);
+
   const loading = address === selectedAddress;
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   return (
-    <Flex alignItems="center" {...rest}>
-      <Stack textAlign="left" spacing="2px">
-        <Text
-          display="block"
-          maxWidth="100%"
-          textAlign="left"
-          fontWeight={500}
-          fontSize={2}
-          style={{ wordBreak: 'break-word' }}
-          {...getLoadingProps(showLoadingProps)}
-        >
-          {name}
-        </Text>
-        <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
-          {truncateMiddle(address as string, 6)}
-        </Caption>
+    <SpaceBetween width="100%" alignItems="center">
+      <Stack textAlign="left" ml="base" isInline alignItems="center" spacing="base" {...rest}>
+        <Stack spacing="base-tight">
+          <Title
+            {...getLoadingProps(showLoadingProps)}
+            fontSize={2}
+            lineHeight="1rem"
+            fontWeight="400"
+          >
+            {name}
+          </Title>
+          <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
+            {truncateMiddle(address as string, 6)}
+          </Caption>
+        </Stack>
       </Stack>
-      <Flex width={4} flexDirection="column" mr={3}>
-        {loading && <Spinner width={4} height={4} {...loadingProps} />}
-      </Flex>
-    </Flex>
+      {loading && <Spinner width={4} height={4} {...loadingProps} />}
+    </SpaceBetween>
   );
 };
 
@@ -81,7 +80,7 @@ export const Accounts: React.FC<AccountsProps> = ({
       setSelectedAddress(null);
     }
   }, [accountIndex, setSelectedAddress, selectedAddress]);
-
+  const names = useAccountNames();
   if (!wallet) return null;
 
   const accounts = wallet.accounts.map(account => ({
@@ -96,18 +95,20 @@ export const Accounts: React.FC<AccountsProps> = ({
   return (
     <Flex flexDirection="column" {...rest}>
       {accounts.map((account, index) => {
+        const name = names.value?.[index]?.names?.[0] || getAccountDisplayName(account);
+
         return (
           <ListItem
             key={account.stxAddress}
             isFirst={index === 0}
             cursor={disableSelect ? 'not-allowed' : 'pointer'}
-            iconComponent={() => <AccountAvatar username={account.number.toString()} mr={3} />}
+            iconComponent={() => <AccountAvatar account={account} name={name} />}
             hasAction={!!next && selectedAddress === null}
-            data-test={`account-${(account.username || account.stxAddress).split('.')[0]}`}
+            data-test={`account-${(account?.username || account?.stxAddress).split('.')[0]}`}
             onClick={() => {
               if (!next) return;
               if (selectedAddress) return;
-              setSelectedAddress(account.stxAddress);
+              setSelectedAddress(account?.stxAddress);
               next(index);
             }}
           >

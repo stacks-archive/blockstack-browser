@@ -14,7 +14,7 @@ export const AccountAvatar: React.FC<{ account: Account; name?: string } & BoxPr
 
   const circleText = displayName?.includes('Account') ? displayName.split(' ')[1] : displayName[0];
   return (
-    <Circle backgroundImage={gradient} color={color('bg')} {...props}>
+    <Circle flexShrink={0} backgroundImage={gradient} color={color('bg')} {...props}>
       {circleText.toUpperCase()}
     </Circle>
   );
