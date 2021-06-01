@@ -192,11 +192,7 @@ export const Debugger = () => {
       functionName: 'buy',
       functionArgs: [uintCV(42)],
       postConditions: [
-        makeStandardSTXPostCondition(
-          address || '',
-          FungibleConditionCode.Equal,
-          new BN(42000000, 10)
-        ),
+        makeStandardSTXPostCondition(address || '', FungibleConditionCode.Equal, new BN(42, 10)),
       ],
       onFinish: data => {
         console.log('finished faucet!', data);
