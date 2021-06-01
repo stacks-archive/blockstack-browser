@@ -19,8 +19,6 @@ const AssetSearchResults = forwardRef(
     const assets = useTransferableAssets();
     const [searchInput] = useRecoilState(searchInputStore);
 
-    if (!assets.value && assets.value) return null;
-
     const items = useMemo(
       () =>
         assets.value?.filter(item =>
@@ -28,6 +26,8 @@ const AssetSearchResults = forwardRef(
         ),
       [assets.value, searchInput]
     );
+
+    if (!assets.value) return null;
 
     return (
       <Fade in={isOpen && !!items?.length}>

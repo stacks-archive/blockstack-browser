@@ -8,7 +8,9 @@ function handleErrorMessage(message = 'Error') {
     }`,
   };
 }
+
 export type SIP010TransferResponse = { okay: true; hasMemo: boolean } | { error: string };
+
 export async function isSip10Transfer({
   contractInterface,
 }: {
@@ -68,8 +70,12 @@ export async function isSip10Transfer({
   }
 }
 
+export function removeCommas(amountWithCommas: string) {
+  return amountWithCommas.replace(/,/g, '');
+}
+
 export function getFormattedAmount(amount: string) {
-  const noCommas = amount.replace(/,/g, '');
+  const noCommas = removeCommas(amount);
   const number = noCommas.includes('.') ? parseFloat(noCommas) : parseInt(noCommas);
   return number > 10000
     ? {

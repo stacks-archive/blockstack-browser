@@ -6,6 +6,7 @@ import { useAssets } from '@common/hooks/use-assets';
 import React, { useCallback, useEffect } from 'react';
 import { microStxToStx } from '@common/stacks-utils';
 import { FormValues } from '@pages/popup/send';
+import { removeCommas } from '@common/token-utils';
 
 export function useSendAmountFieldActions({
   setFieldValue,
@@ -20,7 +21,7 @@ export function useSendAmountFieldActions({
       const stx = microStxToStx(balances.value.stx.balance);
       setFieldValue('amount', stx.toNumber());
     } else {
-      if (balance) setFieldValue('amount', balance);
+      if (balance) setFieldValue('amount', removeCommas(balance));
     }
   }, [balance, setFieldValue, balances, selectedAsset, isStx]);
 

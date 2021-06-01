@@ -20,14 +20,14 @@ export const useSendFormValidation = ({
     if (!validateAddressChain(recipient, currentNetwork)) {
       errors.recipient = 'The address is for the incorrect Stacks network';
     } else if (!validateStacksAddress(recipient)) {
-      errors.recipient = 'The address you provided is not valid.';
+      errors.recipient = 'The address you provided is not valid';
     } else if (recipient === currentAccountStxAddress) {
-      errors.recipient = 'Cannot send to yourself.';
+      errors.recipient = 'Cannot send to yourself';
     }
     if (amount === '') {
-      errors.amount = 'You must specify an amount.';
+      errors.amount = 'You must specify an amount';
     } else if (amount <= 0) {
-      errors.amount = 'Must be more than zero.';
+      errors.amount = 'Must be more than zero';
     }
     if (selectedAsset) {
       if (balances.value) {
@@ -35,12 +35,12 @@ export const useSendFormValidation = ({
         if (selectedAsset.type === 'stx') {
           const curBalance = microStxToStx(balances.value.stx.balance);
           if (curBalance.lt(amountBN)) {
-            errors.amount = `You don't have enough tokens. Your balance is ${curBalance.toString()}`;
+            errors.amount = `You don't have enough tokens, Your balance is ${curBalance.toString()}`;
           }
         }
       }
     } else {
-      setAssetError('You must select a valid token to transfer.');
+      setAssetError('You must select a valid token to transfer');
     }
     return errors;
   };

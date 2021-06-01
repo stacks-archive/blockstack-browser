@@ -23,7 +23,7 @@ interface PostConditionsOptions {
   contractName: string;
   assetName: string;
   stxAddress: string;
-  amount: number;
+  amount: string | number;
 }
 
 function makePostCondition(options: PostConditionsOptions): PostCondition {
@@ -85,7 +85,7 @@ export function useMakeAssetTransfer() {
     ];
 
     if (selectedAsset.hasMemo) {
-      functionArgs.push(memo !== '' ? someCV(bufferCVFromString(memo)) : someCV(noneCV()));
+      functionArgs.push(memo !== '' ? someCV(bufferCVFromString(memo)) : noneCV());
     }
     const txOptions = {
       network,

@@ -83,7 +83,7 @@ export const ftDecimals = (value: number | string, decimals: number) => {
 };
 export const ftUnshiftDecimals = (value: number | string, decimals: number) => {
   const amount = new BigNumber(value);
-  return amount.shiftedBy(decimals).toNumber();
+  return amount.shiftedBy(decimals).toString(10);
 };
 
 export const stxToMicroStx = (stx: number | string) => {
