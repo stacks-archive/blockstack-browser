@@ -1,4 +1,4 @@
-import { useRecoilCallback } from 'recoil';
+import { useRecoilCallback, waitForAll } from 'recoil';
 import { stacksNetworkStore } from '@store/networks';
 import { currentAccountStore } from '@store/wallet';
 import { correctNonceState } from '@store/api';
@@ -13,22 +13,27 @@ import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 interface TokenTransferParams {
   amount: number;
   recipient: string;
+  memo: string;
 }
 
 export function useMakeStxTransfer() {
   return useRecoilCallback(({ snapshot }) => async (params: TokenTransferParams) => {
-    const { amount, recipient } = params;
-    const stacksNetwork = await snapshot.getPromise(stacksNetworkStore);
-    const account = await snapshot.getPromise(currentAccountStore);
-    const nonce = await snapshot.getPromise(correctNonceState);
-
+    const { amount, recipient, memo } = params;
+    const { network, account, nonce } = await snapshot.getPromise(
+      waitForAll({
+        network: stacksNetworkStore,
+        account: currentAccountStore,
+        nonce: correctNonceState,
+      })
+    );
     if (!account) return;
 
     return makeSTXTokenTransfer({
       recipient,
       amount: new BN(stxToMicroStx(amount).toString(), 10),
+      memo,
       senderKey: account.stxPrivateKey,
-      network: stacksNetwork,
+      network,
       nonce: new BN(nonce.toString(), 10),
     });
   });
@@ -38,6 +43,7 @@ export function useMakeTransferEffect({
   isShowing,
   amount,
   recipient,
+  memo,
   transaction,
   setTransaction,
   loadingKey,
@@ -46,6 +52,7 @@ export function useMakeTransferEffect({
   isShowing: boolean;
   amount: number;
   recipient: string;
+  memo: string;
   setTransaction: (transaction: StacksTransaction) => void;
   loadingKey: string;
 }) {
@@ -65,6 +72,7 @@ export function useMakeTransferEffect({
         void method({
           amount,
           recipient,
+          memo,
         }).then(tx => {
           if (tx) {
             setTransaction(tx);
@@ -74,6 +82,7 @@ export function useMakeTransferEffect({
       }
     }
   }, [
+    memo,
     selectedAsset?.type,
     handleMakeFtTransaction,
     isActive,

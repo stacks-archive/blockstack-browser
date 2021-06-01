@@ -13,9 +13,10 @@ interface AssetRowProps extends StackProps {
 
 export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, ref) => {
   const { asset, ...rest } = props;
-  const { name, contractAddress, type, meta, subtitle, balance } = asset;
+  const { name, contractAddress, contractName, type, meta, subtitle, balance } = asset;
 
-  const friendlyName = type === 'ft' ? meta?.name || getAssetName(name) : name;
+  const friendlyName =
+    type === 'ft' ? meta?.name || (name.includes('::') ? getAssetName(name) : name) : name;
   const symbol = type === 'ft' ? meta?.symbol || getTicker(friendlyName) : subtitle;
   const value =
     type === 'ft'
@@ -27,7 +28,13 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
   return (
     <AssetItem
       ref={ref}
-      avatar={name === 'stx' ? 'stx' : type === 'ft' ? `${contractAddress}.${friendlyName}` : name}
+      avatar={
+        name === 'stx'
+          ? 'stx'
+          : type === 'ft'
+          ? `${contractAddress}.${contractName}::${name}`
+          : name
+      }
       title={friendlyName}
       caption={symbol}
       amount={value}

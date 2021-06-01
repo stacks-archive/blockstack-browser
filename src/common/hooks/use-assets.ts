@@ -4,10 +4,15 @@ import {
   fungibleTokensState,
   nonFungibleTokensState,
   stxTokenState,
+  transferableAssetsState,
 } from '@store/tokens';
 
 export const useAssets = () => {
   return useLoadable(assetsState);
+};
+
+export const useTransferableAssets = () => {
+  return useLoadable(transferableAssetsState);
 };
 
 export function useFungibleTokenState() {

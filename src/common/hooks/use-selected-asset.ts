@@ -3,16 +3,23 @@ import { useLoadable } from '@common/hooks/use-loadable';
 import { selectedAssetIdState, selectedAssetStore } from '@store/asset-search';
 import { AssetWithMeta } from '@store/tokens';
 import { getTicker } from '@common/utils';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ftDecimals, stacksValue } from '@common/stacks-utils';
 import BigNumber from 'bignumber.js';
+
+export function getFullyQualifiedAssetName(asset?: AssetWithMeta) {
+  return asset ? `${asset.contractAddress}.${asset.contractName}::${asset.name}` : undefined;
+}
 
 export function useSelectedAsset() {
   const { value: selectedAsset } = useLoadable(selectedAssetStore);
   const setSelectedAsset = useSetRecoilState(selectedAssetIdState);
-  const handleUpdateSelectedAsset = (asset: AssetWithMeta | undefined) => {
-    setSelectedAsset(asset?.name || undefined);
-  };
+  const handleUpdateSelectedAsset = useCallback(
+    (asset: AssetWithMeta | undefined) => {
+      setSelectedAsset(getFullyQualifiedAssetName(asset) || undefined);
+    },
+    [setSelectedAsset]
+  );
   const name = selectedAsset?.meta?.name || selectedAsset?.name;
   const isStx = selectedAsset?.name === 'Stacks Token';
   const ticker = selectedAsset

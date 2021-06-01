@@ -18,6 +18,7 @@ import { NetworkRowItem } from '@components/network-row-item';
 interface ConfirmSendDrawerProps extends BaseDrawerProps {
   amount: number;
   recipient: string;
+  memo: string;
 }
 
 const LOADING_KEY = 'confirm-send-drawer';
@@ -33,6 +34,7 @@ const TransactionDetails: React.FC<
   const { ticker } = useSelectedAsset();
   const { stxAddress } = useCurrentAccount();
   const { selectedAsset } = useSelectedAsset();
+  const gradientString = `${selectedAsset?.contractAddress}.${selectedAsset?.contractName}::${selectedAsset?.name}`;
   return (
     <Flex
       border="4px solid"
@@ -44,11 +46,7 @@ const TransactionDetails: React.FC<
     >
       <TransactionEventCard
         amount={amount}
-        icon={
-          selectedAsset?.contractAddress
-            ? selectedAsset.contractAddress + '.' + selectedAsset.contractName
-            : 'STX'
-        }
+        icon={selectedAsset?.contractAddress ? gradientString : 'STX'}
         ticker={ticker || 'STX'}
         title="You will transfer extactly"
         left={stxAddress ? `From ${truncateMiddle(stxAddress)}` : undefined}
@@ -89,6 +87,7 @@ export const ConfirmSendDrawer: React.FC<Omit<ConfirmSendDrawerProps, 'title'>> 
   isShowing,
   onClose,
   amount,
+  memo,
   recipient,
 }) => {
   const [transaction, setTransaction] = useState<StacksTransaction | null>(null);
@@ -98,6 +97,7 @@ export const ConfirmSendDrawer: React.FC<Omit<ConfirmSendDrawerProps, 'title'>> 
     setTransaction,
     isShowing,
     amount,
+    memo,
     recipient,
     loadingKey: LOADING_KEY,
   });

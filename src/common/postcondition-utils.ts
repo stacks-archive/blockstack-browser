@@ -9,7 +9,7 @@ import { stacksValue } from '@common/stacks-utils';
 
 export const getIconStringFromPostCondition = (pc: PostCondition) => {
   if (pc.conditionType === PostConditionType.Fungible)
-    return `${addressToString(pc.assetInfo.address)}.${pc.assetInfo.contractName}.${
+    return `${addressToString(pc.assetInfo.address)}.${pc.assetInfo.contractName}::${
       pc.assetInfo.assetName.content
     }`;
   if (pc.conditionType === PostConditionType.STX) return 'STX';

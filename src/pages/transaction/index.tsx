@@ -51,6 +51,7 @@ export const FeeValue = () => {
         ? '🎉 sponsored'
         : stacksValue({
             value: tx.value.auth.spendingCondition?.fee?.toNumber() || 0,
+            fixedDecimals: true,
           })}
     </>
   );

@@ -1,4 +1,5 @@
-import { RPCClient } from '@stacks/rpc-client';
+import { ContractInterface } from '@stacks/rpc-client';
+import { abbreviateNumber } from '@common/utils';
 
 function handleErrorMessage(message = 'Error') {
   return {
@@ -7,40 +8,45 @@ function handleErrorMessage(message = 'Error') {
     }`,
   };
 }
-
+export type SIP010TransferResponse = { okay: true; hasMemo: boolean } | { error: string };
 export async function isSip10Transfer({
-  contractAddress,
-  contractName,
-  networkUrl,
+  contractInterface,
 }: {
-  contractAddress: string;
-  contractName: string;
-  networkUrl: string;
-}): Promise<{ okay: true } | { error: string }> {
+  contractInterface: ContractInterface;
+}): Promise<SIP010TransferResponse> {
   try {
-    const rpcClient = new RPCClient(networkUrl);
-    const contractInterface = await rpcClient.fetchContractInterface({
-      contractAddress,
-      contractName,
-    });
     let hasCorrectName = false;
     let hasCorrectSender = false;
     let hasCorrectRecipient = false;
     let hasCorrectAmount = false;
     let hasCorrectNumberOfArgs = false;
+    let hasMemo = false;
+    let has3Args = false;
+    let has4Args = false;
 
     const transferFunction = contractInterface.functions.find(func => {
       const correctName = func.name === 'transfer';
-      const [amount, sender, recipient] = func.args;
+      const [amount, sender, recipient, memo] = func.args;
       const correctAmount = amount?.type === 'uint128';
       const correctSender = sender?.type === 'principal';
       const correctRecipient = recipient?.type === 'principal';
+      const correctMemo = (memo?.type as any)?.optional?.buffer?.length === 34; // TODO: cast will be fixed in follow up PR
       if (correctName) hasCorrectName = true;
       if (correctSender) hasCorrectSender = true;
       if (correctRecipient) hasCorrectRecipient = true;
       if (correctAmount) hasCorrectAmount = true;
-      if (func.args.length === 3) hasCorrectNumberOfArgs = true;
-      return correctName && correctRecipient && correctAmount && func.args.length === 3;
+      if (correctMemo) hasMemo = true;
+      if (func.args.length === 3) has3Args = true;
+      if (func.args.length === 4) has4Args = true;
+
+      if (has3Args) {
+        hasCorrectNumberOfArgs = true;
+        return correctName && hasCorrectSender && correctRecipient && correctAmount;
+      } else if (has4Args) {
+        hasCorrectNumberOfArgs = true;
+        return correctName && hasCorrectSender && correctRecipient && correctAmount && correctMemo;
+      }
+      return false;
     });
     if (!hasCorrectName) {
       return handleErrorMessage('Missing "transfer" function.');
@@ -55,8 +61,20 @@ export async function isSip10Transfer({
     } else if (!transferFunction) {
       return handleErrorMessage();
     }
-    return { okay: true };
+    return { okay: true, hasMemo };
   } catch (error) {
+    console.error(error);
     return { error: 'Unable to fetch contract details.' };
   }
+}
+
+export function getFormattedAmount(amount: string) {
+  const noCommas = amount.replace(/,/g, '');
+  const number = noCommas.includes('.') ? parseFloat(noCommas) : parseInt(noCommas);
+  return number > 10000
+    ? {
+        isAbbreviated: true,
+        value: abbreviateNumber(number),
+      }
+    : { value: amount, isAbbreviated: false };
 }

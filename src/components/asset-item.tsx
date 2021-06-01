@@ -1,54 +1,76 @@
 import { SpaceBetween } from '@components/space-between';
-import { Stack, StackProps } from '@stacks/ui';
+import { Box, Stack, StackProps } from '@stacks/ui';
 import { AssetAvatar } from '@components/stx-avatar';
-import { Caption, Title } from '@components/typography';
-import React from 'react';
+import { Caption, Text } from '@components/typography';
+import React, { memo } from 'react';
 import { forwardRefWithAs } from '@stacks/ui-core';
 import { usePressable } from '@components/item-hover';
+import { Tooltip } from '@components/tooltip';
+import { getFormattedAmount } from '@common/token-utils';
 
-export const AssetItem = forwardRefWithAs(
-  (
-    {
-      isPressable,
-      avatar,
-      title,
-      caption,
-      amount,
-      ...rest
-    }: {
-      isPressable?: boolean;
-      avatar: string;
-      title: string;
-      caption?: string;
-      amount: string;
-    } & StackProps,
-    ref
-  ) => {
-    const [component, bind] = usePressable(isPressable);
+export const AssetItem = memo(
+  forwardRefWithAs(
+    (
+      {
+        isPressable,
+        avatar,
+        title,
+        caption,
+        amount,
+        ...rest
+      }: {
+        isPressable?: boolean;
+        avatar: string;
+        title: string;
+        caption?: string;
+        amount: string;
+      } & StackProps,
+      ref
+    ) => {
+      const [component, bind] = usePressable(isPressable);
+      const formatted = getFormattedAmount(amount);
+      return (
+        <Box
+          as={'button'}
+          display="flex"
+          textAlign="left"
+          outline={0}
+          position="relative"
+          ref={ref as any}
+          flexGrow={1}
+          spacing="base"
+          isInline
+          {...rest}
+          {...bind}
+        >
+          <Stack flexGrow={1} width="100%" isInline spacing="base">
+            <AssetAvatar
+              size="36px"
+              gradientString={avatar}
+              useStx={caption === 'STX'}
+              color="white"
+            >
+              {title[0]}
+            </AssetAvatar>
 
-    return (
-      <SpaceBetween
-        as={'button'}
-        display="flex"
-        textAlign="left"
-        outline={0}
-        position="relative"
-        ref={ref as any}
-        {...rest}
-        {...bind}
-      >
-        <Stack spacing="base" isInline>
-          <AssetAvatar size="36px" gradientString={avatar} useStx={caption === 'STX'} color="white">
-            {title[0]}
-          </AssetAvatar>
-          <Stack>
-            <Title>{title}</Title>
-            {caption && <Caption>{caption}</Caption>}
+            <Stack flexGrow={1}>
+              <SpaceBetween width="100%">
+                <Text>{title}</Text>
+                <Tooltip
+                  placement="left-start"
+                  label={formatted.isAbbreviated ? amount : undefined}
+                >
+                  <Text fontVariantNumeric="tabular-nums" textAlign="right">
+                    {formatted.value}
+                  </Text>
+                </Tooltip>
+              </SpaceBetween>
+              {caption && <Caption>{caption}</Caption>}
+            </Stack>
           </Stack>
-        </Stack>
-        <Title>{amount}</Title>
-        {component}
-      </SpaceBetween>
-    );
-  }
+          {component}
+        </Box>
+      );
+    }
+  )
 );

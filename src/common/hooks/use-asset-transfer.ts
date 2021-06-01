@@ -1,10 +1,14 @@
 import {
+  bufferCVFromString,
+  ClarityValue,
   createAddress,
   createAssetInfo,
   FungibleConditionCode,
   makeContractCall,
   makeStandardFungiblePostCondition,
+  noneCV,
   PostCondition,
+  someCV,
   standardPrincipalCVFromAddress,
   uintCV,
 } from '@stacks/transactions';
@@ -35,7 +39,7 @@ function makePostCondition(options: PostConditionsOptions): PostCondition {
 }
 
 export function useMakeAssetTransfer() {
-  return useRecoilCallback(({ snapshot }) => async ({ amount, recipient }) => {
+  return useRecoilCallback(({ snapshot }) => async ({ amount, recipient, memo }) => {
     const assetTransferState = await snapshot.getPromise(makeFungibleTokenTransferState);
     const selectedAsset = await snapshot.getPromise(selectedAssetStore);
     if (!assetTransferState || !selectedAsset) return;
@@ -74,12 +78,15 @@ export function useMakeAssetTransfer() {
     const postConditions = postConditionOptions ? [makePostCondition(postConditionOptions)] : [];
 
     // (transfer (uint principal principal) (response bool uint))
-    const functionArgs = [
+    const functionArgs: ClarityValue[] = [
       uintCV(realAmount),
       standardPrincipalCVFromAddress(createAddress(stxAddress)),
       standardPrincipalCVFromAddress(createAddress(recipient)),
     ];
 
+    if (selectedAsset.hasMemo) {
+      functionArgs.push(memo !== '' ? someCV(bufferCVFromString(memo)) : someCV(noneCV()));
+    }
     const txOptions = {
       network,
       functionName,

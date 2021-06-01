@@ -17,13 +17,13 @@ export const POPUP_HEIGHT = 646;
 export const SIP_010 = {
   mainnet: {
     address: 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE',
-    name: 'sip-10-ft-standard',
-    trait: 'ft-trait',
+    name: 'sip-010-trait-ft-standard',
+    trait: 'sip-010-trait',
   },
   testnet: {
-    address: 'ST3YK7KWMYRCDMV5M4792T0T7DERQXHJJGHT96SVC',
-    name: 'sip-10-ft-standard',
-    trait: 'ft-trait',
+    address: 'STR8P3RD1EHA8AA37ERSSSZSWKS9T2GYQFGXNA4C',
+    name: 'sip-010-trait-ft-standard',
+    trait: 'sip-010-trait',
   },
   regtest: {
     address: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',

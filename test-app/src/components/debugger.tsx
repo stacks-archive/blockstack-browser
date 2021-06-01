@@ -130,7 +130,7 @@ export const Debugger = () => {
       recipient: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
       onFinish: data => {
         console.log('finished stx transfer!', data);
-        setState('Stacks Transfer', data.txId);
+        setState('Stacks Transfer', data?.txId);
       },
       onCancel: () => {
         console.log('popup closed!');
@@ -183,6 +183,49 @@ export const Debugger = () => {
     });
   };
 
+  const getRocketTokens = async () => {
+    clearState();
+    await doContractCall({
+      network,
+      contractAddress: 'ST33GW755MQQP6FZ58S423JJ23GBKK5ZKH3MGR55N',
+      contractName: 'rocket-token',
+      functionName: 'buy',
+      functionArgs: [uintCV(42)],
+      postConditions: [
+        makeStandardSTXPostCondition(
+          address || '',
+          FungibleConditionCode.Equal,
+          new BN(42000000, 10)
+        ),
+      ],
+      onFinish: data => {
+        console.log('finished faucet!', data);
+        setState('Token Faucet', data.txId);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
+  const getStellaFaucetTokens = async () => {
+    clearState();
+    await doContractCall({
+      network,
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'stella-final',
+      functionName: 'faucet',
+      functionArgs: [],
+      onFinish: data => {
+        console.log('finished faucet!', data);
+        setState('Token Faucet', data.txId);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
   return (
     <Box py={6}>
       <Text as="h2" textStyle="display.small">
@@ -214,8 +257,14 @@ export const Debugger = () => {
           <Button mt={3} onClick={deployContract}>
             Contract deploy
           </Button>
+          <Button mt={3} onClick={getStellaFaucetTokens}>
+            Get SteLLa tokens (sip 10 with memo)
+          </Button>
+          <Button mt={3} onClick={getRocketTokens}>
+            Get Rocket tokens (old sip 10 no memo)
+          </Button>
           <Button mt={3} onClick={getFaucetTokens}>
-            Get tokens
+            Get connect tokens
           </Button>
           <Button mt={3} onClick={callNullContract}>
             Non-existent contract

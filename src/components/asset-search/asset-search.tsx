@@ -1,22 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Text, Flex, Input } from '@stacks/ui';
+import React, { memo, useMemo, forwardRef } from 'react';
+import { Box, Fade, Text, Flex, Input, color, Stack, StackProps } from '@stacks/ui';
 import { useCombobox } from 'downshift';
 import { searchInputStore } from '@store/asset-search';
 import { useRecoilState } from 'recoil';
-import { LoadingRectangle } from '../loading-rectangle';
-import { AssetResult } from './asset-search-result';
 import { SelectedAsset } from './selected-asset';
-import { useAssets } from '@common/hooks/use-assets';
+import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
-import { AssetWithMeta } from '@store/tokens';
+import { AssetRow } from '@components/asset-row';
 
-export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus, ...rest }) => {
-  const assets = useAssets();
+interface AssetSearchResultsProps extends StackProps {
+  isOpen: boolean;
+  highlightedIndex: number;
+  getItemProps: any;
+}
+
+const AssetSearchResults = forwardRef(
+  ({ isOpen, highlightedIndex, getItemProps, ...props }: AssetSearchResultsProps, ref) => {
+    const assets = useTransferableAssets();
+    const [searchInput] = useRecoilState(searchInputStore);
+
+    if (!assets.value && assets.value) return null;
+
+    const items = useMemo(
+      () =>
+        assets.value?.filter(item =>
+          item.name.toLowerCase().includes(searchInput.toLowerCase() || '')
+        ),
+      [assets.value, searchInput]
+    );
+
+    return (
+      <Fade in={isOpen && !!items?.length}>
+        {styles => (
+          <Stack
+            flexDirection="column"
+            boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
+            borderRadius="6px"
+            position="absolute"
+            width="100%"
+            top="77px"
+            maxHeight="230px"
+            border={isOpen ? '1px solid #E1E3E8' : 'none'}
+            zIndex={1000}
+            overflow="auto"
+            style={styles}
+            spacing="extra-loose"
+            bg={color('bg')}
+            p="loose"
+            ref={ref}
+            {...props}
+          >
+            {items?.map((asset, index) => (
+              <AssetRow
+                isPressable
+                asset={asset}
+                index={index}
+                key={`${asset.contractAddress || asset.name}__${index}`}
+                highlighted={highlightedIndex === index}
+                {...getItemProps({ item: asset, index })}
+              />
+            ))}
+          </Stack>
+        )}
+      </Fade>
+    );
+  }
+);
+export const AssetSearchField: React.FC<{
+  autoFocus?: boolean;
+  onItemClick: () => void;
+}> = memo(({ autoFocus, onItemClick, ...rest }) => {
+  const assets = useTransferableAssets();
 
   const { selectedAsset, handleUpdateSelectedAsset } = useSelectedAsset();
 
   const [searchInput, setSearchInput] = useRecoilState(searchInputStore);
-  const [searchResults, setSearchResults] = useState<AssetWithMeta[]>(assets.value || []);
 
   const {
     isOpen,
@@ -28,7 +86,7 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
     getItemProps,
     openMenu,
   } = useCombobox({
-    items: searchResults,
+    items: assets.value || [],
     initialIsOpen: true,
     inputValue: searchInput,
     defaultIsOpen: false,
@@ -37,32 +95,15 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
       return item?.contractAddress || item?.name || '';
     },
     onSelectedItemChange: ({ selectedItem }) => {
+      onItemClick();
       handleUpdateSelectedAsset(selectedItem || undefined);
     },
   });
-
-  useEffect(() => {
-    assets.value && setSearchResults(assets.value);
-  }, [assets, searchResults]);
 
   const labelRef = React.useRef(null);
   const comboRef = React.useRef(null);
 
   if (assets.isLoading) return null;
-  const results = searchResults.map((asset, index) => {
-    return (
-      <AssetResult
-        asset={asset}
-        index={index}
-        key={asset.contractAddress || asset.name}
-        highlighted={highlightedIndex === index}
-        {...getItemProps({ item: asset, index })}
-        onClick={() => {
-          handleUpdateSelectedAsset(asset);
-        }}
-      />
-    );
-  });
 
   return (
     <Flex flexDirection="column" width="100%" position="relative" overflow="visible" {...rest}>
@@ -85,12 +126,6 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
           onChange={(e: React.FormEvent<HTMLInputElement>) => {
             const { value } = e.currentTarget;
             setSearchInput(value);
-            assets.value &&
-              setSearchResults(
-                assets.value.filter(item =>
-                  item.name.toLowerCase().includes(value.toLowerCase() || '')
-                )
-              );
           }}
           width="100%"
           placeholder="Search for an asset"
@@ -100,46 +135,35 @@ export const AssetSearchField: React.FC<{ autoFocus?: boolean }> = ({ autoFocus,
           autoFocus={autoFocus}
         />
       </Box>
-      <Flex
-        flexDirection="column"
+      <AssetSearchResults
+        highlightedIndex={highlightedIndex}
+        getItemProps={getItemProps}
+        isOpen={isOpen}
         {...getMenuProps()}
-        boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
-        borderRadius="6px"
-        position="absolute"
-        width="100%"
-        top="77px"
-        maxHeight="220px"
-        border={isOpen ? '1px solid #E1E3E8' : 'none'}
-        zIndex={1000}
-        overflow="auto"
-      >
-        {isOpen ? results : null}
-      </Flex>
+      />
     </Flex>
   );
-};
+});
 
-export const AssetSearch: React.FC<{ autoFocus?: boolean }> = ({ autoFocus, ...rest }) => {
-  const { selectedAsset, handleUpdateSelectedAsset } = useSelectedAsset();
-  const assets = useAssets();
-
-  useEffect(() => {
-    if (assets.value && assets.value.length === 1 && !selectedAsset) {
-      handleUpdateSelectedAsset(assets.value[0]);
-    }
-  }, [handleUpdateSelectedAsset, assets, selectedAsset]);
-
-  if (assets.value && selectedAsset) {
-    return <SelectedAsset hideArrow={assets?.value.length === 1} {...rest} />;
-  }
+export const AssetSearch: React.FC<{
+  autoFocus?: boolean;
+  onItemClick: () => void;
+}> = memo(({ autoFocus, onItemClick, ...rest }) => {
+  const { selectedAsset } = useSelectedAsset();
+  const assets = useTransferableAssets();
 
   if (assets.isLoading) {
     return (
-      <Box {...rest}>
-        <LoadingRectangle width="80%" height="32px" />
-      </Box>
+      <Stack spacing="tight" {...rest}>
+        <Box height="16px" width="68px" bg={color('bg-4')} borderRadius="8px" />
+        <Box height="48px" width="100%" bg={color('bg-4')} borderRadius="8px" />
+      </Stack>
     );
   }
 
-  return <AssetSearchField autoFocus={autoFocus} {...rest} />;
-};
+  if (selectedAsset) {
+    return <SelectedAsset {...rest} />;
+  }
+
+  return <AssetSearchField onItemClick={onItemClick} autoFocus={autoFocus} {...rest} />;
+});
