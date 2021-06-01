@@ -97,6 +97,7 @@
     "use-latest": "1.2.0",
     "valid-url": "1.0.9",
     "web-ext": "6.1.0",
+    "ws": "7.4.6",
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
@@ -202,7 +203,8 @@
     "hosted-git-info": "4.0.2",
     "mixme": "0.5.1",
     "schema-inspector": "2.0.1",
-    "ssri": "8.0.1"
+    "ssri": "8.0.1",
+    "ws": "7.4.6"
   },
   "keywords": [
     "blockstack",
