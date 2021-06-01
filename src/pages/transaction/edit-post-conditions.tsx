@@ -1,3 +1,4 @@
+// @ts-nocheck TODO: actually use this page
 import React, { Suspense, useEffect } from 'react';
 import { Box, Button, Flex, Text, Input } from '@stacks/ui';
 import { TxLoading } from '@pages/transaction';

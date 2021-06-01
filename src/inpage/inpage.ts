@@ -17,6 +17,7 @@ type CallableMethods = keyof typeof ExternalMethods;
 interface ExtensionResponse {
   source: 'blockstack-extension';
   method: CallableMethods;
+
   [key: string]: any;
 }
 
@@ -95,11 +96,13 @@ const provider: StacksProvider = {
         if (!isValidEvent(event, ExternalMethods.transactionResponse)) return;
         if (event.data.payload?.transactionRequest !== transactionRequest) return;
         window.removeEventListener('message', handleMessage);
-        if (event.data.payload.transactionResponse.cancel) {
+        if (event.data.payload.transactionResponse === 'cancel') {
           reject(event.data.payload.transactionResponse);
           return;
         }
-        resolve(event.data.payload.transactionResponse);
+        if (typeof event.data.payload.transactionResponse !== 'string') {
+          resolve(event.data.payload.transactionResponse);
+        }
       };
       window.addEventListener('message', handleMessage);
     });

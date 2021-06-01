@@ -3,8 +3,8 @@ import { Flex, color } from '@stacks/ui';
 import { SettingsPopover } from './settings-popover';
 import { useRecoilValue } from 'recoil';
 import { hasRehydratedVaultStore } from '@store/wallet';
-import { useTxState } from '@common/hooks/use-tx-state';
 import { useWallet } from '@common/hooks/use-wallet';
+import { useOnCancel } from '@common/hooks/use-on-cancel';
 
 interface PopupHomeProps {
   header?: any;
@@ -14,7 +14,7 @@ interface PopupHomeProps {
 export const PopupContainer: React.FC<PopupHomeProps> = memo(
   ({ children, header, requestType }) => {
     const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
-    const { handleCancelTransaction } = useTxState();
+    const handleCancelTransaction = useOnCancel();
     const { handleCancelAuthentication } = useWallet();
 
     if (!hasRehydratedVault) {

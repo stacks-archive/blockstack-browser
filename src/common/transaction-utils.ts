@@ -152,16 +152,6 @@ export const generateTransaction = async ({
   return tx;
 };
 
-export const cancelTransaction = async ({ tx }: { tx: StacksTransaction }): Promise<TxResult> => {
-  const serialized = tx.serialize();
-  const txRaw = `0x${serialized.toString('hex')}`;
-
-  return {
-    txRaw,
-    cancel: true,
-  };
-};
-
 export const finishTransaction = async ({
   tx,
   pendingTransaction,
@@ -178,7 +168,6 @@ export const finishTransaction = async ({
   if (tx.auth.authType === AuthType.Sponsored) {
     return {
       txRaw,
-      cancel: false,
     };
   }
 
@@ -192,7 +181,6 @@ export const finishTransaction = async ({
     return {
       txId: response,
       txRaw,
-      cancel: false,
     };
   } else {
     const error = `${response.error} - ${response.reason}`;
