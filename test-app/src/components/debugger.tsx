@@ -21,6 +21,7 @@ import {
   createNonFungiblePostCondition,
   NonFungibleConditionCode,
   tupleCV,
+  someCV,
 } from '@stacks/transactions';
 import { ExplorerLink } from './explorer-link';
 import BN from 'bn.js';
@@ -222,6 +223,74 @@ export const Debugger = () => {
     });
   };
 
+  const sendStellaTokens = async () => {
+    clearState();
+    await doContractCall({
+      network,
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'stella-final',
+      functionName: 'transfer',
+      functionArgs: [
+        uintCV(1), // amount
+        standardPrincipalCV(address || ''), // sender
+        standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'), // recipient
+        someCV(bufferCVFromString('meow')), // memo
+      ],
+      postConditions: [
+        makeStandardFungiblePostCondition(
+          address || '',
+          FungibleConditionCode.Equal,
+          new BN(1),
+          createAssetInfo(
+            'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+            'stella-final',
+            'stella-token'
+          )
+        ),
+      ],
+      onFinish: data => {
+        console.log('finished faucet!', data);
+        setState('Token Faucet', data.txId);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+  const sendRocketTokens = async () => {
+    clearState();
+    await doContractCall({
+      network,
+      contractAddress: 'ST33GW755MQQP6FZ58S423JJ23GBKK5ZKH3MGR55N',
+      contractName: 'rocket-token',
+      functionName: 'transfer',
+      functionArgs: [
+        uintCV(1), // amount
+        standardPrincipalCV(address || ''), // sender
+        standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'), // recipient
+      ],
+      postConditions: [
+        makeStandardFungiblePostCondition(
+          address || '',
+          FungibleConditionCode.Equal,
+          new BN(1),
+          createAssetInfo(
+            'ST33GW755MQQP6FZ58S423JJ23GBKK5ZKH3MGR55N',
+            'rocket-token',
+            'rocket-token'
+          )
+        ),
+      ],
+      onFinish: data => {
+        console.log('finished faucet!', data);
+        setState('Token Faucet', data.txId);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
   return (
     <Box py={6}>
       <Text as="h2" textStyle="display.small">
@@ -256,8 +325,14 @@ export const Debugger = () => {
           <Button mt={3} onClick={getStellaFaucetTokens}>
             Get SteLLa tokens (sip 10 with memo)
           </Button>
+          <Button mt={3} onClick={sendStellaTokens}>
+            Send SteLLa tokens
+          </Button>
           <Button mt={3} onClick={getRocketTokens}>
             Get Rocket tokens (old sip 10 no memo)
+          </Button>
+          <Button mt={3} onClick={sendRocketTokens}>
+            Send Rocket tokens
           </Button>
           <Button mt={3} onClick={getFaucetTokens}>
             Get connect tokens

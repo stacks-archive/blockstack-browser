@@ -48,7 +48,7 @@ const TransactionDetails: React.FC<
         amount={amount}
         icon={selectedAsset?.contractAddress ? gradientString : 'STX'}
         ticker={ticker || 'STX'}
-        title="You will transfer extactly"
+        title="You will transfer exactly"
         left={stxAddress ? `From ${truncateMiddle(stxAddress)}` : undefined}
         right={`To ${truncateMiddle(recipient)}`}
       />

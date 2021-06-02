@@ -6,10 +6,11 @@ import {
   PostConditionType,
 } from '@stacks/transactions';
 import { stacksValue } from '@common/stacks-utils';
+import { useTransferableAssets } from '@common/hooks/use-assets';
 
 export const getIconStringFromPostCondition = (pc: PostCondition) => {
   if (pc.conditionType === PostConditionType.Fungible)
-    return `${addressToString(pc.assetInfo.address)}.${pc.assetInfo.contractName}::${
+    return `${addressToString(pc.assetInfo.address)}.${pc.assetInfo.contractName.content}::${
       pc.assetInfo.assetName.content
     }`;
   if (pc.conditionType === PostConditionType.STX) return 'STX';
@@ -19,7 +20,7 @@ export const getIconStringFromPostCondition = (pc: PostCondition) => {
 export const getAmountFromPostCondition = (pc: PostCondition) => {
   if (pc.conditionType === PostConditionType.Fungible) return pc.amount.toString();
   if (pc.conditionType === PostConditionType.STX)
-    return stacksValue({ value: pc.amount.toString(), withTicker: false });
+    return stacksValue({ value: pc.amount.toString(), withTicker: false, fixedDecimals: true });
   return '';
 };
 
@@ -28,6 +29,24 @@ export const getSymbolFromPostCondition = (pc: PostCondition) => {
     return pc.assetInfo.assetName.content.slice(0, 3).toUpperCase();
   }
   return 'STX';
+};
+// this will use data from assets we have already
+// if they exist, we can display better data for post conditions
+export const useAssetInfoFromPostCondition = (pc: PostCondition) => {
+  const assets = useTransferableAssets();
+  if (pc.conditionType !== PostConditionType.Fungible) return;
+  const assetName = pc.assetInfo.assetName.content;
+  const contractAddress = addressToString(pc.assetInfo.address);
+  const contractName = pc.assetInfo.contractName.content;
+
+  const asset = assets?.value?.find(
+    asset =>
+      asset.contractAddress === contractAddress &&
+      asset.contractName === contractName &&
+      asset.name === assetName
+  );
+
+  return asset;
 };
 
 export function getPostConditionCodeMessage(

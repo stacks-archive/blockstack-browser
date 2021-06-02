@@ -378,6 +378,7 @@ function transformAssets(balances: AddressBalanceResponse) {
   Object.keys(balances.fungible_tokens).forEach(key => {
     const { balance } = balances.fungible_tokens[key];
     const { address, contractName, assetName } = getAssetStringParts(key);
+    if (balance === '0') return; // tokens users have traded will persist in the api response even if they don't have a balance
     _assets.push({
       type: 'ft',
       subtitle: `${truncateMiddle(address)}.${contractName}`,

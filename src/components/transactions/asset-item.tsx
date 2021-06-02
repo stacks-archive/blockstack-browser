@@ -16,7 +16,7 @@ export const AssetItem: React.FC<
         {ticker}
       </Text>
       <Text fontWeight="500" fontSize={4} ml="auto">
-        -{amount}
+        {amount}
       </Text>
     </Stack>
   );
