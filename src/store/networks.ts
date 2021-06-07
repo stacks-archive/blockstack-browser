@@ -87,6 +87,7 @@ export const currentStacksNetworkState = selector<StacksNetwork>({
     const stacksNetwork =
       network.chainId === ChainID.Testnet ? new StacksTestnet() : new StacksMainnet();
     stacksNetwork.coreApiUrl = network.url;
+    stacksNetwork.bnsLookupUrl = network.url;
     return stacksNetwork;
   },
 });

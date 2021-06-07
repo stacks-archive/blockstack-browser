@@ -135,8 +135,8 @@ export class WalletPage {
     }
   }
 
-  chooseAccount(username: string) {
-    return this.page.click(`[data-test="account-${username}"]`);
+  chooseAccount(address: string) {
+    return this.page.click(`[data-test="account-list-item-${address}"]`);
   }
 
   /** Sign up with a randomly generated seed phrase */

@@ -23,7 +23,7 @@ export const CounterActions: React.FC = () => {
       functionName: method,
       functionArgs: [],
       contractName: 'counter',
-      finished: data => {
+      onFinish: data => {
         setTxId(data.txId);
         console.log('finished!', data);
         setLoading(false);

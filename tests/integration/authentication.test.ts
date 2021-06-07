@@ -12,7 +12,7 @@ const MAGIC_RECOVERY_KEY =
   'KDR6O8gKXGmstxj4d2oQqCi806M/Cmrbiatc6g7MkQQLVreRA95IoPtvrI3N230jTTGb2XWT5joRFKPfY/2YlmRz1brxoaDJCNS4z18Iw5Y=';
 const WRONG_PASSWORD = 'sstest202020';
 const CORRECT_PASSWORD = 'test202020';
-const USERNAME = 'thisis45678';
+const ADDRESS = 'SPB3BW43RSMJHTEJ8MFYX6S0T1J191D4B8A69AD4';
 
 const SEED_PHRASE_LENGTH = 24;
 
@@ -33,9 +33,7 @@ describe(`Authentication integration tests`, () => {
   afterEach(async () => {
     try {
       await browser.context.close();
-    } catch (error) {
-      // console.error(error);
-    }
+    } catch (error) {}
   });
 
   it('creating an account successfully', async () => {
@@ -56,7 +54,7 @@ describe(`Authentication integration tests`, () => {
     expect(validateMnemonic(secretKey)).toBeTruthy();
   });
 
-  it('creating an account - negative scenarious', async () => {
+  it('creating an account - negative scenarios', async () => {
     if (!USERNAMES_ENABLED) {
       if (process.env.CI) {
         console.log(
@@ -108,7 +106,7 @@ describe(`Authentication integration tests`, () => {
     const auth = await WalletPage.getAuthPopup(browser);
     await auth.clickSignIn();
     await auth.loginWithPreviousSecretKey(SECRET_KEY);
-    await auth.chooseAccount(USERNAME);
+    await auth.chooseAccount(ADDRESS);
     const authResponse = await browser.demoPage.waitForAuthResponse();
     expect(authResponse).toBeTruthy();
   });

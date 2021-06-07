@@ -102,7 +102,7 @@ export const Accounts: React.FC<AccountsProps> = ({
             cursor={disableSelect ? 'not-allowed' : 'pointer'}
             iconComponent={() => <AccountAvatar account={account} name={name} mr={3} />}
             hasAction={!!next && selectedAddress === null}
-            data-test={`account-${(account.username || account.address).split('.')[0]}`}
+            data-test={`account-list-item-${account.address}`}
             onClick={() => {
               if (!next) return;
               if (selectedAddress) return;

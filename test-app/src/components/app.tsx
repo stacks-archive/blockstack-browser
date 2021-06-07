@@ -27,7 +27,7 @@ export const App: React.FC = () => {
       const userData = userSession.loadUserData();
       setState({ userData });
     }
-  }, []);
+  }, [userSession]);
 
   const handleRedirectAuth = async () => {
     if (userSession.isSignInPending()) {
@@ -41,13 +41,13 @@ export const App: React.FC = () => {
 
   React.useEffect(() => {
     void handleRedirectAuth();
-  }, []);
+  }, [handleRedirectAuth]);
 
   const authOptions: AuthOptions = {
     manifestPath: '/static/manifest.json',
     redirectTo: '/',
     userSession,
-    finished: ({ userSession, authResponse }) => {
+    onFinish: ({ userSession, authResponse }) => {
       const userData = userSession.loadUserData();
       setAppPrivateKey(userSession.loadUserData().appPrivateKey);
       setAuthResponse(authResponse);

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import { Flex, color, Button } from '@stacks/ui';
+import { Flex, color } from '@stacks/ui';
 import { SettingsPopover } from './settings-popover';
 import { useRecoilValue } from 'recoil';
 import { hasRehydratedVaultStore } from '@store/wallet';
@@ -56,7 +56,6 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
       >
         {header && header}
         <SettingsPopover />
-        <Button onClick={() => handleUnmount()}>cancel</Button>
         <Flex
           flexDirection="column"
           flexGrow={1}

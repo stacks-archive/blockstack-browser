@@ -8,6 +8,8 @@ import {
 import { ContractCallPayload, ContractDeployPayload, STXTransferPayload } from '@stacks/connect';
 import BN from 'bn.js';
 import { getPostConditions } from '@common/transactions/postcondition-utils';
+import { ChainID } from '@stacks/common';
+import { StacksMainnet, StacksTestnet } from '@stacks/network';
 
 export const generateContractCallTx = ({
   txData,
@@ -23,6 +25,15 @@ export const generateContractCallTx = ({
     return deserializeCV(Buffer.from(arg, 'hex'));
   });
 
+  let network = txData.network;
+
+  if (typeof txData.network?.getTransferFeeEstimateApiUrl !== 'function') {
+    const Builder = txData.network?.chainId === ChainID.Testnet ? StacksTestnet : StacksMainnet;
+    network = new Builder();
+    if (txData.network?.coreApiUrl) network.coreApiUrl = txData.network?.coreApiUrl;
+    if (txData.network?.bnsLookupUrl) network.bnsLookupUrl = txData.network?.bnsLookupUrl;
+  }
+
   return makeContractCall({
     contractName,
     contractAddress,
@@ -33,7 +44,7 @@ export const generateContractCallTx = ({
     nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
     postConditionMode: txData.postConditionMode,
     postConditions: getPostConditions(txData.postConditions),
-    network: txData.network,
+    network,
     sponsored,
   });
 };

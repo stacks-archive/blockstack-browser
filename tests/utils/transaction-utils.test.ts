@@ -17,6 +17,7 @@ import { decodeToken } from 'jsontokens';
 import { TX_REQUEST, TEST_WALLET } from '../mocks';
 import { getAppPrivateKey } from '@stacks/wallet-sdk';
 import { UNAUTHORIZED_TX_REQUEST, verifyTxRequest } from '@common/transactions/requests';
+import { StacksTestnet } from '@stacks/network';
 
 (window as any).fetch = jest.fn(() => ({
   text: () => Promise.resolve(1),
@@ -46,12 +47,14 @@ async function generateContractCallToken({
       version: '1.0.0',
     })
   );
+  const network = new StacksTestnet();
   const txDataToken = await makeContractCallToken({
     contractAddress: 'ST1EXHZSN8MJSJ9DSG994G1V8CNKYXGMK7Z4SA6DH',
     contractName: 'hello-world',
     functionArgs: [],
     functionName: 'print',
     postConditionMode: PostConditionMode.Allow,
+    network,
     postConditions: [
       makeStandardFungiblePostCondition(
         address,
