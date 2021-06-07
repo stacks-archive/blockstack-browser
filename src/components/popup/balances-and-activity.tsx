@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, Stack, SlideFade } from '@stacks/ui';
+import type { StackProps } from '@stacks/ui';
 import { TokenAssets } from '@components/popup/token-assets';
 
-import type { StackProps } from '@stacks/ui';
 import { Caption } from '@components/typography';
 import { NoActivityIllustration } from '@components/vector/no-activity';
 import { Tabs } from '@components/tabs';
+
 import { useAccountActivity } from '@common/hooks/account/use-account-activity';
-import { TxItem } from '@components/popup/tx-item';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';
+import { createTxDateFormatList } from '@common/group-txs-by-date';
+import { TransactionList } from './transaction-list';
 
 function EmptyActivity() {
   return (
@@ -25,23 +27,26 @@ function EmptyActivity() {
 }
 
 function ActivityList() {
-  const { isLoading, value: data } = useAccountActivity();
+  const { isLoading, value: transactions } = useAccountActivity();
+
+  const groupedTxs = useMemo(
+    () => (transactions ? createTxDateFormatList(transactions) : []),
+    [transactions]
+  );
+
   if (isLoading) return null;
-  return !data || data.length === 0 ? (
+
+  return !transactions || transactions.length === 0 ? (
     <EmptyActivity />
   ) : (
-    <Stack pb="extra-loose" spacing="extra-loose">
-      {data.map(tx => (
-        <TxItem transaction={tx} />
-      ))}
-    </Stack>
+    <TransactionList txsByDate={groupedTxs} />
   );
 }
 
-export function BalancesAndActivity({ ...rest }: StackProps) {
+export function BalancesAndActivity(props: StackProps) {
   const { activeTab, setActiveTab } = useHomeTabs();
   return (
-    <Stack flexGrow={1} spacing="extra-loose" {...rest}>
+    <Stack flexGrow={1} spacing="extra-loose" {...props}>
       <Tabs
         tabs={[
           { slug: 'balances', label: 'Balances' },

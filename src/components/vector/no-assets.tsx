@@ -3,7 +3,7 @@ import { Box, BoxProps } from '@stacks/ui';
 
 export const NoAssetsEmptyIllustration = (props: BoxProps) => (
   <Box as="svg" viewBox="0 0 86 49" fill="none" {...props}>
-    <g clip-path="url(#clip0)">
+    <g clipPath="url(#clip0)">
       <path
         d="M25.75 48.6C39.1705 48.6 50.05 37.7205 50.05 24.3C50.05 10.8795 39.1705 0 25.75 0C12.3294 0 1.44995 10.8795 1.44995 24.3C1.44995 37.7205 12.3294 48.6 25.75 48.6Z"
         fill="#F5F5F7"
