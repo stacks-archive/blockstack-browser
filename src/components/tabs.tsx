@@ -63,7 +63,7 @@ export function Tabs({
     <Stack
       position="relative"
       isInline
-      borderRadius="8px"
+      borderRadius="12px"
       bg={color('bg-4')}
       p="extra-tight"
       width="100%"
