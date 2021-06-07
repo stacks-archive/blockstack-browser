@@ -93,7 +93,8 @@ export const Accounts: React.FC<AccountsProps> = ({
   return (
     <Flex flexDirection="column" {...rest}>
       {accounts.map((account, index) => {
-        const name = names.value?.[index]?.names?.[0] || getAccountDisplayName(account);
+        const name =
+          names.value?.[index]?.names?.[0] || account.username || getAccountDisplayName(account);
 
         return (
           <ListItem
