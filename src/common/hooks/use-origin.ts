@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { getRequestOrigin, StorageKey } from '../../storage';
+import { getRequestOrigin, StorageKey } from '@common/storage';
 import { requestTokenState } from '@store/transactions/requests';
 
 export function useOrigin() {

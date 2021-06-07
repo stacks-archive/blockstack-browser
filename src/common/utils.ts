@@ -3,7 +3,7 @@ import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 import { BufferReader, deserializePostCondition, PostCondition } from '@stacks/transactions';
 import { isValidUrl } from './validation/validate-url';
-import { getTab, deleteTabForRequest, StorageKey } from 'storage';
+import { getTab, deleteTabForRequest, StorageKey } from '@common/storage';
 import {
   AuthenticationResponseMessage,
   ExternalMethods,

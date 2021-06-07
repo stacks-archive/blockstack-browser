@@ -1,13 +1,13 @@
 /**
-  The background script is the extension's event handler; it contains listeners for browser
-  events that are important to the extension. It lies dormant until an event is fired then
-  performs the instructed logic. An effective background script is only loaded when it is
-  needed and unloaded when it goes idle.
-  https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#background_script
+ The background script is the extension's event handler; it contains listeners for browser
+ events that are important to the extension. It lies dormant until an event is fired then
+ performs the instructed logic. An effective background script is only loaded when it is
+ needed and unloaded when it goes idle.
+ https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#background_script
  */
 import { popupCenter } from '@background/popup';
 import { ScreenPaths } from '@store/common/types';
-import { storePayload, StorageKey } from '../storage';
+import { storePayload, StorageKey } from '@common/storage';
 import { vaultMessageHandler } from '@background/vault';
 import { IS_TEST_ENV } from '@common/constants';
 import { CONTENT_SCRIPT_PORT } from '@content-scripts/content-script';
@@ -15,9 +15,11 @@ import { VaultActions } from '@background/vault-types';
 import { ExternalMethods, MessageFromContentScript } from '@content-scripts/message-types';
 
 // Listen for install event
-chrome.runtime.onInstalled.addListener(details => {
+chrome.runtime.onInstalled.addListener(async details => {
   if (details.reason === 'install' && !IS_TEST_ENV) {
-    chrome.tabs.create({ url: chrome.runtime.getURL(`full-page.html#${ScreenPaths.INSTALLED}`) });
+    await chrome.tabs.create({
+      url: chrome.runtime.getURL(`full-page.html#${ScreenPaths.INSTALLED}`),
+    });
   }
 });
 
