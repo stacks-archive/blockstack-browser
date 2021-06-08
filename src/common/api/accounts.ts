@@ -33,12 +33,8 @@ export const fetchAllAccountData =
     const [balances, transactions, pendingTransactions] = await Promise.all([
       fetchBalances(apiServer)(principal),
       fetchTransactions(apiServer)(principal),
-      fetchPendingTxs(apiServer)({ query: principal, type: 'principal' }),
+      fetchPendingTxs(apiServer)({ query: principal }),
     ]);
 
-    return {
-      balances,
-      transactions,
-      pendingTransactions: pendingTransactions as MempoolTransaction[],
-    };
+    return { balances, transactions, pendingTransactions };
   };
