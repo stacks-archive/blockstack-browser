@@ -1,68 +1,103 @@
-import React, { useState, useEffect } from 'react';
-import { color, Flex, FlexProps, Spinner, Stack } from '@stacks/ui';
-import { Caption, Title, Text } from '@components/typography';
+import React, { useCallback, memo } from 'react';
+import { Box, color, FlexProps, Spinner, Stack } from '@stacks/ui';
+import { Caption, Text, Title } from '@components/typography';
 
-import { ListItem } from './list-item';
-import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 
 import { truncateMiddle } from '@stacks/ui-utils';
-import { Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
-import { useAccountDisplayName, useAccountNames } from '@common/hooks/account/use-account-names';
+import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 
-import { accountsWithAddressState } from '@store/accounts';
+import { accountsWithAddressState, AccountWithAddress } from '@store/accounts';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { AccountAvatar } from '@components/account-avatar';
 import { SpaceBetween } from '@components/space-between';
 
-import { ScreenPaths } from '@store/common/types';
-import { PlusInCircle } from '@components/icons/plus-in-circle';
+import { cleanUsername, slugify } from '@common/utils';
+import { usePressable } from '@components/item-hover';
+import { FiPlusCircle } from 'react-icons/fi';
+import { useSetRecoilState } from 'recoil';
+import { accountDrawerStep, AccountStep, showAccountsStore } from '@store/ui';
+import { useLoading } from '@common/hooks/use-loading';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
 
 interface AccountItemProps extends FlexProps {
-  iconComponent?: (props: { hover: boolean }) => void;
-  isFirst?: boolean;
-  hasAction?: boolean;
-  onClick?: () => void;
-  address?: string;
   selectedAddress?: string | null;
-  account: Account;
+  account: AccountWithAddress;
 }
 
-export const AccountItem: React.FC<AccountItemProps> = ({
-  address,
-  selectedAddress,
-  account,
-  ...rest
-}) => {
+export const AccountItem: React.FC<AccountItemProps> = ({ selectedAddress, account, ...rest }) => {
+  const [component, bind] = usePressable(true);
+  const { isLoading, setIsLoading } = useLoading(`CHOOSE_ACCOUNT__${account.address}`);
+  const { doFinishSignIn } = useWallet();
   const { decodedAuthRequest } = useOnboardingState();
   const name = useAccountDisplayName(account);
-  const loading = address === selectedAddress;
+
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
+  const handleOnClick = useCallback(async () => {
+    setIsLoading();
+    await doFinishSignIn(account.index);
+  }, [setIsLoading, doFinishSignIn, account]);
+
   return (
-    <SpaceBetween width="100%" alignItems="center">
-      <Stack textAlign="left" ml="base" isInline alignItems="center" spacing="base" {...rest}>
-        <Stack spacing="base-tight">
-          <Title
-            {...getLoadingProps(showLoadingProps)}
-            fontSize={2}
-            lineHeight="1rem"
-            fontWeight="400"
-          >
-            {name}
-          </Title>
-          <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
-            {truncateMiddle(address as string, 6)}
-          </Caption>
+    <Stack
+      spacing="base"
+      data-test={`account-${slugify(cleanUsername(name))}-${account.index}`}
+      isInline
+      onClick={() => handleOnClick()}
+      {...bind}
+      {...rest}
+    >
+      <AccountAvatar flexGrow={0} account={account} name={name} />
+      <SpaceBetween width="100%" alignItems="center">
+        <Stack textAlign="left" isInline alignItems="center" spacing="base">
+          <Stack spacing="base-tight">
+            <Title
+              {...getLoadingProps(showLoadingProps)}
+              fontSize={2}
+              lineHeight="1rem"
+              fontWeight="400"
+            >
+              {name}
+            </Title>
+            <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
+              {truncateMiddle(account.address)}
+            </Caption>
+          </Stack>
         </Stack>
-      </Stack>
-      {loading && <Spinner width={4} height={4} {...loadingProps} />}
-    </SpaceBetween>
+        {isLoading && <Spinner width={4} height={4} {...loadingProps} />}
+      </SpaceBetween>
+      {component}
+    </Stack>
   );
 };
+
+const AddAccountAction = memo(() => {
+  const setAccounts = useSetRecoilState(showAccountsStore);
+  const setAccountDrawerStep = useSetRecoilState(accountDrawerStep);
+  return (
+    <SpaceBetween alignItems="center">
+      <Stack
+        isInline
+        p="base"
+        bg={color('bg-4')}
+        borderRadius="10px"
+        alignItems="center"
+        color={color('text-body')}
+        _hover={{ cursor: 'pointer', color: color('brand') }}
+        onClick={() => {
+          setAccounts(true);
+          setAccountDrawerStep(AccountStep.Create);
+        }}
+      >
+        <Box size="16px" as={FiPlusCircle} color={color('brand')} />
+        <Text color="currentColor">Add account</Text>
+      </Stack>
+    </SpaceBetween>
+  );
+});
 
 interface AccountsProps extends FlexProps {
   accountIndex?: number;
@@ -70,81 +105,23 @@ interface AccountsProps extends FlexProps {
   next?: (accountIndex: number) => void;
 }
 
-export const Accounts: React.FC<AccountsProps> = ({
-  showAddAccount,
-  accountIndex,
-  next,
-  ...rest
-}) => {
-  const { wallet } = useWallet();
-  const { value: accounts } = useLoadable(accountsWithAddressState);
-  const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
-  const { decodedAuthRequest } = useOnboardingState();
-  const doChangeScreen = useDoChangeScreen();
-  useEffect(() => {
-    if (typeof accountIndex === 'undefined' && selectedAddress) {
-      setSelectedAddress(null);
-    }
-  }, [accountIndex, setSelectedAddress, selectedAddress]);
-  const names = useAccountNames();
-  if (!wallet || !accounts) return null;
-  const disableSelect = !decodedAuthRequest || !!selectedAddress;
+export const Accounts: React.FC<AccountsProps> = memo(
+  ({ showAddAccount, accountIndex, next, ...rest }) => {
+    const { wallet } = useWallet();
+    const { value: accounts } = useLoadable(accountsWithAddressState);
+    const { decodedAuthRequest } = useOnboardingState();
 
-  return (
-    <Flex flexDirection="column" {...rest}>
-      {accounts.map((account, index) => {
-        const name =
-          names.value?.[index]?.names?.[0] || account.username || getAccountDisplayName(account);
+    if (!wallet || !accounts || !decodedAuthRequest) return null;
 
-        return (
-          <ListItem
-            key={account.address}
-            isFirst={index === 0}
-            cursor={disableSelect ? 'not-allowed' : 'pointer'}
-            iconComponent={() => <AccountAvatar account={account} name={name} mr={3} />}
-            hasAction={!!next && selectedAddress === null}
-            data-test={`account-list-item-${account.address}`}
-            onClick={() => {
-              if (!next) return;
-              if (selectedAddress) return;
-              setSelectedAddress(account.address);
-              next(index);
-            }}
-          >
-            <AccountItem
-              address={account.address}
-              selectedAddress={selectedAddress}
-              data-test={`account-index-${index}`}
-              account={account}
-            />
-          </ListItem>
-        );
-      })}
-      {showAddAccount && (
-        <ListItem
-          onClick={() => {
-            if (selectedAddress) return;
-            doChangeScreen(ScreenPaths.ADD_ACCOUNT);
-          }}
-          cursor={selectedAddress ? 'not-allowed' : 'pointer'}
-          hasAction
-          iconComponent={() => (
-            <Flex
-              justifyContent="center"
-              width="36px"
-              mr={3}
-              color={color('text-caption')}
-              transition="0.08s all ease-in-out"
-            >
-              <PlusInCircle />
-            </Flex>
-          )}
-        >
-          <Text textStyle="body.small.medium" {...getLoadingProps(!!selectedAddress)}>
-            Add a new account
-          </Text>
-        </ListItem>
-      )}
-    </Flex>
-  );
-};
+    return (
+      <Stack py="extra-loose" spacing="loose" px="extra-loose" {...rest}>
+        <Stack spacing="loose">
+          {accounts.map(account => (
+            <AccountItem key={account.address} account={account} />
+          ))}
+        </Stack>
+        <AddAccountAction />
+      </Stack>
+    );
+  }
+);

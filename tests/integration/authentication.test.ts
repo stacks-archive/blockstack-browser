@@ -12,7 +12,8 @@ const MAGIC_RECOVERY_KEY =
   'KDR6O8gKXGmstxj4d2oQqCi806M/Cmrbiatc6g7MkQQLVreRA95IoPtvrI3N230jTTGb2XWT5joRFKPfY/2YlmRz1brxoaDJCNS4z18Iw5Y=';
 const WRONG_PASSWORD = 'sstest202020';
 const CORRECT_PASSWORD = 'test202020';
-const ADDRESS = 'SPB3BW43RSMJHTEJ8MFYX6S0T1J191D4B8A69AD4';
+const USERNAME = 'thisis45678';
+const ACCOUNT_INDEX = 2;
 
 const SEED_PHRASE_LENGTH = 24;
 
@@ -33,7 +34,9 @@ describe(`Authentication integration tests`, () => {
   afterEach(async () => {
     try {
       await browser.context.close();
-    } catch (error) {}
+    } catch (error) {
+      // console.error(error);
+    }
   });
 
   it('creating an account successfully', async () => {
@@ -106,7 +109,7 @@ describe(`Authentication integration tests`, () => {
     const auth = await WalletPage.getAuthPopup(browser);
     await auth.clickSignIn();
     await auth.loginWithPreviousSecretKey(SECRET_KEY);
-    await auth.chooseAccount(ADDRESS);
+    await auth.chooseAccount(USERNAME, ACCOUNT_INDEX);
     const authResponse = await browser.demoPage.waitForAuthResponse();
     expect(authResponse).toBeTruthy();
   });

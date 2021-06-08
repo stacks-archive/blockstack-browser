@@ -38,7 +38,7 @@ export const Route: React.FC<RouteProps> = ({ path, element }) => {
 };
 
 export const Routes: React.FC = () => {
-  const { isSignedIn: signedIn, doFinishSignIn, encryptedSecretKey } = useWallet();
+  const { isSignedIn: signedIn, encryptedSecretKey } = useWallet();
   const { isOnboardingInProgress } = useOnboardingState();
   const { search, pathname } = useLocation();
   const setLastSeen = useSetRecoilState(lastSeenStore);
@@ -134,16 +134,7 @@ export const Routes: React.FC = () => {
       <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />
       <Route path={ScreenPaths.RECOVERY_CODE} element={<MagicRecoveryCode />} />
       <Route path={ScreenPaths.ADD_ACCOUNT} element={<Username />} />;
-      <Route
-        path={ScreenPaths.CHOOSE_ACCOUNT}
-        element={
-          <ChooseAccount
-            next={(accountIndex: number) => {
-              void doFinishSignIn(accountIndex);
-            }}
-          />
-        }
-      />
+      <Route path={ScreenPaths.CHOOSE_ACCOUNT} element={<ChooseAccount />} />
       {/* Transactions */}
       <AccountGateRoute path={ScreenPaths.TRANSACTION_POPUP}>
         <TransactionPage />

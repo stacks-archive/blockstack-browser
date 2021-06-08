@@ -7,7 +7,6 @@ export class WalletPage {
   static url = 'http://localhost:8081/index.html#';
   $signUpButton = createTestSelector('sign-up');
   $signInButton = createTestSelector('sign-in');
-  $firstAccount = createTestSelector('account-index-0');
   homePage = createTestSelector('home-page');
   $textareaReadOnlySeedPhrase = `${createTestSelector('textarea-seed-phrase')}[data-loaded="true"]`;
   $buttonSignInKeyContinue = createTestSelector('sign-in-key-continue');
@@ -135,8 +134,8 @@ export class WalletPage {
     }
   }
 
-  chooseAccount(address: string) {
-    return this.page.click(`[data-test="account-list-item-${address}"]`);
+  chooseAccount(username: string, index: number) {
+    return this.page.click(`[data-test="account-${username}-${index}"]`);
   }
 
   /** Sign up with a randomly generated seed phrase */

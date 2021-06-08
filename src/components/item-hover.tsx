@@ -32,5 +32,14 @@ export function usePressable(isPressable?: boolean) {
 
   const component = <ItemHover isHovered={isHovered} isFocused={isFocused} />;
   if (!isPressable) return [null, {}];
-  return [component, { ...bind, ...focusBind }];
+  return [
+    component,
+    {
+      ...bind,
+      ...focusBind,
+      position: 'relative',
+      zIndex: 1,
+      cursor: isPressable ? 'pointer' : undefined,
+    },
+  ];
 }
