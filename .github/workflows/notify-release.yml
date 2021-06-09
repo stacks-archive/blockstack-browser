@@ -1,0 +1,118 @@
+# Sends a notification to Discord whenever a new version of the Stacks Web Wallet is available in FireFox or Chrome stores
+
+name: Notify on Release
+on:
+  schedule:
+    # Run every hour
+    - cron:  '0 * * * *'
+
+jobs:
+  firefox-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest Firefox version
+        run: curl -s https://addons.mozilla.org/api/v5/addons/addon/stacks-wallet/versions/ | jq -r '.results[0].version' > firefox_version
+
+      - name: Upload latest Firefox version info
+        uses: actions/upload-artifact@v2
+        with:
+          name: firefox_version
+          path: firefox_version
+
+      - name: Download previous Firefox version info
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: notify-release.yml
+          workflow_conclusion: success
+          name: firefox_version
+          path: old
+
+      - name: Determine if new version is live
+        id: firefox
+        run: |
+          NEWEST_VERSION=$(sort -V old/firefox_version firefox_version | tail -n 1)
+          LATEST_VERSION=$(cat firefox_version)
+          diff old/firefox_version firefox_version > /dev/null
+          if [[ "1" == '${?}' && ${NEWEST_VERSION} == ${LATEST_VERSION} ]]; then
+            echo "::warning::New Firefox version detected: ${LATEST_VERSION}"
+            echo "::set-output name=is_new::true"
+            echo "::set-output name=new_version::${LATEST_VERSION}"
+          else
+            echo "::warning::No new Firefox version detected"
+          fi
+
+      - name: Firefox Discord notification
+        if: steps.firefox.outputs.is_new
+        uses: Ilshidur/action-discord@f1ed8844d9b33c17221fab0f36672cde39800eed
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_WEBHOOK }}
+          DISCORD_USERNAME: Hiro Team
+          DISCORD_AVATAR: 'https://i.imgur.com/z9Iy6ug.png'
+          DISCORD_EMBEDS: |
+            [{
+              "title": "Stacks Web Wallet for Firefox",
+              "url": "https://addons.mozilla.org/en-US/firefox/addon/stacks-wallet/"
+            }]
+        with:
+          args: ":rocket: A new version (${{ steps.firefox.outputs.new_version }}) of the Stacks Web Wallet is available on the Firefox Web Store!"
+
+  chrome-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Get latest Chrome version
+        run: |
+          npm install chrome-webstore
+          node <<EOF> chrome_version
+          var webstore = require('chrome-webstore')
+          ;(async () => {
+            var details = await webstore.detail({id: '${{ secrets.CHROME_APP_ID }}'})
+            console.log(details.version)
+          })()
+          EOF
+
+      - name: Upload latest Chrome version info
+        uses: actions/upload-artifact@v2
+        with:
+          name: chrome_version
+          path: chrome_version
+
+      - name: Download previous Chrome version info
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: notify-release.yml
+          workflow_conclusion: success
+          name: chrome_version
+          path: old
+
+      - name: Determine if new version is live
+        id: chrome
+        run: |
+          NEWEST_VERSION=$(sort -V old/chrome_version chrome_version | tail -n 1)
+          LATEST_VERSION=$(cat chrome_version)
+          diff old/chrome_version chrome_version > /dev/null
+          if [[ "1" == '${?}' && ${NEWEST_VERSION} == ${LATEST_VERSION} ]]; then
+            echo "::warning::New Chrome version detected: ${LATEST_VERSION}"
+            echo "::set-output name=is_new::true"
+            echo "::set-output name=new_version::${LATEST_VERSION}"
+          else
+            echo "::warning::No new Chrome version detected"
+          fi
+
+      - name: Chrome Discord notification
+        if: steps.chrome.outputs.is_new
+        uses: Ilshidur/action-discord@f1ed8844d9b33c17221fab0f36672cde39800eed
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_WEBHOOK }}
+          DISCORD_USERNAME: Hiro Team
+          DISCORD_AVATAR: 'https://i.imgur.com/z9Iy6ug.png'
+          DISCORD_EMBEDS: |
+            [{
+              "title": "Stacks Web Wallet for Chrome",
+              "url": "https://chrome.google.com/webstore/detail/stacks-wallet/ldinpeekobnhjjdofggfgjlcehhmanlj"
+            }]
+        with:
+          args: ":rocket: A new version (${{ steps.chrome.outputs.new_version }}) of the Stacks Web Wallet is available on the Chrome Web Store!"
