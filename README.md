@@ -202,7 +202,7 @@ and stop any running Blockstack applications (blockstack-browser or blockstack
 api) then:
 
 ```
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 This brings up
