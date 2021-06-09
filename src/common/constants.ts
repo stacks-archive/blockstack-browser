@@ -40,9 +40,7 @@ export interface Network {
   chainId: ChainID;
 }
 
-export interface Networks {
-  [key: string]: Network;
-}
+export type Networks = Record<string, Network>;
 
 export const defaultNetworks: Networks = {
   mainnet: {

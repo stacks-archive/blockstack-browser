@@ -4,6 +4,7 @@ import {
   generateContractCallTx,
   generateContractDeployTx,
   generateSTXTransferTx,
+  stacksTransactionToHex,
 } from '@common/transactions/transaction-utils';
 import { TransactionPayloadWithAttachment } from '@store/transactions';
 
@@ -13,7 +14,7 @@ export async function handleBroadcastTransaction(
   networkUrl: string
 ) {
   const serialized = signedTransaction.serialize();
-  const txRaw = `0x${serialized.toString('hex')}`;
+  const txRaw = stacksTransactionToHex(signedTransaction);
   // if sponsored, return raw tx
   if (signedTransaction.auth.authType === AuthType.Sponsored)
     return {

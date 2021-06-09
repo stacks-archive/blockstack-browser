@@ -4,6 +4,7 @@ import {
   makeContractCall,
   makeContractDeploy,
   makeSTXTokenTransfer,
+  StacksTransaction,
 } from '@stacks/transactions';
 import { ContractCallPayload, ContractDeployPayload, STXTransferPayload } from '@stacks/connect';
 import BN from 'bn.js';
@@ -93,3 +94,6 @@ export const generateSTXTransferTx = ({
     network: txData.network,
   });
 };
+
+export const stacksTransactionToHex = (transaction: StacksTransaction) =>
+  `0x${transaction.serialize().toString('hex')}`;

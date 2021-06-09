@@ -71,7 +71,6 @@ export const ErrorBoundary: React.FC = ({ children }) => {
 
   if (errorLoadables.length > 0) {
     const [loadable] = errorLoadables;
-    console.log(errorLoadables);
     const error = errorLoadables[0].errorOrThrow();
     return (
       <PopupContainer header={<Header title="Uh oh! Something went wrong." />}>
