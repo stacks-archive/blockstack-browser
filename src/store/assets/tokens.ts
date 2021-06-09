@@ -1,178 +1,25 @@
 import { selector, selectorFamily, waitForAll } from 'recoil';
-import { SmartContractsApi, Configuration } from '@stacks/blockchain-api-client';
 import { currentNetworkState } from '@store/networks';
 import { accountBalancesState } from '@store/accounts';
-import { ChainID, cvToString, hexToCV } from '@stacks/transactions';
-
-import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
-import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
-import { SIP_010 } from '@common/constants';
-import { ContractInterface, ContractInterfaceFunction } from '@stacks/rpc-client';
+import { ChainID } from '@stacks/transactions';
+import { ContractInterface } from '@stacks/rpc-client';
 import { isSip10Transfer, SIP010TransferResponse } from '@common/token-utils';
-import { fetcher } from '@common/api/wrapped-fetch';
 import { smartContractClientState } from '@store/common/api-clients';
-
-interface ContractPrincipal {
-  contractName: string;
-  contractAddress: string;
-}
-
-interface MetaDataMethodNames {
-  decimals: string;
-  symbol: string;
-  name: string;
-}
-
-interface Asset {
-  name: string;
-  contractAddress: string;
-  contractName: string;
-  subtitle: string;
-  type: 'stx' | 'nft' | 'ft';
-  balance: string;
-  canTransfer?: boolean;
-  hasMemo?: boolean;
-}
-
-interface FungibleTokenOptions {
-  contractName: string;
-  contractAddress: string;
-  network: string;
-}
-
-interface FtMeta {
-  name: string;
-  symbol: string;
-  decimals: number;
-  ftTrait?: boolean | null;
-}
-
-export type AssetWithMeta = Asset & { meta?: FtMeta };
-
-async function callReadOnlyFunction({
-  contractName,
-  contractAddress,
-  functionName,
-  network,
-}: {
-  functionName: string;
-} & FungibleTokenOptions) {
-  const config = new Configuration({ basePath: network });
-  const client = new SmartContractsApi(config);
-  const { result, okay } = await client.callReadOnlyFunction({
-    contractName,
-    contractAddress,
-    functionName,
-    readOnlyFunctionArgs: {
-      sender: contractAddress,
-      arguments: [],
-    },
-  });
-  if (okay) return result as string;
-  throw new Error('Asset data fetch failed');
-}
-
-type MetaDataNames = 'decimals' | 'symbol' | 'name';
-
-async function readOnlyFetcher(name: MetaDataNames, options: FungibleTokenOptions) {
-  let hex = null;
-  try {
-    hex = await callReadOnlyFunction({ ...options, functionName: `get-${name}` });
-  } catch (e) {
-    hex = await callReadOnlyFunction({ ...options, functionName: name });
-  }
-  return hex;
-}
-
-async function fetchDecimals(options: FungibleTokenOptions & { functionName: string }) {
-  const hex = await callReadOnlyFunction(options);
-  const clarityValue = cvToString(hexToCV(hex));
-  return parseInt(clarityValue.replace('(ok u', '').replace(')', ''));
-}
-
-async function fetchSymbol(options: FungibleTokenOptions & { functionName: string }) {
-  const hex = await readOnlyFetcher('symbol', options);
-  if (!hex) return;
-  const clarityValue = cvToString(hexToCV(hex));
-  return clarityValue.replace('(ok "', '').replace('")', '');
-}
-
-async function fetchName(options: FungibleTokenOptions & { functionName: string }) {
-  const hex = await readOnlyFetcher('name', options);
-  if (!hex) return;
-  const clarityValue = cvToString(hexToCV(hex));
-  return clarityValue.replace('(ok "', '').replace('")', '');
-}
-
-async function fetchFungibleTokenMetaData({
-  methods,
-  ...options
-}: FungibleTokenOptions & {
-  methods: {
-    decimals: string;
-    name: string;
-    symbol: string;
-  };
-}) {
-  try {
-    const [name, symbol, decimals] = await Promise.all([
-      fetchName({ ...options, functionName: methods.name }),
-      fetchSymbol({ ...options, functionName: methods.symbol }),
-      fetchDecimals({ ...options, functionName: methods.decimals }),
-    ]);
-    return {
-      name,
-      symbol,
-      decimals,
-    };
-  } catch (e) {
-    return null;
-  }
-}
-
-function makeKey(networkUrl: string, address: string, name: string, key: string): string {
-  return `${networkUrl}__${address}__${name}__${key}`;
-}
-
-function getLocalData(options: { networkUrl: string; address: string; name: string; key: string }) {
-  const { networkUrl, address, name, key } = options;
-  const _key = makeKey(networkUrl, address, name, key);
-  const value = localStorage.getItem(_key);
-  if (!value) return null;
-  return JSON.parse(value);
-}
-
-function setLocalData(options: {
-  networkUrl: string;
-  address: string;
-  name: string;
-  key: string;
-  data: any;
-}): void {
-  const { networkUrl, address, name, data, key } = options;
-  const _key = makeKey(networkUrl, address, name, key);
-  return localStorage.setItem(_key, JSON.stringify(data));
-}
-
-async function getSip10Status(params: {
-  networkUrl: string;
-  chain: 'mainnet' | 'testnet' | 'regtest';
-  contractAddress: string;
-  contractName: string;
-}): Promise<boolean | null> {
-  try {
-    const { networkUrl, contractName, contractAddress, chain } = params;
-    const { address, name, trait } = SIP_010[chain];
-    const res = await fetcher(
-      `${networkUrl}/v2/traits/${contractAddress}/${contractName}/${address}/${name}/${trait}`
-    );
-    const data: { is_implemented: boolean } = await res.json();
-
-    return data.is_implemented;
-  } catch (e) {
-    return null;
-  }
-}
+import {
+  fetchFungibleTokenMetaData,
+  getLocalData,
+  getMatchingFunction,
+  getSip10Status,
+  setLocalData,
+  transformAssets,
+} from '@store/assets/utils';
+import {
+  Asset,
+  AssetWithMeta,
+  ContractPrincipal,
+  FtMeta,
+  MetaDataMethodNames,
+} from '@store/assets/types';
 
 export const assetSip10ImplementationState = selectorFamily<
   boolean | null,
@@ -248,9 +95,6 @@ const assetContractInterface = selectorFamily<ContractInterface, Readonly<Contra
       return data;
     },
 });
-
-const getMatchingFunction = (name: MetaDataNames) => (func: ContractInterfaceFunction) =>
-  (func.name === `get-${name}` || func.name === name) && func.access === 'read_only';
 
 const assetMetaDataMethods = selectorFamily<
   MetaDataMethodNames | null,
@@ -363,35 +207,6 @@ export const canTransferAssetState = selectorFamily<
       return isSip10Transfer({ contractInterface });
     },
 });
-
-function transformAssets(balances: AddressBalanceResponse) {
-  const _assets: Asset[] = [];
-  if (!balances) return _assets;
-  _assets.push({
-    type: 'stx',
-    contractAddress: '',
-    contractName: '',
-    balance: balances.stx.balance,
-    subtitle: 'STX',
-    name: 'Stacks Token',
-    canTransfer: true,
-    hasMemo: true,
-  });
-  Object.keys(balances.fungible_tokens).forEach(key => {
-    const { balance } = balances.fungible_tokens[key];
-    const { address, contractName, assetName } = getAssetStringParts(key);
-    if (balance === '0') return; // tokens users have traded will persist in the api response even if they don't have a balance
-    _assets.push({
-      type: 'ft',
-      subtitle: `${truncateMiddle(address)}.${contractName}`,
-      contractAddress: address,
-      contractName,
-      name: assetName,
-      balance: balance,
-    });
-  });
-  return _assets;
-}
 
 const assetItemState = selectorFamily<AssetWithMeta, Readonly<Asset>>({
   key: 'assets.item',

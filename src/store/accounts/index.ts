@@ -31,7 +31,7 @@ import { transactionNetworkVersionState } from '@store/transactions';
  * accountInfoStore - external API data from the `v2/accounts` endpoint, should be the most up-to-date
  */
 
-enum KEYS {
+enum ACCOUNT_KEYS {
   ALL_ACCOUNTS = 'accounts/ALL_ACCOUNTS',
   ALL_ACCOUNTS_WITH_ADDRESSES = 'accounts/ACCOUNTS_WITH_ADDRESSES',
   HAS_SWITCHED_ACCOUNTS = 'accounts/HAS_SWITCHED_ACCOUNTS',
@@ -49,7 +49,7 @@ enum KEYS {
 // All accounts
 //--------------------------------------
 export const accountsState = selector<Account[] | undefined>({
-  key: KEYS.ALL_ACCOUNTS,
+  key: ACCOUNT_KEYS.ALL_ACCOUNTS,
   get: ({ get }) => {
     const wallet = get(walletState);
     if (!wallet) return undefined;
@@ -60,7 +60,7 @@ export const accountsState = selector<Account[] | undefined>({
 export type AccountWithAddress = Account & { address: string };
 // map through the accounts and get the address for the current network mode (testnet|mainnet)
 export const accountsWithAddressState = selector<AccountWithAddress[] | undefined>({
-  key: KEYS.ALL_ACCOUNTS_WITH_ADDRESSES,
+  key: ACCOUNT_KEYS.ALL_ACCOUNTS_WITH_ADDRESSES,
   get: ({ get }) => {
     const accounts = get(accountsState);
     const transactionVersion = get(transactionNetworkVersionState);
@@ -82,21 +82,21 @@ export const accountsWithAddressState = selector<AccountWithAddress[] | undefine
 // The index of the current account
 // persists through sessions (viewings)
 export const currentAccountIndexState = atom<number | undefined>({
-  key: KEYS.CURRENT_ACCOUNT_INDEX,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT_INDEX,
   default: undefined,
 });
 
 // This is only used when there is a pending transaction request and
 // the user switches accounts during the signing process
 export const hasSwitchedAccountsState = atom<boolean>({
-  key: KEYS.HAS_SWITCHED_ACCOUNTS,
+  key: ACCOUNT_KEYS.HAS_SWITCHED_ACCOUNTS,
   default: false,
 });
 
 // if there is a pending transaction that has a stxAccount param
 // find the index from the accounts atom and return it
 export const transactionAccountIndexState = selector<number | undefined>({
-  key: KEYS.TRANSACTION_ACCOUNT_INDEX,
+  key: ACCOUNT_KEYS.TRANSACTION_ACCOUNT_INDEX,
   get: ({ get }) => {
     const { accounts, txAddress } = get(
       waitForAll({
@@ -117,7 +117,7 @@ export const transactionAccountIndexState = selector<number | undefined>({
 // could be the account associated with an in-process transaction request
 // or the last selected / first account of the user
 export const currentAccountState = selector<AccountWithAddress | undefined>({
-  key: KEYS.CURRENT_ACCOUNT,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT,
   get: ({ get }) => {
     const { accountIndex, txIndex, hasSwitched, accounts } = get(
       waitForAll({
@@ -137,13 +137,13 @@ export const currentAccountState = selector<AccountWithAddress | undefined>({
 
 // gets the address of the current account (in the current network mode)
 export const currentAccountStxAddressState = selector<string | undefined>({
-  key: KEYS.CURRENT_ACCOUNT_ADDRESS,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT_ADDRESS,
   get: ({ get }) => get(currentAccountState)?.address,
 });
 
 // external API data associated with the current account's address
 export const accountDataState = selector<AllAccountData | undefined>({
-  key: KEYS.CURRENT_ACCOUNT_DATA,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT_DATA,
   get: async ({ get }) => {
     const { network, address } = get(
       waitForAll({
@@ -166,13 +166,13 @@ export const accountDataState = selector<AllAccountData | undefined>({
 
 // the balances of the current account's address
 export const accountBalancesState = selector<AllAccountData['balances'] | undefined>({
-  key: KEYS.CURRENT_ACCOUNT_BALANCES,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT_BALANCES,
   get: ({ get }) => get(accountDataState)?.balances,
 });
 
 // the raw account info from the `v2/accounts` endpoint, should be most up-to-date info (compared to the extended API)
 export const accountInfoState = selector<undefined | { balance: BN; nonce: number }>({
-  key: KEYS.CURRENT_ACCOUNT_INFO,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT_INFO,
   get: async ({ get }) => {
     const { address, network } = get(
       waitForAll({
@@ -197,7 +197,7 @@ export const accountInfoState = selector<undefined | { balance: BN; nonce: numbe
 
 // combo of pending and confirmed transactions for the current address
 export const accountTransactionsState = selector<(MempoolTransaction | Transaction)[]>({
-  key: KEYS.CURRENT_ACCOUNT_TRANSACTIONS,
+  key: ACCOUNT_KEYS.CURRENT_ACCOUNT_TRANSACTIONS,
   get: async ({ get }) => {
     const data = get(accountDataState);
     const transactions = data?.transactions?.results || [];

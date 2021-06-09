@@ -5,7 +5,7 @@ import { currentNetworkState } from '@store/networks';
 import { apiRevalidation } from '@store/common/api-helpers';
 import { localStorageEffect } from '@store/common/utils';
 
-enum KEYS {
+enum NONCE_KEYS {
   LOCAL_NONCES = 'account/LOCAL_NONCES',
   LATEST_LOCAL_NONCE = 'account/LATEST_LOCAL_NONCE',
   CORRECT_NONCE = 'account/CORRECT_NONCE',
@@ -15,7 +15,7 @@ export const localNoncesState = atomFamily<
   { nonce: number; blockHeight: number },
   [string, string]
 >({
-  key: KEYS.LOCAL_NONCES,
+  key: NONCE_KEYS.LOCAL_NONCES,
   default: () => ({
     nonce: 0,
     blockHeight: 0,
@@ -24,7 +24,7 @@ export const localNoncesState = atomFamily<
 });
 
 export const latestNonceState = selector({
-  key: KEYS.LATEST_LOCAL_NONCE,
+  key: NONCE_KEYS.LATEST_LOCAL_NONCE,
   get: ({ get }) => {
     const { network, address } = get(
       waitForAll({
@@ -37,7 +37,7 @@ export const latestNonceState = selector({
 });
 
 export const correctNonceState = selector({
-  key: KEYS.CORRECT_NONCE,
+  key: NONCE_KEYS.CORRECT_NONCE,
   get: ({ get }) => {
     get(apiRevalidation);
 

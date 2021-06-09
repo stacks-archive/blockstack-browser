@@ -1,12 +1,13 @@
+import { cvToString, hexToCV } from '@stacks/transactions';
 import { Configuration, SmartContractsApi } from '@stacks/blockchain-api-client';
-import { ChainID, cvToString, hexToCV } from '@stacks/transactions';
+import { ContractInterfaceFunction } from '@stacks/rpc-client';
 import { SIP_010 } from '@common/constants';
-import type { Asset, FungibleTokenOptions } from '@store/assets/types';
-import type { Network } from '@common/constants';
-import type { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
+import { fetcher } from '@common/api/wrapped-fetch';
+import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
+import { Asset, FungibleTokenOptions, MetaDataNames } from '@store/assets/types';
 
-export async function callReadOnlyFunction({
+async function callReadOnlyFunction({
   contractName,
   contractAddress,
   functionName,
@@ -29,50 +30,51 @@ export async function callReadOnlyFunction({
   throw new Error('Asset data fetch failed');
 }
 
-export async function fetchDecimals(options: FungibleTokenOptions) {
-  const hex = await callReadOnlyFunction({ ...options, functionName: 'get-decimals' });
+async function readOnlyFetcher(name: MetaDataNames, options: FungibleTokenOptions) {
+  let hex = null;
+  try {
+    hex = await callReadOnlyFunction({ ...options, functionName: `get-${name}` });
+  } catch (e) {
+    hex = await callReadOnlyFunction({ ...options, functionName: name });
+  }
+  return hex;
+}
+
+async function fetchDecimals(options: FungibleTokenOptions & { functionName: string }) {
+  const hex = await callReadOnlyFunction(options);
   const clarityValue = cvToString(hexToCV(hex));
   return parseInt(clarityValue.replace('(ok u', '').replace(')', ''));
 }
 
-export async function fetchSymbol(options: FungibleTokenOptions) {
-  const hex = await callReadOnlyFunction({ ...options, functionName: 'get-symbol' });
+async function fetchSymbol(options: FungibleTokenOptions & { functionName: string }) {
+  const hex = await readOnlyFetcher('symbol', options);
+  if (!hex) return;
   const clarityValue = cvToString(hexToCV(hex));
   return clarityValue.replace('(ok "', '').replace('")', '');
 }
 
-export async function fetchName(options: FungibleTokenOptions) {
-  const hex = await callReadOnlyFunction({ ...options, functionName: 'get-name' });
+async function fetchName(options: FungibleTokenOptions & { functionName: string }) {
+  const hex = await readOnlyFetcher('name', options);
+  if (!hex) return;
   const clarityValue = cvToString(hexToCV(hex));
   return clarityValue.replace('(ok "', '').replace('")', '');
 }
 
-export async function fetchSip10Status(params: {
-  networkUrl: string;
-  chain: 'mainnet' | 'testnet' | 'regtest';
-  contractAddress: string;
-  contractName: string;
-}): Promise<boolean | null> {
-  try {
-    const { networkUrl, contractName, contractAddress, chain } = params;
-    const { address, name, trait } = SIP_010[chain];
-    const res = await fetch(
-      `${networkUrl}/v2/traits/${contractAddress}/${contractName}/${address}/${name}/${trait}`
-    );
-    const data: { is_implemented: boolean } = await res.json();
-
-    return data.is_implemented;
-  } catch (e) {
-    return null;
-  }
-}
-
-export async function fetchFungibleTokenMetaData(options: FungibleTokenOptions) {
+export async function fetchFungibleTokenMetaData({
+  methods,
+  ...options
+}: FungibleTokenOptions & {
+  methods: {
+    decimals: string;
+    name: string;
+    symbol: string;
+  };
+}) {
   try {
     const [name, symbol, decimals] = await Promise.all([
-      fetchName(options),
-      fetchSymbol(options),
-      fetchDecimals(options),
+      fetchName({ ...options, functionName: methods.name }),
+      fetchSymbol({ ...options, functionName: methods.symbol }),
+      fetchDecimals({ ...options, functionName: methods.decimals }),
     ]);
     return {
       name,
@@ -84,29 +86,57 @@ export async function fetchFungibleTokenMetaData(options: FungibleTokenOptions) 
   }
 }
 
-export function makeKey(networkUrl: string, address: string, name: string): string {
-  return `${networkUrl}__${address}__${name}`;
+function makeKey(networkUrl: string, address: string, name: string, key: string): string {
+  return `${networkUrl}__${address}__${name}__${key}`;
 }
 
-export function getLocalData(networkUrl: string, address: string, name: string) {
-  const key = makeKey(networkUrl, address, name);
-  const value = localStorage.getItem(key);
+export function getLocalData(options: {
+  networkUrl: string;
+  address: string;
+  name: string;
+  key: string;
+}) {
+  const { networkUrl, address, name, key } = options;
+  const _key = makeKey(networkUrl, address, name, key);
+  const value = localStorage.getItem(_key);
   if (!value) return null;
   return JSON.parse(value);
 }
 
-export function setLocalData(networkUrl: string, address: string, name: string, data: any): void {
-  const key = makeKey(networkUrl, address, name);
-  return localStorage.setItem(key, JSON.stringify(data));
+export function setLocalData(options: {
+  networkUrl: string;
+  address: string;
+  name: string;
+  key: string;
+  data: any;
+}): void {
+  const { networkUrl, address, name, data, key } = options;
+  const _key = makeKey(networkUrl, address, name, key);
+  return localStorage.setItem(_key, JSON.stringify(data));
 }
 
-export function getNetworkChain(network: Network) {
-  return network.url.includes('regtest')
-    ? 'regtest'
-    : network.chainId === ChainID.Testnet
-    ? 'testnet'
-    : 'mainnet';
+export async function getSip10Status(params: {
+  networkUrl: string;
+  chain: 'mainnet' | 'testnet' | 'regtest';
+  contractAddress: string;
+  contractName: string;
+}): Promise<boolean | null> {
+  try {
+    const { networkUrl, contractName, contractAddress, chain } = params;
+    const { address, name, trait } = SIP_010[chain];
+    const res = await fetcher(
+      `${networkUrl}/v2/traits/${contractAddress}/${contractName}/${address}/${name}/${trait}`
+    );
+    const data: { is_implemented: boolean } = await res.json();
+
+    return data.is_implemented;
+  } catch (e) {
+    return null;
+  }
 }
+
+export const getMatchingFunction = (name: MetaDataNames) => (func: ContractInterfaceFunction) =>
+  (func.name === `get-${name}` || func.name === name) && func.access === 'read_only';
 
 export function transformAssets(balances: AddressBalanceResponse) {
   const _assets: Asset[] = [];
@@ -118,10 +148,13 @@ export function transformAssets(balances: AddressBalanceResponse) {
     balance: balances.stx.balance,
     subtitle: 'STX',
     name: 'Stacks Token',
+    canTransfer: true,
+    hasMemo: true,
   });
   Object.keys(balances.fungible_tokens).forEach(key => {
     const { balance } = balances.fungible_tokens[key];
     const { address, contractName, assetName } = getAssetStringParts(key);
+    if (balance === '0') return; // tokens users have traded will persist in the api response even if they don't have a balance
     _assets.push({
       type: 'ft',
       subtitle: `${truncateMiddle(address)}.${contractName}`,

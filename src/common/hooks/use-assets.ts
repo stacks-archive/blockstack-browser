@@ -5,7 +5,7 @@ import {
   nonFungibleTokensState,
   stxTokenState,
   transferableAssetsState,
-} from '@store/tokens';
+} from '@store/assets/tokens';
 
 export const useAssets = () => {
   return useLoadable(assetsState);

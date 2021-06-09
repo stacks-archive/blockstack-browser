@@ -1,3 +1,14 @@
+export interface ContractPrincipal {
+  contractName: string;
+  contractAddress: string;
+}
+
+export interface MetaDataMethodNames {
+  decimals: string;
+  symbol: string;
+  name: string;
+}
+
 export interface Asset {
   name: string;
   contractAddress: string;
@@ -5,6 +16,8 @@ export interface Asset {
   subtitle: string;
   type: 'stx' | 'nft' | 'ft';
   balance: string;
+  canTransfer?: boolean;
+  hasMemo?: boolean;
 }
 
 export interface FungibleTokenOptions {
@@ -21,3 +34,4 @@ export interface FtMeta {
 }
 
 export type AssetWithMeta = Asset & { meta?: FtMeta };
+export type MetaDataNames = 'decimals' | 'symbol' | 'name';
