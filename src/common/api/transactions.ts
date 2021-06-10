@@ -7,7 +7,7 @@ function makeMempoolTransactionApiUrl(apiServer: string) {
 
 export function fetchPendingTxs(apiServer: string) {
   return async ({ query }: { query: string }) => {
-    const path = makeMempoolTransactionApiUrl(apiServer) + `&address=${query}`;
+    const path = makeMempoolTransactionApiUrl(apiServer) + `?address=${query}`;
     const res = await fetcher(path);
     const mempool: MempoolTransactionListResponse = await res.json();
     return mempool.results;
