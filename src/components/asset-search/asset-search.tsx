@@ -1,4 +1,4 @@
-import React, { memo, useMemo, forwardRef } from 'react';
+import React, { memo, useMemo, forwardRef, useEffect } from 'react';
 import { Box, Fade, Text, Flex, Input, color, Stack, StackProps } from '@stacks/ui';
 import { useCombobox } from 'downshift';
 import { searchInputStore } from '@store/assets/asset-search';
@@ -10,12 +10,14 @@ import { AssetRow } from '@components/asset-row';
 import { useAtomValue } from 'jotai/utils';
 import { useAtom } from 'jotai';
 
+function principalHasOnlyOneAsset(assets: AssetWithMeta[]) {
+  return assets.length === 1;
+}
 interface AssetSearchResultsProps extends StackProps {
   isOpen: boolean;
   highlightedIndex: number;
   getItemProps: any;
 }
-
 const AssetSearchResults = forwardRef(
   ({ isOpen, highlightedIndex, getItemProps, ...props }: AssetSearchResultsProps, ref) => {
     const assets = useTransferableAssets();
@@ -75,6 +77,12 @@ export const AssetSearchField: React.FC<{
   const { selectedAsset, handleUpdateSelectedAsset } = useSelectedAsset();
 
   const [searchInput, setSearchInput] = useAtom(searchInputStore);
+
+  useEffect(() => {
+    if (principalHasOnlyOneAsset(assets.contents ?? [])) {
+      handleUpdateSelectedAsset(assets.contents[0]);
+    }
+  }, [assets.contents, handleUpdateSelectedAsset]);
 
   const {
     isOpen,
@@ -145,25 +153,30 @@ export const AssetSearchField: React.FC<{
   );
 });
 
-export const AssetSearch: React.FC<{
+interface AssetSearchProps {
   autoFocus?: boolean;
-  onItemClick: () => void;
-}> = memo(({ autoFocus, onItemClick, ...rest }) => {
-  const { selectedAsset } = useSelectedAsset();
-  const assets = useTransferableAssets();
+  onItemClick(): void;
+}
+export const AssetSearch: React.FC<AssetSearchProps> = memo(
+  ({ autoFocus, onItemClick, ...rest }) => {
+    const { selectedAsset } = useSelectedAsset();
+    const assets = useTransferableAssets();
 
-  if (!assets) {
-    return (
-      <Stack spacing="tight" {...rest}>
-        <Box height="16px" width="68px" bg={color('bg-4')} borderRadius="8px" />
-        <Box height="48px" width="100%" bg={color('bg-4')} borderRadius="8px" />
-      </Stack>
-    );
+    if (assets.isLoading) {
+      return (
+        <Stack spacing="tight" {...rest}>
+          <Box height="16px" width="68px" bg={color('bg-4')} borderRadius="8px" />
+          <Box height="48px" width="100%" bg={color('bg-4')} borderRadius="8px" />
+        </Stack>
+      );
+    }
+
+    if (selectedAsset) {
+      return (
+        <SelectedAsset {...rest} hideArrow={principalHasOnlyOneAsset(assets.contents ?? [])} />
+      );
+    }
+
+    return <AssetSearchField onItemClick={onItemClick} autoFocus={autoFocus} {...rest} />;
   }
-
-  if (selectedAsset) {
-    return <SelectedAsset {...rest} />;
-  }
-
-  return <AssetSearchField onItemClick={onItemClick} autoFocus={autoFocus} {...rest} />;
-});
+);

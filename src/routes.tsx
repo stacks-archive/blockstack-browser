@@ -8,10 +8,11 @@ import { ChooseAccount } from '@pages/choose-account';
 import { TransactionPage } from '@pages/transaction-signing/transaction-signing';
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
-import { PopupHome } from '@pages/home';
-import { PopupSend } from '@pages/send-tokens/send-tokens';
+
+import { PopupHome } from '@pages/home/home';
 import { PopupReceive } from '@pages/receive-tokens/receive-tokens';
 import { AddNetwork } from '@pages/add-network/add-network';
+import { PopupSendForm } from '@pages/popup/send-form';
 import { SetPasswordPage } from '@pages/set-password';
 
 import { SaveYourKeyView } from '@components/save-your-key-view';
@@ -82,7 +83,7 @@ export const Routes: React.FC = () => {
       </AccountGateRoute>
       <AccountGateRoute path={ScreenPaths.POPUP_SEND}>
         <React.Suspense fallback={<></>}>
-          <PopupSend />
+          <PopupSendForm />
         </React.Suspense>
       </AccountGateRoute>
       <AccountGateRoute path={ScreenPaths.POPUP_RECEIVE}>
