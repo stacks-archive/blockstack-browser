@@ -1,5 +1,7 @@
 import React, { memo, useMemo, forwardRef, useEffect } from 'react';
 import { Box, Fade, Text, Flex, Input, color, Stack, StackProps } from '@stacks/ui';
+import { useAtomValue } from 'jotai/utils';
+import { useAtom } from 'jotai';
 import { useCombobox } from 'downshift';
 import { searchInputStore } from '@store/assets/asset-search';
 
@@ -7,8 +9,7 @@ import { SelectedAsset } from './selected-asset';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { AssetRow } from '@components/asset-row';
-import { useAtomValue } from 'jotai/utils';
-import { useAtom } from 'jotai';
+import { AssetWithMeta } from '@store/assets/types';
 
 function principalHasOnlyOneAsset(assets: AssetWithMeta[]) {
   return assets.length === 1;
@@ -79,10 +80,10 @@ export const AssetSearchField: React.FC<{
   const [searchInput, setSearchInput] = useAtom(searchInputStore);
 
   useEffect(() => {
-    if (principalHasOnlyOneAsset(assets.contents ?? [])) {
-      handleUpdateSelectedAsset(assets.contents[0]);
+    if (principalHasOnlyOneAsset(assets ?? [])) {
+      handleUpdateSelectedAsset(assets[0]);
     }
-  }, [assets.contents, handleUpdateSelectedAsset]);
+  }, [assets, handleUpdateSelectedAsset]);
 
   const {
     isOpen,
@@ -162,7 +163,7 @@ export const AssetSearch: React.FC<AssetSearchProps> = memo(
     const { selectedAsset } = useSelectedAsset();
     const assets = useTransferableAssets();
 
-    if (assets.isLoading) {
+    if (!assets) {
       return (
         <Stack spacing="tight" {...rest}>
           <Box height="16px" width="68px" bg={color('bg-4')} borderRadius="8px" />
@@ -172,9 +173,7 @@ export const AssetSearch: React.FC<AssetSearchProps> = memo(
     }
 
     if (selectedAsset) {
-      return (
-        <SelectedAsset {...rest} hideArrow={principalHasOnlyOneAsset(assets.contents ?? [])} />
-      );
+      return <SelectedAsset {...rest} hideArrow={principalHasOnlyOneAsset(assets ?? [])} />;
     }
 
     return <AssetSearchField onItemClick={onItemClick} autoFocus={autoFocus} {...rest} />;

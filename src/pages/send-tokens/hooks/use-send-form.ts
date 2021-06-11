@@ -7,6 +7,8 @@ import React, { useCallback, useEffect } from 'react';
 import { microStxToStx } from '@common/stacks-utils';
 import { FormValues } from '@pages/send-tokens/send-tokens';
 import { removeCommas } from '@common/token-utils';
+import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
+import BigNumber from 'bignumber.js';
 
 export function useSendAmountFieldActions({
   setFieldValue,
@@ -15,15 +17,22 @@ export function useSendAmountFieldActions({
   const { selectedAsset, balance } = useSelectedAsset();
   const isStx = selectedAsset?.type === 'stx';
 
-  const handleSetSendMax = useCallback(() => {
-    if (!selectedAsset || !balances) return;
-    if (isStx) {
-      const stx = microStxToStx(balances.stx.balance);
-      setFieldValue('amount', stx.toNumber());
-    } else {
-      if (balance) setFieldValue('amount', removeCommas(balance));
-    }
-  }, [balance, setFieldValue, balances, selectedAsset, isStx]);
+  const handleSetSendMax = useCallback(
+    (fee: number) => {
+      if (!selectedAsset || !balances || !balance) return;
+      if (isStx) {
+        const availableBalance = new BigNumber(balances.stx.balance).minus(balances.stx.locked);
+        const txFee = microStxToStx(
+          new BigNumber(fee ?? 1).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES).toString()
+        );
+        const stx = microStxToStx(availableBalance.toString()).minus(txFee);
+        setFieldValue('amount', stx.toNumber());
+      } else {
+        if (balance) setFieldValue('amount', removeCommas(balance));
+      }
+    },
+    [selectedAsset, balances, balance, isStx, setFieldValue]
+  );
 
   const handleOnKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {

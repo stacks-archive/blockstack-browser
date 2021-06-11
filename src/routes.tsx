@@ -9,11 +9,10 @@ import { TransactionPage } from '@pages/transaction-signing/transaction-signing'
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
 
-import { PopupHome } from '@pages/home/home';
 import { PopupReceive } from '@pages/receive-tokens/receive-tokens';
 import { AddNetwork } from '@pages/add-network/add-network';
-import { PopupSendForm } from '@pages/popup/send-form';
 import { SetPasswordPage } from '@pages/set-password';
+import { SendTokensForm } from '@pages/send-tokens/send-tokens';
 
 import { SaveYourKeyView } from '@components/save-your-key-view';
 import { ScreenPaths } from '@store/common/types';
@@ -27,6 +26,7 @@ import { AccountGateRoute } from '@components/account-gate-route';
 import { lastSeenStore } from '@store/wallet';
 import { Unlock } from '@components/unlock';
 import { useUpdateAtom } from 'jotai/utils';
+import { PopupHome } from '@pages/home';
 
 interface RouteProps {
   path: ScreenPaths;
@@ -83,7 +83,7 @@ export const Routes: React.FC = () => {
       </AccountGateRoute>
       <AccountGateRoute path={ScreenPaths.POPUP_SEND}>
         <React.Suspense fallback={<></>}>
-          <PopupSendForm />
+          <SendTokensForm />
         </React.Suspense>
       </AccountGateRoute>
       <AccountGateRoute path={ScreenPaths.POPUP_RECEIVE}>

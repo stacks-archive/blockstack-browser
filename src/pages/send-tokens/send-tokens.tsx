@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, Suspense, useCallback, useState } from 'react';
 import { Box, Text, Button, Stack } from '@stacks/ui';
 import { Formik, useFormikContext } from 'formik';
 
@@ -13,12 +13,12 @@ import { AssetSearch } from '@components/asset-search/asset-search';
 import { Header } from '@components/header';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
-import { useSendFormValidation } from '@common/hooks/use-send-form-validation';
-import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
-import { AmountField } from '@components/send-form/amount-field';
-import { RecipientField } from '@components/send-form/recipient-field';
-import { MemoField } from '@components/send-form/memo-field';
+import { useSendFormValidation } from '@pages/send-tokens/hooks/use-send-form-validation';
+import { AmountField } from '@pages/send-tokens/components/amount-field';
+import { RecipientField } from '@pages/send-tokens/components/recipient-field';
+import { MemoField } from '@pages/send-tokens/components/memo-field';
 import { useTransferableAssets } from '@common/hooks/use-assets';
+import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 
 type Amount = number | '';
 
@@ -47,7 +47,7 @@ const SendForm = (props: SendFormProps) => {
   const refreshAccountData = useRefreshAccountData();
   const assets = useTransferableAssets();
 
-  const { handleSubmit, handleChange, values, setFieldValue, setErrors, setValues, errors } =
+  const { handleSubmit, handleChange, values, setErrors, setValues, errors } =
     useFormikContext<FormValues>();
 
   const onChange = useCallback(
@@ -66,12 +66,9 @@ const SendForm = (props: SendFormProps) => {
   }, [refreshAccountData, handleSubmit, values, selectedAsset]);
 
   const onItemClick = useCallback(() => {
-    if (assets.contents === 1) {
-      console.log('item click do nothing');
-      return;
-    }
+    if (assets.length === 1) return;
     setValues({ ...values, amount: '' });
-  }, [assets.contents, setValues, values]);
+  }, [assets, setValues, values]);
 
   const hasValues = values.amount && values.recipient !== '';
 
@@ -79,15 +76,11 @@ const SendForm = (props: SendFormProps) => {
     <PopupContainer
       header={<Header title="Send" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)} />}
     >
-      <Stack spacing="loose" flexDirection="column" flexGrow={1}>
+      <Stack spacing="loose" flexDirection="column" flexGrow={1} shouldWrapChildren>
         <AssetSearch onItemClick={onItemClick} />
-        lkjlksdjf
-        <AmountField
-          setFieldValue={setFieldValue}
-          value={values.amount || 0}
-          onChange={onChange}
-          error={errors.amount}
-        />
+        <Suspense fallback={<></>}>
+          <AmountField value={values.amount || 0} onChange={onChange} error={errors.amount} />
+        </Suspense>
         <RecipientField error={errors.recipient} value={values.recipient} onChange={onChange} />
         {selectedAsset?.hasMemo && (
           <MemoField value={values.memo} error={errors.memo} onChange={onChange} />
@@ -107,11 +100,10 @@ const SendForm = (props: SendFormProps) => {
   );
 };
 
-export const PopupSendForm: React.FC = memo(() => {
+export const SendTokensForm: React.FC = memo(() => {
   const [isShowing, setShowing] = useState(false);
   const [assetError, setAssetError] = useState<string | undefined>();
   const { selectedAsset } = useSelectedAsset();
-
   const onValidate = useSendFormValidation({ setAssetError });
 
   return (
@@ -130,7 +122,7 @@ export const PopupSendForm: React.FC = memo(() => {
     >
       {form => (
         <>
-          <React.Suspense fallback={<></>}>
+          <React.Suspense fallback={<Box background="blue">lkjsdflksjdflksjdflsjdlfjlk</Box>}>
             <ConfirmSendDrawer
               onClose={() => {
                 setShowing(false);
@@ -141,7 +133,7 @@ export const PopupSendForm: React.FC = memo(() => {
               isShowing={isShowing}
             />
           </React.Suspense>
-          <React.Suspense fallback={<></>}>
+          <React.Suspense fallback={<Box background="red">lkjsdflksjdflksjdflsjdlfjlk</Box>}>
             <SendForm setAssetError={setAssetError} assetError={assetError} />
           </React.Suspense>
         </>

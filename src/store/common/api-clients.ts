@@ -6,6 +6,7 @@ import {
   SmartContractsApi,
   InfoApi,
   BlocksApi,
+  FeesApi,
 } from '@stacks/blockchain-api-client';
 import { fetcher } from '@common/api/wrapped-fetch';
 
@@ -32,4 +33,9 @@ export const infoApiClientState = atom<InfoApi>(get => {
 export const blocksApiClientState = atom<BlocksApi>(get => {
   const config = get(apiClientConfiguration);
   return new BlocksApi(config);
+});
+
+export const feesApiClientState = atom<FeesApi>(get => {
+  const config = get(apiClientConfiguration);
+  return new FeesApi(config);
 });

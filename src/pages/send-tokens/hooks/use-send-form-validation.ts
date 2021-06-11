@@ -1,16 +1,17 @@
+import { FormikErrors } from 'formik';
+import BigNumber from 'bignumber.js';
+
 import { useWallet } from '@common/hooks/use-wallet';
 import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
-import { FormikErrors } from 'formik';
 import { microStxToStx, validateAddressChain, validateStacksAddress } from '@common/stacks-utils';
-import BigNumber from 'bignumber.js';
 import { FormValues } from '@pages/send-tokens/send-tokens';
+import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
 
-export const useSendFormValidation = ({
-  setAssetError,
-}: {
+interface UseSendFormValidationArgs {
   setAssetError: (error: string) => void;
-}) => {
+}
+export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationArgs) => {
   const { currentNetwork, currentAccountStxAddress } = useWallet();
   const balances = useFetchBalances();
   const { selectedAsset } = useSelectedAsset();
@@ -34,8 +35,12 @@ export const useSendFormValidation = ({
         const amountBN = new BigNumber(amount);
         if (selectedAsset.type === 'stx') {
           const curBalance = microStxToStx(balances.stx.balance);
-          if (curBalance.lt(amountBN)) {
-            errors.amount = `You don't have enough tokens, Your balance is ${curBalance.toString()}`;
+          const lockedBalance = microStxToStx(balances.stx.locked);
+          const availableBalance = curBalance
+            .minus(lockedBalance)
+            .minus(microStxToStx(STX_TRANSFER_TX_SIZE_BYTES));
+          if (availableBalance.lt(amountBN)) {
+            errors.amount = `Insufficient balance. Your available balance is ${availableBalance.toString()} STX`;
           }
         }
       }
