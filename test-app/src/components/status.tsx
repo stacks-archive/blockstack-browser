@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Text, Button, Input, Flex } from '@stacks/ui';
 import { ExplorerLink } from './explorer-link';
 import { useConnect } from '@stacks/connect-react';
@@ -23,27 +23,10 @@ export const Status = () => {
   const [txId, setTxId] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [transactions, setTransactions] = useState<ContractCallTransaction[]>([]);
+  const [transactions] = useState<ContractCallTransaction[]>([]);
   const { doContractCall } = useConnect();
 
   const client = getRPCClient();
-
-  useEffect(() => {
-    const getTransactions = async () => {
-      try {
-        const transactions = await client.fetchAddressTransactions({
-          address: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6.status',
-        });
-        const filtered = transactions.filter(t => {
-          return t.tx_type === 'contract_call';
-        });
-        setTransactions(filtered as ContractCallTransaction[]);
-      } catch (error) {
-        console.error('Unable to get recent transactions for status contract');
-      }
-    };
-    void getTransactions();
-  }, []);
 
   const getAddressCV = () => {
     try {
