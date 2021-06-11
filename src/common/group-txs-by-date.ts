@@ -16,7 +16,7 @@ function todaysIsoDate() {
 
 function groupTxsByDateMap(txs: Tx[]) {
   return txs.reduce((txsByDate, tx) => {
-    if (tx.tx_status === 'success' && tx.burn_block_time_iso) {
+    if ('burn_block_time_iso' in tx && tx.burn_block_time_iso) {
       const [date] = tx.burn_block_time_iso.split('T');
       if (!txsByDate.has(date)) {
         txsByDate.set(date, []);
@@ -52,8 +52,9 @@ function formatTxDateMapAsList(txMap: Map<string, Tx[]>) {
 function filterDuplicateTx(txs: Tx[]) {
   return txs.filter(tx => {
     const countOfCurrentTxid = txs.filter(({ tx_id }) => tx.tx_id === tx_id).length;
-    if (countOfCurrentTxid === 1) return true;
-    return tx.tx_status === 'success';
+    const isDropped = tx.tx_status.includes('dropped');
+    if (countOfCurrentTxid === 1 && !isDropped) return true;
+    return tx.tx_status === 'success' || tx.tx_status.includes('abort');
   });
 }
 
