@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import { Flex, color } from '@stacks/ui';
+import { Flex, color, Spinner } from '@stacks/ui';
 import { SettingsPopover } from './settings-popover';
-import { useRecoilValue } from 'recoil';
-import { hasRehydratedVaultStore } from '@store/wallet';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnCancel } from '@common/hooks/use-on-cancel';
 import { usePendingTransaction } from '@common/hooks/transaction/use-pending-transaction';
@@ -13,17 +11,18 @@ interface PopupHomeProps {
   requestType?: string;
 }
 
+const Loading = memo(() => (
+  <Flex width="100%" alignItems="center" justifyContent="center" flexGrow={1}>
+    <Spinner color={color('text-caption')} />
+  </Flex>
+));
+
 export const PopupContainer: React.FC<PopupHomeProps> = memo(
   ({ children, header, requestType }) => {
-    const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
     const pendingTx = usePendingTransaction();
     const { authRequest } = useAuthRequest();
     const handleCancelTransaction = useOnCancel();
-    const { handleCancelAuthentication } = useWallet();
-
-    if (!hasRehydratedVault) {
-      console.error('No hasRehydratedVault, rendered null');
-    }
+    const { handleCancelAuthentication, hasRehydratedVault } = useWallet();
 
     /*
      * When the popup is closed, this checks the requestType and forces
@@ -66,8 +65,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
           px="loose"
           pb="loose"
         >
-          {/*TODO: this seems like a bug, I think it could cause a blank screen some time*/}
-          {hasRehydratedVault ? children : null}
+          {hasRehydratedVault ? children : <Loading />}
         </Flex>
       </Flex>
     );

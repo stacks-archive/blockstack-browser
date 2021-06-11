@@ -22,7 +22,6 @@ import {
   walletConfigStore,
   hasRehydratedVaultStore,
 } from '@store/wallet';
-import { StacksTransaction } from '@stacks/transactions';
 import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
 import { useOnboardingState } from './auth/use-onboarding-state';
@@ -64,8 +63,7 @@ export const useWallet = () => {
 
   const doSetLatestNonce = useRecoilCallback(
     ({ snapshot, set }) =>
-      async (tx: StacksTransaction) => {
-        const newNonce = tx.auth.spendingCondition?.nonce.toNumber();
+      async (newNonce?: number) => {
         if (newNonce !== undefined) {
           set(apiRevalidation, current => (current as number) + 1);
           const blockHeight = await snapshot.getPromise(latestBlockHeightState);

@@ -1,30 +1,31 @@
-import { AuthType, broadcastRawTransaction, StacksTransaction } from '@stacks/transactions';
+import { broadcastRawTransaction } from '@stacks/transactions';
 import { TransactionPayload, TransactionTypes } from '@stacks/connect';
 import {
   generateContractCallTx,
   generateContractDeployTx,
   generateSTXTransferTx,
-  stacksTransactionToHex,
 } from '@common/transactions/transaction-utils';
-import { TransactionPayloadWithAttachment } from '@store/transactions';
+import { Buffer } from 'buffer';
 
-export async function handleBroadcastTransaction(
-  signedTransaction: StacksTransaction,
-  pendingTransaction: TransactionPayloadWithAttachment,
-  networkUrl: string
-) {
-  const serialized = signedTransaction.serialize();
-  const txRaw = stacksTransactionToHex(signedTransaction);
+interface BroadcastTransactionOptions {
+  txRaw: string;
+  serialized: Buffer;
+  isSponsored: boolean;
+  attachment?: string;
+  networkUrl: string;
+}
+
+export async function handleBroadcastTransaction(options: BroadcastTransactionOptions) {
+  const { txRaw, serialized, isSponsored, attachment, networkUrl } = options;
   // if sponsored, return raw tx
-  if (signedTransaction.auth.authType === AuthType.Sponsored)
+  if (isSponsored)
     return {
       txRaw,
     };
-
   const response = await broadcastRawTransaction(
     serialized,
     `${networkUrl}/v2/transactions`,
-    pendingTransaction.attachment ? Buffer.from(pendingTransaction.attachment, 'hex') : undefined
+    attachment ? Buffer.from(attachment, 'hex') : undefined
   );
 
   if (typeof response === 'string') {
@@ -33,6 +34,7 @@ export async function handleBroadcastTransaction(
       txRaw,
     };
   } else {
+    console.error('Error broadcasting raw transaction');
     const error = `${response.error} - ${response.reason}`;
     console.error(error);
     throw new Error(error);

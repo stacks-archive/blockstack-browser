@@ -1,5 +1,5 @@
 import { atom, selector, waitForAll } from 'recoil';
-import { ChainID, TransactionVersion } from '@stacks/transactions';
+import { AuthType, ChainID, TransactionVersion } from '@stacks/transactions';
 
 import { currentNetworkState, currentStacksNetworkState } from '@store/networks';
 import { correctNonceState } from '@store/accounts/nonce';
@@ -9,10 +9,12 @@ import { requestTokenPayloadState } from '@store/transactions/requests';
 import { generateSignedTransaction } from '@common/transactions/transactions';
 import { getPostCondition, handlePostConditions } from '@common/transactions/postcondition-utils';
 import { TransactionPayload } from '@stacks/connect';
+import { stacksTransactionToHex } from '@common/transactions/transaction-utils';
 
 enum KEYS {
   POST_CONDITIONS = 'transactions/POST_CONDITIONS',
   PENDING_TRANSACTION = 'transactions/PENDING_TRANSACTION',
+  ATTACHMENT = 'transactions/ATTACHMENT',
   SIGNED_TRANSACTION = 'transactions/SIGNED_TRANSACTION',
   TX_VERSION = 'transactions/TX_VERSION',
   ERROR_IS_UNAUTHORIZED = 'transactions/ERROR_IS_UNAUTHORIZED',
@@ -56,6 +58,11 @@ export const pendingTransactionState = selector({
   },
 });
 
+export const transactionAttachmentState = selector({
+  key: KEYS.ATTACHMENT,
+  get: ({ get }) => get(pendingTransactionState)?.attachment,
+});
+
 export const signedTransactionState = selector({
   key: KEYS.SIGNED_TRANSACTION,
   get: async ({ get }) => {
@@ -66,12 +73,23 @@ export const signedTransactionState = selector({
         nonce: correctNonceState,
       })
     );
+
     if (!account || !pendingTransaction) return;
-    return generateSignedTransaction({
+
+    const signedTransaction = await generateSignedTransaction({
       senderKey: account.stxPrivateKey,
       nonce,
       txData: pendingTransaction,
     });
+    const serialized = signedTransaction?.serialize();
+    const txRaw = stacksTransactionToHex(signedTransaction);
+    return {
+      serialized,
+      isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
+      nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
+      fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
+      txRaw,
+    };
   },
 });
 

@@ -53,6 +53,8 @@ export const TransactionsActions = memo((props: StackProps) => {
   const error = useTransactionError();
   const { setIsLoading, setIsIdle, isLoading } = useLoading(LOADING_KEYS.SUBMIT_TRANSACTION);
 
+  const isDisabled = !!error || !signedTransaction.value;
+
   const handleSubmit = useCallback(async () => {
     setIsLoading();
     await handleBroadcastTransaction();
@@ -80,7 +82,7 @@ export const TransactionsActions = memo((props: StackProps) => {
         width="100%"
         onClick={handleSubmit}
         isLoading={isLoading}
-        isDisabled={!!error || !signedTransaction.value}
+        isDisabled={isDisabled}
       >
         Confirm
       </Button>
