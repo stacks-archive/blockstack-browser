@@ -49,6 +49,14 @@ function formatTxDateMapAsList(txMap: Map<string, Tx[]>) {
   }));
 }
 
+function filterDuplicateTx(txs: Tx[]) {
+  return txs.filter(tx => {
+    const countOfCurrentTxid = txs.filter(({ tx_id }) => tx.tx_id === tx_id).length;
+    if (countOfCurrentTxid === 1) return true;
+    return tx.tx_status === 'success';
+  });
+}
+
 export function createTxDateFormatList(txs: Tx[]) {
-  return formatTxDateMapAsList(groupTxsByDateMap(txs));
+  return formatTxDateMapAsList(groupTxsByDateMap(filterDuplicateTx(txs)));
 }
