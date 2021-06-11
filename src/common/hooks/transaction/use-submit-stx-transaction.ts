@@ -55,7 +55,7 @@ export function useHandleSubmitTransaction({
         if (typeof response !== 'string') {
           toast.error(getErrorMessage(response.reason));
         } else {
-          await doSetLatestNonce(transaction);
+          await doSetLatestNonce(transaction.auth.spendingCondition?.nonce.toNumber());
           await revalidate();
           toast.success('Transaction submitted!');
         }
