@@ -1,7 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { Box, Button, color, Stack, StackProps } from '@stacks/ui';
 import { LOADING_KEYS, useLoading } from '@common/hooks/use-loading';
-import { useDrawers } from '@common/hooks/use-drawers';
 import { SpaceBetween } from '@components/space-between';
 import { Caption } from '@components/typography';
 import { NetworkRowItem } from '@components/network-row-item';
@@ -49,7 +48,6 @@ const MinimalErrorMessage = memo((props: StackProps) => {
 export const TransactionsActions = memo((props: StackProps) => {
   const handleBroadcastTransaction = useTransactionBroadcast();
   const signedTransaction = useSignedTransaction();
-  const { setShowNetworks } = useDrawers();
   const error = useTransactionError();
   const { setIsLoading, setIsIdle, isLoading } = useLoading(LOADING_KEYS.SUBMIT_TRANSACTION);
 
@@ -72,7 +70,7 @@ export const TransactionsActions = memo((props: StackProps) => {
         </SpaceBetween>
         <SpaceBetween>
           <Caption>Network</Caption>
-          <NetworkRowItem onClick={() => setShowNetworks(true)} />
+          <NetworkRowItem />
         </SpaceBetween>
       </Stack>
       <MinimalErrorMessage />

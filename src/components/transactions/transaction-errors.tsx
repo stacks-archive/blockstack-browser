@@ -93,7 +93,6 @@ export const NoContractErrorMessage = memo(props => {
       body={`The contract (${truncateMiddle(pendingTransaction.contractAddress)}.${
         pendingTransaction.contractName
       }) that you are trying to call cannot be found on ${network.mode}.`}
-      actions={[{ onClick: () => window.close(), label: 'Switch network' }]}
       {...props}
     />
   );
