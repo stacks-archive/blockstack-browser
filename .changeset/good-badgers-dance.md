@@ -2,4 +2,4 @@
 '@stacks/wallet-web': patch
 ---
 
-fixed set-password page alignment issues
+This update fixes a regression where the set-password page became mis-aligned.
