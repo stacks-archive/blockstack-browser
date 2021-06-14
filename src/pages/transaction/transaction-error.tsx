@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { useTransactionError } from '@common/hooks/transaction/use-transaction-error';
 import {
   BroadcastErrorMessage,
+  ExpiredRequestErrorMessage,
   FeeInsufficientFundsErrorMessage,
   NoContractErrorMessage,
   StxTransferInsufficientFundsErrorMessage,
@@ -15,6 +16,7 @@ export enum TransactionErrorReason {
   BroadcastError = 4,
   Unauthorized = 5,
   NoContract = 6,
+  ExpiredRequest = 7,
 }
 
 export const TransactionError = memo(() => {
@@ -31,6 +33,8 @@ export const TransactionError = memo(() => {
       return <FeeInsufficientFundsErrorMessage />;
     case TransactionErrorReason.Unauthorized:
       return <UnauthorizedErrorMessage />;
+    case TransactionErrorReason.ExpiredRequest:
+      return <ExpiredRequestErrorMessage />;
     default:
       return null;
   }

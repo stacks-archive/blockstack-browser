@@ -5,16 +5,24 @@ import { Global, css } from '@emotion/react';
 const SizeStyles = css`
   body {
     display: flex;
+
+    &.no-scroll .main-content {
+      overflow: hidden;
+      pointer-events: none;
+    }
   }
+
   #actions-root {
     flex-grow: 1;
     display: flex;
     min-height: 100vh;
   }
+
   .container-outer {
     min-height: 100vh;
     height: 100vh;
   }
+
   .mode__extension {
     &,
     body {

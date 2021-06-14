@@ -10,21 +10,25 @@ import { TransactionErrorReason } from '@pages/transaction/transaction-error';
 import BigNumber from 'bignumber.js';
 import { TransactionTypes } from '@stacks/connect';
 import { useTransactionFee } from '@common/hooks/transaction/use-transaction-fee';
-import {
-  isUnauthorizedTransactionState,
-  transactionBroadcastErrorState,
-} from '@store/transactions';
+import { transactionBroadcastErrorState } from '@store/transactions';
+import { transactionRequestValidationState } from '@store/transactions/requests';
+import { useLoadable } from '@common/hooks/use-loadable';
+import { useOrigin } from '@common/hooks/use-origin';
 
 export function useTransactionError() {
   const transactionRequest = useTransactionRequest();
   const fee = useTransactionFee();
   const contractInterface = useTransactionContractInterface();
   const broadcastError = useRecoilValue(transactionBroadcastErrorState);
-  const isUnauthorizedTransaction = useRecoilValue(isUnauthorizedTransactionState);
+  const isValidTransaction = useLoadable(transactionRequestValidationState);
+  const origin = useOrigin();
+
   const { currentAccount } = useWallet();
   const balances = useFetchBalances();
   return useMemo<TransactionErrorReason | void>(() => {
-    if (isUnauthorizedTransaction) return TransactionErrorReason.Unauthorized;
+    if (origin === false) return TransactionErrorReason.ExpiredRequest;
+    if (isValidTransaction.contents === false && !isValidTransaction.isLoading)
+      return TransactionErrorReason.Unauthorized;
 
     if (!transactionRequest || balances.errorMaybe() || !currentAccount) {
       return TransactionErrorReason.Generic;
@@ -57,6 +61,7 @@ export function useTransactionError() {
     balances,
     currentAccount,
     transactionRequest,
-    isUnauthorizedTransaction,
+    isValidTransaction,
+    origin,
   ]);
 }

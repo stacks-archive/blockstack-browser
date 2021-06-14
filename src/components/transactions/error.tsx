@@ -38,6 +38,7 @@ export const ErrorMessage = memo(({ title, body, actions, ...rest }: ErrorMessag
       border="4px solid #FCEEED"
       spacing="extra-loose"
       color={color('feedback-error')}
+      bg={color('bg')}
       {...rest}
     >
       <Stack spacing="base-loose">

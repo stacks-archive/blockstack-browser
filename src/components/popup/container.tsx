@@ -59,6 +59,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
           flexDirection="column"
           flexGrow={1}
           className="main-content"
+          id="main-content"
           as="main"
           position="relative"
           width="100%"
