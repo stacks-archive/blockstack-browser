@@ -64,9 +64,11 @@ export const PopupReceive: React.FC = () => {
             {getAccountDisplayName(currentAccount)}
           </Title>
         )}
-        <Tooltip interactive placement="bottom" label={address}>
-          <Caption userSelect="none">{truncateMiddle(address, 8)}</Caption>
-        </Tooltip>
+        <Box>
+          <Tooltip interactive placement="bottom" label={address}>
+            <Caption userSelect="none">{truncateMiddle(address, 8)}</Caption>
+          </Tooltip>
+        </Box>
       </Stack>
       <Box mt="auto">
         <Button width="100%" onClick={onCopy}>

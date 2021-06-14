@@ -39,7 +39,6 @@ export const AssetItem = memo(
           ref={ref as any}
           flexGrow={1}
           spacing="base"
-          isInline
           {...rest}
           {...bind}
         >
@@ -56,14 +55,16 @@ export const AssetItem = memo(
             <Stack flexGrow={1}>
               <SpaceBetween width="100%">
                 <Text>{title}</Text>
-                <Tooltip
-                  placement="left-start"
-                  label={formatted.isAbbreviated ? amount : undefined}
-                >
-                  <Text fontVariantNumeric="tabular-nums" textAlign="right">
-                    {formatted.value}
-                  </Text>
-                </Tooltip>
+                <Box>
+                  <Tooltip
+                    placement="left-start"
+                    label={formatted.isAbbreviated ? amount : undefined}
+                  >
+                    <Text fontVariantNumeric="tabular-nums" textAlign="right">
+                      {formatted.value}
+                    </Text>
+                  </Tooltip>
+                </Box>
               </SpaceBetween>
               {caption && <Caption>{caption}</Caption>}
             </Stack>
