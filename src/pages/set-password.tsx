@@ -93,14 +93,14 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
   });
 
   return (
-    <Formik
-      initialValues={{ password: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {formik => (
-        <Form>
-          <PopupContainer header={<Header hideActions title="Set a password" />} requestType="auth">
+    <PopupContainer header={<Header hideActions title="Set a password" />} requestType="auth">
+      <Formik
+        initialValues={{ password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {formik => (
+          <Form>
             <Body className="onboarding-text">
               This password is for this device only. To access your account on a new device you will
               use your Secret Key.
@@ -135,9 +135,9 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
                 </Button>
               </Stack>
             </Box>
-          </PopupContainer>
-        </Form>
-      )}
-    </Formik>
+          </Form>
+        )}
+      </Formik>
+    </PopupContainer>
   );
 };
