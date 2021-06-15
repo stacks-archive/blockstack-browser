@@ -5,7 +5,7 @@ import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
 import { Username } from '@pages/username';
 import { SaveYourKeyView } from '@components/save-your-key-view';
 import { ChooseAccount } from '@pages/choose-account';
-import { TransactionPage } from '@pages/transaction';
+import { TransactionPage } from '@pages/transaction-signing/transaction-signing';
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
 import { PopupHome } from '@pages/popup';

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useTransactionError } from '@common/hooks/transaction/use-transaction-error';
+import { useTransactionError } from '@pages/transaction-signing/hooks/use-transaction-error';
 import {
   BroadcastErrorMessage,
   ExpiredRequestErrorMessage,
@@ -7,7 +7,7 @@ import {
   NoContractErrorMessage,
   StxTransferInsufficientFundsErrorMessage,
   UnauthorizedErrorMessage,
-} from '@components/transactions/transaction-errors';
+} from '@pages/transaction-signing/components/transaction-errors';
 
 export enum TransactionErrorReason {
   StxTransferInsufficientFunds = 1,

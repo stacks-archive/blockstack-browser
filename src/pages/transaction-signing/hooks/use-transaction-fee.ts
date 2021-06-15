@@ -1,4 +1,4 @@
-import { useSignedTransaction } from '@common/hooks/transaction/use-transaction';
+import { useSignedTransaction } from './use-transaction';
 
 export function useTransactionFee() {
   const signedTransaction = useSignedTransaction();

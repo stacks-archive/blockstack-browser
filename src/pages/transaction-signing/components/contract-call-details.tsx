@@ -1,15 +1,17 @@
 import React, { memo } from 'react';
 import { Stack, color, StackProps } from '@stacks/ui';
-import { Divider } from '@components/divider';
 import { deserializeCV, cvToString, getCVTypeString } from '@stacks/transactions';
-import { AttachmentRow } from './attachment-row';
+
+import { Divider } from '@components/divider';
 import { useExplorerLink } from '@common/hooks/use-explorer-link';
 import { Caption, Title } from '@components/typography';
-import { ContractPreview } from '@components/transactions/contract-preview';
-import { RowItem } from '@components/transactions/row-item';
-import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+import { ContractPreview } from '@pages/transaction-signing/components/contract-preview';
+import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { transactionFunctionsState } from '@store/transactions/contract-call';
+
+import { AttachmentRow } from './attachment-row';
+import { RowItem } from './row-item';
 
 interface ArgumentProps {
   arg: string;

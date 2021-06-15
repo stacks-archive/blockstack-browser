@@ -5,9 +5,10 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { AttachmentRow } from './attachment-row';
 import { Caption, Title } from '@components/typography';
 import { Divider } from '@components/divider';
-import { ContractPreview } from '@components/transactions/contract-preview';
-import { RowItem } from '@components/transactions/row-item';
-import { usePendingTransaction } from '@common/hooks/transaction/use-pending-transaction';
+import { ContractPreview } from '@pages/transaction-signing/components/contract-preview';
+
+import { usePendingTransaction } from '@pages/transaction-signing/hooks/use-pending-transaction';
+import { RowItem } from './row-item';
 
 function ContractCodeSection() {
   const pendingTransaction = usePendingTransaction();

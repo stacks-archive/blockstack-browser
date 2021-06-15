@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
-import { color, Flex, Stack, useClipboard, Fade } from '@stacks/ui';
-import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+import { color, Stack, useClipboard, Fade, Flex } from '@stacks/ui';
+import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
 import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { Caption } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';
@@ -9,7 +9,7 @@ import { stacksValue } from '@common/stacks-utils';
 import { STXTransferPayload, TransactionTypes } from '@stacks/connect';
 import { useCurrentNetwork } from '@common/hooks/use-current-network';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { ErrorMessage } from '@components/transactions/error';
+import { ErrorMessage } from '@pages/transaction-signing/components/error';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useRecoilValue } from 'recoil';
 import { transactionBroadcastErrorState } from '@store/transactions';

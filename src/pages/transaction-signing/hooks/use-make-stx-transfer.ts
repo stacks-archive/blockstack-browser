@@ -8,7 +8,7 @@ import BN from 'bn.js';
 import { stxToMicroStx } from '@stacks/ui-utils';
 import { useLoading } from '@common/hooks/use-loading';
 import { useEffect } from 'react';
-import { useMakeAssetTransfer } from '@common/hooks/transaction/use-asset-transfer';
+import { useMakeAssetTransfer } from '@pages/transaction-signing/hooks/use-asset-transfer';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
 interface TokenTransferParams {

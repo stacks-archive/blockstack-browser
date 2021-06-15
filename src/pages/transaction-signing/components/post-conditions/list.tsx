@@ -1,16 +1,17 @@
 import React, { memo, useMemo } from 'react';
 import { Box, Circle, color, Flex, Stack } from '@stacks/ui';
 import { useRecoilValue } from 'recoil';
-import { PostConditionComponent } from './single';
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';
 import { IconLock } from '@tabler/icons';
 import { Body } from '@components/typography';
-import { TransactionEventCard } from '@components/transactions/event-card';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { postConditionsState } from '@store/transactions';
-import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+
+import { useTransactionRequest } from '../../hooks/use-transaction';
+import { TransactionEventCard } from '../event-card';
+import { PostConditionComponent } from './single';
 
 function StxPostcondition() {
   const pendingTransaction = useTransactionRequest();

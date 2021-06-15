@@ -1,19 +1,19 @@
 import {
   useTransactionContractInterface,
   useTransactionRequest,
-} from '@common/hooks/transaction/use-transaction';
+} from '@pages/transaction-signing/hooks/use-transaction';
 import { useRecoilValue } from 'recoil';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useMemo } from 'react';
-import { TransactionErrorReason } from '@pages/transaction/transaction-error';
+import { TransactionErrorReason } from '@pages/transaction-signing/components/transaction-error';
 import BigNumber from 'bignumber.js';
 import { TransactionTypes } from '@stacks/connect';
-import { useTransactionFee } from '@common/hooks/transaction/use-transaction-fee';
+import { useTransactionFee } from '@pages/transaction-signing/hooks/use-transaction-fee';
 import { transactionBroadcastErrorState } from '@store/transactions';
-import { transactionRequestValidationState } from '@store/transactions/requests';
-import { useLoadable } from '@common/hooks/use-loadable';
 import { useOrigin } from '@common/hooks/use-origin';
+import { useLoadable } from '@common/hooks/use-loadable';
+import { transactionRequestValidationState } from '@store/transactions/requests';
 
 export function useTransactionError() {
   const transactionRequest = useTransactionRequest();

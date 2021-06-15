@@ -3,7 +3,7 @@ import { Flex, color, Spinner } from '@stacks/ui';
 import { SettingsPopover } from './settings-popover';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnCancel } from '@common/hooks/use-on-cancel';
-import { usePendingTransaction } from '@common/hooks/transaction/use-pending-transaction';
+import { usePendingTransaction } from '@pages/transaction-signing/hooks/use-pending-transaction';
 import { useAuthRequest } from '@common/hooks/auth/use-auth-request';
 
 interface PopupHomeProps {

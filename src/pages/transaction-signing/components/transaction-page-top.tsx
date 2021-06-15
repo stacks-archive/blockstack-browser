@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
 import { useOrigin } from '@common/hooks/use-origin';
-import { useTransactionPageTitle } from '@common/hooks/transaction/use-transaction-page-title';
+import { useTransactionPageTitle } from '@pages/transaction-signing/hooks/use-transaction-page-title';
 import { Stack } from '@stacks/ui';
 import { Caption, Title } from '@components/typography';
 import { useCurrentNetwork } from '@common/hooks/use-current-network';

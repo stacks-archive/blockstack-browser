@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { LoadingRectangle } from '@components/loading-rectangle';
 import { stacksValue } from '@common/stacks-utils';
-import { useTransactionFee } from '@common/hooks/transaction/use-transaction-fee';
+import { useTransactionFee } from '@pages/transaction-signing/hooks/use-transaction-fee';
 
 export const FeeComponent = memo(() => {
   const { isLoading, isSponsored, amount } = useTransactionFee();

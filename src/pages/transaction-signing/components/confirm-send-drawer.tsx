@@ -1,19 +1,19 @@
 import React, { useCallback, useState } from 'react';
 import { Button, color, Flex, Stack, StackProps } from '@stacks/ui';
 import { Caption } from '@components/typography';
-import { BaseDrawer, BaseDrawerProps } from './index';
+import { BaseDrawer, BaseDrawerProps } from '../../../components/drawer/index';
 import { StacksTransaction } from '@stacks/transactions';
 import { stacksValue } from '@common/stacks-utils';
-import { useHandleSubmitTransaction } from '@common/hooks/transaction/use-submit-stx-transaction';
+import { useHandleSubmitTransaction } from '@pages/transaction-signing/hooks/use-submit-stx-transaction';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { useLoading } from '@common/hooks/use-loading';
 
-import { useMakeTransferEffect } from '@common/hooks/transaction/use-make-stx-transfer';
+import { useMakeTransferEffect } from '@pages/transaction-signing/hooks/use-make-stx-transfer';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
-import { TransactionEventCard } from '@components/transactions/event-card';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import { SpaceBetween } from '@components/space-between';
 import { NetworkRowItem } from '@components/network-row-item';
+import { TransactionEventCard } from '@pages/transaction-signing/components/event-card';
 
 interface ConfirmSendDrawerProps extends BaseDrawerProps {
   amount: number;

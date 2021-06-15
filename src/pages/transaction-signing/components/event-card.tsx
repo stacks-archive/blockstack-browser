@@ -3,7 +3,7 @@ import { Box, color, IconButton, Stack, Text } from '@stacks/ui';
 import { SpaceBetween } from '@components/space-between';
 import { IconDots } from '@tabler/icons';
 import { Caption } from '@components/typography';
-import { AssetItem } from '@components/transactions/asset-item';
+import { AssetItem } from '@pages/transaction-signing/components/asset-item';
 
 export const TransactionEventCard: React.FC<any> = ({
   title,

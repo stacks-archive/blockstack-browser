@@ -4,14 +4,14 @@ import { LOADING_KEYS, useLoading } from '@common/hooks/use-loading';
 import { SpaceBetween } from '@components/space-between';
 import { Caption } from '@components/typography';
 import { NetworkRowItem } from '@components/network-row-item';
-import { useTransactionError } from '@common/hooks/transaction/use-transaction-error';
-import { FeeComponent } from '@components/transactions/fee';
-import { useSignedTransaction } from '@common/hooks/transaction/use-transaction';
-import { TransactionErrorReason } from '@pages/transaction/transaction-error';
+import { FeeComponent } from '@pages/transaction-signing/components/fee';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { useRecoilValue } from 'recoil';
-import { useTransactionBroadcast } from '@common/hooks/transaction/use-transaction-broadcast';
+import { useTransactionBroadcast } from '@pages/transaction-signing/hooks/use-transaction-broadcast';
 import { transactionBroadcastErrorState } from '@store/transactions';
+import { useTransactionError } from '../hooks/use-transaction-error';
+import { useSignedTransaction } from '../hooks/use-transaction';
+import { TransactionErrorReason } from './transaction-error';
 
 const MinimalErrorMessage = memo((props: StackProps) => {
   const error = useTransactionError();

@@ -1,12 +1,9 @@
-import { TransactionTypes } from '@stacks/connect';
 import React from 'react';
+import { TransactionTypes } from '@stacks/connect';
+
 import { addressToString, PostCondition } from '@stacks/transactions';
-
 import { truncateMiddle } from '@stacks/ui-utils';
-
 import { ftDecimals } from '@common/stacks-utils';
-
-import { TransactionEventCard } from '@components/transactions/event-card';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import {
   getAmountFromPostCondition,
@@ -16,7 +13,8 @@ import {
   getSymbolFromPostCondition,
   useAssetInfoFromPostCondition,
 } from '@common/transactions/postcondition-utils';
-import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+import { useTransactionRequest } from '../../hooks/use-transaction';
+import { TransactionEventCard } from '../event-card';
 
 interface PostConditionProps {
   pc: PostCondition;

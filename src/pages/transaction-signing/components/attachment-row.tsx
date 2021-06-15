@@ -1,7 +1,8 @@
 import React from 'react';
-import { RowItem } from '@components/transactions/row-item';
+
 import { hexToHumanReadable } from '@common/utils';
-import { useTransactionRequest } from '@common/hooks/transaction/use-transaction';
+import { useTransactionRequest } from '../hooks/use-transaction';
+import { RowItem } from './row-item';
 
 export const AttachmentRow: React.FC = () => {
   const pendingTransaction = useTransactionRequest();
