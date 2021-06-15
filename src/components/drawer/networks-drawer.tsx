@@ -10,6 +10,7 @@ import { currentNetworkKeyState } from '@store/networks';
 import { showNetworksStore } from '@store/ui';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { Caption, Title } from '@components/typography';
+import { getUrlHostname } from '@common/utils';
 
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();
@@ -43,7 +44,7 @@ const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...
           <Title fontWeight={400} lineHeight="1rem" fontSize={2} display="block">
             {network.name}
           </Title>
-          <Caption>{network.url.split('//')[1]}</Caption>
+          <Caption>{getUrlHostname(network.url)}</Caption>
         </Stack>
         {item === currentNetworkKey ? <CheckmarkIcon /> : null}
       </Flex>

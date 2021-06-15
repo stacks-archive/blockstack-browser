@@ -308,3 +308,7 @@ export const slugify = (...args: (string | number)[]): string => {
     .replace(/[^a-z0-9 ]/g, '') // remove all chars not letters, numbers and spaces (to be replaced)
     .replace(/\s+/g, '-'); // separator
 };
+
+export function getUrlHostname(url: string) {
+  return new URL(url).hostname;
+}

@@ -5,6 +5,7 @@ import { useTransactionPageTitle } from '@common/hooks/transaction/use-transacti
 import { Stack } from '@stacks/ui';
 import { Caption, Title } from '@components/typography';
 import { useCurrentNetwork } from '@common/hooks/use-current-network';
+import { getUrlHostname } from '@common/utils';
 
 export const TransactionPageTop = memo(() => {
   const transactionRequest = useTransactionRequest();
@@ -19,7 +20,7 @@ export const TransactionPageTop = memo(() => {
     <>
       {' '}
       on <br />
-      {network.url}
+      {getUrlHostname(network.url)}
     </>
   ) : null;
 
@@ -30,7 +31,7 @@ export const TransactionPageTop = memo(() => {
       </Title>
       {appName ? (
         <Caption>
-          Requested by {appName} {origin ? `(${origin?.split('//')[1]})` : null}
+          Requested by {appName} {origin ? `(${getUrlHostname(origin)})` : null}
           {testnetAddition}
         </Caption>
       ) : null}
