@@ -8,7 +8,7 @@ import { ContractCallDetails } from '@pages/transaction-signing/components/contr
 import { ContractDeployDetails } from '@pages/transaction-signing/components/contract-deploy-details';
 import { PostConditions } from '@pages/transaction-signing/components/post-conditions/list';
 import { StxTransferDetails } from '@pages/transaction-signing/components/stx-transfer-details';
-import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 
 export const TransactionPage = memo(() => {
   const transactionRequest = useTransactionRequest();

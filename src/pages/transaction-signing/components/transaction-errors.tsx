@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import { color, Stack, useClipboard, Fade, Flex } from '@stacks/ui';
-import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { Caption } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';

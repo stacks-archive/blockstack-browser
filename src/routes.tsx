@@ -1,32 +1,32 @@
 import React, { useCallback, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 
 import { OnboardingPassword, SaveKey } from '@pages/sign-up';
 import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
 import { Username } from '@pages/username';
-import { SaveYourKeyView } from '@components/save-your-key-view';
 import { ChooseAccount } from '@pages/choose-account';
 import { TransactionPage } from '@pages/transaction-signing/transaction-signing';
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
-import { PopupHome } from '@pages/popup';
-import { PopupSend } from '@pages/popup/send';
-import { PopupReceive } from '@pages/popup/receive';
-import { AddNetwork } from '@pages/popup/add-network';
+import { PopupHome } from '@pages/home/home';
+import { PopupSend } from '@pages/send-tokens/send-tokens';
+import { PopupReceive } from '@pages/receive-tokens/receive-tokens';
+import { AddNetwork } from '@pages/add-network/add-network';
 import { SetPasswordPage } from '@pages/set-password';
 
+import { SaveYourKeyView } from '@components/save-your-key-view';
 import { ScreenPaths } from '@store/common/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { useSaveAuthRequest } from '@common/hooks/auth/use-save-auth-request-callback';
-import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 import { Navigate } from '@components/navigate';
 import { AccountGate } from '@components/account-gate';
 import { AccountGateRoute } from '@components/account-gate-route';
 import { lastSeenStore } from '@store/wallet';
-import { useSetRecoilState } from 'recoil';
-import { ErrorBoundary } from './error-boundary';
-import { Unlock } from './unlock';
+import { ErrorBoundary } from '@components/error-boundary';
+import { Unlock } from '@components/unlock';
 
 interface RouteProps {
   path: ScreenPaths;

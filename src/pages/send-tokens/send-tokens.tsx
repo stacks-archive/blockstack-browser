@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { Box, Text, Button, Stack } from '@stacks/ui';
 import { Formik, FormikProps } from 'formik';
 import { PopupContainer } from '@components/popup/container';
-import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
+import { ConfirmSendDrawer } from '@components/drawer/confirm-send-drawer';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 
 import { ScreenPaths } from '@store/common/types';

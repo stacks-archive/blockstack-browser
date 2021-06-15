@@ -6,7 +6,7 @@ import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { ErrorLabel } from '@components/error-label';
 import { useSendAmountFieldActions } from '@common/hooks/use-send-form';
 import { FormikProps } from 'formik';
-import { FormValues } from '@pages/popup/send';
+import { FormValues } from '@pages/send-tokens/send-tokens';
 
 interface AmountFieldProps extends Pick<FormikProps<FormValues>, 'setFieldValue'> {
   value: number;

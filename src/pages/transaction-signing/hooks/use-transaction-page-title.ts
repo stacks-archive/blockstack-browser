@@ -1,4 +1,4 @@
-import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { useMemo } from 'react';
 import { TransactionTypes } from '@stacks/connect';
 

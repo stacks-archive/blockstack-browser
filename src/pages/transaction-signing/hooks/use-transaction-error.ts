@@ -1,7 +1,5 @@
-import {
-  useTransactionContractInterface,
-  useTransactionRequest,
-} from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionContractInterface } from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { useRecoilValue } from 'recoil';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useFetchBalances } from '@common/hooks/account/use-account-info';

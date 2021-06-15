@@ -6,7 +6,7 @@ import { Divider } from '@components/divider';
 import { useExplorerLink } from '@common/hooks/use-explorer-link';
 import { Caption, Title } from '@components/typography';
 import { ContractPreview } from '@pages/transaction-signing/components/contract-preview';
-import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { useLoadable } from '@common/hooks/use-loadable';
 import { transactionFunctionsState } from '@store/transactions/contract-call';
 

@@ -5,7 +5,7 @@ import { usePrevious } from '@stacks/ui';
 import { useAssets } from '@common/hooks/use-assets';
 import React, { useCallback, useEffect } from 'react';
 import { microStxToStx } from '@common/stacks-utils';
-import { FormValues } from '@pages/popup/send';
+import { FormValues } from '@pages/send-tokens/send-tokens';
 import { removeCommas } from '@common/token-utils';
 
 export function useSendAmountFieldActions({

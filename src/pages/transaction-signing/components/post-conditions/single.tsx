@@ -13,7 +13,7 @@ import {
   getSymbolFromPostCondition,
   useAssetInfoFromPostCondition,
 } from '@common/transactions/postcondition-utils';
-import { useTransactionRequest } from '../../hooks/use-transaction';
+import { useTransactionRequest } from '../../../../common/hooks/use-transaction-request';
 import { TransactionEventCard } from '../event-card';
 
 interface PostConditionProps {

@@ -4,7 +4,7 @@ import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { FormikErrors } from 'formik';
 import { microStxToStx, validateAddressChain, validateStacksAddress } from '@common/stacks-utils';
 import BigNumber from 'bignumber.js';
-import { FormValues } from '@pages/popup/send';
+import { FormValues } from '@pages/send-tokens/send-tokens';
 
 export const useSendFormValidation = ({
   setAssetError,

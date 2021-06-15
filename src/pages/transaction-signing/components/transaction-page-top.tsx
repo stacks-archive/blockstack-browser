@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useTransactionRequest } from '@pages/transaction-signing/hooks/use-transaction';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { useOrigin } from '@common/hooks/use-origin';
 import { useTransactionPageTitle } from '@pages/transaction-signing/hooks/use-transaction-page-title';
 import { Stack } from '@stacks/ui';
