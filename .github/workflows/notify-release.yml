@@ -41,11 +41,26 @@ jobs:
             echo "::warning::No new Firefox version detected"
           fi
 
-      - name: Firefox Discord notification
+      - name: Firefox Discord notification - userx
         if: steps.firefox.outputs.is_new
         uses: Ilshidur/action-discord@f1ed8844d9b33c17221fab0f36672cde39800eed
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_WEBHOOK }}
+          DISCORD_USERNAME: Hiro Team
+          DISCORD_AVATAR: 'https://i.imgur.com/z9Iy6ug.png'
+          DISCORD_EMBEDS: |
+            [{
+              "title": "Stacks Web Wallet for Firefox",
+              "url": "https://addons.mozilla.org/en-US/firefox/addon/stacks-wallet/"
+            }]
+        with:
+          args: ":rocket: A new version (${{ steps.firefox.outputs.new_version }}) of the Stacks Web Wallet is available on the Firefox Web Store!"
+
+      - name: Firefox Discord notification - userx-notifs
+        if: steps.firefox.outputs.is_new
+        uses: Ilshidur/action-discord@f1ed8844d9b33c17221fab0f36672cde39800eed
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_NOTIFS_WEBHOOK }}
           DISCORD_USERNAME: Hiro Team
           DISCORD_AVATAR: 'https://i.imgur.com/z9Iy6ug.png'
           DISCORD_EMBEDS: |
@@ -102,11 +117,26 @@ jobs:
             echo "::warning::No new Chrome version detected"
           fi
 
-      - name: Chrome Discord notification
+      - name: Chrome Discord notification - userx
         if: steps.chrome.outputs.is_new
         uses: Ilshidur/action-discord@f1ed8844d9b33c17221fab0f36672cde39800eed
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_WEBHOOK }}
+          DISCORD_USERNAME: Hiro Team
+          DISCORD_AVATAR: 'https://i.imgur.com/z9Iy6ug.png'
+          DISCORD_EMBEDS: |
+            [{
+              "title": "Stacks Web Wallet for Chrome",
+              "url": "https://chrome.google.com/webstore/detail/stacks-wallet/ldinpeekobnhjjdofggfgjlcehhmanlj"
+            }]
+        with:
+          args: ":rocket: A new version (${{ steps.chrome.outputs.new_version }}) of the Stacks Web Wallet is available on the Chrome Web Store!"
+
+      - name: Chrome Discord notification - userx-notifs
+        if: steps.chrome.outputs.is_new
+        uses: Ilshidur/action-discord@f1ed8844d9b33c17221fab0f36672cde39800eed
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_NOTIFS_WEBHOOK }}
           DISCORD_USERNAME: Hiro Team
           DISCORD_AVATAR: 'https://i.imgur.com/z9Iy6ug.png'
           DISCORD_EMBEDS: |
