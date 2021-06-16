@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.11.1
+
+### Patch Changes
+
+- [#1308](https://github.com/blockstack/stacks-wallet-web/pull/1308) [`4eeec781`](https://github.com/blockstack/stacks-wallet-web/commit/4eeec7813cbce1ec64919157552484a7c4cb59ed) Thanks [@aulneau](https://github.com/aulneau)! - This updates fixes a display bug that rounded STX values incorrectly. This bug had no effect on values used in transactions, only with the display of the amounts.
+
 ## 2.11.0
 
 ### Minor Changes
