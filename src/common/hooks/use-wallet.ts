@@ -6,28 +6,21 @@ import {
   makeAuthResponse,
   getAccountDisplayName,
 } from '@stacks/wallet-sdk';
-import { useRecoilValue, useRecoilState, useRecoilCallback } from 'recoil';
+
 import { gaiaUrl } from '@common/constants';
-import {
-  currentNetworkKeyState,
-  currentNetworkState,
-  networksState,
-  latestBlockHeightState,
-} from '@store/networks';
+import { currentNetworkKeyState, currentNetworkState, networksState } from '@store/networks';
 import {
   walletState,
   encryptedSecretKeyStore,
   secretKeyState,
   hasSetPasswordState,
-  walletConfigStore,
   hasRehydratedVaultStore,
 } from '@store/wallet';
 import { useVaultMessenger } from '@common/hooks/use-vault-messenger';
 
 import { useOnboardingState } from './auth/use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
-import { apiRevalidation } from '@store/common/api-helpers';
-import { useLoadable } from '@common/hooks/use-loadable';
+
 import {
   currentAccountIndexState,
   currentAccountState,
@@ -36,21 +29,22 @@ import {
 import { localNoncesState } from '@store/accounts/nonce';
 import { bytesToText } from '@store/common/utils';
 import { transactionNetworkVersionState } from '@store/transactions';
+import { useAtom } from 'jotai';
+import { useAtomValue, useAtomCallback } from 'jotai/utils';
 
 export const useWallet = () => {
-  const hasRehydratedVault = useRecoilValue(hasRehydratedVaultStore);
-  const [wallet, setWallet] = useRecoilState(walletState);
-  const secretKey = useRecoilValue(secretKeyState);
-  const encryptedSecretKey = useRecoilValue(encryptedSecretKeyStore);
-  const currentAccountIndex = useRecoilValue(currentAccountIndexState);
-  const hasSetPassword = useRecoilValue(hasSetPasswordState);
-  const currentAccount = useRecoilValue(currentAccountState);
-  const currentAccountStxAddress = useRecoilValue(currentAccountStxAddressState);
-  const transactionVersion = useRecoilValue(transactionNetworkVersionState);
-  const networks = useRecoilValue(networksState);
-  const currentNetwork = useRecoilValue(currentNetworkState);
-  const currentNetworkKey = useRecoilValue(currentNetworkKeyState);
-  const walletConfig = useLoadable(walletConfigStore);
+  const hasRehydratedVault = useAtomValue(hasRehydratedVaultStore);
+  const [wallet, setWallet] = useAtom(walletState);
+  const secretKey = useAtomValue(secretKeyState);
+  const encryptedSecretKey = useAtomValue(encryptedSecretKeyStore);
+  const currentAccountIndex = useAtomValue(currentAccountIndexState);
+  const hasSetPassword = useAtomValue(hasSetPasswordState);
+  const currentAccount = useAtomValue(currentAccountState);
+  const currentAccountStxAddress = useAtomValue(currentAccountStxAddressState);
+  const transactionVersion = useAtomValue(transactionNetworkVersionState);
+  const networks = useAtomValue(networksState);
+  const currentNetwork = useAtomValue(currentNetworkState);
+  const currentNetworkKey = useAtomValue(currentNetworkKeyState);
   const vaultMessenger = useVaultMessenger();
 
   const currentAccountDisplayName = currentAccount
@@ -61,21 +55,14 @@ export const useWallet = () => {
 
   const isSignedIn = !!wallet;
 
-  const doSetLatestNonce = useRecoilCallback(
-    ({ snapshot, set }) =>
-      async (newNonce?: number) => {
-        if (newNonce !== undefined) {
-          set(apiRevalidation, current => (current as number) + 1);
-          const blockHeight = await snapshot.getPromise(latestBlockHeightState);
-          const network = await snapshot.getPromise(currentNetworkState);
-          const address = await snapshot.getPromise(currentAccountStxAddressState);
-          set(localNoncesState([network.url, address || '']), () => ({
-            blockHeight,
-            nonce: newNonce,
-          }));
-        }
-      },
-    []
+  const doSetLatestNonce = useAtomCallback<void, number>(
+    useCallback((get, set, newNonce) => {
+      if (newNonce !== undefined) {
+        const network = get(currentNetworkState);
+        const address = get(currentAccountStxAddressState);
+        set(localNoncesState([network.url, address || '']), newNonce);
+      }
+    }, [])
   );
 
   const handleCancelAuthentication = useCallback(() => {
@@ -86,10 +73,10 @@ export const useWallet = () => {
     finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
   }, [decodedAuthRequest, authRequest]);
 
-  const doFinishSignIn = useRecoilCallback(
-    ({ set, snapshot }) =>
-      async (accountIndex: number) => {
-        const wallet = await snapshot.getPromise(walletState);
+  const doFinishSignIn = useAtomCallback<void, number>(
+    useCallback(
+      async (get, set, accountIndex) => {
+        const wallet = get(walletState);
         const account = wallet?.accounts[accountIndex];
         if (!decodedAuthRequest || !authRequest || !account || !wallet) {
           console.error('Uh oh! Finished onboarding without auth info.');
@@ -125,7 +112,8 @@ export const useWallet = () => {
         set(currentAccountIndexState, accountIndex);
         finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
       },
-    [decodedAuthRequest, authRequest, appName, appIcon]
+      [appName, appIcon, authRequest, decodedAuthRequest]
+    )
   );
 
   return {
@@ -138,7 +126,7 @@ export const useWallet = () => {
     currentAccountStxAddress,
     currentAccountDisplayName,
     transactionVersion,
-    walletConfig,
+
     networks,
     currentNetwork,
     currentNetworkKey,

@@ -1,16 +1,16 @@
+import { useAtom } from 'jotai';
 import {
   showNetworksStore,
   accountDrawerStep,
   showAccountsStore,
   showSettingsStore,
 } from '@store/ui';
-import { useRecoilState } from 'recoil';
 
 export const useDrawers = () => {
-  const [accountStep, setAccountStep] = useRecoilState(accountDrawerStep);
-  const [showAccounts, setShowAccounts] = useRecoilState(showAccountsStore);
-  const [showNetworks, setShowNetworks] = useRecoilState(showNetworksStore);
-  const [showSettings, setShowSettings] = useRecoilState(showSettingsStore);
+  const [accountStep, setAccountStep] = useAtom(accountDrawerStep);
+  const [showAccounts, setShowAccounts] = useAtom(showAccountsStore);
+  const [showNetworks, setShowNetworks] = useAtom(showNetworksStore);
+  const [showSettings, setShowSettings] = useAtom(showSettingsStore);
 
   return {
     accountStep,

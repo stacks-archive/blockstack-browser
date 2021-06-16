@@ -1,6 +1,6 @@
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai/utils';
 import { requestTokenOriginState } from '@store/transactions/requests';
 
 export function useOrigin() {
-  return useRecoilValue(requestTokenOriginState);
+  return useAtomValue(requestTokenOriginState);
 }

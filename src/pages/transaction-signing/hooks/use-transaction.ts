@@ -1,4 +1,4 @@
-import { useLoadable } from '@common/hooks/use-loadable';
+import { useAtomValue } from 'jotai/utils';
 import { postConditionsState, signedTransactionState } from '@store/transactions';
 import {
   transactionContractInterfaceState,
@@ -7,23 +7,21 @@ import {
 } from '@store/transactions/contract-call';
 
 export function useTransactionContractInterface() {
-  return useLoadable(transactionContractInterfaceState);
+  return useAtomValue(transactionContractInterfaceState);
 }
 
 export function useTransactionContractSource() {
-  return useLoadable(transactionContractSourceState);
+  return useAtomValue(transactionContractSourceState);
 }
 
 export function useTransactionFunction() {
-  const payload = useLoadable(transactionFunctionsState);
-  return payload?.value;
+  return useAtomValue(transactionFunctionsState);
 }
 
 export function useTransactionPostConditions() {
-  const payload = useLoadable(postConditionsState);
-  return payload?.value;
+  return useAtomValue(postConditionsState);
 }
 
 export function useSignedTransaction() {
-  return useLoadable(signedTransactionState);
+  return useAtomValue(signedTransactionState);
 }

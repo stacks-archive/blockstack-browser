@@ -30,10 +30,10 @@ export const useSendFormValidation = ({
       errors.amount = 'Must be more than zero';
     }
     if (selectedAsset) {
-      if (balances.value) {
+      if (balances) {
         const amountBN = new BigNumber(amount);
         if (selectedAsset.type === 'stx') {
-          const curBalance = microStxToStx(balances.value.stx.balance);
+          const curBalance = microStxToStx(balances.stx.balance);
           if (curBalance.lt(amountBN)) {
             errors.amount = `You don't have enough tokens, Your balance is ${curBalance.toString()}`;
           }

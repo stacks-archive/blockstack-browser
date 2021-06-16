@@ -9,19 +9,22 @@ import { ContractDeployDetails } from '@pages/transaction-signing/components/con
 import { PostConditions } from '@pages/transaction-signing/components/post-conditions/list';
 import { StxTransferDetails } from '@pages/transaction-signing/components/stx-transfer-details';
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
+import { Stack } from '@stacks/ui';
 
 export const TransactionPage = memo(() => {
   const transactionRequest = useTransactionRequest();
   if (!transactionRequest) return null;
   return (
     <PopupContainer header={<PopupHeader />}>
-      <TransactionPageTop />
-      <TransactionError />
-      <PostConditions />
-      <ContractCallDetails />
-      <StxTransferDetails />
-      <ContractDeployDetails />
-      <TransactionsActions />
+      <Stack spacing="loose">
+        <TransactionPageTop />
+        <TransactionError />
+        <PostConditions />
+        {transactionRequest.txType === 'contract_call' && <ContractCallDetails />}
+        {transactionRequest.txType === 'token_transfer' && <StxTransferDetails />}
+        {transactionRequest.txType === 'smart_contract' && <ContractDeployDetails />}
+        <TransactionsActions />
+      </Stack>
     </PopupContainer>
   );
 });

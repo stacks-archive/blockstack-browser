@@ -12,7 +12,6 @@ import { AssetSearch } from '@components/asset-search/asset-search';
 import { Header } from '@components/header';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
-import { useRevalidateApi } from '@common/hooks/use-revalidate-api';
 import { useSendFormValidation } from '@common/hooks/use-send-form-validation';
 import { AmountField } from '@components/send/amount-field';
 import { RecipientField } from '@components/send/recipient-field';
@@ -40,7 +39,6 @@ const Form = ({
   setAssetError: (error: string | undefined) => void;
 } & FormikProps<FormValues>) => {
   const doChangeScreen = useDoChangeScreen();
-  const revalidate = useRevalidateApi();
   const { selectedAsset } = useSelectedAsset();
 
   const onChange = useCallback(
@@ -53,10 +51,9 @@ const Form = ({
 
   const onSubmit = useCallback(async () => {
     if (values.amount && values.recipient && selectedAsset) {
-      await revalidate(); // we want up to date data
       handleSubmit();
     }
-  }, [revalidate, handleSubmit, values, selectedAsset]);
+  }, [handleSubmit, values, selectedAsset]);
 
   const onItemClick = useCallback(() => {
     setValues({ ...values, amount: '' });

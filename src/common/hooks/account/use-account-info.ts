@@ -1,10 +1,10 @@
 import { accountBalancesState, accountDataState } from '@store/accounts';
-import { useLoadable } from '../use-loadable';
+import { useAtomValue } from 'jotai/utils';
 
 export const useFetchAccountData = () => {
-  return useLoadable(accountDataState);
+  return useAtomValue(accountDataState);
 };
 
 export const useFetchBalances = () => {
-  return useLoadable(accountBalancesState);
+  return useAtomValue(accountBalancesState);
 };

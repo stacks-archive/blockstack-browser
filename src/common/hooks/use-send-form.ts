@@ -16,9 +16,9 @@ export function useSendAmountFieldActions({
   const isStx = selectedAsset?.type === 'stx';
 
   const handleSetSendMax = useCallback(() => {
-    if (!selectedAsset || !balances.value) return;
+    if (!selectedAsset || !balances) return;
     if (isStx) {
-      const stx = microStxToStx(balances.value.stx.balance);
+      const stx = microStxToStx(balances.stx.balance);
       setFieldValue('amount', stx.toNumber());
     } else {
       if (balance) setFieldValue('amount', removeCommas(balance));
@@ -76,10 +76,10 @@ export function useSendForm({
   const assets = useAssets();
 
   useEffect(() => {
-    if (assets.value?.length === 1 && amountFieldRef.current) {
+    if (assets?.length === 1 && amountFieldRef.current) {
       amountFieldRef?.current?.focus?.();
     }
-  }, [amountFieldRef, assets.value?.length]);
+  }, [amountFieldRef, assets?.length]);
 
   useEffect(() => {
     if (previous !== selectedAsset) {

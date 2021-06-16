@@ -9,7 +9,7 @@ import { AccountWithAddress } from '@store/accounts';
 
 export const AccountItem = memo(({ account, ...rest }: { account: AccountWithAddress }) => {
   const names = useAccountNames();
-  const name = names.value?.[account.index]?.names?.[0] || getAccountDisplayName(account);
+  const name = names?.[account.index]?.names?.[0] || getAccountDisplayName(account);
   return (
     <Stack isInline alignItems="center" spacing="base" {...rest}>
       <AccountAvatar name={name} account={account} />

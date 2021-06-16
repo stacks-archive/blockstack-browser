@@ -1,4 +1,6 @@
-import { atom, selector, waitForAll } from 'recoil';
+import { atom } from 'jotai';
+import { waitForAll } from 'jotai/utils';
+
 import { AuthType, ChainID, TransactionVersion } from '@stacks/transactions';
 
 import { currentNetworkState, currentStacksNetworkState } from '@store/networks';
@@ -11,104 +13,94 @@ import { getPostCondition, handlePostConditions } from '@common/transactions/pos
 import { TransactionPayload } from '@stacks/connect';
 import { stacksTransactionToHex } from '@common/transactions/transaction-utils';
 
-enum KEYS {
-  POST_CONDITIONS = 'transactions/POST_CONDITIONS',
-  PENDING_TRANSACTION = 'transactions/PENDING_TRANSACTION',
-  ATTACHMENT = 'transactions/ATTACHMENT',
-  SIGNED_TRANSACTION = 'transactions/SIGNED_TRANSACTION',
-  TX_VERSION = 'transactions/TX_VERSION',
-  ERROR_IS_UNAUTHORIZED = 'transactions/ERROR_IS_UNAUTHORIZED',
-  ERROR_BROADCAST_FAILURE = 'transactions/ERROR_BROADCAST_FAILURE',
-}
+export const postConditionsState = atom(get => {
+  const { payload, address } = get(
+    waitForAll({
+      payload: requestTokenPayloadState,
+      address: currentAccountStxAddressState,
+    })
+  );
 
-export const postConditionsState = selector({
-  key: KEYS.POST_CONDITIONS,
-  get: ({ get }) => {
-    const { payload, address } = get(
-      waitForAll({
-        payload: requestTokenPayloadState,
-        address: currentAccountStxAddressState,
-      })
-    );
+  if (!payload || !address) return;
 
-    if (!payload || !address) return;
+  if (payload.postConditions) {
+    if (payload.stxAddress)
+      return handlePostConditions(payload.postConditions, payload.stxAddress, address);
 
-    if (payload.postConditions) {
-      if (payload.stxAddress)
-        return handlePostConditions(payload.postConditions, payload.stxAddress, address);
-
-      return payload.postConditions.map(getPostCondition);
-    }
-    return [];
-  },
+    return payload.postConditions.map(getPostCondition);
+  }
+  return [];
 });
 
-export const pendingTransactionState = selector({
-  key: KEYS.PENDING_TRANSACTION,
-  get: ({ get }) => {
-    const { payload, postConditions, network } = get(
-      waitForAll({
-        payload: requestTokenPayloadState,
-        postConditions: postConditionsState,
-        network: currentStacksNetworkState,
-      })
-    );
-    if (!payload) return;
-    return { ...payload, postConditions, network };
-  },
+export const pendingTransactionState = atom(get => {
+  const { payload, postConditions, network } = get(
+    waitForAll({
+      payload: requestTokenPayloadState,
+      postConditions: postConditionsState,
+      network: currentStacksNetworkState,
+    })
+  );
+  if (!payload) return;
+  return { ...payload, postConditions, network };
 });
 
-export const transactionAttachmentState = selector({
-  key: KEYS.ATTACHMENT,
-  get: ({ get }) => get(pendingTransactionState)?.attachment,
+export const transactionAttachmentState = atom(get => get(pendingTransactionState)?.attachment);
+
+export const signedStacksTransactionState = atom(get => {
+  const { account, txData, nonce } = get(
+    waitForAll({
+      account: currentAccountState,
+      txData: pendingTransactionState,
+      nonce: correctNonceState,
+    })
+  );
+  if (!account || !txData) return;
+  return generateSignedTransaction({
+    senderKey: account.stxPrivateKey,
+    nonce,
+    txData,
+  });
 });
 
-export const signedTransactionState = selector({
-  key: KEYS.SIGNED_TRANSACTION,
-  get: async ({ get }) => {
-    const { account, pendingTransaction, nonce } = get(
-      waitForAll({
-        account: currentAccountState,
-        pendingTransaction: pendingTransactionState,
-        nonce: correctNonceState,
-      })
-    );
-
-    if (!account || !pendingTransaction) return;
-
-    const signedTransaction = await generateSignedTransaction({
-      senderKey: account.stxPrivateKey,
-      nonce,
-      txData: pendingTransaction,
-    });
-    const serialized = signedTransaction?.serialize();
-    const txRaw = stacksTransactionToHex(signedTransaction);
-    return {
-      serialized,
-      isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
-      nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
-      fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
-      txRaw,
-    };
-  },
+export const signedTransactionState = atom(get => {
+  const signedTransaction = get(signedStacksTransactionState);
+  console.log(signedTransaction);
+  if (!signedTransaction) return;
+  const serialized = signedTransaction.serialize();
+  const txRaw = stacksTransactionToHex(signedTransaction);
+  return {
+    serialized,
+    isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
+    nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
+    fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
+    txRaw,
+  };
 });
 
-export const transactionNetworkVersionState = selector({
-  key: KEYS.TX_VERSION,
-  get: ({ get }) =>
-    get(currentNetworkState).chainId === ChainID.Mainnet
-      ? TransactionVersion.Mainnet
-      : TransactionVersion.Testnet,
+export const transactionFeeState = atom(get => {
+  return get(signedTransactionState)?.fee;
 });
+export const transactionSponsoredState = atom(get => {
+  return get(signedTransactionState)?.isSponsored;
+});
+export const transactionNetworkVersionState = atom(get =>
+  get(currentNetworkState)?.chainId === ChainID.Mainnet
+    ? TransactionVersion.Mainnet
+    : TransactionVersion.Testnet
+);
 
 export type TransactionPayloadWithAttachment = TransactionPayload & {
   attachment?: string;
 };
-export const isUnauthorizedTransactionState = atom<boolean>({
-  key: KEYS.ERROR_IS_UNAUTHORIZED,
-  default: false,
-});
-export const transactionBroadcastErrorState = atom<string | null>({
-  key: KEYS.ERROR_BROADCAST_FAILURE,
-  default: null,
-});
+export const isUnauthorizedTransactionState = atom<boolean>(false);
+export const transactionBroadcastErrorState = atom<string | null>(null);
+
+// dev tooling
+postConditionsState.debugLabel = 'postConditionsState';
+pendingTransactionState.debugLabel = 'pendingTransactionState';
+transactionAttachmentState.debugLabel = 'transactionAttachmentState';
+signedStacksTransactionState.debugLabel = 'signedStacksTransactionState';
+signedTransactionState.debugLabel = 'signedTransactionState';
+transactionNetworkVersionState.debugLabel = 'transactionNetworkVersionState';
+isUnauthorizedTransactionState.debugLabel = 'isUnauthorizedTransactionState';
+transactionBroadcastErrorState.debugLabel = 'transactionBroadcastErrorState';

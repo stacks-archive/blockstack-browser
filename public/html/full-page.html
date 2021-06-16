@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html class="mode__full-page">
+<html class="mode__full-page light">
 <head>
   <meta charset="UTF-8">
   <title><%= htmlWebpackPlugin.options.title %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="/assets/connect-logo/Stacks128w.png"/>
   <link href="/assets/base.css" rel="stylesheet"/>
+  <script>
+    (function () {
+      try {
+        var mode = localStorage.getItem('theme');
+        if (!mode) {
+          document.documentElement.classList.add('light');
+          var bgValue = getComputedStyle(document.documentElement).getPropertyValue('--colors-bg');
+          document.documentElement.style.background = bgValue;
+        } else {
+          document.documentElement.classList.add(mode);
+          var bgValue = getComputedStyle(document.documentElement).getPropertyValue('--colors-bg');
+          document.documentElement.style.background = bgValue;
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
 </head>
 <body>
 <div id="actions-root"></div>

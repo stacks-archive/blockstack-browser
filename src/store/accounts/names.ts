@@ -1,4 +1,4 @@
-import { selector } from 'recoil';
+import { atom } from 'jotai';
 import { getStxAddress } from '@stacks/wallet-sdk';
 
 import { accountsState } from './index';
@@ -32,61 +32,57 @@ type AccountNameState = AccountName[] | null;
 
 const STALE_TIME = 30 * 60 * 1000; // 30 min
 
-enum KEYS {
-  NAMES = 'account/NAMES',
-}
+export const accountNameState = atom<AccountNameState>(async get => {
+  const accounts = get(accountsState);
+  const network = get(currentNetworkState);
+  const transactionVersion = get(transactionNetworkVersionState);
 
-export const accountNameState = selector<AccountNameState>({
-  key: KEYS.NAMES,
-  get: async ({ get }) => {
-    const accounts = get(accountsState);
-    const network = get(currentNetworkState);
-    const transactionVersion = get(transactionNetworkVersionState);
+  if (!network || !accounts) return null;
 
-    if (!network || !accounts) return null;
-
-    const promises = accounts.map(async account => {
-      const address = getStxAddress({
-        account: account,
-        transactionVersion,
-      });
-
-      // let's try to find any saved names first
-      const local = getLocalNames(network.url, address);
-
-      if (local) {
-        const [names, timestamp] = local;
-        const now = Date.now();
-        const isStale = now - timestamp > STALE_TIME;
-        if (!isStale)
-          return {
-            address,
-            index: account.index,
-            names,
-          };
-      }
-
-      try {
-        const names = await fetchNamesByAddress(network.url, address);
-        if (names?.length) {
-          // persist them for next time
-          setLocalNames(network.url, address, [names, Date.now()]);
-        }
-        return {
-          address,
-          index: account.index,
-          names: names || [],
-        };
-      } catch (e) {
-        console.error(e);
-        return {
-          address,
-          index: account.index,
-          names: [],
-        };
-      }
+  const promises = accounts.map(async account => {
+    const address = getStxAddress({
+      account: account,
+      transactionVersion,
     });
-    if (!promises) return null;
-    return Promise.all(promises);
-  },
+
+    // let's try to find any saved names first
+    const local = getLocalNames(network.url, address);
+
+    if (local) {
+      const [names, timestamp] = local;
+      const now = Date.now();
+      const isStale = now - timestamp > STALE_TIME;
+      if (!isStale)
+        return {
+          address,
+          index: account.index,
+          names,
+        };
+    }
+
+    try {
+      const names = await fetchNamesByAddress(network.url, address);
+      if (names?.length) {
+        // persist them for next time
+        setLocalNames(network.url, address, [names, Date.now()]);
+      }
+      return {
+        address,
+        index: account.index,
+        names: names || [],
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        address,
+        index: account.index,
+        names: [],
+      };
+    }
+  });
+  if (!promises) return null;
+  const value = await Promise.all(promises);
+  return value;
 });
+
+accountNameState.debugLabel = 'accountNameState';

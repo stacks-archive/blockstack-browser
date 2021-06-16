@@ -5,8 +5,9 @@ import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@scre
 import { useAppDetails } from '@common/hooks/auth/use-app-details';
 
 import { useWallet } from '@common/hooks/use-wallet';
-import { useSetRecoilState } from 'recoil';
+
 import { onboardingProgressState } from '@store/onboarding';
+import { useUpdateAtom } from 'jotai/utils';
 
 interface ExplainerCardProps {
   title: string;
@@ -57,7 +58,7 @@ export const Create: React.FC<CreateProps> = props => {
   const [cardIndex, setCardIndex] = useState(0);
   const { wallet, doMakeWallet } = useWallet();
   const { name } = useAppDetails();
-  const doSetOnboardingProgress = useSetRecoilState(onboardingProgressState);
+  const doSetOnboardingProgress = useUpdateAtom(onboardingProgressState);
   const { next } = props;
 
   const explainerData: ExplainerCardProps[] = useMemo(

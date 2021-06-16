@@ -13,28 +13,17 @@ export const TransactionPageTop = memo(() => {
   const pageTitle = useTransactionPageTitle();
   const network = useCurrentNetwork();
   if (!transactionRequest) return null;
-
   const appName = transactionRequest?.appDetails?.name;
-
-  const testnetAddition = network.isTestnet ? (
-    <>
-      {' '}
-      on <br />
-      {getUrlHostname(network.url)}
-    </>
-  ) : null;
+  const originAddition = origin ? ` (${getUrlHostname(origin)})` : '';
+  const testnetAddition = network.isTestnet ? ` using ${getUrlHostname(network.url)}` : '';
+  const caption = appName ? `Requested by "${appName}"${originAddition}${testnetAddition}` : null;
 
   return (
     <Stack pt="extra-loose" spacing="base">
       <Title fontWeight="bold" as="h1">
         {pageTitle}
       </Title>
-      {appName ? (
-        <Caption>
-          Requested by {appName} {origin ? `(${getUrlHostname(origin)})` : null}
-          {testnetAddition}
-        </Caption>
-      ) : null}
+      {caption && <Caption wordBreak="break-word">{caption}</Caption>}
     </Stack>
   );
 });

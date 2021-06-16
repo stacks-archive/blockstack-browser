@@ -45,14 +45,14 @@ export const AmountField = memo(
               width="100%"
               placeholder={placeholder || 'Select an asset first'}
               min="0"
-              autoFocus={assets.value?.length === 1}
+              autoFocus={assets?.length === 1}
               value={value === 0 ? '' : value}
               onKeyDown={handleOnKeyDown}
               onChange={onChange}
               autoComplete="off"
               name="amount"
             />
-            {balances.value && selectedAsset ? (
+            {balances && selectedAsset ? (
               <Box
                 as="button"
                 color={color('text-caption')}

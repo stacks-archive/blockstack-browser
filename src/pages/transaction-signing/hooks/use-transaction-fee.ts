@@ -1,11 +1,12 @@
-import { useSignedTransaction } from './use-transaction';
+import { useAtomValue } from 'jotai/utils';
+import { transactionFeeState, transactionSponsoredState } from '@store/transactions';
 
 export function useTransactionFee() {
-  const signedTransaction = useSignedTransaction();
+  const amount = useAtomValue(transactionFeeState);
+  const isSponsored = useAtomValue(transactionSponsoredState);
 
   return {
-    amount: signedTransaction?.value?.fee,
-    isSponsored: signedTransaction?.value?.isSponsored,
-    isLoading: signedTransaction.isLoading,
+    amount,
+    isSponsored,
   };
 }

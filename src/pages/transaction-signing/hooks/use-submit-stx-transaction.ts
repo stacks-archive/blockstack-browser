@@ -6,13 +6,12 @@ import {
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useLoading } from '@common/hooks/use-loading';
-import { useRecoilValue } from 'recoil';
 import { currentStacksNetworkState } from '@store/networks';
 import { useCallback } from 'react';
 import { ScreenPaths } from '@store/common/types';
-import { useRevalidateApi } from '@common/hooks/use-revalidate-api';
 import { toast } from 'react-hot-toast';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';
+import { useAtomValue } from 'jotai/utils';
 
 function getErrorMessage(
   reason: TxBroadcastResultRejected['reason'] | 'ConflictingNonceInMempool'
@@ -43,8 +42,7 @@ export function useHandleSubmitTransaction({
   const doChangeScreen = useDoChangeScreen();
   const { doSetLatestNonce } = useWallet();
   const { setIsLoading, setIsIdle } = useLoading(loadingKey);
-  const stacksNetwork = useRecoilValue(currentStacksNetworkState);
-  const revalidate = useRevalidateApi();
+  const stacksNetwork = useAtomValue(currentStacksNetworkState);
   const { setActiveTabActivity } = useHomeTabs();
 
   return useCallback(async () => {
@@ -56,7 +54,6 @@ export function useHandleSubmitTransaction({
           toast.error(getErrorMessage(response.reason));
         } else {
           await doSetLatestNonce(transaction.auth.spendingCondition?.nonce.toNumber());
-          await revalidate();
           toast.success('Transaction submitted!');
         }
       } catch (e) {
@@ -70,7 +67,6 @@ export function useHandleSubmitTransaction({
     doChangeScreen(ScreenPaths.HOME);
   }, [
     setActiveTabActivity,
-    revalidate,
     doChangeScreen,
     doSetLatestNonce,
     setIsLoading,

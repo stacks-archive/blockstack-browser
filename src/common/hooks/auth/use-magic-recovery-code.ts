@@ -1,4 +1,3 @@
-import { useRecoilState } from 'recoil';
 import { magicRecoveryCodePasswordState, magicRecoveryCodeState } from '@store/onboarding';
 import { useLoading } from '@common/hooks/use-loading';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -8,10 +7,11 @@ import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { ScreenPaths } from '@store/common/types';
 import { decrypt } from '@stacks/wallet-sdk';
+import { useAtom } from 'jotai';
 
 export function useMagicRecoveryCode() {
-  const [magicRecoveryCode, setMagicRecoveryCode] = useRecoilState(magicRecoveryCodeState);
-  const [password, setPassword] = useRecoilState(magicRecoveryCodePasswordState);
+  const [magicRecoveryCode, setMagicRecoveryCode] = useAtom(magicRecoveryCodeState);
+  const [password, setPassword] = useAtom(magicRecoveryCodePasswordState);
   const { isLoading, setIsLoading, setIsIdle } = useLoading('useMagicRecoveryCode');
   const { doStoreSeed, doSetPassword, doFinishSignIn } = useWallet();
   const [error, setPasswordError] = useState('');
@@ -37,8 +37,8 @@ export function useMagicRecoveryCode() {
     setIsLoading();
     try {
       const codeBuffer = Buffer.from(magicRecoveryCode, 'base64');
-      const seed = await decrypt(codeBuffer, password);
-      await doStoreSeed(seed);
+      const secretKey = await decrypt(codeBuffer, password);
+      await doStoreSeed({ secretKey });
       await doSetPassword(password);
       handleNavigate();
     } catch (error) {

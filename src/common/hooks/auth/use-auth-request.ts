@@ -1,6 +1,6 @@
-import { useRecoilValue } from 'recoil';
 import { authRequestState } from '@store/onboarding';
+import { useAtomValue } from 'jotai/utils';
 
 export function useAuthRequest() {
-  return useRecoilValue(authRequestState);
+  return useAtomValue(authRequestState);
 }

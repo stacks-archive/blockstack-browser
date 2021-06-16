@@ -1,19 +1,18 @@
-import { useSetRecoilState } from 'recoil';
-import { useLoadable } from '@common/hooks/use-loadable';
 import { selectedAssetIdState, selectedAssetStore } from '@store/assets/asset-search';
 import { AssetWithMeta } from '@store/assets/types';
 import { getTicker } from '@common/utils';
 import { useCallback, useMemo } from 'react';
 import { ftDecimals, stacksValue } from '@common/stacks-utils';
 import BigNumber from 'bignumber.js';
+import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 
 export function getFullyQualifiedAssetName(asset?: AssetWithMeta) {
   return asset ? `${asset.contractAddress}.${asset.contractName}::${asset.name}` : undefined;
 }
 
 export function useSelectedAsset() {
-  const { value: selectedAsset } = useLoadable(selectedAssetStore);
-  const setSelectedAsset = useSetRecoilState(selectedAssetIdState);
+  const selectedAsset = useAtomValue(selectedAssetStore);
+  const setSelectedAsset = useUpdateAtom(selectedAssetIdState);
   const handleUpdateSelectedAsset = useCallback(
     (asset: AssetWithMeta | undefined) => {
       setSelectedAsset(getFullyQualifiedAssetName(asset) || undefined);

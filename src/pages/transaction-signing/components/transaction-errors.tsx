@@ -11,14 +11,15 @@ import { useCurrentNetwork } from '@common/hooks/use-current-network';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { ErrorMessage } from '@pages/transaction-signing/components/error';
 import { useDrawers } from '@common/hooks/use-drawers';
-import { useRecoilValue } from 'recoil';
+
 import { transactionBroadcastErrorState } from '@store/transactions';
 import { useScrollLock } from '@common/hooks/use-scroll-lock';
+import { useAtomValue } from 'jotai/utils';
 
 export const FeeInsufficientFundsErrorMessage = memo(props => {
   const currentAccount = useCurrentAccount();
   const { setShowAccounts } = useDrawers();
-  const { onCopy, hasCopied } = useClipboard(currentAccount.address || '');
+  const { onCopy, hasCopied } = useClipboard(currentAccount?.address || '');
   return (
     <ErrorMessage
       title="Insufficient balance"
@@ -37,7 +38,7 @@ export const StxTransferInsufficientFundsErrorMessage = memo(props => {
   const balances = useFetchBalances();
   const currentAccount = useCurrentAccount();
   const { setShowAccounts } = useDrawers();
-  const { onCopy, hasCopied } = useClipboard(currentAccount.address || '');
+  const { onCopy, hasCopied } = useClipboard(currentAccount?.address || '');
   return (
     <ErrorMessage
       title="Insufficient balance"
@@ -52,9 +53,9 @@ export const StxTransferInsufficientFundsErrorMessage = memo(props => {
             <SpaceBetween>
               <Caption>Current balance</Caption>
               <Caption>
-                {balances?.value?.stx?.balance
+                {balances?.stx?.balance
                   ? stacksValue({
-                      value: balances?.value?.stx?.balance,
+                      value: balances?.stx?.balance,
                       withTicker: true,
                     })
                   : '--'}
@@ -175,7 +176,7 @@ export const ExpiredRequestErrorMessage = memo(props => {
 });
 
 export const BroadcastErrorMessage = memo(props => {
-  const broadcastError = useRecoilValue(transactionBroadcastErrorState);
+  const broadcastError = useAtomValue(transactionBroadcastErrorState);
   if (!broadcastError) return null;
   return (
     <ErrorMessage

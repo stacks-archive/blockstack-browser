@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+
 import { decodeToken } from 'jsontokens';
 import { DecodedAuthRequest } from '@common/dev/types';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -8,12 +8,13 @@ import { getRequestOrigin, StorageKey } from '@common/storage';
 import { ScreenPaths } from '@store/common/types';
 import { useOnboardingState } from './use-onboarding-state';
 import { authRequestState, currentScreenState } from '@store/onboarding';
+import { useUpdateAtom } from 'jotai/utils';
 
 export function useSaveAuthRequest() {
   const { wallet } = useWallet();
   const { screen } = useOnboardingState();
-  const changeScreen = useSetRecoilState(currentScreenState);
-  const saveAuthRequest = useSetRecoilState(authRequestState);
+  const changeScreen = useUpdateAtom(currentScreenState);
+  const saveAuthRequest = useUpdateAtom(authRequestState);
   const location = useLocation();
   const accounts = wallet?.accounts;
   const saveAuthRequestParam = useCallback(

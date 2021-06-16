@@ -33,6 +33,13 @@ export const getSymbolFromPostCondition = (pc: PostCondition) => {
   return 'STX';
 };
 
+export const getNameFromPostCondition = (pc: PostCondition) => {
+  if ('assetInfo' in pc) {
+    return pc.assetInfo.assetName.content;
+  }
+  return 'STX';
+};
+
 export function getPostConditionCodeMessage(
   code: FungibleConditionCode | NonFungibleConditionCode,
   isSender: boolean
@@ -142,7 +149,7 @@ export const useAssetInfoFromPostCondition = (pc: PostCondition) => {
   const contractAddress = addressToString(pc.assetInfo.address);
   const contractName = pc.assetInfo.contractName.content;
 
-  const asset = assets?.value?.find(
+  const asset = assets?.find(
     asset =>
       asset.contractAddress === contractAddress &&
       asset.contractName === contractName &&

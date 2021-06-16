@@ -1,52 +1,61 @@
-import { useWallet } from '@common/hooks/use-wallet';
-import { useFetchBalances } from '@common/hooks/account/use-account-info';
-import { Box, color, Stack, Text } from '@stacks/ui';
-import { AccountAvatar } from '@components/account-avatar';
-import { Caption, Title } from '@components/typography';
-import { truncateMiddle } from '@stacks/ui-utils';
-import { stacksValue } from '@common/stacks-utils';
-import { LoadingRectangle } from '@components/loading-rectangle';
-import React from 'react';
-import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
+import { Box, color, Stack } from '@stacks/ui';
+import { Caption } from '@components/typography';
 
-export function PopupHeader() {
-  const { currentAccount, currentAccountStxAddress } = useWallet();
-  const balances = useFetchBalances();
-  const displayName = useAccountDisplayName();
-  if (!currentAccount || !currentAccountStxAddress) return null;
+import { stacksValue } from '@common/stacks-utils';
+import React from 'react';
+
+import { CurrentUserAvatar } from '@components/current-user/current-user-avatar';
+import { CurrentUsername } from '@components/current-user/current-user-name';
+import { CurrentStxAddress } from '@components/current-user/current-stx-address';
+import { useAccountInfo } from '@common/hooks/account/use-account-balances';
+import { LoadingRectangle } from '@components/loading-rectangle';
+
+const Balance = () => {
+  const info = useAccountInfo();
+  return info?.balance ? (
+    <Caption>
+      {stacksValue({
+        value: info.balance.toString(10),
+        withTicker: true,
+      })}
+    </Caption>
+  ) : null;
+};
+
+export function PopupHeaderFallback() {
   return (
     <Box p="base-loose" width="100%" borderBottom="1px solid" borderColor={color('border')}>
       <Stack isInline alignItems="center" width="100%" justifyContent="space-between">
         <Stack isInline alignItems="center">
-          <AccountAvatar account={currentAccount} size="24px" fontSize="10px" />
-          <Title as="h3">{displayName}</Title>
-          <Text
-            border="1px solid"
-            borderColor={color('border')}
-            px="tight"
-            py="extra-tight"
-            borderRadius="16px"
-            textStyle="body.small"
-            color="ink.600"
-            fontSize={1}
-          >
-            {truncateMiddle(currentAccountStxAddress, 4)}
-          </Text>
+          <CurrentUserAvatar size="24px" fontSize="10px" />
+          <CurrentUsername as="h3" />
+          <CurrentStxAddress />
         </Stack>
-        <Box>
-          {balances.value ? (
-            <Caption>
-              {stacksValue({
-                value: balances.value.stx.balance,
-                withTicker: true,
-                abbreviate: true,
-              })}
-            </Caption>
-          ) : (
-            <LoadingRectangle height="16px" width="50px" />
-          )}
-        </Box>
+        <LoadingRectangle width="72px" height="14px" />
       </Stack>
     </Box>
   );
 }
+
+export function PopupHeaderSuspense() {
+  return (
+    <Box p="base-loose" width="100%" borderBottom="1px solid" borderColor={color('border')}>
+      <Stack isInline alignItems="center" width="100%" justifyContent="space-between">
+        <Stack isInline alignItems="center">
+          <CurrentUserAvatar size="24px" fontSize="10px" />
+          <CurrentUsername as="h3" />
+          <CurrentStxAddress />
+        </Stack>
+        <Balance />
+      </Stack>
+    </Box>
+  );
+}
+
+export const PopupHeader = () => {
+  return (
+    <React.Suspense fallback={<PopupHeaderFallback />}>
+      <PopupHeaderSuspense />
+    </React.Suspense>
+  );
+};

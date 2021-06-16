@@ -1,7 +1,6 @@
-import { useLoadable } from '@common/hooks/use-loadable';
 import { requestTokenPayloadState } from '@store/transactions/requests';
+import { useAtomValue } from 'jotai/utils';
 
 export function useTransactionRequest() {
-  const payload = useLoadable(requestTokenPayloadState);
-  return payload?.value;
+  return useAtomValue(requestTokenPayloadState);
 }

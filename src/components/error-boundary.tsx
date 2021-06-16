@@ -1,13 +1,8 @@
+// @ts-nocheck
+
 import React from 'react';
-import { PopupContainer } from '@components/popup/container';
-import { Box, Text, Button } from '@stacks/ui';
+
 import { useLoadable } from '@common/hooks/use-loadable';
-import { accountDataState } from '@store/accounts';
-import { walletState } from '@store/wallet';
-import { useRecoilValue } from 'recoil';
-import { Header } from '@components/header';
-import { useTransactionRequest } from '@common/hooks/use-transaction-request';
-import { signedTransactionState } from '@store/transactions';
 
 const openGithubIssue = (loadable: ReturnType<typeof useLoadable>) => {
   const issueParams = new URLSearchParams();
@@ -53,69 +48,55 @@ type Loadables = ReturnType<typeof useLoadable>[];
  *
  */
 export const ErrorBoundary: React.FC = ({ children }) => {
-  const pendingTransaction = useTransactionRequest();
-  const wallet = useRecoilValue(walletState);
-  let loadables: Loadables = [];
-  const walletLoadables: Loadables = [useLoadable(accountDataState)];
-  const txLoadables: Loadables = [useLoadable(signedTransactionState)];
-
-  if (wallet) {
-    loadables = loadables.concat(walletLoadables);
+  // if (errorLoadables.length > 0) {
+  //   const [loadable] = errorLoadables;
+  //   const error = errorLoadables[0].errorOrThrow();
+  //   return (
+  //     <PopupContainer header={<Header title="Uh oh! Something went wrong." />}>
+  //       <Box my="extra-loose">
+  //         <Text fontSize={2} fontFamily="mono">
+  //           {String(error)}
+  //         </Text>
+  //       </Box>
+  //       <Box>
+  //         <Text fontSize={2} fontWeight="500">
+  //           Version:
+  //         </Text>
+  //         <Text fontSize={2} ml="tight" fontFamily="mono">
+  //           {VERSION}
+  //         </Text>
+  //       </Box>
+  //       <Box>
+  //         <Text fontSize={2} fontWeight="500">
+  //           Branch:
+  //         </Text>
+  //         <Text fontSize={2} ml="tight" fontFamily="mono">
+  //           {BRANCH}
+  //         </Text>
+  //       </Box>
+  //       <Box>
+  //         <Text fontSize={2} fontWeight="500">
+  //           Commit:
+  //         </Text>
+  //         <Text fontSize={2} ml="tight" fontFamily="mono">
+  //           {COMMIT_SHA}
+  //         </Text>
+  //       </Box>
+  //       <Box my="extra-loose">
+  //         <Text fontSize={2}>
+  {
+    /*          If you believe this was caused by a bug in our code, please file an issue on Github.*/
   }
-
-  if (pendingTransaction) {
-    loadables = loadables.concat(txLoadables);
-  }
-
-  const errorLoadables = loadables.filter(loadable => !!loadable.errorMaybe());
-
-  if (errorLoadables.length > 0) {
-    const [loadable] = errorLoadables;
-    const error = errorLoadables[0].errorOrThrow();
-    return (
-      <PopupContainer header={<Header title="Uh oh! Something went wrong." />}>
-        <Box my="extra-loose">
-          <Text fontSize={2} fontFamily="mono">
-            {String(error)}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize={2} fontWeight="500">
-            Version:
-          </Text>
-          <Text fontSize={2} ml="tight" fontFamily="mono">
-            {VERSION}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize={2} fontWeight="500">
-            Branch:
-          </Text>
-          <Text fontSize={2} ml="tight" fontFamily="mono">
-            {BRANCH}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize={2} fontWeight="500">
-            Commit:
-          </Text>
-          <Text fontSize={2} ml="tight" fontFamily="mono">
-            {COMMIT_SHA}
-          </Text>
-        </Box>
-        <Box my="extra-loose">
-          <Text fontSize={2}>
-            If you believe this was caused by a bug in our code, please file an issue on Github.
-          </Text>
-        </Box>
-        <Box mt="extra-loose" mb="base">
-          <Button width="100%" onClick={() => openGithubIssue(loadable)}>
-            File an issue
-          </Button>
-        </Box>
-      </PopupContainer>
-    );
-  }
+  //         </Text>
+  //       </Box>
+  //       <Box mt="extra-loose" mb="base">
+  //         <Button width="100%" onClick={() => openGithubIssue(loadable)}>
+  //           File an issue
+  //         </Button>
+  //       </Box>
+  //     </PopupContainer>
+  //   );
+  // }
 
   return <>{children}</>;
 };

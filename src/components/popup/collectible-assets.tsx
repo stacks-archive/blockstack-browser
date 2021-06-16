@@ -8,9 +8,9 @@ import { Stack } from '@stacks/ui';
 
 export const CollectibleAssets = memo((props: StackProps) => {
   const accountData = useFetchAccountData();
-  if (!accountData.value) return null;
+  if (!accountData) return null;
 
-  const balances = accountData.value.balances;
+  const balances = accountData.balances;
   const noCollectibles = Object.keys(balances.non_fungible_tokens).length === 0;
 
   if (noCollectibles) return null;

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+
 import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-router-dom';
 
 import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
@@ -26,6 +26,7 @@ import { AccountGateRoute } from '@components/account-gate-route';
 import { lastSeenStore } from '@store/wallet';
 import { ErrorBoundary } from '@components/error-boundary';
 import { Unlock } from '@components/unlock';
+import { useUpdateAtom } from 'jotai/utils';
 
 interface RouteProps {
   path: ScreenPaths;
@@ -40,7 +41,7 @@ export const Routes: React.FC = () => {
   const { isSignedIn: signedIn, encryptedSecretKey } = useWallet();
   const { isOnboardingInProgress } = useOnboardingState();
   const { pathname } = useLocation();
-  const setLastSeen = useSetRecoilState(lastSeenStore);
+  const setLastSeen = useUpdateAtom(lastSeenStore);
 
   const doChangeScreen = useDoChangeScreen();
   useSaveAuthRequest();
@@ -98,7 +99,14 @@ export const Routes: React.FC = () => {
       <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />
       <Route path={ScreenPaths.RECOVERY_CODE} element={<MagicRecoveryCode />} />
       <Route path={ScreenPaths.ADD_ACCOUNT} element={<Username />} />;
-      <Route path={ScreenPaths.CHOOSE_ACCOUNT} element={<ChooseAccount />} />
+      <Route
+        path={ScreenPaths.CHOOSE_ACCOUNT}
+        element={
+          <React.Suspense fallback={<></>}>
+            <ChooseAccount />
+          </React.Suspense>
+        }
+      />
       {/* Transactions */}
       <AccountGateRoute path={ScreenPaths.TRANSACTION_POPUP}>
         <TransactionPage />

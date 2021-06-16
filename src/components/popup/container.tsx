@@ -1,6 +1,5 @@
-import React, { memo, useCallback, useEffect } from 'react';
-import { Flex, color, Spinner } from '@stacks/ui';
-import { SettingsPopover } from './settings-popover';
+import React, { useCallback, useEffect } from 'react';
+import { Flex, color } from '@stacks/ui';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnCancel } from '@common/hooks/use-on-cancel';
 import { usePendingTransaction } from '@pages/transaction-signing/hooks/use-pending-transaction';
@@ -8,40 +7,51 @@ import { useAuthRequest } from '@common/hooks/auth/use-auth-request';
 
 interface PopupHomeProps {
   header?: any;
-  requestType?: string;
+  // TODO: remove the need for prop drilling this
+  requestType?: 'transaction' | 'auth';
 }
 
-const Loading = memo(() => (
-  <Flex width="100%" alignItems="center" justifyContent="center" flexGrow={1}>
-    <Spinner color={color('text-caption')} />
-  </Flex>
-));
+const UnmountEffectSuspense = ({
+  requestType,
+}: {
+  requestType?: PopupHomeProps['requestType'];
+}) => {
+  const pendingTx = usePendingTransaction();
+  const { authRequest } = useAuthRequest();
+  const handleCancelTransaction = useOnCancel();
+  const { handleCancelAuthentication } = useWallet();
 
-export const PopupContainer: React.FC<PopupHomeProps> = memo(
-  ({ children, header, requestType }) => {
-    const pendingTx = usePendingTransaction();
-    const { authRequest } = useAuthRequest();
-    const handleCancelTransaction = useOnCancel();
-    const { handleCancelAuthentication, hasRehydratedVault } = useWallet();
+  /*
+   * When the popup is closed, this checks the requestType and forces
+   * the request promise to fail; triggering an onCancel callback function.
+   */
+  const handleUnmount = useCallback(async () => {
+    if (requestType === 'transaction' || !!pendingTx) {
+      await handleCancelTransaction();
+    } else if (requestType === 'auth' || !!authRequest) {
+      handleCancelAuthentication();
+    }
+  }, [requestType, handleCancelAuthentication, authRequest, pendingTx, handleCancelTransaction]);
 
-    /*
-     * When the popup is closed, this checks the requestType and forces
-     * the request promise to fail; triggering an onCancel callback function.
-     */
-    const handleUnmount = useCallback(async () => {
-      if (requestType === 'transaction' || !!pendingTx) {
-        await handleCancelTransaction();
-      } else if (requestType === 'auth' || !!authRequest) {
-        handleCancelAuthentication();
-      }
-    }, [requestType, handleCancelAuthentication, authRequest, pendingTx, handleCancelTransaction]);
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleUnmount);
+    return () => window.removeEventListener('beforeunload', handleUnmount);
+  }, [handleUnmount]);
 
-    useEffect(() => {
-      window.addEventListener('beforeunload', handleUnmount);
-      return () => window.removeEventListener('beforeunload', handleUnmount);
-    }, [handleUnmount]);
+  return null;
+};
 
-    return (
+const UnmountEffect = ({ requestType }: { requestType?: PopupHomeProps['requestType'] }) => (
+  <React.Suspense fallback={<></>}>
+    <UnmountEffectSuspense requestType={requestType} />
+  </React.Suspense>
+);
+
+export const PopupContainer: React.FC<PopupHomeProps> = ({ children, header, requestType }) => {
+  const { hasRehydratedVault } = useWallet();
+  return hasRehydratedVault ? (
+    <>
+      <UnmountEffect requestType={requestType} />
       <Flex
         flexDirection="column"
         flexGrow={1}
@@ -53,8 +63,7 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
         position="relative"
         overflow="auto"
       >
-        {header && header}
-        <SettingsPopover />
+        {header || null}
         <Flex
           flexDirection="column"
           flexGrow={1}
@@ -66,9 +75,9 @@ export const PopupContainer: React.FC<PopupHomeProps> = memo(
           px="loose"
           pb="loose"
         >
-          {hasRehydratedVault ? children : <Loading />}
+          {children}
         </Flex>
       </Flex>
-    );
-  }
-);
+    </>
+  ) : null;
+};

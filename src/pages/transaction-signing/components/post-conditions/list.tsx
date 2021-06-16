@@ -1,17 +1,17 @@
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Circle, color, Flex, Stack } from '@stacks/ui';
-import { useRecoilValue } from 'recoil';
+
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';
 import { IconLock } from '@tabler/icons';
 import { Body } from '@components/typography';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { useLoadable } from '@common/hooks/use-loadable';
 import { postConditionsState } from '@store/transactions';
 
-import { useTransactionRequest } from '../../../../common/hooks/use-transaction-request';
+import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { TransactionEventCard } from '../event-card';
 import { PostConditionComponent } from './single';
+import { useAtomValue } from 'jotai/utils';
 
 function StxPostcondition() {
   const pendingTransaction = useTransactionRequest();
@@ -49,24 +49,24 @@ function NoPostconditions() {
   );
 }
 
-const PostConditionsList = memo(() => {
-  const postConditions = useRecoilValue(postConditionsState);
+const PostConditionsList = () => {
+  const postConditions = useAtomValue(postConditionsState);
 
   return (
     <>
       {postConditions?.map((pc, index) => (
         <PostConditionComponent
           pc={pc}
-          key={`${pc.type}-${pc.conditionCode}`}
           isLast={index === postConditions.length - 1}
+          key={`${pc.type}-${pc.conditionCode}`}
         />
       ))}
     </>
   );
-});
+};
 
-export const PostConditions: React.FC = memo(() => {
-  const { value: postConditions } = useLoadable(postConditionsState);
+export const PostConditionsSuspense: React.FC = () => {
+  const postConditions = useAtomValue(postConditionsState);
   const pendingTransaction = useTransactionRequest();
   const hasPostConditions = useMemo(
     () => postConditions && postConditions?.length > 0,
@@ -84,7 +84,6 @@ export const PostConditions: React.FC = memo(() => {
       borderRadius="12px"
       width="100%"
       flexDirection="column"
-      my="loose"
     >
       {hasPostConditions ? (
         <PostConditionsList />
@@ -95,4 +94,12 @@ export const PostConditions: React.FC = memo(() => {
       )}
     </Flex>
   );
-});
+};
+
+export const PostConditions = () => {
+  return (
+    <React.Suspense fallback={<></>}>
+      <PostConditionsSuspense />
+    </React.Suspense>
+  );
+};

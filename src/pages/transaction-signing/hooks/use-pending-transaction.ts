@@ -1,6 +1,6 @@
-import { useRecoilValue } from 'recoil';
 import { pendingTransactionState } from '@store/transactions';
+import { useAtomValue } from 'jotai/utils';
 
 export function usePendingTransaction() {
-  return useRecoilValue(pendingTransactionState);
+  return useAtomValue(pendingTransactionState);
 }

@@ -4,13 +4,14 @@ import { Box, ChevronIcon, Text, color, Stack, StackProps, BoxProps } from '@sta
 import { searchInputStore } from '@store/assets/asset-search';
 
 import React, { memo, useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
+
 import { Caption } from '@components/typography';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
+import { useUpdateAtom } from 'jotai/utils';
 
 const SelectedAssetItem = memo(({ hideArrow, ...rest }: { hideArrow?: boolean } & BoxProps) => {
   const { selectedAsset, ticker, name, handleUpdateSelectedAsset } = useSelectedAsset();
-  const setSearchInput = useSetRecoilState(searchInputStore);
+  const setSearchInput = useUpdateAtom(searchInputStore);
 
   const handleClear = useCallback(() => {
     setSearchInput('');

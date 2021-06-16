@@ -1,11 +1,9 @@
-import React, { memo } from 'react';
-import { LoadingRectangle } from '@components/loading-rectangle';
+import React from 'react';
 import { stacksValue } from '@common/stacks-utils';
 import { useTransactionFee } from '@pages/transaction-signing/hooks/use-transaction-fee';
 
-export const FeeComponent = memo(() => {
-  const { isLoading, isSponsored, amount } = useTransactionFee();
-  if (isLoading) return <LoadingRectangle width="100px" height="14px" />;
+export const FeeComponent = () => {
+  const { isSponsored, amount } = useTransactionFee();
   if (typeof amount === 'undefined') return null;
   return (
     <>
@@ -17,4 +15,4 @@ export const FeeComponent = memo(() => {
           })}
     </>
   );
-});
+};

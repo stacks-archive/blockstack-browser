@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
+
 import { Box, Flex, Button, Stack, color, FlexProps, BoxProps } from '@stacks/ui';
 import { ControlledDrawer } from './controlled';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -11,11 +11,12 @@ import { showNetworksStore } from '@store/ui';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { Caption, Title } from '@components/typography';
 import { getUrlHostname } from '@common/utils';
+import { useUpdateAtom } from 'jotai/utils';
 
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();
   const { networks, currentNetworkKey } = useWallet();
-  const setCurrentNetworkKey = useSetRecoilState(currentNetworkKeyState);
+  const setCurrentNetworkKey = useUpdateAtom(currentNetworkKeyState);
 
   const network = networks[item];
   const delayToShowCheckmarkMotion = 350;

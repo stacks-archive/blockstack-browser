@@ -1,6 +1,6 @@
-import { useLoadable } from '@common/hooks/use-loadable';
 import { accountTransactionsState } from '@store/accounts';
+import { useAtomValue } from 'jotai/utils';
 
 export function useAccountActivity() {
-  return useLoadable(accountTransactionsState);
+  return useAtomValue(accountTransactionsState);
 }

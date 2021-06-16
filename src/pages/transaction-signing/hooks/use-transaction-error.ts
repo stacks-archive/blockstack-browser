@@ -1,6 +1,5 @@
 import { useTransactionContractInterface } from '@pages/transaction-signing/hooks/use-transaction';
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
-import { useRecoilValue } from 'recoil';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useMemo } from 'react';
@@ -10,42 +9,43 @@ import { TransactionTypes } from '@stacks/connect';
 import { useTransactionFee } from '@pages/transaction-signing/hooks/use-transaction-fee';
 import { transactionBroadcastErrorState } from '@store/transactions';
 import { useOrigin } from '@common/hooks/use-origin';
-import { useLoadable } from '@common/hooks/use-loadable';
 import { transactionRequestValidationState } from '@store/transactions/requests';
+import { useAtomValue } from 'jotai/utils';
 
 export function useTransactionError() {
   const transactionRequest = useTransactionRequest();
-  const fee = useTransactionFee();
   const contractInterface = useTransactionContractInterface();
-  const broadcastError = useRecoilValue(transactionBroadcastErrorState);
-  const isValidTransaction = useLoadable(transactionRequestValidationState);
+  const fee = useTransactionFee();
+  const broadcastError = useAtomValue(transactionBroadcastErrorState);
+  const isValidTransaction = useAtomValue(transactionRequestValidationState);
   const origin = useOrigin();
 
   const { currentAccount } = useWallet();
   const balances = useFetchBalances();
+
+  // return null;
   return useMemo<TransactionErrorReason | void>(() => {
     if (origin === false) return TransactionErrorReason.ExpiredRequest;
-    if (isValidTransaction.contents === false && !isValidTransaction.isLoading)
-      return TransactionErrorReason.Unauthorized;
+    if (isValidTransaction === false) return TransactionErrorReason.Unauthorized;
 
-    if (!transactionRequest || balances.errorMaybe() || !currentAccount) {
+    if (!transactionRequest || !balances || !currentAccount) {
       return TransactionErrorReason.Generic;
     }
-    if (
-      transactionRequest.txType === TransactionTypes.ContractCall &&
-      !contractInterface.isLoading &&
-      !contractInterface.contents
-    )
+    if (transactionRequest.txType === TransactionTypes.ContractCall && !contractInterface)
       return TransactionErrorReason.NoContract;
     if (broadcastError) return TransactionErrorReason.BroadcastError;
 
-    if (balances.value) {
-      const stxBalance = new BigNumber(balances.value.stx.balance);
+    if (balances) {
+      const stxBalance = new BigNumber(balances.stx.balance);
+      const zeroBalance = stxBalance.toNumber() === 0;
       if (transactionRequest.txType === TransactionTypes.STXTransfer) {
+        if (zeroBalance) return TransactionErrorReason.StxTransferInsufficientFunds;
+
         const transferAmount = new BigNumber(transactionRequest.amount);
         if (transferAmount.gte(stxBalance))
           return TransactionErrorReason.StxTransferInsufficientFunds;
       }
+      if (zeroBalance) return TransactionErrorReason.FeeInsufficientFunds;
       if (fee && !fee.isSponsored && fee.amount) {
         const feeAmount = new BigNumber(fee.amount);
         if (feeAmount.gte(stxBalance)) return TransactionErrorReason.FeeInsufficientFunds;

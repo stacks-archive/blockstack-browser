@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Box, Stack, SlideFade } from '@stacks/ui';
+import React, { memo, useMemo } from 'react';
+import { Box, Stack, SlideFade, Flex, Spinner, color } from '@stacks/ui';
 import type { StackProps } from '@stacks/ui';
 import { TokenAssets } from '@components/popup/token-assets';
 
@@ -26,22 +26,24 @@ function EmptyActivity() {
   );
 }
 
-function ActivityList() {
-  const { isLoading, value: transactions } = useAccountActivity();
-
+const ActivityList = memo(() => {
+  const transactions = useAccountActivity();
   const groupedTxs = useMemo(
     () => (transactions ? createTxDateFormatList(transactions) : []),
     [transactions]
   );
-
-  if (isLoading) return null;
-
   return !transactions || transactions.length === 0 ? (
     <EmptyActivity />
   ) : (
     <TransactionList txsByDate={groupedTxs} />
   );
-}
+});
+
+const Loading = memo(() => (
+  <Flex width="100%" alignItems="center" justifyContent="center" flexGrow={1}>
+    <Spinner color={color('text-caption')} />
+  </Flex>
+));
 
 export function BalancesAndActivity(props: StackProps) {
   const { activeTab, setActiveTab } = useHomeTabs();
@@ -55,20 +57,23 @@ export function BalancesAndActivity(props: StackProps) {
         activeTab={activeTab}
         onTabClick={setActiveTab}
       />
-      <Box position="relative" flexGrow={1}>
-        <SlideFade in={activeTab === 0}>
-          {styles => (
-            <TokenAssets position="absolute" top={0} left={0} width="100%" style={styles} />
-          )}
-        </SlideFade>
-        <SlideFade in={activeTab === 1}>
-          {styles => (
-            <Box position="absolute" top={0} left={0} width="100%" style={styles}>
-              <ActivityList />
-            </Box>
-          )}
-        </SlideFade>
-      </Box>
+
+      <Flex position="relative" flexGrow={1}>
+        <React.Suspense fallback={<Loading />}>
+          <SlideFade in={activeTab === 0}>
+            {styles => (
+              <TokenAssets position="absolute" top={0} left={0} width="100%" style={styles} />
+            )}
+          </SlideFade>
+          <SlideFade in={activeTab === 1}>
+            {styles => (
+              <Box position="absolute" top={0} left={0} width="100%" style={styles}>
+                <ActivityList />
+              </Box>
+            )}
+          </SlideFade>
+        </React.Suspense>
+      </Flex>
     </Stack>
   );
 }

@@ -1,4 +1,3 @@
-import { useRecoilValue } from 'recoil';
 import {
   authRequestState,
   currentScreenState,
@@ -8,18 +7,19 @@ import {
   secretKeyState,
   usernameState,
 } from '@store/onboarding';
+import { useAtomValue } from 'jotai/utils';
 
 export const useOnboardingState = () => {
-  const secretKey = useRecoilValue(secretKeyState);
-  const screen = useRecoilValue(currentScreenState);
+  const secretKey = useAtomValue(secretKeyState);
+  const screen = useAtomValue(currentScreenState);
 
   const { authRequest, decodedAuthRequest, appName, appIcon, appURL } =
-    useRecoilValue(authRequestState);
+    useAtomValue(authRequestState);
 
-  const magicRecoveryCode = useRecoilValue(magicRecoveryCodeState);
-  const isOnboardingInProgress = useRecoilValue(onboardingProgressState);
-  const username = useRecoilValue(usernameState);
-  const onboardingPath = useRecoilValue(onboardingPathState);
+  const magicRecoveryCode = useAtomValue(magicRecoveryCodeState);
+  const isOnboardingInProgress = useAtomValue(onboardingProgressState);
+  const username = useAtomValue(usernameState);
+  const onboardingPath = useAtomValue(onboardingPathState);
 
   return {
     secretKey,

@@ -1,4 +1,3 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { magicRecoveryCodeState, seedInputErrorState, seedInputState } from '@store/onboarding';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useWallet } from '@common/hooks/use-wallet';
@@ -10,11 +9,13 @@ import {
 } from '@common/utils';
 import { ScreenPaths } from '@store/common/types';
 import { useLoading } from '@common/hooks/use-loading';
+import { useUpdateAtom } from 'jotai/utils';
+import { useAtom } from 'jotai';
 
 export function useSignIn() {
-  const setMagicRecoveryCode = useSetRecoilState(magicRecoveryCodeState);
-  const [seed, setSeed] = useRecoilState(seedInputState);
-  const [error, setError] = useRecoilState(seedInputErrorState);
+  const setMagicRecoveryCode = useUpdateAtom(magicRecoveryCodeState);
+  const [seed, setSeed] = useAtom(seedInputState);
+  const [error, setError] = useAtom(seedInputErrorState);
 
   const { isLoading, setIsLoading, setIsIdle } = useLoading('useSignIn');
   const doChangeScreen = useDoChangeScreen();
@@ -57,7 +58,7 @@ export function useSignIn() {
       }
 
       try {
-        await doStoreSeed(parsedKeyInput);
+        await doStoreSeed({ secretKey: parsedKeyInput });
         doChangeScreen(ScreenPaths.SET_PASSWORD);
         setIsIdle();
       } catch (error) {

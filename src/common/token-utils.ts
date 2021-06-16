@@ -11,11 +11,7 @@ function handleErrorMessage(message = 'Error') {
 
 export type SIP010TransferResponse = { okay: true; hasMemo: boolean } | { error: string };
 
-export async function isSip10Transfer({
-  contractInterface,
-}: {
-  contractInterface: ContractInterface;
-}): Promise<SIP010TransferResponse> {
+export function isSip10Transfer(contractInterface: ContractInterface): SIP010TransferResponse {
   try {
     let hasCorrectName = false;
     let hasCorrectSender = false;

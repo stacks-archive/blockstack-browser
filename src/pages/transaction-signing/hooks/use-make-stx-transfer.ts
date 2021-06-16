@@ -1,5 +1,4 @@
-import { useRecoilCallback, waitForAll } from 'recoil';
-
+import { useAtomCallback, waitForAll } from 'jotai/utils';
 import { currentStacksNetworkState } from '@store/networks';
 import { currentAccountState } from '@store/accounts';
 import { correctNonceState } from '@store/accounts/nonce';
@@ -7,7 +6,7 @@ import { AnchorMode, makeSTXTokenTransfer, StacksTransaction } from '@stacks/tra
 import BN from 'bn.js';
 import { stxToMicroStx } from '@stacks/ui-utils';
 import { useLoading } from '@common/hooks/use-loading';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useMakeAssetTransfer } from '@pages/transaction-signing/hooks/use-asset-transfer';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 
@@ -18,28 +17,30 @@ interface TokenTransferParams {
 }
 
 export function useMakeStxTransfer() {
-  return useRecoilCallback(({ snapshot }) => async (params: TokenTransferParams) => {
-    const { amount, recipient, memo } = params;
-    const { network, account, nonce } = await snapshot.getPromise(
-      waitForAll({
-        network: currentStacksNetworkState,
-        account: currentAccountState,
-        nonce: correctNonceState,
-      })
-    );
+  return useAtomCallback<undefined | StacksTransaction, TokenTransferParams>(
+    useCallback(async (get, _set, arg) => {
+      const { amount, recipient, memo } = arg;
+      const { network, account, nonce } = get(
+        waitForAll({
+          network: currentStacksNetworkState,
+          account: currentAccountState,
+          nonce: correctNonceState,
+        })
+      );
 
-    if (!account) return;
+      if (!account) return;
 
-    return makeSTXTokenTransfer({
-      recipient,
-      amount: new BN(stxToMicroStx(amount).toString(), 10),
-      memo,
-      senderKey: account.stxPrivateKey,
-      network,
-      nonce: new BN(nonce.toString(), 10),
-      anchorMode: AnchorMode.Any,
-    });
-  });
+      return makeSTXTokenTransfer({
+        recipient,
+        amount: new BN(stxToMicroStx(amount).toString(), 10),
+        memo,
+        senderKey: account.stxPrivateKey,
+        network,
+        nonce: new BN(nonce.toString(), 10),
+        anchorMode: AnchorMode.Any,
+      });
+    }, [])
+  );
 }
 
 export function useMakeTransferEffect({
@@ -65,38 +66,20 @@ export function useMakeTransferEffect({
   const handleMakeFtTransaction = useMakeAssetTransfer();
   const isActive = isShowing && !!amount && !!recipient;
   const notLoaded = selectedAsset && !transaction && !isLoading;
+  const method = selectedAsset?.type === 'stx' ? handleMakeStxTransaction : handleMakeFtTransaction;
+
+  const handleGenerateTransfer = useCallback(async () => {
+    setIsLoading();
+    const tx = await method({
+      amount,
+      recipient,
+      memo,
+    });
+    if (tx) setTransaction(tx);
+    setIsIdle();
+  }, [amount, recipient, memo, method, setTransaction, setIsLoading, setIsIdle]);
 
   useEffect(() => {
-    const method =
-      selectedAsset?.type === 'stx' ? handleMakeStxTransaction : handleMakeFtTransaction;
-    if (isActive) {
-      if (notLoaded) {
-        setIsLoading();
-        void method({
-          amount,
-          recipient,
-          memo,
-        }).then(tx => {
-          if (tx) {
-            setTransaction(tx);
-          }
-          setIsIdle();
-        });
-      }
-    }
-  }, [
-    memo,
-    selectedAsset?.type,
-    handleMakeFtTransaction,
-    isActive,
-    notLoaded,
-    setTransaction,
-    amount,
-    recipient,
-    setIsLoading,
-    setIsIdle,
-    handleMakeStxTransaction,
-    transaction,
-    isLoading,
-  ]);
+    if (isActive && notLoaded) void handleGenerateTransfer();
+  }, [isActive, notLoaded, setIsLoading, handleGenerateTransfer]);
 }

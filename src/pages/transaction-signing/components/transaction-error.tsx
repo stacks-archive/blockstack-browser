@@ -19,7 +19,7 @@ export enum TransactionErrorReason {
   ExpiredRequest = 7,
 }
 
-export const TransactionError = memo(() => {
+export const TransactionErrorSuspense = memo(() => {
   const reason = useTransactionError();
   if (!reason) return null;
   switch (reason) {
@@ -38,4 +38,12 @@ export const TransactionError = memo(() => {
     default:
       return null;
   }
+});
+
+export const TransactionError = memo(() => {
+  return (
+    <React.Suspense fallback={<></>}>
+      <TransactionErrorSuspense />
+    </React.Suspense>
+  );
 });

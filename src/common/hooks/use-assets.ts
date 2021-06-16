@@ -1,4 +1,3 @@
-import { useLoadable } from '@common/hooks/use-loadable';
 import {
   assetsState,
   fungibleTokensState,
@@ -6,23 +5,28 @@ import {
   stxTokenState,
   transferableAssetsState,
 } from '@store/assets/tokens';
+import { useAtomValue } from 'jotai/utils';
+import { useMemo } from 'react';
 
 export const useAssets = () => {
-  return useLoadable(assetsState);
+  return useAtomValue(assetsState);
 };
 
 export const useTransferableAssets = () => {
-  return useLoadable(transferableAssetsState);
+  return useAtomValue(transferableAssetsState);
 };
 
 export function useFungibleTokenState() {
-  return useLoadable(fungibleTokensState);
+  const atom = useMemo(() => fungibleTokensState, []);
+  return useAtomValue(atom);
 }
 
 export function useNonFungibleTokenState() {
-  return useLoadable(nonFungibleTokensState);
+  const atom = useMemo(() => nonFungibleTokensState, []);
+  return useAtomValue(atom);
 }
 
 export function useStxTokenState() {
-  return useLoadable(stxTokenState);
+  const atom = useMemo(() => stxTokenState, []);
+  return useAtomValue(atom);
 }

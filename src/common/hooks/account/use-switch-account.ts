@@ -1,16 +1,19 @@
 import { useWallet } from '@common/hooks/use-wallet';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { hasSwitchedAccountsState, transactionAccountIndexState } from '@store/accounts';
 import { useCallback } from 'react';
 import { transactionNetworkVersionState } from '@store/transactions';
+import { useAtomValue } from 'jotai/utils';
+import { useAtom } from 'jotai';
+import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 
 const TIMEOUT = 350;
 
 export const useSwitchAccount = (callback?: () => void) => {
-  const { wallet, currentAccountIndex, doSwitchAccount } = useWallet();
-  const txIndex = useRecoilValue(transactionAccountIndexState);
-  const transactionVersion = useRecoilValue(transactionNetworkVersionState);
-  const [hasSwitched, setHasSwitched] = useRecoilState(hasSwitchedAccountsState);
+  const { doSwitchAccount } = useWallet();
+  const currentAccount = useCurrentAccount();
+  const txIndex = useAtomValue(transactionAccountIndexState);
+  const transactionVersion = useAtomValue(transactionNetworkVersionState);
+  const [hasSwitched, setHasSwitched] = useAtom(hasSwitchedAccountsState);
 
   const handleSwitchAccount = useCallback(
     async index => {
@@ -25,9 +28,13 @@ export const useSwitchAccount = (callback?: () => void) => {
     [txIndex, setHasSwitched, doSwitchAccount, callback]
   );
 
-  const accounts = wallet?.accounts || [];
-  const getIsActive = (index: number) =>
-    typeof txIndex === 'number' && !hasSwitched ? index === txIndex : index === currentAccountIndex;
+  const getIsActive = useCallback(
+    (index: number) =>
+      typeof txIndex === 'number' && !hasSwitched
+        ? index === txIndex
+        : index === currentAccount?.index,
+    [txIndex, hasSwitched, currentAccount]
+  );
 
-  return { accounts, handleSwitchAccount, getIsActive, transactionVersion };
+  return { handleSwitchAccount, getIsActive, transactionVersion };
 };

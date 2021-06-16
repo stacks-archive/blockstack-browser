@@ -7,11 +7,10 @@ import { useExplorerLink } from '@common/hooks/use-explorer-link';
 import { Caption, Title } from '@components/typography';
 import { ContractPreview } from '@pages/transaction-signing/components/contract-preview';
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
-import { useLoadable } from '@common/hooks/use-loadable';
-import { transactionFunctionsState } from '@store/transactions/contract-call';
 
 import { AttachmentRow } from './attachment-row';
 import { RowItem } from './row-item';
+import { useTransactionFunction } from '@pages/transaction-signing/hooks/use-transaction';
 
 interface ArgumentProps {
   arg: string;
@@ -19,10 +18,10 @@ interface ArgumentProps {
 }
 
 const FunctionArgumentRow: React.FC<ArgumentProps> = memo(({ arg, index, ...rest }) => {
-  const payload = useLoadable(transactionFunctionsState);
+  const txFunction = useTransactionFunction();
   const argCV = deserializeCV(Buffer.from(arg, 'hex'));
   const strValue = cvToString(argCV);
-  const name = payload.value?.args[index].name || null;
+  const name = txFunction?.args[index].name || null;
 
   return <RowItem name={name} type={getCVTypeString(argCV)} value={strValue} {...rest} />;
 });
@@ -35,19 +34,25 @@ const FunctionArgumentsList = memo((props: StackProps) => {
   }
   const hasArgs = transactionRequest.functionArgs.length > 0;
   return (
-    <Stack divider={<Divider />} spacing="base" {...props}>
+    <>
       {hasArgs ? (
-        transactionRequest.functionArgs.map((arg, index) => {
-          return <FunctionArgumentRow key={`${arg}-${index}`} arg={arg} index={index} />;
-        })
+        <Stack divider={<Divider />} spacing="base" {...props}>
+          {transactionRequest.functionArgs.map((arg, index) => {
+            return (
+              <React.Suspense fallback={<>loading</>}>
+                <FunctionArgumentRow key={`${arg}-${index}`} arg={arg} index={index} />
+              </React.Suspense>
+            );
+          })}
+        </Stack>
       ) : (
         <Caption>There are no additional arguments passed for this function call.</Caption>
       )}
-    </Stack>
+    </>
   );
 });
 
-export const ContractCallDetails = memo(() => {
+export const ContractCallDetailsSuspense = () => {
   const transactionRequest = useTransactionRequest();
   const { handleOpenTxLink } = useExplorerLink();
   if (!transactionRequest || transactionRequest.txType !== 'contract_call') return null;
@@ -78,4 +83,10 @@ export const ContractCallDetails = memo(() => {
       </Stack>
     </Stack>
   );
-});
+};
+
+export const ContractCallDetails = () => (
+  <React.Suspense fallback={<></>}>
+    <ContractCallDetailsSuspense />
+  </React.Suspense>
+);

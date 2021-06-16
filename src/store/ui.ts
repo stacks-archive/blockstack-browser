@@ -1,4 +1,5 @@
-import { atomFamily, DefaultValue, AtomEffect, atom } from 'recoil';
+import { atomFamily, atomWithStorage } from 'jotai/utils';
+import { atom } from 'jotai';
 
 export enum AccountStep {
   Switch = 'switch',
@@ -6,49 +7,30 @@ export enum AccountStep {
   Username = 'username',
 }
 
-const localStorageEffect =
-  (key: string): AtomEffect<number> =>
-  ({ setSelf, onSet }) => {
-    const savedValue = localStorage.getItem(key);
-    if (savedValue != null) {
-      setSelf(JSON.parse(savedValue));
-    }
-    onSet(newValue => {
-      if (newValue instanceof DefaultValue) {
-        localStorage.removeItem(key);
-      } else {
-        localStorage.setItem(key, JSON.stringify(newValue));
-      }
-    });
-  };
-
-export const tabState = atomFamily<number, string>({
-  key: 'tabs',
-  default: _param => 0,
-  effects_UNSTABLE: param => [localStorageEffect(`TABS__${param}`)],
+export const tabState = atomFamily<string, number, number>(param => {
+  const anAtom = atomWithStorage<number>(`TABS__${param}`, 0);
+  anAtom.debugLabel = `TABS__${param}`;
+  return anAtom;
 });
 
-export const loadingState = atomFamily<'idle' | 'loading', string>({
-  key: 'ui.loading',
-  default: () => 'idle',
+type LoadingState = 'idle' | 'loading';
+
+export const loadingState = atomFamily<string, LoadingState, LoadingState>(_param => {
+  const anAtom = atom<LoadingState>('idle');
+  anAtom.debugLabel = `loading-atom/${_param}`;
+  return anAtom;
 });
 
-export const accountDrawerStep = atom<AccountStep>({
-  key: 'drawers.accounts.visibility',
-  default: AccountStep.Switch,
-});
+export const accountDrawerStep = atom<AccountStep>(AccountStep.Switch);
 
-export const showAccountsStore = atom({
-  key: 'drawers.switch-account',
-  default: false,
-});
+// TODO: refactor into atom family
+export const showAccountsStore = atom(false);
 
-export const showNetworksStore = atom({
-  key: 'drawers.show-networks',
-  default: false,
-});
+export const showNetworksStore = atom(false);
 
-export const showSettingsStore = atom({
-  key: 'drawers.show-settings',
-  default: false,
-});
+export const showSettingsStore = atom(false);
+
+accountDrawerStep.debugLabel = 'accountDrawerStep';
+showAccountsStore.debugLabel = 'showAccountsStore';
+showNetworksStore.debugLabel = 'showNetworksStore';
+showSettingsStore.debugLabel = 'showSettingsStore';

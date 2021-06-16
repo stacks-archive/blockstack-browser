@@ -1,5 +1,5 @@
 import { useWallet } from '@common/hooks/use-wallet';
-import { useRecoilCallback, waitForAll } from 'recoil';
+import { useAtomCallback, waitForAll } from 'jotai/utils';
 import { currentAccountState } from '@store/accounts';
 import {
   transactionAttachmentState,
@@ -10,22 +10,22 @@ import { requestTokenState } from '@store/transactions/requests';
 import { currentNetworkState } from '@store/networks';
 import { finalizeTxSignature } from '@common/utils';
 import { handleBroadcastTransaction } from '@common/transactions/transactions';
+import { useCallback } from 'react';
 
 export function useTransactionBroadcast() {
   const { doSetLatestNonce } = useWallet();
-  return useRecoilCallback(
-    ({ snapshot, set }) =>
-      async () => {
-        const { account, signedTransaction, attachment, requestToken, network } =
-          await snapshot.getPromise(
-            waitForAll({
-              signedTransaction: signedTransactionState,
-              account: currentAccountState,
-              attachment: transactionAttachmentState,
-              requestToken: requestTokenState,
-              network: currentNetworkState,
-            })
-          );
+  return useAtomCallback(
+    useCallback(
+      async (get, set) => {
+        const { account, signedTransaction, attachment, requestToken, network } = get(
+          waitForAll({
+            signedTransaction: signedTransactionState,
+            account: currentAccountState,
+            attachment: transactionAttachmentState,
+            requestToken: requestTokenState,
+            network: currentNetworkState,
+          })
+        );
 
         if (!account || !requestToken || !signedTransaction) {
           set(transactionBroadcastErrorState, 'No pending transaction found.');
@@ -41,13 +41,14 @@ export function useTransactionBroadcast() {
             attachment,
             networkUrl: network.url,
           });
-          await doSetLatestNonce(nonce);
+          typeof nonce !== 'undefined' && (await doSetLatestNonce(nonce));
           finalizeTxSignature(requestToken, result);
         } catch (error) {
           console.error(error);
           set(transactionBroadcastErrorState, error.message);
         }
       },
-    [doSetLatestNonce]
+      [doSetLatestNonce]
+    )
   );
 }

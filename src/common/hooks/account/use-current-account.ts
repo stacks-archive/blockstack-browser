@@ -1,11 +1,6 @@
-import { useRecoilValue } from 'recoil';
-import { currentAccountState, currentAccountStxAddressState } from '@store/accounts';
+import { currentAccountState } from '@store/accounts';
+import { useAtomValue } from 'jotai/utils';
 
 export function useCurrentAccount() {
-  const accountInfo = useRecoilValue(currentAccountState);
-  const stxAddress = useRecoilValue(currentAccountStxAddressState);
-  return {
-    ...accountInfo,
-    stxAddress,
-  };
+  return useAtomValue(currentAccountState);
 }

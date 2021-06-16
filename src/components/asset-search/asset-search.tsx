@@ -2,11 +2,13 @@ import React, { memo, useMemo, forwardRef } from 'react';
 import { Box, Fade, Text, Flex, Input, color, Stack, StackProps } from '@stacks/ui';
 import { useCombobox } from 'downshift';
 import { searchInputStore } from '@store/assets/asset-search';
-import { useRecoilState } from 'recoil';
+
 import { SelectedAsset } from './selected-asset';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { AssetRow } from '@components/asset-row';
+import { useAtomValue } from 'jotai/utils';
+import { useAtom } from 'jotai';
 
 interface AssetSearchResultsProps extends StackProps {
   isOpen: boolean;
@@ -17,17 +19,15 @@ interface AssetSearchResultsProps extends StackProps {
 const AssetSearchResults = forwardRef(
   ({ isOpen, highlightedIndex, getItemProps, ...props }: AssetSearchResultsProps, ref) => {
     const assets = useTransferableAssets();
-    const [searchInput] = useRecoilState(searchInputStore);
+    const searchInput = useAtomValue(searchInputStore);
 
     const items = useMemo(
       () =>
-        assets.value?.filter(item =>
-          item.name.toLowerCase().includes(searchInput.toLowerCase() || '')
-        ),
-      [assets.value, searchInput]
+        assets?.filter(item => item.name.toLowerCase().includes(searchInput.toLowerCase() || '')),
+      [assets, searchInput]
     );
 
-    if (!assets.value) return null;
+    if (!assets) return null;
 
     return (
       <Fade in={isOpen && !!items?.length}>
@@ -74,7 +74,7 @@ export const AssetSearchField: React.FC<{
 
   const { selectedAsset, handleUpdateSelectedAsset } = useSelectedAsset();
 
-  const [searchInput, setSearchInput] = useRecoilState(searchInputStore);
+  const [searchInput, setSearchInput] = useAtom(searchInputStore);
 
   const {
     isOpen,
@@ -86,7 +86,7 @@ export const AssetSearchField: React.FC<{
     getItemProps,
     openMenu,
   } = useCombobox({
-    items: assets.value || [],
+    items: assets || [],
     initialIsOpen: true,
     inputValue: searchInput,
     defaultIsOpen: false,
@@ -103,7 +103,7 @@ export const AssetSearchField: React.FC<{
   const labelRef = React.useRef(null);
   const comboRef = React.useRef(null);
 
-  if (assets.isLoading) return null;
+  if (!assets) return null;
 
   return (
     <Flex flexDirection="column" width="100%" position="relative" overflow="visible" {...rest}>
@@ -152,7 +152,7 @@ export const AssetSearch: React.FC<{
   const { selectedAsset } = useSelectedAsset();
   const assets = useTransferableAssets();
 
-  if (assets.isLoading) {
+  if (!assets) {
     return (
       <Stack spacing="tight" {...rest}>
         <Box height="16px" width="68px" bg={color('bg-4')} borderRadius="8px" />

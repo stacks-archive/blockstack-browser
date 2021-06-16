@@ -8,6 +8,7 @@ import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import {
   getAmountFromPostCondition,
   getIconStringFromPostCondition,
+  getNameFromPostCondition,
   getPostConditionCodeMessage,
   getPostConditionTitle,
   getSymbolFromPostCondition,
@@ -21,16 +22,63 @@ interface PostConditionProps {
   isLast?: boolean;
 }
 
-export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLast }) => {
-  const { stxAddress } = useCurrentAccount();
+export const PostConditionFallbackComponent: React.FC<PostConditionProps> = ({ pc, isLast }) => {
+  const currentAccount = useCurrentAccount();
+  const pendingTransaction = useTransactionRequest();
+  const title = getPostConditionTitle(pc);
+  const iconString = getIconStringFromPostCondition(pc);
+  const ticker = getSymbolFromPostCondition(pc);
+  const amount = getAmountFromPostCondition(pc);
+  const name = getNameFromPostCondition(pc);
+  const address = addressToString(pc.principal.address);
+  const isSending = address === currentAccount?.address;
+
+  const isContractPrincipal =
+    (pendingTransaction?.txType == TransactionTypes.ContractCall &&
+      pendingTransaction.contractAddress === address) ||
+    address.includes('.');
+
+  if (!pendingTransaction) return null;
+
+  const message = pc.conditionCode
+    ? `${getPostConditionCodeMessage(
+        pc.conditionCode,
+        isSending
+      )} ${amount} ${ticker} or the transaction will abort.`
+    : undefined;
+
+  return (
+    <>
+      <TransactionEventCard
+        title={`${
+          isContractPrincipal ? 'The contract ' : isSending ? 'You ' : 'Another address '
+        } ${title}`}
+        left={name}
+        right={`${isSending ? 'From' : 'To'} ${truncateMiddle(
+          addressToString(pc.principal.address),
+          4
+        )}`}
+        amount={amount}
+        ticker={ticker}
+        icon={iconString}
+        message={message}
+        isLast={isLast}
+      />
+    </>
+  );
+};
+
+export const PostConditionComponentSuspense: React.FC<PostConditionProps> = ({ pc, isLast }) => {
+  const currentAccount = useCurrentAccount();
   const asset = useAssetInfoFromPostCondition(pc);
   const pendingTransaction = useTransactionRequest();
   const title = getPostConditionTitle(pc);
   const iconString = getIconStringFromPostCondition(pc);
   const _ticker = getSymbolFromPostCondition(pc);
   const _amount = getAmountFromPostCondition(pc);
+  const name = getNameFromPostCondition(pc);
   const address = addressToString(pc.principal.address);
-  const isSending = address === stxAddress;
+  const isSending = address === currentAccount?.address;
 
   const amount =
     typeof asset?.meta?.decimals === 'number' ? ftDecimals(_amount, asset.meta.decimals) : _amount;
@@ -48,7 +96,6 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
     ? `${getPostConditionCodeMessage(
         pc.conditionCode,
         isSending
-        // TODO: fetch asset info in SIP 10 branch
       )} ${amount} ${ticker} or the transaction will abort.`
     : undefined;
 
@@ -58,7 +105,7 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
         title={`${
           isContractPrincipal ? 'The contract ' : isSending ? 'You ' : 'Another address '
         } ${title}`}
-        left={asset?.meta?.name}
+        left={asset?.meta?.name || name}
         right={`${isSending ? 'From' : 'To'} ${truncateMiddle(
           addressToString(pc.principal.address),
           4
@@ -70,5 +117,13 @@ export const PostConditionComponent: React.FC<PostConditionProps> = ({ pc, isLas
         isLast={isLast}
       />
     </>
+  );
+};
+
+export const PostConditionComponent = (props: PostConditionProps) => {
+  return (
+    <React.Suspense fallback={<PostConditionFallbackComponent {...props} />}>
+      <PostConditionComponentSuspense {...props} />
+    </React.Suspense>
   );
 };

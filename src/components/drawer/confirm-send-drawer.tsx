@@ -32,7 +32,7 @@ const TransactionDetails: React.FC<
   } & StackProps
 > = ({ amount, nonce, fee, recipient, ...rest }) => {
   const { ticker } = useSelectedAsset();
-  const { stxAddress } = useCurrentAccount();
+  const currentAccount = useCurrentAccount();
   const { selectedAsset } = useSelectedAsset();
   const gradientString = `${selectedAsset?.contractAddress}.${selectedAsset?.contractName}::${selectedAsset?.name}`;
   return (
@@ -49,7 +49,9 @@ const TransactionDetails: React.FC<
         icon={selectedAsset?.contractAddress ? gradientString : 'STX'}
         ticker={ticker || 'STX'}
         title="You will transfer exactly"
-        left={stxAddress ? `From ${truncateMiddle(stxAddress)}` : undefined}
+        left={
+          currentAccount?.address ? `From ${truncateMiddle(currentAccount?.address)}` : undefined
+        }
         right={`To ${truncateMiddle(recipient)}`}
       />
     </Flex>

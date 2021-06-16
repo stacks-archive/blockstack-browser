@@ -5,7 +5,7 @@ import { SIP_010 } from '@common/constants';
 import { fetcher } from '@common/api/wrapped-fetch';
 import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
-import { Asset, FungibleTokenOptions, MetaDataNames } from '@store/assets/types';
+import { Asset, FtMeta, FungibleTokenOptions, MetaDataNames } from '@store/assets/types';
 
 async function callReadOnlyFunction({
   contractName,
@@ -69,21 +69,17 @@ export async function fetchFungibleTokenMetaData({
     name: string;
     symbol: string;
   };
-}) {
-  try {
-    const [name, symbol, decimals] = await Promise.all([
-      fetchName({ ...options, functionName: methods.name }),
-      fetchSymbol({ ...options, functionName: methods.symbol }),
-      fetchDecimals({ ...options, functionName: methods.decimals }),
-    ]);
-    return {
-      name,
-      symbol,
-      decimals,
-    };
-  } catch (e) {
-    return null;
-  }
+}): Promise<FtMeta | null> {
+  const [name, symbol, decimals] = await Promise.all([
+    fetchName({ ...options, functionName: methods.name }),
+    fetchSymbol({ ...options, functionName: methods.symbol }),
+    fetchDecimals({ ...options, functionName: methods.decimals }),
+  ]);
+  return {
+    name,
+    symbol,
+    decimals,
+  } as FtMeta;
 }
 
 function makeKey(networkUrl: string, address: string, name: string, key: string): string {
