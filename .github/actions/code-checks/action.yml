@@ -27,3 +27,6 @@ runs:
     - name: Setup screenshots
       shell: bash
       run: mkdir tests/screenshots
+    - name: Check dependencies
+      run: yarn check:deps
+      shell: bash

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Button, color, Flex, Stack, StackProps } from '@stacks/ui';
 import { Caption } from '@components/typography';
-import { BaseDrawer, BaseDrawerProps } from './index';
+import { BaseDrawer, BaseDrawerProps } from '@components/drawer';
 import { StacksTransaction } from '@stacks/transactions';
 import { stacksValue } from '@common/stacks-utils';
 import { useHandleSubmitTransaction } from '@pages/transaction-signing/hooks/use-submit-stx-transaction';

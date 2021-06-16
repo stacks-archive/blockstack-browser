@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { CodeBlock, Stack, color, BoxProps } from '@stacks/ui';
+
 import { Prism } from '@common/clarity-prism';
+import { usePendingTransaction } from '@common/hooks/use-pending-transaction';
 import { useWallet } from '@common/hooks/use-wallet';
-import { AttachmentRow } from './attachment-row';
 import { Caption, Title } from '@components/typography';
 import { Divider } from '@components/divider';
 import { ContractPreview } from '@pages/transaction-signing/components/contract-preview';
-
-import { usePendingTransaction } from '@pages/transaction-signing/hooks/use-pending-transaction';
 import { RowItem } from './row-item';
+import { AttachmentRow } from './attachment-row';
 
 function ContractCodeSection() {
   const pendingTransaction = usePendingTransaction();

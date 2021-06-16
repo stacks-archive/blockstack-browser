@@ -3,7 +3,6 @@ import { Box, Text, Button, Stack } from '@stacks/ui';
 import { Formik, useFormikContext } from 'formik';
 
 import { PopupContainer } from '@components/popup/container';
-import { ConfirmSendDrawer } from '@components/drawer/confirm-send-drawer';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 
 import { ScreenPaths } from '@store/common/types';
@@ -19,6 +18,7 @@ import { RecipientField } from '@pages/send-tokens/components/recipient-field';
 import { MemoField } from '@pages/send-tokens/components/memo-field';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
+import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
 
 type Amount = number | '';
 
