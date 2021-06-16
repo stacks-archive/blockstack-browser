@@ -32,8 +32,8 @@ jobs:
         run: |
           NEWEST_VERSION=$(sort -V old/firefox_version firefox_version | tail -n 1)
           LATEST_VERSION=$(cat firefox_version)
-          diff old/firefox_version firefox_version > /dev/null
-          if [[ "1" == '${?}' && ${NEWEST_VERSION} == ${LATEST_VERSION} ]]; then
+          DIFF=$(diff old/firefox_version firefox_version || true)
+          if [[ -n "${DIFF}" && ${NEWEST_VERSION} == ${LATEST_VERSION} ]]; then
             echo "::warning::New Firefox version detected: ${LATEST_VERSION}"
             echo "::set-output name=is_new::true"
             echo "::set-output name=new_version::${LATEST_VERSION}"
@@ -108,8 +108,8 @@ jobs:
         run: |
           NEWEST_VERSION=$(sort -V old/chrome_version chrome_version | tail -n 1)
           LATEST_VERSION=$(cat chrome_version)
-          diff old/chrome_version chrome_version > /dev/null
-          if [[ "1" == '${?}' && ${NEWEST_VERSION} == ${LATEST_VERSION} ]]; then
+          DIFF=$(diff old/chrome_version chrome_version || true)
+          if [[ -n "${DIFF}" && ${NEWEST_VERSION} == ${LATEST_VERSION} ]]; then
             echo "::warning::New Chrome version detected: ${LATEST_VERSION}"
             echo "::set-output name=is_new::true"
             echo "::set-output name=new_version::${LATEST_VERSION}"
