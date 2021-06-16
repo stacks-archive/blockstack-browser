@@ -17,9 +17,7 @@ export const stacksValue = ({
   abbreviate?: boolean;
 }) => {
   const stacks = microStxToStx(value);
-  const stxAmount = fixedDecimals
-    ? parseFloat(stacks.toFormat(STX_DECIMALS))
-    : stacks.decimalPlaces(STX_DECIMALS).toNumber();
+  const stxAmount = stacks.toNumber();
   return `${
     abbreviate && stxAmount > 10000
       ? abbreviateNumber(stxAmount)
