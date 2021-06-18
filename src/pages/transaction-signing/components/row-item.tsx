@@ -27,7 +27,7 @@ export function RowItem({
   type,
   value,
   ...rest
-}: { name?: string | null; type?: string; value: string } & StackProps) {
+}: { name?: string | JSX.Element | null; type?: string; value: string } & StackProps) {
   return (
     <Stack spacing="base-tight" {...rest}>
       <SpaceBetween flexShrink={0}>

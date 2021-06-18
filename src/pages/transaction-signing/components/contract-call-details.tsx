@@ -11,20 +11,46 @@ import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { AttachmentRow } from './attachment-row';
 import { RowItem } from './row-item';
 import { useTransactionFunction } from '@pages/transaction-signing/hooks/use-transaction';
+import { LoadingRectangle } from '@components/loading-rectangle';
 
 interface ArgumentProps {
   arg: string;
   index: number;
 }
 
-const FunctionArgumentRow: React.FC<ArgumentProps> = memo(({ arg, index, ...rest }) => {
+const useFuctionArgumentName = (index: number) => {
   const txFunction = useTransactionFunction();
+  return txFunction?.args[index].name || null;
+};
+const FunctionArgumentNameSuspense = ({ index }: { index: number }) => {
+  const name = useFuctionArgumentName(index);
+  return <>{name}</>;
+};
+const FunctionArgumentNameFallback = () => {
+  return <LoadingRectangle width="42px" height="14px" />;
+};
+
+const FunctionArgumentName = ({ index }: { index: number }) => {
+  return (
+    <React.Suspense fallback={<FunctionArgumentNameFallback />}>
+      <FunctionArgumentNameSuspense index={index} />
+    </React.Suspense>
+  );
+};
+
+const FunctionArgumentRow: React.FC<ArgumentProps> = ({ arg, index, ...rest }) => {
   const argCV = deserializeCV(Buffer.from(arg, 'hex'));
   const strValue = cvToString(argCV);
-  const name = txFunction?.args[index].name || null;
 
-  return <RowItem name={name} type={getCVTypeString(argCV)} value={strValue} {...rest} />;
-});
+  return (
+    <RowItem
+      name={<FunctionArgumentName index={index} />}
+      type={getCVTypeString(argCV)}
+      value={strValue}
+      {...rest}
+    />
+  );
+};
 
 const FunctionArgumentsList = memo((props: StackProps) => {
   const transactionRequest = useTransactionRequest();
