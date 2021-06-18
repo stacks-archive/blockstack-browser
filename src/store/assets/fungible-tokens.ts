@@ -1,12 +1,12 @@
 import { atomFamily } from 'jotai/utils';
 import { ContractPrincipal, FtMeta, MetaDataMethodNames } from '@store/assets/types';
 import { atom } from 'jotai';
-import { currentNetworkState } from '@store/networks';
 import { getLocalData, setLocalData } from '@store/common/utils';
 import { fetchFungibleTokenMetaData, getMatchingFunction } from '@store/assets/utils';
 import { contractInterfaceState } from '@store/contracts';
 import deepEqual from 'fast-deep-equal';
 import { debugLabelWithContractPrincipal } from '@common/atom-utils';
+import { currentNetworkState } from '@store/networks';
 
 enum FungibleTokensQueryKeys {
   SIP_10_COMPLIANT = 'SIP_10_COMPLIANT',
@@ -14,14 +14,15 @@ enum FungibleTokensQueryKeys {
   ASSET_META_DATA = 'ASSET_META_DATA',
 }
 
+type ContractWithNetwork = Readonly<ContractPrincipal & { networkUrl: string }>;
+
 const assetMetaDataMethodsResponseState = atomFamily<
-  Readonly<ContractPrincipal>,
+  ContractWithNetwork,
   MetaDataMethodNames | null
->(({ contractName, contractAddress }) => {
+>(({ contractName, contractAddress, networkUrl }) => {
   const anAtom = atom(get => {
-    const network = get(currentNetworkState);
     const keyParams = [
-      network.url,
+      networkUrl,
       contractAddress,
       contractName,
       FungibleTokensQueryKeys.META_DATA_METHODS,
@@ -42,12 +43,16 @@ const assetMetaDataMethodsResponseState = atomFamily<
     }
     return null;
   });
-  anAtom.debugLabel = `assetMetaDataMethodsResponseState/${contractAddress}.${contractName}`;
+  debugLabelWithContractPrincipal(anAtom, 'assetMetaDataMethodsResponseState', {
+    contractName,
+    contractAddress,
+    networkUrl,
+  });
   return anAtom;
 }, deepEqual);
 
-const assetMetaDataMethods = atomFamily<Readonly<ContractPrincipal>, MetaDataMethodNames | null>(
-  ({ contractName, contractAddress }) => {
+const assetMetaDataMethods = atomFamily<ContractWithNetwork, MetaDataMethodNames | null>(
+  ({ contractName, contractAddress, networkUrl }) => {
     const anAtom = atom(get => {
       const network = get(currentNetworkState);
       const keyParams = [
@@ -57,23 +62,33 @@ const assetMetaDataMethods = atomFamily<Readonly<ContractPrincipal>, MetaDataMet
         FungibleTokensQueryKeys.META_DATA_METHODS,
       ];
       const local = getLocalData<MetaDataMethodNames>(keyParams);
-      return local || get(assetMetaDataMethodsResponseState({ contractName, contractAddress }));
+      return (
+        local ||
+        get(
+          assetMetaDataMethodsResponseState({
+            contractName,
+            contractAddress,
+            networkUrl: network.url,
+          })
+        )
+      );
     });
     debugLabelWithContractPrincipal(anAtom, 'assetMetaDataMethods', {
       contractName,
       contractAddress,
+      networkUrl,
     });
     return anAtom;
   },
   deepEqual
 );
 
-export const assetMetaDataState = atomFamily<ContractPrincipal, FtMeta | null>(
-  ({ contractAddress, contractName }) => {
+export const assetMetaDataState = atomFamily<ContractWithNetwork, FtMeta | null>(
+  ({ contractAddress, contractName, networkUrl }) => {
     const anAtom = atom(async get => {
-      const methods = get(assetMetaDataMethods({ contractName, contractAddress }));
-      if (!methods) return null;
+      const methods = get(assetMetaDataMethods({ contractName, contractAddress, networkUrl }));
       const network = get(currentNetworkState);
+      if (!methods) return null;
       const keyParams = [
         network.url,
         contractAddress,
@@ -93,6 +108,7 @@ export const assetMetaDataState = atomFamily<ContractPrincipal, FtMeta | null>(
     debugLabelWithContractPrincipal(anAtom, 'assetMetaDataState', {
       contractName,
       contractAddress,
+      networkUrl,
     });
     return anAtom;
   },

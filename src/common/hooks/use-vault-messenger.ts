@@ -32,7 +32,8 @@ const useInnerMessageWrapper = () => {
               set(hasSetPasswordState, vault.hasSetPassword);
               set(walletState, vault.wallet);
               set(secretKeyState, vault.secretKey ? textToBytes(vault.secretKey) : undefined);
-              set(currentAccountIndexState, vault.currentAccountIndex);
+              typeof vault.currentAccountIndex !== 'undefined' &&
+                set(currentAccountIndexState, vault.currentAccountIndex);
               set(encryptedSecretKeyStore, vault.encryptedSecretKey);
               resolve(vault);
             } else {

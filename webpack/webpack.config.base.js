@@ -69,13 +69,7 @@ const HTML_PROD_OPTIONS = IS_DEV
       },
     };
 
-const aliases = IS_DEV
-  ? {}
-  : {
-      react: 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-      'react-dom': 'preact/compat',
-    };
+const aliases = {};
 
 const config = {
   entry: {

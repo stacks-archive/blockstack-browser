@@ -10,6 +10,7 @@ import { AccountsDrawer } from '@components/drawer/accounts';
 import { NetworksDrawer } from '@components/drawer/networks-drawer';
 import { Routes } from './routes';
 import { Devtools } from '@components/devtools';
+import { SettingsPopover } from '@components/popup/settings-popover';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -27,6 +28,7 @@ export const App: React.FC = () => {
               <Routes />
               <AccountsDrawer />
               <NetworksDrawer />
+              <SettingsPopover />
             </Router>
             <Toaster position="bottom-center" toastOptions={{ style: { fontSize: '14px' } }} />
           </>

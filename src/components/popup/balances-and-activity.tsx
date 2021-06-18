@@ -40,8 +40,8 @@ const ActivityList = memo(() => {
 });
 
 const Loading = memo(() => (
-  <Flex width="100%" alignItems="center" justifyContent="center" flexGrow={1}>
-    <Spinner color={color('text-caption')} />
+  <Flex pb="72px" width="100%" alignItems="center" justifyContent="center" flexGrow={1}>
+    <Spinner size="lg" opacity={0.5} color={color('text-caption')} />
   </Flex>
 ));
 

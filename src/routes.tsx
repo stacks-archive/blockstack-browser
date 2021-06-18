@@ -8,7 +8,7 @@ import { ChooseAccount } from '@pages/choose-account';
 import { TransactionPage } from '@pages/transaction-signing/transaction-signing';
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
-import { PopupHome } from '@pages/home/home';
+import { PopupHome } from '@pages/home';
 import { PopupSend } from '@pages/send-tokens/send-tokens';
 import { PopupReceive } from '@pages/receive-tokens/receive-tokens';
 import { AddNetwork } from '@pages/add-network/add-network';
@@ -24,7 +24,6 @@ import { Navigate } from '@components/navigate';
 import { AccountGate } from '@components/account-gate';
 import { AccountGateRoute } from '@components/account-gate-route';
 import { lastSeenStore } from '@store/wallet';
-import { ErrorBoundary } from '@components/error-boundary';
 import { Unlock } from '@components/unlock';
 import { useUpdateAtom } from 'jotai/utils';
 
@@ -34,7 +33,7 @@ interface RouteProps {
 }
 
 export const Route: React.FC<RouteProps> = ({ path, element }) => {
-  return <RouterRoute path={path} element={<ErrorBoundary>{element}</ErrorBoundary>} />;
+  return <RouterRoute path={path} element={<>{element}</>} />;
 };
 
 export const Routes: React.FC = () => {

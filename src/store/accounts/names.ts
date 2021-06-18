@@ -1,25 +1,27 @@
-import { atom } from 'jotai';
-import { getStxAddress } from '@stacks/wallet-sdk';
-
-import { accountsState } from './index';
+import { Atom, atom } from 'jotai';
+import { accountsWithAddressState } from './index';
 import { currentNetworkState } from '@store/networks';
-import { transactionNetworkVersionState } from '@store/transactions';
 import { fetchNamesByAddress } from '@common/api/names';
+import { atomFamilyWithQuery } from '@store/query';
+import { waitForAll } from 'jotai/utils';
 
-function makeKey(networkUrl: string, address: string): string {
-  return `${networkUrl}__${address}`;
+function makeKey(networkUrl: string): string {
+  return `${networkUrl}__BNS_NAMES`;
 }
 
-function getLocalNames(networkUrl: string, address: string): [string[], number] | null {
-  const key = makeKey(networkUrl, address);
+function getLocalNames(networkUrl: string) {
+  const key = makeKey(networkUrl);
   const value = localStorage.getItem(key);
   if (!value) return null;
-  return JSON.parse(value);
+  const [data, date] = JSON.parse(value);
+  const now = Date.now();
+  if (now - date > STALE_TIME) return null;
+  return data as Record<string, string[]>;
 }
 
-function setLocalNames(networkUrl: string, address: string, data: [string[], number]): void {
-  const key = makeKey(networkUrl, address);
-  return localStorage.setItem(key, JSON.stringify(data));
+function setLocalNames(networkUrl: string, data: Record<string, string[]>): void {
+  const key = makeKey(networkUrl);
+  return localStorage.setItem(key, JSON.stringify([data, Date.now()]));
 }
 
 interface AccountName {
@@ -32,57 +34,27 @@ type AccountNameState = AccountName[] | null;
 
 const STALE_TIME = 30 * 60 * 1000; // 30 min
 
-export const accountNameState = atom<AccountNameState>(async get => {
-  const accounts = get(accountsState);
+const namesResponseState = atomFamilyWithQuery<[string, string], string[]>(
+  'ACCOUNT_NAMES',
+  (_get, [address, networkUrl]) => {
+    return fetchNamesByAddress(networkUrl, address);
+  }
+);
+
+export const accountNameState = atom<AccountNameState>(get => {
+  const accounts = get(accountsWithAddressState);
   const network = get(currentNetworkState);
-  const transactionVersion = get(transactionNetworkVersionState);
-
   if (!network || !accounts) return null;
-
-  const promises = accounts.map(async account => {
-    const address = getStxAddress({
-      account: account,
-      transactionVersion,
+  let names = getLocalNames(network.url);
+  if (!names) {
+    let obj: Record<string, Atom<any>> = {};
+    accounts.forEach(account => {
+      obj[account.address] = namesResponseState([account.address, network.url]);
     });
-
-    // let's try to find any saved names first
-    const local = getLocalNames(network.url, address);
-
-    if (local) {
-      const [names, timestamp] = local;
-      const now = Date.now();
-      const isStale = now - timestamp > STALE_TIME;
-      if (!isStale)
-        return {
-          address,
-          index: account.index,
-          names,
-        };
-    }
-
-    try {
-      const names = await fetchNamesByAddress(network.url, address);
-      if (names?.length) {
-        // persist them for next time
-        setLocalNames(network.url, address, [names, Date.now()]);
-      }
-      return {
-        address,
-        index: account.index,
-        names: names || [],
-      };
-    } catch (e) {
-      console.error(e);
-      return {
-        address,
-        index: account.index,
-        names: [],
-      };
-    }
-  });
-  if (!promises) return null;
-  const value = await Promise.all(promises);
-  return value;
+    names = get(waitForAll(obj));
+    setLocalNames(network.url, names);
+  }
+  return accounts.map(({ address, index }) => ({ address, index, names: names?.[address] || [] }));
 });
 
 accountNameState.debugLabel = 'accountNameState';

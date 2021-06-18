@@ -66,7 +66,7 @@ const SendButton = () => (
 
 export const HomeActions: React.FC<StackProps> = props => {
   return (
-    <Stack isInline {...props}>
+    <Stack isInline spacing="base-tight" {...props}>
       <SendButton />
       <TxButton path={ScreenPaths.POPUP_RECEIVE} kind="receive" />
     </Stack>

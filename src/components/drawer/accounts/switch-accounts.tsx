@@ -88,6 +88,7 @@ const AccountListItem = memo(
         py="base"
         px="loose"
         onClick={handleClick}
+        position="relative"
       >
         <Stack isInline alignItems="center" spacing="base">
           <AccountAvatarItem account={account} />
@@ -97,7 +98,15 @@ const AccountListItem = memo(
           </Stack>
         </Stack>
         <Fade in={isLoading}>
-          {styles => <Spinner color={color('text-caption')} size="18px" style={styles} />}
+          {styles => (
+            <Spinner
+              position="absolute"
+              right="loose"
+              color={color('text-caption')}
+              size="18px"
+              style={styles}
+            />
+          )}
         </Fade>
         <Fade in={getIsActive(account.index)}>
           {styles => (

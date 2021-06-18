@@ -91,13 +91,13 @@ const Status: React.FC<{ transaction: Tx } & BoxProps> = ({ transaction, ...rest
 export const TxItem: React.FC<TxItemProps & BoxProps> = ({ transaction, ...rest }) => {
   const [component, bind] = usePressable(true);
   const { handleOpenTxLink } = useExplorerLink();
-  const { stxAddress } = useCurrentAccount();
+  const currentAccount = useCurrentAccount();
 
   if (!transaction) {
     return null;
   }
 
-  const isOriginator = transaction.sender_address === stxAddress;
+  const isOriginator = transaction.sender_address === currentAccount?.address;
 
   const getTxTitle = (tx: Tx) => {
     switch (tx.tx_type) {

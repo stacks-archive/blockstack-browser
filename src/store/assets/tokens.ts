@@ -7,6 +7,7 @@ import { Asset, AssetWithMeta, ContractPrincipal } from '@store/assets/types';
 import { assetMetaDataState } from '@store/assets/fungible-tokens';
 import { contractInterfaceState } from '@store/contracts';
 import { isSip10Transfer } from '@common/token-utils';
+import { currentNetworkState } from '@store/networks';
 
 const transferDataState = atomFamily<ContractPrincipal, any>(
   ({ contractAddress, contractName }) => {
@@ -28,6 +29,7 @@ const transferDataState = atomFamily<ContractPrincipal, any>(
 
 const assetItemState = atomFamily<Asset, AssetWithMeta>(asset => {
   const anAtom = atom(get => {
+    const network = get(currentNetworkState);
     if (asset.type === 'ft') {
       const transferData = get(
         transferDataState({
@@ -39,6 +41,7 @@ const assetItemState = atomFamily<Asset, AssetWithMeta>(asset => {
         assetMetaDataState({
           contractAddress: asset.contractAddress,
           contractName: asset.contractName,
+          networkUrl: network.url,
         })
       );
       const canTransfer = !(!transferData || 'error' in transferData);

@@ -134,24 +134,29 @@ export const accountDataState = atom(get => {
 });
 
 // the raw account info from the `v2/accounts` endpoint, should be most up-to-date info (compared to the extended API)
-export const accountInfoResponseState = atomFamilyWithQuery<string, { balance: BN; nonce: number }>(
-  'ACCOUNT_INFO_STATE_ATOM',
-  async (get, principal) => {
-    const client = get(accountsApiClientState);
-    const data = await client.getAccountInfo({
-      principal,
-      proof: 0,
-    });
-    return {
-      balance: new BN(data.balance.slice(2), 16),
-      nonce: data.nonce,
-    };
-  }
-);
+export const accountInfoResponseState = atomFamilyWithQuery<
+  [string, string],
+  { balance: BN; nonce: number }
+>('ACCOUNT_INFO_STATE_ATOM', async (get, [principal]) => {
+  const client = get(accountsApiClientState);
+  const data = await client.getAccountInfo({
+    principal,
+    proof: 0,
+  });
+  return {
+    balance: new BN(data.balance.slice(2), 16),
+    nonce: data.nonce,
+  };
+});
 export const accountInfoState = atom(get => {
-  const principal = get(currentAccountStxAddressState);
-  if (!principal) return;
-  return get(accountInfoResponseState(principal));
+  const { network, address } = get(
+    waitForAll({
+      network: currentNetworkState,
+      address: currentAccountStxAddressState,
+    })
+  );
+  if (!address) return;
+  return get(accountInfoResponseState([address, network.url]));
 });
 // the balances of the current account's address
 export const accountBalancesState = atom<AllAccountData['balances'] | undefined>(

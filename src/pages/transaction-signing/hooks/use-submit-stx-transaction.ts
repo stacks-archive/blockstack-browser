@@ -48,12 +48,13 @@ export function useHandleSubmitTransaction({
   return useCallback(async () => {
     setIsLoading();
     if (transaction) {
+      const nonce = transaction.auth.spendingCondition?.nonce.toNumber();
       try {
         const response = await broadcastTransaction(transaction, stacksNetwork);
         if (typeof response !== 'string') {
           toast.error(getErrorMessage(response.reason));
         } else {
-          await doSetLatestNonce(transaction.auth.spendingCondition?.nonce.toNumber());
+          if (nonce) await doSetLatestNonce(nonce);
           toast.success('Transaction submitted!');
         }
       } catch (e) {
