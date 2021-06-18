@@ -2648,33 +2648,33 @@
     buffer "^6.0.3"
     cross-fetch "^3.1.4"
 
-"@stacks/connect-react@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@stacks/connect-react/-/connect-react-10.0.0.tgz#a8d729fbbe2b96e3322af290285e37fd9e6aa020"
-  integrity sha512-vfeT7Gd3OKkk2j3Af2Ir619aT/gFA0/yxVNU8Ahqq+PhCiZH4OOKdeLCRAdzhHFgknsQfLntcmNGBHZ9fDcSuA==
+"@stacks/connect-react@11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/connect-react/-/connect-react-11.0.0.tgz#9cc112481f031bbd8c02520f13e948aa206c987f"
+  integrity sha512-g2+/+grhLX90laP/jMJT2j/0++TeoqvoRHbzyVwRsrsRwAsaUObUlfGL+5GWHZKU6I6kBq0WaF9/tJjGJqEk2Q==
   dependencies:
     "@stacks/auth" "^1.2.3"
-    "@stacks/connect" "^5.5.0"
+    "@stacks/connect" "^6.0.0"
     esbuild "^0.9.3"
     jsontokens "^3.0.0"
     rollup-plugin-esbuild "^3.0.2"
 
-"@stacks/connect-ui@5.1.2", "@stacks/connect-ui@^5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@stacks/connect-ui/-/connect-ui-5.1.2.tgz#a98a03f511f987bf0448fb8236e7ea2851b72db0"
-  integrity sha512-h9T1vJROFWSAH+oUzqWuMRt2zr/gZ+u7c32xNL/Dp39QteO69QJe9viPho/13IsvYOsDm8FN+I19xTPDJkSR4A==
+"@stacks/connect-ui@5.1.5", "@stacks/connect-ui@^5.1.3":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@stacks/connect-ui/-/connect-ui-5.1.5.tgz#07c203b794b3390ae09f8f4be2c7a9b592725122"
+  integrity sha512-cI+Er2M0AxTxKCWh2kwFQR8kn/cn0PuufJsWAAvSvn3TWYsWUNdkvCYI5NC0rej/CxA0PXbVskYm8GO9sSyrpg==
   dependencies:
-    "@stencil/core" "^2.4.0"
+    "@stencil/core" "^2.6.0"
     "@stencil/sass" "^1.4.1"
 
-"@stacks/connect@5.5.0", "@stacks/connect@^5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@stacks/connect/-/connect-5.5.0.tgz#6682dbd605217a5f76e99baff3a29441f2da07a2"
-  integrity sha512-ZUuex9nQSSprH6JQIz/d6714VBJDYY2S4JJQ6ThMiMK07pbqKMXnv6tSmc15DAaN+ylSNkeDua/OuhOVwQ3YXQ==
+"@stacks/connect@6.0.0", "@stacks/connect@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/connect/-/connect-6.0.0.tgz#df802fbc6657bf9eb28ce66e44ed2cbd04d16b6c"
+  integrity sha512-rBQWjCK+sjGqvbF4/wIrCOWGn4cKEghT2hqKu/hXZ/TSrfJtAHfCov3npmDShh7FoPnwwlDPtFH7JuTnVAt1Iw==
   dependencies:
     "@rollup/plugin-replace" "^2.4.1"
     "@stacks/auth" "^1.2.3"
-    "@stacks/connect-ui" "^5.1.2"
+    "@stacks/connect-ui" "^5.1.3"
     "@stacks/network" "^1.2.2"
     "@stacks/transactions" "^1.3.0"
     bn.js "^5.2.0"
@@ -2900,10 +2900,10 @@
     triplesec "^3.0.27"
     zone-file "^1.0.0"
 
-"@stencil/core@^2.4.0":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.5.2.tgz#ad00d495ee37bbed4044524d59c7f22de15ab4a7"
-  integrity sha512-bgjPXkSzzg1WnTgVUm6m5ZzpKt602WmA/QljODAW1xVN40OHJdbGblzF/F6MFzqv2c5Cy30CB41arc8qADIdcQ==
+"@stencil/core@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.6.0.tgz#29da96d8b6fc83e689b9f297ef3e8b59b90a676a"
+  integrity sha512-QsxWayZyusnqSZrlCl81R71rA3KqFjVVQSH4E0rGN15F1GdQaFonKlHLyCOLKLig1zzC+DQkLLiUuocexuvdeQ==
 
 "@stencil/sass@^1.4.1":
   version "1.4.1"

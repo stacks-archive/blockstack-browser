@@ -56,7 +56,7 @@ export function useAuth() {
     onCancel,
     appDetails: {
       name: 'Testing App',
-      icon: '/',
+      icon: '/assets/messenger-app-icon.png',
     },
   };
   return {
