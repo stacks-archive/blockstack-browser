@@ -64,7 +64,6 @@ export const signedStacksTransactionState = atom(get => {
 
 export const signedTransactionState = atom(get => {
   const signedTransaction = get(signedStacksTransactionState);
-  console.log(signedTransaction);
   if (!signedTransaction) return;
   const serialized = signedTransaction.serialize();
   const txRaw = stacksTransactionToHex(signedTransaction);

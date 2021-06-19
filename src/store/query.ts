@@ -1,13 +1,15 @@
-import { Atom, Getter } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import { atomWithQuery } from 'jotai/query';
 import deepEqual from 'fast-deep-equal';
-import { QueryObserverOptions } from 'react-query';
+import { QueryRefreshRates } from '@common/constants';
+
+import type { Atom, Getter } from 'jotai';
+import type { QueryObserverOptions } from 'react-query';
 
 const withInterval = (enabled: boolean) =>
   enabled
     ? {
-        refetchInterval: 10000,
+        refetchInterval: QueryRefreshRates.SLOW,
       }
     : {};
 
@@ -17,7 +19,7 @@ export const queryAtom = <Data>(
   enableInterval = false,
   equalityFn: (a: Data, b: Data) => boolean = Object.is
 ) => {
-  const anAtom = atomWithQuery(
+  const dataAtom = atomWithQuery(
     get => ({
       queryKey: key,
       queryFn: () => queryFn(get),
@@ -29,8 +31,8 @@ export const queryAtom = <Data>(
     }),
     equalityFn
   );
-  anAtom.debugLabel = `queryAtom/${key}`;
-  return anAtom;
+  dataAtom.debugLabel = `queryAtom/${key}`;
+  return dataAtom;
 };
 
 export const atomFamilyWithQuery = <Param, Data>(
@@ -39,14 +41,15 @@ export const atomFamilyWithQuery = <Param, Data>(
   options: {
     enableInterval?: boolean;
     equalityFn?: (a: Data, b: Data) => boolean;
-    onError?: QueryObserverOptions['onError'];
-  } = {}
+  } & QueryObserverOptions = {}
 ): ((param: Param) => Atom<Data>) => {
-  const { enableInterval = false, equalityFn = deepEqual } = options;
+  const { enableInterval = false, equalityFn = deepEqual, ...rest } = options;
   return atomFamily(param => {
-    const anAtom = atomWithQuery(
-      get => ({
-        queryKey: [key, param],
+    const queryKey = [key, param];
+    const dataAtom = atomWithQuery(get => {
+      return {
+        queryKey,
+
         queryFn: () => queryFn(get, param),
         useErrorBoundary: true,
         keepPreviousData: true,
@@ -54,10 +57,10 @@ export const atomFamilyWithQuery = <Param, Data>(
         refetchOnWindowFocus: true,
         refetchOnMount: true,
         ...withInterval(enableInterval),
-      }),
-      equalityFn
-    );
-    anAtom.debugLabel = `atomFamilyWithQuery/${key}`;
-    return anAtom;
+        ...(rest as any), // TODO: fix type cast
+      };
+    }, equalityFn);
+    dataAtom.debugLabel = `atomFamilyWithQuery/${key}`;
+    return dataAtom;
   }, deepEqual);
 };

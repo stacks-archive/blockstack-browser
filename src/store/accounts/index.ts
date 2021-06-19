@@ -13,6 +13,13 @@ import { walletState } from '@store/wallet';
 import { transactionNetworkVersionState } from '@store/transactions';
 import { atomFamilyWithQuery } from '@store/query';
 import { accountsApiClientState } from '@store/common/api-clients';
+import { queryClientAtom } from 'jotai/query';
+import { QueryRefreshRates } from '@common/constants';
+
+enum AccountQueryKeys {
+  ALL_ACCOUNT_DATA = 'ALL_ACCOUNT_DATA',
+  ACCOUNT_INFO_STATE = 'ACCOUNT_INFO_STATE',
+}
 
 /**
  * --------------------------------------
@@ -109,8 +116,9 @@ export const currentAccountPrivateKeyState = atom<string | undefined>(
   get => get(currentAccountState)?.stxPrivateKey
 );
 
+// this is our react-query atom, with a refresh interval set to QUICK
 const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccountData | undefined>(
-  `ALL_ACCOUNT_DATA`,
+  AccountQueryKeys.ALL_ACCOUNT_DATA,
   async (_get, [address, networkUrl]) => {
     try {
       return fetchAllAccountData(networkUrl)(address);
@@ -119,8 +127,26 @@ const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccoun
       console.error(`Unable to fetch account data from ${networkUrl}`);
       return;
     }
-  }
+  },
+  { refetchInterval: QueryRefreshRates.QUICK }
 );
+// this is our refresh atom for our account data
+// you can refresh the data on any action by doing
+// `set(accountDataRefreshState, void)` in an atom or atomCallback
+// or `const refresh = useUpdateAtom(accountDataRefreshState);` in a component via hook
+export const accountDataRefreshState = atom(null, async get => {
+  const { queryClient, network, address } = get(
+    waitForAll({
+      queryClient: queryClientAtom,
+      network: currentNetworkState,
+      address: currentAccountStxAddressState,
+    })
+  );
+  if (!address) return;
+  await queryClient.refetchQueries({
+    queryKey: [AccountQueryKeys.ALL_ACCOUNT_DATA, [address, network.url]],
+  });
+});
 // external API data associated with the current account's address
 export const accountDataState = atom(get => {
   const { network, address } = get(
@@ -137,16 +163,33 @@ export const accountDataState = atom(get => {
 export const accountInfoResponseState = atomFamilyWithQuery<
   [string, string],
   { balance: BN; nonce: number }
->('ACCOUNT_INFO_STATE_ATOM', async (get, [principal]) => {
-  const client = get(accountsApiClientState);
-  const data = await client.getAccountInfo({
-    principal,
-    proof: 0,
+>(
+  AccountQueryKeys.ACCOUNT_INFO_STATE,
+  async (get, [principal]) => {
+    const client = get(accountsApiClientState);
+    const data = await client.getAccountInfo({
+      principal,
+      proof: 0,
+    });
+    return {
+      balance: new BN(data.balance.slice(2), 16),
+      nonce: data.nonce,
+    };
+  },
+  { refetchInterval: QueryRefreshRates.QUICK }
+);
+export const accountInfoRefreshState = atom(null, async get => {
+  const { queryClient, network, address } = get(
+    waitForAll({
+      queryClient: queryClientAtom,
+      network: currentNetworkState,
+      address: currentAccountStxAddressState,
+    })
+  );
+  if (!address) return;
+  await queryClient.refetchQueries({
+    queryKey: [AccountQueryKeys.ACCOUNT_INFO_STATE, [address, network.url]],
   });
-  return {
-    balance: new BN(data.balance.slice(2), 16),
-    nonce: data.nonce,
-  };
 });
 export const accountInfoState = atom(get => {
   const { network, address } = get(
@@ -158,10 +201,28 @@ export const accountInfoState = atom(get => {
   if (!address) return;
   return get(accountInfoResponseState([address, network.url]));
 });
+
+export const allAccountDataRefreshState = atom(null, (_get, set) => {
+  set(accountDataRefreshState, null);
+  set(accountInfoRefreshState, null);
+});
+
+const accountStxBalanceState = atom(get => get(accountInfoState)?.balance.toString(10));
+
 // the balances of the current account's address
-export const accountBalancesState = atom<AllAccountData['balances'] | undefined>(
-  get => get(accountDataState)?.balances
-);
+export const accountBalancesState = atom<AllAccountData['balances'] | undefined>(get => {
+  const balances = get(accountDataState)?.balances;
+  const stxBalance = get(accountStxBalanceState);
+  return balances
+    ? {
+        ...balances,
+        stx: {
+          ...balances.stx,
+          balance: stxBalance || balances.stx.balance,
+        },
+      }
+    : undefined;
+});
 
 // combo of pending and confirmed transactions for the current address
 export const accountTransactionsState = atom<(MempoolTransaction | Transaction)[]>(get => {

@@ -16,6 +16,7 @@ import { useSendFormValidation } from '@common/hooks/use-send-form-validation';
 import { AmountField } from '@components/send/amount-field';
 import { RecipientField } from '@components/send/recipient-field';
 import { MemoField } from '@components/send/memo-field';
+import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 
 type Amount = number | '';
 
@@ -40,6 +41,7 @@ const Form = ({
 } & FormikProps<FormValues>) => {
   const doChangeScreen = useDoChangeScreen();
   const { selectedAsset } = useSelectedAsset();
+  const refreshAccountData = useRefreshAccountData();
 
   const onChange = useCallback(
     (e: React.ChangeEvent<any>) => {
@@ -51,9 +53,10 @@ const Form = ({
 
   const onSubmit = useCallback(async () => {
     if (values.amount && values.recipient && selectedAsset) {
+      await refreshAccountData();
       handleSubmit();
     }
-  }, [handleSubmit, values, selectedAsset]);
+  }, [refreshAccountData, handleSubmit, values, selectedAsset]);
 
   const onItemClick = useCallback(() => {
     setValues({ ...values, amount: '' });

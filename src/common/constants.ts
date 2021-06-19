@@ -64,3 +64,9 @@ export const defaultNetworks: Networks = {
     chainId: ChainID.Testnet,
   },
 } as const;
+
+export enum QueryRefreshRates {
+  SLOW = 30_000,
+  QUICK = 10_000,
+  FAST = 3_500,
+}

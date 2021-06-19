@@ -12,6 +12,7 @@ import { ScreenPaths } from '@store/common/types';
 import { toast } from 'react-hot-toast';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';
 import { useAtomValue } from 'jotai/utils';
+import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 
 function getErrorMessage(
   reason: TxBroadcastResultRejected['reason'] | 'ConflictingNonceInMempool'
@@ -39,12 +40,12 @@ export function useHandleSubmitTransaction({
   onClose: () => void;
   loadingKey: string;
 }) {
+  const refreshAccountData = useRefreshAccountData(350); // delay to give the api time to receive the tx
   const doChangeScreen = useDoChangeScreen();
   const { doSetLatestNonce } = useWallet();
   const { setIsLoading, setIsIdle } = useLoading(loadingKey);
   const stacksNetwork = useAtomValue(currentStacksNetworkState);
   const { setActiveTabActivity } = useHomeTabs();
-
   return useCallback(async () => {
     setIsLoading();
     if (transaction) {
@@ -55,7 +56,9 @@ export function useHandleSubmitTransaction({
           toast.error(getErrorMessage(response.reason));
         } else {
           if (nonce) await doSetLatestNonce(nonce);
+          // TODO: we can do more detailed toasts using data from the TX, eg `Nice! you just sent 5 xUSD to ST23...2323`
           toast.success('Transaction submitted!');
+          await refreshAccountData();
         }
       } catch (e) {
         toast.error('Something went wrong');
@@ -67,6 +70,7 @@ export function useHandleSubmitTransaction({
     setActiveTabActivity();
     doChangeScreen(ScreenPaths.HOME);
   }, [
+    refreshAccountData,
     setActiveTabActivity,
     doChangeScreen,
     doSetLatestNonce,
