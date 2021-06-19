@@ -13,7 +13,6 @@ import { walletState } from '@store/wallet';
 import { transactionNetworkVersionState } from '@store/transactions';
 import { atomFamilyWithQuery } from '@store/query';
 import { accountsApiClientState } from '@store/common/api-clients';
-import { queryClientAtom } from 'jotai/query';
 import { QueryRefreshRates } from '@common/constants';
 
 enum AccountQueryKeys {
@@ -130,23 +129,6 @@ const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccoun
   },
   { refetchInterval: QueryRefreshRates.QUICK }
 );
-// this is our refresh atom for our account data
-// you can refresh the data on any action by doing
-// `set(accountDataRefreshState, void)` in an atom or atomCallback
-// or `const refresh = useUpdateAtom(accountDataRefreshState);` in a component via hook
-export const accountDataRefreshState = atom(null, async get => {
-  const { queryClient, network, address } = get(
-    waitForAll({
-      queryClient: queryClientAtom,
-      network: currentNetworkState,
-      address: currentAccountStxAddressState,
-    })
-  );
-  if (!address) return;
-  await queryClient.refetchQueries({
-    queryKey: [AccountQueryKeys.ALL_ACCOUNT_DATA, [address, network.url]],
-  });
-});
 // external API data associated with the current account's address
 export const accountDataState = atom(get => {
   const { network, address } = get(
@@ -178,19 +160,6 @@ export const accountInfoResponseState = atomFamilyWithQuery<
   },
   { refetchInterval: QueryRefreshRates.QUICK }
 );
-export const accountInfoRefreshState = atom(null, async get => {
-  const { queryClient, network, address } = get(
-    waitForAll({
-      queryClient: queryClientAtom,
-      network: currentNetworkState,
-      address: currentAccountStxAddressState,
-    })
-  );
-  if (!address) return;
-  await queryClient.refetchQueries({
-    queryKey: [AccountQueryKeys.ACCOUNT_INFO_STATE, [address, network.url]],
-  });
-});
 export const accountInfoState = atom(get => {
   const { network, address } = get(
     waitForAll({
@@ -202,9 +171,16 @@ export const accountInfoState = atom(get => {
   return get(accountInfoResponseState([address, network.url]));
 });
 
-export const allAccountDataRefreshState = atom(null, (_get, set) => {
-  set(accountDataRefreshState, null);
-  set(accountInfoRefreshState, null);
+export const allAccountDataRefreshState = atom(null, (get, set) => {
+  const { network, address } = get(
+    waitForAll({
+      network: currentNetworkState,
+      address: currentAccountStxAddressState,
+    })
+  );
+  if (!address) return;
+  set(accountInfoResponseState([address, network.url]), null);
+  set(accountDataResponseState([address, network.url]), null);
 });
 
 const accountStxBalanceState = atom(get => get(accountInfoState)?.balance.toString(10));

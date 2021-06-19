@@ -1,24 +1,19 @@
 import { atomFamily } from 'jotai/utils';
-import { atomWithQuery } from 'jotai/query';
+import { atomWithQuery, queryClientAtom } from 'jotai/query';
 import deepEqual from 'fast-deep-equal';
-import { QueryRefreshRates } from '@common/constants';
 
-import type { Atom, Getter } from 'jotai';
+import type { Getter, WritableAtom } from 'jotai';
 import type { QueryObserverOptions } from 'react-query';
-
-const withInterval = (enabled: boolean) =>
-  enabled
-    ? {
-        refetchInterval: QueryRefreshRates.SLOW,
-      }
-    : {};
+import { atom } from 'jotai';
 
 export const queryAtom = <Data>(
   key: string,
   queryFn: (get: Getter) => Data | Promise<Data>,
-  enableInterval = false,
-  equalityFn: (a: Data, b: Data) => boolean = Object.is
+  options: {
+    equalityFn?: (a: Data, b: Data) => boolean;
+  } & QueryObserverOptions = {}
 ) => {
+  const { equalityFn = deepEqual } = options;
   const dataAtom = atomWithQuery(
     get => ({
       queryKey: key,
@@ -27,7 +22,6 @@ export const queryAtom = <Data>(
       refetchOnReconnect: true,
       refetchOnWindowFocus: true,
       refetchOnMount: true,
-      ...withInterval(enableInterval),
     }),
     equalityFn
   );
@@ -37,30 +31,38 @@ export const queryAtom = <Data>(
 
 export const atomFamilyWithQuery = <Param, Data>(
   key: string,
-  queryFn: (get: Getter, param: Param) => Promise<Data>,
+  queryFn: (get: Getter, param: Param) => Data | Promise<Data>,
   options: {
-    enableInterval?: boolean;
     equalityFn?: (a: Data, b: Data) => boolean;
   } & QueryObserverOptions = {}
-): ((param: Param) => Atom<Data>) => {
-  const { enableInterval = false, equalityFn = deepEqual, ...rest } = options;
+): ((param: Param) => WritableAtom<Data, null>) => {
+  const { equalityFn = deepEqual, ...rest } = options;
   return atomFamily(param => {
     const queryKey = [key, param];
     const dataAtom = atomWithQuery(get => {
       return {
         queryKey,
-
         queryFn: () => queryFn(get, param),
         useErrorBoundary: true,
         keepPreviousData: true,
         refetchOnReconnect: true,
         refetchOnWindowFocus: true,
         refetchOnMount: true,
-        ...withInterval(enableInterval),
         ...(rest as any), // TODO: fix type cast
       };
     }, equalityFn);
-    dataAtom.debugLabel = `atomFamilyWithQuery/${key}`;
-    return dataAtom;
+    dataAtom.debugLabel = `atomFamilyWithQuery/dataAtom/${JSON.stringify(queryKey)}`;
+
+    const anAtom = atom(
+      get => get(dataAtom),
+      async get => {
+        const queryClient = get(queryClientAtom);
+        await queryClient.refetchQueries({
+          queryKey,
+        });
+      }
+    );
+    anAtom.debugLabel = `atomFamilyWithQuery/${JSON.stringify(queryKey)}`;
+    return anAtom;
   }, deepEqual);
 };
