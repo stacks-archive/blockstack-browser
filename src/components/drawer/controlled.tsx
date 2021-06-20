@@ -4,7 +4,7 @@ import { BaseDrawer } from '.';
 import { useAtom, WritableAtom } from 'jotai';
 
 interface ControlledDrawerProps {
-  /** The Recoil atom used to represent the visibility state of this drawer */
+  /** The atom used to represent the visibility state of this drawer */
   state: WritableAtom<boolean, boolean>;
   /** An optional callback that is fired _after_ visibility has been turned off. */
   close?: () => void;
@@ -13,7 +13,7 @@ interface ControlledDrawerProps {
 
 /**
  * `ControlledDrawer` is a wrapper around our `BaseDrawer` component.
- * It expects a recoil atom to be used that manages the visibility of this drawer.
+ * It expects an atom to be used that manages the visibility of this drawer.
  */
 export const ControlledDrawer: React.FC<ControlledDrawerProps> = ({
   state,
