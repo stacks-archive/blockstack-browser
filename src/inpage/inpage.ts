@@ -10,7 +10,7 @@ import {
   MessageToContentScript,
   MESSAGE_SOURCE,
   TransactionResponseMessage,
-} from '@content-scripts/message-types';
+} from '@common/message-types';
 
 type CallableMethods = keyof typeof ExternalMethods;
 

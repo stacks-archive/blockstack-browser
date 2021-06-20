@@ -1,4 +1,4 @@
-import { ExtensionMethods, InternalMethods, Message } from '@content-scripts/message-types';
+import { ExtensionMethods, InternalMethods, Message } from '@common/message-types';
 
 /**
  * Vault <-> Background Script

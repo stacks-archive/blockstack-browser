@@ -14,11 +14,11 @@ import {
   hasRehydratedVaultStore,
 } from '@store/wallet';
 import { InMemoryVault } from '@background/vault';
-import { InternalMethods } from '@content-scripts/message-types';
+import { InternalMethods } from '@common/message-types';
+import { currentAccountIndexState } from '@store/accounts';
 import { textToBytes } from '@store/common/utils';
 import { useAtomCallback } from 'jotai/utils';
 import { useCallback } from 'react';
-import { currentAccountIndexState } from '@store/accounts';
 
 const useInnerMessageWrapper = () => {
   return useAtomCallback<void, VaultActions>(

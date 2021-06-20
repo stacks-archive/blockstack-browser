@@ -7,6 +7,7 @@ export const STX_TRANSFER_TX_SIZE_BYTES = 180;
 export const transition = 'all .2s cubic-bezier(.215,.61,.355,1)';
 
 export const USERNAMES_ENABLED = process.env.USERNAMES_ENABLED === 'true';
+
 export const IS_TEST_ENV = process.env.TEST_ENV === 'true';
 
 export const STX_DECIMALS = 6;

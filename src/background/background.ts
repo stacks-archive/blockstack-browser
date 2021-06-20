@@ -5,14 +5,19 @@
  needed and unloaded when it goes idle.
  https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#background_script
  */
-import { popupCenter } from '@background/popup';
-import { ScreenPaths } from '@store/common/types';
 import { storePayload, StorageKey } from '@common/storage';
+import { ScreenPaths } from '@store/common/types';
+import {
+  CONTENT_SCRIPT_PORT,
+  ExternalMethods,
+  MessageFromContentScript,
+} from '@common/message-types';
+
+import type { VaultActions } from '@background/vault-types';
+import { popupCenter } from '@background/popup';
 import { vaultMessageHandler } from '@background/vault';
-import { IS_TEST_ENV } from '@common/constants';
-import { CONTENT_SCRIPT_PORT } from '@content-scripts/content-script';
-import { VaultActions } from '@background/vault-types';
-import { ExternalMethods, MessageFromContentScript } from '@content-scripts/message-types';
+
+const IS_TEST_ENV = process.env.TEST_ENV === 'true';
 
 // Listen for install event
 chrome.runtime.onInstalled.addListener(async details => {

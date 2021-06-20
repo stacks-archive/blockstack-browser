@@ -6,11 +6,12 @@
  */
 import { getEventSourceWindow } from '@common/utils';
 import {
+  CONTENT_SCRIPT_PORT,
   ExternalMethods,
   MessageFromContentScript,
   MessageToContentScript,
   MESSAGE_SOURCE,
-} from '@content-scripts/message-types';
+} from '@common/message-types';
 import {
   AuthenticationRequestEvent,
   DomEventName,
@@ -38,8 +39,6 @@ window.addEventListener('message', event => {
     }
   }
 });
-
-export const CONTENT_SCRIPT_PORT = 'content-script' as const;
 
 // Connection to background script - fires onConnect event in background script
 // and establishes two-way communication

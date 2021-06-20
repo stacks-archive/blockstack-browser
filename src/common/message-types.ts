@@ -2,6 +2,8 @@ import { FinishedTxPayload, SponsoredFinishedTxPayload } from '@stacks/connect';
 
 export const MESSAGE_SOURCE = 'stacks-wallet' as const;
 
+export const CONTENT_SCRIPT_PORT = 'content-script' as const;
+
 export enum ExternalMethods {
   transactionRequest = 'transactionRequest',
   transactionResponse = 'transactionResponse',

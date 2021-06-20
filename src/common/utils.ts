@@ -10,7 +10,7 @@ import {
   MESSAGE_SOURCE,
   TransactionResponseMessage,
   TxResult,
-} from '@content-scripts/message-types';
+} from '@common/message-types';
 
 import { KEBAB_REGEX, Network } from '@common/constants';
 import { StacksNetwork } from '@stacks/network';
