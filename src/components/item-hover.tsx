@@ -39,7 +39,7 @@ export function usePressable(isPressable?: boolean) {
       ...focusBind,
       position: 'relative',
       zIndex: 1,
-      cursor: isPressable ? 'pointer' : undefined,
+      cursor: isPressable ? 'pointer' : 'default',
     },
   ];
 }

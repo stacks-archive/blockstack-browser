@@ -31,7 +31,7 @@ export const AssetItem = memo(
       const formatted = getFormattedAmount(amount);
       return (
         <Box
-          as={'button'}
+          as={isPressable ? 'button' : 'div'}
           display="flex"
           textAlign="left"
           outline={0}
