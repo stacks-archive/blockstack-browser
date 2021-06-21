@@ -26,7 +26,7 @@ function EmptyActivity() {
   );
 }
 
-const ActivityList = memo(() => {
+const ActivityList = () => {
   const transactions = useAccountActivity();
   const groupedTxs = useMemo(
     () => (transactions ? createTxDateFormatList(transactions) : []),
@@ -37,7 +37,7 @@ const ActivityList = memo(() => {
   ) : (
     <TransactionList txsByDate={groupedTxs} />
   );
-});
+};
 
 const Loading = memo(() => (
   <Flex pb="72px" width="100%" alignItems="center" justifyContent="center" flexGrow={1}>

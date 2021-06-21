@@ -3,9 +3,10 @@ import { atom } from 'jotai';
 import { ChainID } from '@stacks/transactions';
 import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
 import { transactionRequestNetwork } from '@store/transactions/requests';
-import { findMatchingNetworkKey } from '@common/utils';
-import { defaultNetworks, Networks } from '@common/constants';
+import { fetchWithTimeout, findMatchingNetworkKey } from '@common/utils';
+import { defaultNetworks, Networks, QueryRefreshRates } from '@common/constants';
 import { blocksApiClientState, infoApiClientState } from '@store/common/api-clients';
+import { atomFamilyWithQuery } from '@store/query';
 
 // Our root networks list, users can add to this list and it will persist to localstorage
 export const networksState = atomWithStorage<Networks>('networks', defaultNetworks);
@@ -66,6 +67,19 @@ export const latestBlockHeightState = atom(async get => {
 
 // external data, `v2/info` endpoint of the selected network
 export const networkInfoState = atom(get => get(infoApiClientState).getCoreApiInfo());
+
+export const networkOnlineStatusState = atomFamilyWithQuery<string, boolean>(
+  'NETWORK_ONLINE',
+  async (_get, networkUrl) => {
+    try {
+      const res = await fetchWithTimeout(networkUrl, { timeout: 4500 });
+      return res?.status === 200;
+    } catch (e) {
+      return false;
+    }
+  },
+  { refetchInterval: QueryRefreshRates.VERY_SLOW }
+);
 
 networksState.debugLabel = 'networksState';
 localCurrentNetworkKeyState.debugLabel = 'localCurrentNetworkKeyState';

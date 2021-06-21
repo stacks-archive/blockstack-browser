@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Stack, StackProps, color, Button, useClipboard } from '@stacks/ui';
 import { AssetRow } from '../asset-row';
 import { useFungibleTokenState, useStxTokenState } from '@common/hooks/use-assets';
@@ -54,7 +54,7 @@ function NoAssets(props: StackProps) {
   );
 }
 
-export const TokenAssets: React.FC<StackProps> = memo(({ ...props }) => {
+export const TokenAssets: React.FC<StackProps> = ({ ...props }) => {
   const stxTokens = useStxTokenState();
   const balances = useAccountBalances();
   if (!balances) return null;
@@ -73,4 +73,4 @@ export const TokenAssets: React.FC<StackProps> = memo(({ ...props }) => {
       <CollectibleAssets spacing="extra-loose" />
     </Stack>
   );
-});
+};

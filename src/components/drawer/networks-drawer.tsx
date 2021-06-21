@@ -6,38 +6,45 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { ScreenPaths } from '@store/common/types';
-import { currentNetworkKeyState } from '@store/networks';
+import { currentNetworkKeyState, networkOnlineStatusState } from '@store/networks';
 import { showNetworksStore } from '@store/ui';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { Caption, Title } from '@components/typography';
 import { getUrlHostname } from '@common/utils';
-import { useUpdateAtom } from 'jotai/utils';
+import { useAtomValue, useUpdateAtom } from 'jotai/utils';
+import { IconCloudOff } from '@tabler/icons';
 
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();
   const { networks, currentNetworkKey } = useWallet();
   const setCurrentNetworkKey = useUpdateAtom(currentNetworkKeyState);
-
   const network = networks[item];
-  const delayToShowCheckmarkMotion = 350;
+  const isOnline = useAtomValue(networkOnlineStatusState(network.url));
+  const isActive = item === currentNetworkKey;
+
   const handleItemClick = useCallback(() => {
-    setCurrentNetworkKey(item);
+    setShowNetworks(false);
     setTimeout(() => {
-      setShowNetworks(false);
-    }, delayToShowCheckmarkMotion);
+      setCurrentNetworkKey(item);
+    }, 5);
   }, [setCurrentNetworkKey, item, setShowNetworks]);
 
   return (
     <Box
       width="100%"
       key={item}
-      _hover={{
-        backgroundColor: color('bg-4'),
-      }}
-      cursor="pointer"
+      _hover={
+        !isOnline || isActive
+          ? undefined
+          : {
+              backgroundColor: color('bg-4'),
+            }
+      }
       px="loose"
       py="base"
-      onClick={handleItemClick}
+      onClick={!isOnline || isActive ? undefined : handleItemClick}
+      cursor={!isOnline ? 'not-allowed' : isActive ? 'default' : 'pointer'}
+      opacity={!isOnline ? 0.5 : 1}
       {...props}
     >
       <Flex width="100%" justifyContent="space-between" alignItems="center">
@@ -47,7 +54,7 @@ const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...
           </Title>
           <Caption>{getUrlHostname(network.url)}</Caption>
         </Stack>
-        {item === currentNetworkKey ? <CheckmarkIcon /> : null}
+        {!isOnline ? <IconCloudOff /> : item === currentNetworkKey ? <CheckmarkIcon /> : null}
       </Flex>
     </Box>
   );
@@ -60,7 +67,9 @@ const NetworkList: React.FC<FlexProps> = memo(props => {
   return (
     <Flex flexWrap="wrap" flexDirection="column" {...props}>
       {items.map(item => (
-        <NetworkListItem item={item} key={item} />
+        <React.Suspense fallback={<>Loading</>}>
+          <NetworkListItem item={item} key={item} />
+        </React.Suspense>
       ))}
     </Flex>
   );
