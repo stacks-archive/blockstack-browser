@@ -67,6 +67,6 @@ export const defaultNetworks: Networks = {
 
 export enum QueryRefreshRates {
   SLOW = 30_000,
-  QUICK = 10_000,
+  MEDIUM = 10_000,
   FAST = 3_500,
 }

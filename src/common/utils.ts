@@ -312,3 +312,7 @@ export const slugify = (...args: (string | number)[]): string => {
 export function getUrlHostname(url: string) {
   return new URL(url).hostname;
 }
+
+export async function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

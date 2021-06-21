@@ -127,7 +127,7 @@ const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccoun
       return;
     }
   },
-  { refetchInterval: QueryRefreshRates.QUICK }
+  { refetchInterval: QueryRefreshRates.MEDIUM }
 );
 // external API data associated with the current account's address
 export const accountDataState = atom(get => {
@@ -158,7 +158,7 @@ export const accountInfoResponseState = atomFamilyWithQuery<
       nonce: data.nonce,
     };
   },
-  { refetchInterval: QueryRefreshRates.QUICK }
+  { refetchInterval: QueryRefreshRates.MEDIUM }
 );
 export const accountInfoState = atom(get => {
   const { network, address } = get(
