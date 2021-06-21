@@ -44,14 +44,14 @@ describe(`Installation integration tests`, () => {
     await installPage.waitForHomePage();
     await installPage.goToSecretKey();
     const secretKey = await installPage.getSecretKey();
-    await installPage.openSettings();
+    await installPage.clickSettingsButton();
     await installPage.page.click(createTestSelector('settings-sign-out'));
 
     await installPage.clickSignIn();
     await installPage.enterSecretKey(secretKey);
     const password = randomString(15);
     await installPage.enterPassword(password);
-    await installPage.openSettings();
+    await installPage.clickSettingsButton();
     await installPage.page.click(createTestSelector('settings-lock'));
     await installPage.enterPassword(password);
     await installPage.goToSecretKey();

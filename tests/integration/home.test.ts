@@ -21,7 +21,7 @@ describe(`Installation integration tests`, () => {
 
   it('should be able to create a new account', async () => {
     await wallet.signUp();
-    await wallet.page.click(wallet.settingsButton);
+    await wallet.clickSettingsButton();
     await wallet.page.click(createTestSelector('settings-create-an-account'));
     await wallet.page.click(createTestSelector('create-account-done-button'));
     const displayName = await wallet.page.textContent(

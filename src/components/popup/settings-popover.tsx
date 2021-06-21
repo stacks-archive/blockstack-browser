@@ -108,6 +108,7 @@ export const SettingsPopover: React.FC = () => {
                 Create an Account
               </MenuItem>
               <MenuItem
+                data-test="settings-view-secret-key"
                 onClick={wrappedCloseCallback(() => {
                   doChangeScreen(ScreenPaths.SETTINGS_KEY);
                 })}

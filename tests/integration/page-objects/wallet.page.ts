@@ -22,7 +22,8 @@ export class WalletPage {
     'text="You can only use lowercase letters (a–z), numbers (0–9), and underscores (_)."';
   signInKeyError = createTestSelector('sign-in-seed-error');
   password = 'mysecretreallylongpassword';
-  settingsButton = createTestSelector('menu-button');
+  $settingsButton = createTestSelector('menu-button');
+  $settingsViewSecretKey = createTestSelector('settings-view-secret-key');
   page: Page;
 
   constructor(page: Page) {
@@ -76,6 +77,10 @@ export class WalletPage {
     await this.page.click(this.$signInButton);
   }
 
+  async clickSettingsButton() {
+    await this.page.click(this.$settingsButton);
+  }
+
   async waitForHomePage() {
     await this.page.waitForSelector(this.homePage, { timeout: 30000 });
   }
@@ -114,7 +119,8 @@ export class WalletPage {
   }
 
   async goToSecretKey() {
-    await this.goTo(ScreenPaths.SETTINGS_KEY);
+    await this.clickSettingsButton();
+    await this.page.click(this.$settingsViewSecretKey);
   }
 
   async enterPassword(password?: string) {
@@ -143,9 +149,5 @@ export class WalletPage {
     await this.clickSignUp();
     await this.saveKey();
     await this.waitForHomePage();
-  }
-
-  async openSettings() {
-    return this.page.click(this.settingsButton);
   }
 }
