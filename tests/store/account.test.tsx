@@ -18,10 +18,8 @@ const wrapper: React.FC = ({ children }) => (
 
 describe('account state', () => {
   it('wallet has correct amount of accounts state', async () => {
-    const promise = Promise.resolve(); // this is to fix a weird jest bug
     const { result } = renderHook(() => useAtomValue(accountsState), { wrapper });
     expect(result.current?.length).toBe(4);
-    await act(() => promise);
   });
 
   it('all addresses are correct for test accounts (mainnet)', async () => {

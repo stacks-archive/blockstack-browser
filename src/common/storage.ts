@@ -8,7 +8,7 @@ interface RequestInfo {
   origin: string;
 }
 
-function getKeyForRequest(storageKey: StorageKey, request: string) {
+export function getKeyForRequest(storageKey: StorageKey, request: string) {
   return `${storageKey}-${request}`;
 }
 

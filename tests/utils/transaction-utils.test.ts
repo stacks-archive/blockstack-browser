@@ -14,7 +14,7 @@ import {
 } from '@stacks/connect';
 import BN from 'bn.js';
 import { decodeToken } from 'jsontokens';
-import { TX_REQUEST, TEST_WALLET } from '../mocks';
+import { STX_TRANSFER_TX_REQUEST, TEST_WALLET } from '../mocks';
 import { getAppPrivateKey } from '@stacks/wallet-sdk';
 import { UNAUTHORIZED_TX_REQUEST, verifyTxRequest } from '@common/transactions/requests';
 import { StacksTestnet } from '@stacks/network';
@@ -91,7 +91,7 @@ describe('generated transactions', () => {
 describe('verifyTxRequest', () => {
   test('can validate a known valid tx request', async () => {
     const result = await verifyTxRequest({
-      requestToken: TX_REQUEST,
+      requestToken: STX_TRANSFER_TX_REQUEST,
       wallet: TEST_WALLET,
       appDomain: 'http://localhost:3000',
     });
