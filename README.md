@@ -1,5 +1,7 @@
-# Stacks Wallet for web
+# Stacks Wallet for Web
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/ldinpeekobnhjjdofggfgjlcehhmanlj?label=Chrome%20Web%20Store)](https://chrome.google.com/webstore/detail/stacks-wallet/ldinpeekobnhjjdofggfgjlcehhmanlj)
+[![Mozilla Add-on](https://img.shields.io/amo/stars/stacks-wallet?label=Firefox%20Add-on)](https://addons.mozilla.org/en-US/firefox/addon/stacks-wallet/)
 [![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet-web/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet-web/)
 
 Stacks Wallet is a browser extension for managing your digital assets and connecting to apps built with the Stacks blockchain.
