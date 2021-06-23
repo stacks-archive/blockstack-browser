@@ -40,7 +40,7 @@ export const Route: React.FC<RouteProps> = ({ path, element }) => {
 export const Routes: React.FC = () => {
   const { isSignedIn: signedIn, encryptedSecretKey } = useWallet();
   const { isOnboardingInProgress } = useOnboardingState();
-  const { pathname } = useLocation();
+  const { search, pathname } = useLocation();
   const setLastSeen = useUpdateAtom(lastSeenStore);
 
   const doChangeScreen = useDoChangeScreen();
@@ -73,6 +73,19 @@ export const Routes: React.FC = () => {
     return <InstalledSignIn />;
   };
 
+  const getSignUpElement = () => {
+    if (isLocked) return <Unlock />;
+    if (isSignedIn) {
+      return (
+        <Navigate
+          to={`${ScreenPaths.CHOOSE_ACCOUNT}${search}`}
+          screenPath={ScreenPaths.CHOOSE_ACCOUNT}
+        />
+      );
+    }
+    return <Installed />;
+  };
+
   return (
     <RoutesDom>
       <Route path={ScreenPaths.HOME} element={getHomeComponent()} />
@@ -95,6 +108,7 @@ export const Routes: React.FC = () => {
       <RouterRoute path={ScreenPaths.ADD_NETWORK} element={<AddNetwork />} />
       <Route path={ScreenPaths.SET_PASSWORD} element={<SetPasswordPage redirect />} />
       <Route path={ScreenPaths.USERNAME} element={<Username />} />
+      <Route path={ScreenPaths.GENERATION} element={getSignUpElement()} />
       {/*Sign In*/}
       <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />
       <Route path={ScreenPaths.RECOVERY_CODE} element={<MagicRecoveryCode />} />
