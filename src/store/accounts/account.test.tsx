@@ -2,10 +2,9 @@ import React, { StrictMode, Suspense } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'jotai';
 import { walletConfigStore, walletState } from '@store/wallet';
-import { TEST_WALLET } from '../mocks';
+import { TEST_ACCOUNTS_WITH_ADDRESS, TEST_WALLET } from '../../../tests/mocks';
 import { useAtomValue } from 'jotai/utils';
-import { accountsState, accountsWithAddressState } from '@store/accounts';
-import { TEST_ACCOUNTS_WITH_ADDRESS } from './test-data';
+import { accountsState, accountsWithAddressState } from '@store/accounts/index';
 
 // This is a wrapper component to provide default/mock data to various atoms
 const wrapper: React.FC = ({ children }) => (
