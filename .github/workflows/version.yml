@@ -10,7 +10,7 @@ env:
   COMMIT_EMAIL: 45208873+blockstack-devops@users.noreply.github.com
 
 jobs:
-  pre_run:
+  pre-run:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -18,55 +18,62 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-  code_checks:
-    name: Code checks
+  upload-extension:
+    name: Upload extension
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Version Packages')"
     needs:
-      - pre_run
+      - pre-run
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Code Checks
-        uses: ./.github/actions/code-checks
+
       - name: Check exact versions
         uses: ./.github/actions/check-version-lock
+
       - uses: actions/upload-artifact@v2
         name: Upload Chrome Extension Zip
         with:
           name: stacks-wallet-chromium
           path: stacks-wallet-chromium.zip
 
-  integration_tests:
+  integration-tests:
     name: Integration tests
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Version Packages')"
     needs:
-      - pre_run
+      - pre-run
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - uses: microsoft/playwright-github-action@v1
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Integration Tests
         uses: ./.github/actions/integration-tests
+
       - uses: actions/upload-artifact@v2
         if: always()
         name: Upload Screenshots
@@ -78,24 +85,28 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'Version Packages')"
     needs:
-      - integration_tests
-      - code_checks
+      - integration-tests
+      - upload-extension
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
         run: yarn --frozen-lockfile
+
       - name: Create Release Pull Request
         uses: changesets/action@640c4a5d646991720131ef3b6e0e63220de5dddf
         env:

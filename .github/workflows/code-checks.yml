@@ -1,0 +1,71 @@
+name: Code checks
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Lint
+        run: yarn lint
+
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Audit
+        run: yarn audit
+
+  typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Typecheck
+        run: yarn typecheck
+
+  check-deps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Check dependency rules
+        run: yarn check:deps
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Test
+        run: yarn test:unit
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Build
+        run: yarn build
+
+      - name: Build extension
+        run: sh build-ext.sh
+        shell: bash

@@ -25,10 +25,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -70,10 +72,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.21.0
+
       - name: Restore cache
         uses: actions/cache@v2
         with:
@@ -100,7 +104,7 @@ jobs:
           WEB_EXT_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
 
-      - name: Create Issue for Firefox Manual Step 
+      - name: Create Issue for Firefox Manual Step
         id: create-firefox-issue
         uses: JasonEtco/create-an-issue@v2
         env:
