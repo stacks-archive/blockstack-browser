@@ -31,7 +31,7 @@ module.exports = {
   moduleNameMapper: pathNames,
   roots: ['<rootDir>/tests', '<rootDir>/src'],
   preset: 'ts-jest',
-  testMatch: ['**/?(*.)+(spec|test).(js|ts|tsx)'],
+  testMatch: ['**/?(*.)+(spec).(js|ts|tsx)'],
   testRunner: 'jest-circus/runner',
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
