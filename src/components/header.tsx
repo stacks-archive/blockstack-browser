@@ -48,12 +48,20 @@ export const Header: React.FC<HeaderProps> = memo(props => {
       {...rest}
     >
       {!title ? (
-        <StacksWalletLogo pt="7px" onClick={() => doChangeScreen(ScreenPaths.HOME)} />
-        {VERSION ? (
-          <Caption pt="extra-tight" variant="c2" fontFamily="mono">
-            v{VERSION}
-          </Caption>
-        ) : null}
+        <Stack alignItems="center" pt="7px" isInline>
+          <StacksWalletLogo onClick={() => doChangeScreen(ScreenPaths.HOME)} />
+          {VERSION ? (
+            <Caption
+              pt="extra-tight"
+              color="#8D929A"
+              variant="c3"
+              marginRight="10px"
+              fontFamily="mono"
+            >
+              v{VERSION}
+            </Caption>
+          ) : null}
+        </Stack>
       ) : (
         <Box pt={onClose ? 'loose' : 'unset'} pr="tight">
           {onClose ? (

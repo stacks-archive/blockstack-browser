@@ -54,14 +54,23 @@ const c1 = capsize({
   fontSize: 14,
   leading: 20,
 });
+
 const c2 = capsize({
   fontMetrics: interMetrics,
   fontSize: 12,
   leading: 16,
 });
 
-const captionStyles = (variant?: 'c1' | 'c2') => {
+const c3 = capsize({
+  fontMetrics: interMetrics,
+  fontSize: 10,
+  leading: 16,
+});
+
+const captionStyles = (variant?: 'c1' | 'c2' | 'c3') => {
   switch (variant) {
+    case 'c3':
+      return c3;
     case 'c2':
       return c2;
     default:
@@ -132,7 +141,7 @@ export const Text = forwardRefWithAs<BoxProps, 'span'>((props, ref) => (
 
 export const Body: React.FC<BoxProps> = props => <Text css={c1} {...props} />;
 
-export const Caption = forwardRefWithAs<{ variant?: 'c1' | 'c2' } & BoxProps, 'span'>(
+export const Caption = forwardRefWithAs<{ variant?: 'c1' | 'c2' | 'c3' } & BoxProps, 'span'>(
   ({ variant, ...props }, ref) => (
     <BaseText
       fontFeatureSettings={`'ss01' on`}
