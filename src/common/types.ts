@@ -8,19 +8,6 @@ export const SET_MAGIC_RECOVERY_CODE = 'ONBOARDING/SET_MAGIC_RECOVERY_CODE';
 export const SET_USERNAME = 'ONBOARDING/SET_USERNAME';
 export const SET_ONBOARDING_PATH = 'ONBOARDING/SET_ONBOARDING_PATH';
 
-export enum ScreenName {
-  CHOOSE_ACCOUNT = 'screens/CHOOSE_ACCOUNT',
-  USERNAME = 'screens/USERNAME',
-  GENERATION = 'screens/GENERATION',
-  SECRET_KEY = 'screens/SECRET_KEY',
-  SAVE_KEY = 'screens/SAVE_KEY',
-  CONNECT_APP = 'screens/CONNECT_APP',
-  SIGN_IN = 'screens/SIGN_IN',
-  RECOVERY_CODE = 'screens/RECOVERY_CODE',
-  ADD_ACCOUNT = 'screens/ADD_ACCOUNT',
-  REGISTRY_ERROR = 'screens/REGISTRY_ERROR',
-}
-
 export enum ScreenPaths {
   GENERATION = '/sign-up',
   SECRET_KEY = '/sign-up/secret-key',
