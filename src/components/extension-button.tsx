@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Box, Text, Flex, ChevronIcon, FlexProps } from '@stacks/ui';
-import { PoweredBy } from '@screen';
 import { buildEnterKeyEvent } from '@components/link';
 import { ChromeIcon } from '@components/icons/chrome-icon';
 import { FirefoxIcon } from '@components/icons/firefox-icon';
+import { PoweredBy } from './powered-by';
 
 // https://stackoverflow.com/a/13348618
 const isChrome = () => {

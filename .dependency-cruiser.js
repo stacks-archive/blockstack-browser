@@ -4,6 +4,12 @@ module.exports = {
 
   forbidden: [
     {
+      name: 'no-orphans',
+      severity: 'warn',
+      from: { orphan: true },
+      to: {},
+    },
+    {
       name: 'component-cannot-import-pages-or-features',
       severity: 'error',
       from: { path: 'src/components*' },
