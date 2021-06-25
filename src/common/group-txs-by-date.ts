@@ -17,7 +17,7 @@ function todaysIsoDate() {
 function groupTxsByDateMap(txs: Tx[]) {
   return txs.reduce((txsByDate, tx) => {
     if ('burn_block_time_iso' in tx && tx.burn_block_time_iso) {
-      const [date] = tx.burn_block_time_iso.split('T');
+      const [date] = new Date(tx.burn_block_time_iso).toLocaleDateString().split('T');
       if (!txsByDate.has(date)) {
         txsByDate.set(date, []);
       }
