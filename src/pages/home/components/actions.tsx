@@ -1,5 +1,5 @@
 import { Box, Button, ButtonProps, Stack, StackProps } from '@stacks/ui';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import React, { memo, useCallback, useRef } from 'react';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { IconArrowUp, IconQrcode } from '@tabler/icons';

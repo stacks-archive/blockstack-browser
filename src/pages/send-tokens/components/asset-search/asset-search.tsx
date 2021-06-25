@@ -9,7 +9,7 @@ import { SelectedAsset } from './selected-asset';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { AssetRow } from '@components/asset-row';
-import { AssetWithMeta } from '@store/assets/types';
+import { AssetWithMeta } from '@common/asset-types';
 
 function principalHasOnlyOneAsset(assets: AssetWithMeta[]) {
   return assets.length === 1;
@@ -69,7 +69,7 @@ const AssetSearchResults = forwardRef(
     );
   }
 );
-export const AssetSearchField: React.FC<{
+const AssetSearchField: React.FC<{
   autoFocus?: boolean;
   onItemClick: () => void;
 }> = memo(({ autoFocus, onItemClick, ...rest }) => {

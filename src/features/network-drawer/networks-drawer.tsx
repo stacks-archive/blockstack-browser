@@ -1,11 +1,11 @@
 import React, { memo, useCallback } from 'react';
 
 import { Box, Flex, Button, Stack, color, FlexProps, BoxProps } from '@stacks/ui';
-import { ControlledDrawer } from './controlled';
+import { ControlledDrawer } from '@components/drawer/controlled';
 import { useWallet } from '@common/hooks/use-wallet';
 import { CheckmarkIcon } from '@components/icons/checkmark-icon';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { currentNetworkKeyState, networkOnlineStatusState } from '@store/networks';
 import { showNetworksStore } from '@store/ui';
 import { useDrawers } from '@common/hooks/use-drawers';

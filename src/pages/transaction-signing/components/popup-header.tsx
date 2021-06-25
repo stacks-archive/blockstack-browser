@@ -4,9 +4,9 @@ import { Caption } from '@components/typography';
 import { stacksValue } from '@common/stacks-utils';
 import React from 'react';
 
-import { CurrentUserAvatar } from '@components/current-user/current-user-avatar';
-import { CurrentUsername } from '@components/current-user/current-user-name';
-import { CurrentStxAddress } from '@components/current-user/current-stx-address';
+import { CurrentUserAvatar } from '@features/current-user/current-user-avatar';
+import { CurrentUsername } from '@features/current-user/current-user-name';
+import { CurrentStxAddress } from '@features/current-user/current-stx-address';
 import { useAccountInfo } from '@common/hooks/account/use-account-balances';
 import { LoadingRectangle } from '@components/loading-rectangle';
 

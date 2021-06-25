@@ -6,7 +6,7 @@
  https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#background_script
  */
 import { storePayload, StorageKey } from '@common/storage';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import {
   CONTENT_SCRIPT_PORT,
   ExternalMethods,

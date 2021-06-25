@@ -5,9 +5,9 @@ import { Formik, useFormikContext } from 'formik';
 import { PopupContainer } from '@components/popup/container';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { ErrorLabel } from '@components/error-label';
-import { AssetSearch } from '@components/asset-search/asset-search';
+import { AssetSearch } from '@pages/send-tokens/components/asset-search/asset-search';
 
 import { Header } from '@components/header';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';

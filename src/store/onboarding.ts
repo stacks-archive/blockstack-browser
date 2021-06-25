@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { atomWithDefault } from 'jotai/utils';
 
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { DecodedAuthRequest } from '@common/dev/types';
 
 export interface OnboardingState {

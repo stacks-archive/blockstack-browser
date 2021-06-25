@@ -3,7 +3,7 @@ import deepEqual from 'fast-deep-equal';
 import { atomFamily, waitForAll } from 'jotai/utils';
 import { accountBalancesState } from '@store/accounts';
 import { transformAssets } from '@store/assets/utils';
-import { Asset, AssetWithMeta, ContractPrincipal } from '@store/assets/types';
+import { Asset, AssetWithMeta, ContractPrincipal } from '@common/asset-types';
 import { assetMetaDataState } from '@store/assets/fungible-tokens';
 import { contractInterfaceState } from '@store/contracts';
 import { isSip10Transfer } from '@common/token-utils';

@@ -1,5 +1,5 @@
 import { atomFamilyWithQuery } from '@store/query';
-import { ContractPrincipal } from '@store/assets/types';
+import { ContractPrincipal } from '@common/asset-types';
 import { smartContractClientState } from '@store/common/api-clients';
 import { atomFamily } from 'jotai/utils';
 import { atom } from 'jotai';

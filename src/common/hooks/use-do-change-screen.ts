@@ -1,4 +1,4 @@
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 

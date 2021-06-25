@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 
 import { assetsState } from '@store/assets/tokens';
 import { getFullyQualifiedAssetName } from '@common/hooks/use-selected-asset';
-import { AssetWithMeta } from '@store/assets/types';
+import { AssetWithMeta } from '@common/asset-types';
 import { atomWithDefault } from 'jotai/utils';
 
 export const selectedAssetIdState = atom<string | undefined>(undefined);

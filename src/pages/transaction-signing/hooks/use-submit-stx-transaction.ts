@@ -8,7 +8,7 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { useLoading } from '@common/hooks/use-loading';
 import { currentStacksNetworkState } from '@store/networks';
 import { useCallback } from 'react';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { toast } from 'react-hot-toast';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';
 import { useAtomValue } from 'jotai/utils';

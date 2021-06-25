@@ -17,7 +17,7 @@ import {
   DomEventName,
   TransactionRequestEvent,
 } from '@inpage/inpage-types';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 
 // Legacy messaging to work with older versions of Connect
 window.addEventListener('message', event => {

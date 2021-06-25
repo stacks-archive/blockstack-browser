@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Route } from 'react-router-dom';
 import { AccountGate } from '@pages/account-gate';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 
 interface AccountGateRouteProps {
   path: ScreenPaths;

@@ -2,8 +2,8 @@ import React, { memo, useState } from 'react';
 import { useWallet } from '@common/hooks/use-wallet';
 import { SetPasswordPage } from '@pages/set-password';
 import { Unlock } from '@components/unlock';
-import { SaveYourKeyView } from '@components/save-your-key-view';
-import { SignedOut } from '@components/signed-out-view';
+import { SaveYourKeyView } from '@pages/save-your-secret-key/save-your-key-view';
+import { SignedOut } from '@pages/signed-out/signed-out-view';
 
 enum Step {
   VIEW_KEY = 1,

@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { USERNAMES_ENABLED } from '@common/constants';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { decrypt } from '@stacks/wallet-sdk';
 import { useAtom } from 'jotai';
 

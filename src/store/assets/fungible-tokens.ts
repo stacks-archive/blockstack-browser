@@ -1,5 +1,5 @@
 import { atomFamily } from 'jotai/utils';
-import { ContractPrincipal, FtMeta, MetaDataMethodNames } from '@store/assets/types';
+import { ContractPrincipal, FtMeta, MetaDataMethodNames } from '@common/asset-types';
 import { atom } from 'jotai';
 import { getLocalData, setLocalData } from '@store/common/utils';
 import { fetchFungibleTokenMetaData, getMatchingFunction } from '@store/assets/utils';

@@ -1,5 +1,5 @@
 import { Atom } from 'jotai';
-import { ContractPrincipal } from '@store/assets/types';
+import { ContractPrincipal } from '@common/asset-types';
 
 export function debugLabelWithContractPrincipal(
   atom: Atom<any>,

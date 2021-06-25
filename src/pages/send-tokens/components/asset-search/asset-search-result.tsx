@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { AssetRow } from '@components/asset-row';
 import type { StackProps } from '@stacks/ui';
-import type { AssetWithMeta } from '@store/assets/types';
+import type { AssetWithMeta } from '@common/asset-types';
 
 interface AssetResultProps extends StackProps {
   asset: AssetWithMeta;

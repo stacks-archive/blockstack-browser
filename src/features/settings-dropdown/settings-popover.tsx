@@ -5,7 +5,7 @@ import useOnClickOutside from '@common/hooks/use-onclickoutside';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { AccountStep } from '@store/ui';
 import { Divider } from '@components/divider';
 import { USERNAMES_ENABLED } from '@common/constants';

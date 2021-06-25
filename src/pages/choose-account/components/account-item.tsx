@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Stack } from '@stacks/ui';
-import { AccountAvatar } from '@components/account-avatar';
+import { AccountAvatar } from '@features/account-avatar/account-avatar';
 import { Caption, Title } from '@components/typography';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';

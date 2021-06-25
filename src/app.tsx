@@ -6,11 +6,11 @@ import { theme } from '@common/theme';
 import { HashRouter as Router } from 'react-router-dom';
 import { GlobalStyles } from '@components/global-styles';
 import { VaultLoader } from '@components/vault-loader';
-import { AccountsDrawer } from '@components/drawer/accounts';
-import { NetworksDrawer } from '@components/drawer/networks-drawer';
+import { AccountsDrawer } from '@features/accounts-drawer/accounts-drawer';
+import { NetworksDrawer } from '@features/network-drawer/networks-drawer';
 import { Routes } from './routes';
-import { Devtools } from '@components/devtools';
-import { SettingsPopover } from '@components/popup/settings-popover';
+import { Devtools } from '@features/devtool/devtools';
+import { SettingsPopover } from '@features/settings-dropdown/settings-popover';
 
 export const App: React.FC = () => {
   useEffect(() => {

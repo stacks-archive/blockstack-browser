@@ -5,7 +5,7 @@ import { decodeToken } from 'jsontokens';
 import { DecodedAuthRequest } from '@common/dev/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { getRequestOrigin, StorageKey } from '@common/storage';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { useOnboardingState } from './use-onboarding-state';
 import { authRequestState, currentScreenState } from '@store/onboarding';
 import { useUpdateAtom } from 'jotai/utils';

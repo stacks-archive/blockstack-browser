@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import { useAccountNames } from '@common/hooks/account/use-account-names';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
-import { AccountAvatar } from '@components/account-avatar';
+import { AccountAvatar } from '@features/account-avatar/account-avatar';
 import { BoxProps } from '@stacks/ui';
 
 const UserAvatarSuspense = memo((props: BoxProps) => {

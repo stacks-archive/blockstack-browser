@@ -5,8 +5,8 @@ import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import { Tooltip } from '@components/tooltip';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { FiCopy } from 'react-icons/fi';
-import { CurrentUserAvatar } from '@components/current-user/current-user-avatar';
-import { CurrentUsername } from '@components/current-user/current-user-name';
+import { CurrentUserAvatar } from '@features/current-user/current-user-avatar';
+import { CurrentUsername } from '@features/current-user/current-user-name';
 
 const UserAddress = memo((props: StackProps) => {
   const currentAccount = useCurrentAccount();

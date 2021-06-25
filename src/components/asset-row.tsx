@@ -2,7 +2,7 @@ import React from 'react';
 import { StackProps } from '@stacks/ui';
 
 import { ftDecimals, stacksValue } from '@common/stacks-utils';
-import type { AssetWithMeta } from '@store/assets/types';
+import type { AssetWithMeta } from '@common/asset-types';
 import { getAssetName } from '@stacks/ui-utils';
 import { AssetItem } from '@components/asset-item';
 import { getTicker } from '@common/utils';
@@ -10,7 +10,6 @@ import { getTicker } from '@common/utils';
 interface AssetRowProps extends StackProps {
   asset: AssetWithMeta;
 }
-
 export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, ref) => {
   const { asset, ...rest } = props;
   const { name, contractAddress, contractName, type, meta, subtitle, balance } = asset;

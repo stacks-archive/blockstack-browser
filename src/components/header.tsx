@@ -6,8 +6,8 @@ import { StacksWalletLogo } from '@components/stacks-wallet-logo';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { NetworkModeBadge } from '@components/network-mode-badge';
-import { ScreenPaths } from '@store/common/types';
 import { Caption, Title } from '@components/typography';
+import { ScreenPaths } from '@common/types';
 
 const MenuButton: React.FC<BoxProps> = memo(props => {
   const { showSettings, setShowSettings } = useDrawers();

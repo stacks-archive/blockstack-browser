@@ -7,7 +7,7 @@ import {
   validateAndCleanRecoveryInput,
   hasLineReturn,
 } from '@common/utils';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { useLoading } from '@common/hooks/use-loading';
 import { useUpdateAtom } from 'jotai/utils';
 import { useAtom } from 'jotai';

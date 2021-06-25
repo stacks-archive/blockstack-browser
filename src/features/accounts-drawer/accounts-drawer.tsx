@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { ControlledDrawer } from '../controlled';
-import { SwitchAccounts } from './switch-accounts';
-import { CreateAccount } from './create-account';
-import { AddUsername } from './add-username';
+import { ControlledDrawer } from '@components/drawer/controlled';
+import { SwitchAccounts } from '../account-switch-drawer/switch-accounts';
+import { CreateAccount } from '@components/drawer/accounts/create-account';
+import { AddUsername } from '@components/drawer/accounts/add-username';
 import { useDrawers } from '@common/hooks/use-drawers';
 
 import { AccountStep, showAccountsStore, accountDrawerStep } from '@store/ui';

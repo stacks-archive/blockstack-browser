@@ -9,7 +9,7 @@ import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 
 import { accountsWithAddressState, AccountWithAddress } from '@store/accounts';
-import { AccountAvatar } from '@components/account-avatar';
+import { AccountAvatar } from '@features/account-avatar/account-avatar';
 import { SpaceBetween } from '@components/space-between';
 
 import { cleanUsername, slugify } from '@common/utils';

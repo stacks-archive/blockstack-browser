@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { Caption, Screen, ScreenBody } from '@screen';
 import { Title } from '@components/typography';
-import { Accounts } from '@components/accounts';
+import { Accounts } from '@pages/choose-account/components/accounts';
 import { AppIcon } from '@components/app-icon';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
 import { Header } from '@components/header';

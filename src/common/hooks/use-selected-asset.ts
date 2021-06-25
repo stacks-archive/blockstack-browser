@@ -1,5 +1,5 @@
 import { selectedAssetIdState, selectedAssetStore } from '@store/assets/asset-search';
-import { AssetWithMeta } from '@store/assets/types';
+import { AssetWithMeta } from '@common/asset-types';
 import { getTicker } from '@common/utils';
 import { useCallback, useMemo } from 'react';
 import { ftDecimals, stacksValue } from '@common/stacks-utils';

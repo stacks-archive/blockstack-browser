@@ -1,6 +1,6 @@
 import { BrowserDriver, createTestSelector, setupBrowser } from './utils';
 import { WalletPage } from './page-objects/wallet.page';
-import { ScreenPaths } from '@store/common/types';
+import { ScreenPaths } from '@common/types';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);

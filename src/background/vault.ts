@@ -10,7 +10,7 @@ import {
 import { gaiaUrl } from '@common/constants';
 import type { VaultActions } from '@background/vault-types';
 import { decryptMnemonic, encryptMnemonic } from '@background/crypto/mnemonic-encryption';
-import { DEFAULT_PASSWORD } from '@store/common/types';
+import { DEFAULT_PASSWORD } from '@common/types';
 import { InternalMethods } from '@common/message-types';
 
 // In-memory (background) wallet instance

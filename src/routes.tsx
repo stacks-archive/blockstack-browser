@@ -4,7 +4,7 @@ import { Route as RouterRoute, Routes as RoutesDom, useLocation } from 'react-ro
 
 import { MagicRecoveryCode } from '@pages/install/magic-recovery-code';
 import { Username } from '@pages/username';
-import { ChooseAccount } from '@pages/choose-account';
+import { ChooseAccount } from '@pages/choose-account/choose-account';
 import { TransactionPage } from '@pages/transaction-signing/transaction-signing';
 import { Installed } from '@pages/install';
 import { InstalledSignIn } from '@pages/install/sign-in';
@@ -14,8 +14,8 @@ import { AddNetwork } from '@pages/add-network/add-network';
 import { SetPasswordPage } from '@pages/set-password';
 import { SendTokensForm } from '@pages/send-tokens/send-tokens';
 
-import { SaveYourKeyView } from '@components/save-your-key-view';
-import { ScreenPaths } from '@store/common/types';
+import { SaveYourKeyView } from '@pages/save-your-secret-key/save-your-key-view';
+import { ScreenPaths } from '@common/types';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
@@ -26,7 +26,7 @@ import { AccountGateRoute } from '@pages/account-gate-route';
 import { lastSeenStore } from '@store/wallet';
 import { Unlock } from '@components/unlock';
 import { useUpdateAtom } from 'jotai/utils';
-import { PopupHome } from '@pages/home';
+import { PopupHome } from '@pages/home/home';
 
 interface RouteProps {
   path: ScreenPaths;

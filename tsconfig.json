@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "lib": ["dom","dom.iterable","esnext"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react",
     "sourceMap": true,
     "removeComments": true,
@@ -31,7 +31,8 @@
       "@background/*": ["background/*"],
       "@content-scripts/*": ["content-scripts/*"],
       "@inpage/*": ["inpage/*"],
-      "@pages/*": ["pages/*"]
+      "@pages/*": ["pages/*"],
+      "@features/*": ["features/*"]
     },
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,

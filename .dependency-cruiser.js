@@ -4,11 +4,10 @@ module.exports = {
 
   forbidden: [
     {
-      name: 'component-cannot-import-pages',
-      // comment: 'pages cannot be imported by components',
+      name: 'component-cannot-import-pages-or-features',
       severity: 'error',
-      to: { path: 'src/pages*' },
       from: { path: 'src/components*' },
+      to: { path: ['^src/pages*', '^src/features/*'] },
     },
     {
       name: 'no-circular',
@@ -24,6 +23,24 @@ module.exports = {
       severity: 'error',
       from: { path: '^src/components/.*' },
       to: { path: '^src/store/.*' },
+    },
+    {
+      name: 'features-cannot-import-pages',
+      severity: 'error',
+      from: { path: '^src/features/.*' },
+      to: { path: '^src/pages/.*' },
+    },
+    {
+      name: 'background-cannot-import-content-scripts',
+      severity: 'error',
+      from: { path: '^src/background/.*' },
+      to: { path: '^src/content-scripts/.*' },
+    },
+    {
+      name: 'content-cannot-import-background-script',
+      severity: 'error',
+      from: { path: '^src/content-scripts/.*' },
+      to: { path: '^src/background/.*' },
     },
   ],
   options: {

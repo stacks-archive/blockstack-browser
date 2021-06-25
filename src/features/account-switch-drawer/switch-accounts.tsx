@@ -7,7 +7,7 @@ import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
 import { IconCheck } from '@tabler/icons';
-import { AccountAvatar } from '@components/account-avatar';
+import { AccountAvatar } from '@features/account-avatar/account-avatar';
 import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 import { useSwitchAccount } from '@common/hooks/account/use-switch-account';
 import { useUpdateAtom } from 'jotai/utils';

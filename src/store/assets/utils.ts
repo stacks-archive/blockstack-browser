@@ -5,7 +5,7 @@ import { SIP_010 } from '@common/constants';
 import { fetcher } from '@common/api/wrapped-fetch';
 import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
-import { Asset, FtMeta, FungibleTokenOptions, MetaDataNames } from '@store/assets/types';
+import { Asset, FtMeta, FungibleTokenOptions, MetaDataNames } from '@common/asset-types';
 
 async function callReadOnlyFunction({
   contractName,
