@@ -9,15 +9,14 @@ const UserAvatarSuspense = memo((props: BoxProps) => {
   const currentAccount = useCurrentAccount();
   const names = useAccountNames();
   if (!currentAccount || typeof currentAccount.index === 'undefined') return null;
-  const name =
-    names?.[currentAccount.index]?.names?.[0] || getAccountDisplayName(currentAccount as any);
+  const name = names?.[currentAccount.index]?.names?.[0] || getAccountDisplayName(currentAccount);
   return <AccountAvatar name={name} flexShrink={0} account={currentAccount} {...props} />;
 });
 
 export const CurrentUserAvatar = memo((props: BoxProps) => {
   const currentAccount = useCurrentAccount();
-  const defaultName = getAccountDisplayName(currentAccount as any);
   if (!currentAccount) return null;
+  const defaultName = getAccountDisplayName(currentAccount);
   return (
     <React.Suspense
       fallback={
