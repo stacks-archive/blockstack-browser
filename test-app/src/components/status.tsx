@@ -11,7 +11,7 @@ import {
   bufferCV,
 } from '@blockstack/stacks-transactions';
 import { getRPCClient, stacksNetwork as network } from '@common/utils';
-import { ContractCallTransaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import type { ContractCallTransaction } from '@stacks/stacks-blockchain-api-types';
 import { TxCard } from '@components/tx-card';
 import { useSTXAddress } from '@common/use-stx-address';
 

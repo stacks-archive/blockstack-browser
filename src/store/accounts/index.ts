@@ -1,4 +1,4 @@
-import { MempoolTransaction, Transaction } from '@blockstack/stacks-blockchain-api-types';
+import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { Account, getStxAddress } from '@stacks/wallet-sdk';
 import { atomWithDefault, waitForAll } from 'jotai/utils';
 import { atom } from 'jotai';

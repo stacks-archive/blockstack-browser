@@ -3,7 +3,7 @@ import { Configuration, SmartContractsApi } from '@stacks/blockchain-api-client'
 import { ContractInterfaceFunction } from '@stacks/rpc-client';
 import { SIP_010 } from '@common/constants';
 import { fetcher } from '@common/api/wrapped-fetch';
-import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
+import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
 import { Asset, FtMeta, FungibleTokenOptions, MetaDataNames } from '@common/asset-types';
 

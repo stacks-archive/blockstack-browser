@@ -1,4 +1,4 @@
-import { Transaction } from '@blockstack/stacks-blockchain-api-types';
+import type { Transaction } from '@stacks/stacks-blockchain-api-types';
 import { createTxDateFormatList } from './group-txs-by-date';
 
 function createFakeTx(tx: Partial<Transaction>) {

@@ -1,4 +1,4 @@
-import { MempoolTransaction, Transaction } from '@blockstack/stacks-blockchain-api-types';
+import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';

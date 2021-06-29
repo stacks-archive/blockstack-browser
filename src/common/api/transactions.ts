@@ -1,4 +1,4 @@
-import { MempoolTransactionListResponse } from '@blockstack/stacks-blockchain-api-types';
+import type { MempoolTransactionListResponse } from '@stacks/stacks-blockchain-api-types';
 import { fetcher } from '@common/api/wrapped-fetch';
 
 function makeMempoolTransactionApiUrl(apiServer: string) {

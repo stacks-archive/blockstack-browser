@@ -2,7 +2,7 @@ import type {
   AddressBalanceResponse,
   MempoolTransaction,
   TransactionResults,
-} from '@blockstack/stacks-blockchain-api-types';
+} from '@stacks/stacks-blockchain-api-types';
 
 import { fetchPendingTxs } from '@common/api/transactions';
 import { fetchFromSidecar } from '@common/api/fetch';

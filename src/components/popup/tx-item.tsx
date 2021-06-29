@@ -4,7 +4,7 @@ import type {
   MempoolTransaction,
   TransactionEventFungibleAsset,
   CoinbaseTransaction,
-} from '@blockstack/stacks-blockchain-api-types';
+} from '@stacks/stacks-blockchain-api-types';
 import { Box, BoxProps, color, Stack } from '@stacks/ui';
 import { getContractName, isPendingTx, truncateMiddle } from '@stacks/ui-utils';
 import BigNumber from 'bignumber.js';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Flex, Text } from '@stacks/ui';
-import { ContractCallTransaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import type { ContractCallTransaction } from '@stacks/stacks-blockchain-api-types';
+
 import { toRelativeTime } from '@common/utils';
 
 interface TxCardProps {

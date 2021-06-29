@@ -9,7 +9,7 @@ import {
 } from '@tabler/icons';
 import { Box, BoxProps, Circle, color, DynamicColorCircle, StxNexus } from '@stacks/ui';
 import FunctionIcon from 'mdi-react/FunctionIcon';
-import { MempoolTransaction, Transaction } from '@blockstack/stacks-blockchain-api-types';
+import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { useWallet } from '@common/hooks/use-wallet';
 
 type Tx = MempoolTransaction | Transaction;
