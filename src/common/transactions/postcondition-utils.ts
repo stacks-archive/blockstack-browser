@@ -119,15 +119,15 @@ export function getPostConditions(
 export const getTitleFromFungibleConditionCode = (code: FungibleConditionCode) => {
   switch (code) {
     case FungibleConditionCode.Equal:
-      return 'transfer exactly';
+      return 'will transfer exactly';
     case FungibleConditionCode.Greater:
-      return 'transfer more than';
+      return 'will transfer more than';
     case FungibleConditionCode.GreaterEqual:
-      return 'transfer equal to or greater than';
+      return 'will transfer equal to or greater than';
     case FungibleConditionCode.Less:
-      return 'transfer less than';
+      return 'will transfer less than';
     case FungibleConditionCode.LessEqual:
-      return 'transfer less than or equal to';
+      return 'will transfer less than or equal to';
     default:
       return '';
   }
