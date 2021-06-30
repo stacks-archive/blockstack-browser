@@ -13,6 +13,7 @@ import { Caption, Title } from '@components/typography';
 import { getUrlHostname } from '@common/utils';
 import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 import { IconCloudOff } from '@tabler/icons';
+import { SettingsSelectors } from '../../../tests/integration/settings.selectors';
 
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();
@@ -68,7 +69,7 @@ const NetworkList: React.FC<FlexProps> = memo(props => {
     <Flex flexWrap="wrap" flexDirection="column" {...props}>
       {items.map(item => (
         <React.Suspense fallback={<>Loading</>}>
-          <NetworkListItem item={item} key={item} />
+          <NetworkListItem data-test={SettingsSelectors.NetworkListItem} item={item} key={item} />
         </React.Suspense>
       ))}
     </Flex>

@@ -63,6 +63,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/provision
 
+      - name: Build
+        run: yarn build
+
       - name: Test
         run: yarn test:unit
 

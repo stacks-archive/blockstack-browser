@@ -10,6 +10,7 @@ import { AccountStep } from '@store/ui';
 import { Divider } from '@components/divider';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { forwardRefWithAs } from '@stacks/ui-core';
+import { SettingsSelectors } from '../../../tests/integration/settings.selectors';
 
 const MenuWrapper = forwardRefWithAs((props, ref) => (
   <Box
@@ -132,13 +133,14 @@ export const SettingsPopover: React.FC = () => {
           ) : null}
           {isSignedIn ? <Divider /> : null}
           <MenuItem
+            data-test={SettingsSelectors.ChangeNetworkAction}
             onClick={wrappedCloseCallback(() => {
               setShowNetworks(true);
             })}
           >
             <Flex width="100%" alignItems="center" justifyContent="space-between">
               <Box>Change Network</Box>
-              <Caption>{currentNetworkKey}</Caption>
+              <Caption data-test={SettingsSelectors.CurrentNetwork}>{currentNetworkKey}</Caption>
             </Flex>
           </MenuItem>
           {encryptedSecretKey && (

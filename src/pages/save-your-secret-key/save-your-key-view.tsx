@@ -40,6 +40,7 @@ export const SecretKeyActions: React.FC<{ handleNext?: () => void } & StackProps
   return (
     <Stack spacing="base" {...rest}>
       <Button
+        data-test="copy-key-to-clipboard"
         width="100%"
         border="1px solid"
         borderColor={color('border')}
