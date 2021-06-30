@@ -65,8 +65,8 @@ const FunctionArgumentsList = memo((props: StackProps) => {
         <Stack divider={<Divider />} spacing="base" {...props}>
           {transactionRequest.functionArgs.map((arg, index) => {
             return (
-              <React.Suspense fallback={<>loading</>}>
-                <FunctionArgumentRow key={`${arg}-${index}`} arg={arg} index={index} />
+              <React.Suspense fallback={<>loading</>} key={`${arg}-${index}`}>
+                <FunctionArgumentRow arg={arg} index={index} />
               </React.Suspense>
             );
           })}
