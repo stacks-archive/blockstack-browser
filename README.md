@@ -28,6 +28,8 @@ Table of Contents:
   - [Install browser extension from source](#install-browser-extension-from-source)
     - [Chromium](#chromium-1)
     - [Firefox](#firefox-1)
+- [Security](#security)
+  - [Audit Report](#audit-report)
 
 <!-- /TOC -->
 
@@ -137,3 +139,21 @@ Alternatively, for Firefox:
 3. Click on: **"Load Temporary Add-on…"**
 4. Navigate inside the new directory that was unzipped from `stacks-wallet-chromium.zip`
 5. Select the `manifest.json` file.
+
+## Security
+
+We consider the security of our systems a top priority. But no matter how much effort we put into system security, there can still be vulnerabilities present.
+
+If you discover a security vulnerability, please use one of the following means of communications to report it to us:
+
+- Report the security issue to our [HackerOne program](https://hackerone.com/hiro)
+- Report the security issue directly at [security@hiro.so](mailto:security@hiro.so)
+
+Please note this email is strictly for reporting security vulnerabilities. For support queries, contact [wallet@hiro.so](mailto:wallet@hiro.so). Your efforts to responsibly disclose your findings are sincerely appreciated and will be taken into account to acknowledge your contributions.
+
+### Audit Report
+
+In Q1 2021, Hiro partnered with [Least Authority](https://leastauthority.com/), a leading security consultancy with experience in the crypto space, to audit Hiro's Stacks Wallet for Web. On April 29th 2021, after addressing the major concerns described in the initial findings, as well as a concluding sign off from the Least Authority team, a final report was delivered.
+
+[Download and read the full report here](https://github.com/blockstack/stacks-wallet-web/blob/main/docs/least-authority-security-audit-report.pdf
+)
