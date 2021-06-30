@@ -34,7 +34,7 @@ describe('account state', () => {
     const { result, waitForNextUpdate } = renderHook(() => useAtomValue(walletConfigStore), {
       wrapper,
     });
-    await waitForNextUpdate();
+    await waitForNextUpdate({ timeout: 10000 }); // 10 secs?
     const foundAccount = result.current?.accounts.find(
       account => account.username === 'fdsfdsfdf.id.blockstack'
     );

@@ -28,7 +28,7 @@ export const queryAtom = <Data>(
   dataAtom.debugLabel = `queryAtom/${key}`;
   return dataAtom;
 };
-
+// TODO: this will be refactored away
 export const atomFamilyWithQuery = <Param, Data>(
   key: string,
   queryFn: (get: Getter, param: Param) => Data | Promise<Data>,
@@ -37,7 +37,7 @@ export const atomFamilyWithQuery = <Param, Data>(
   } & QueryObserverOptions = {}
 ): ((param: Param) => WritableAtom<Data, null>) => {
   const { equalityFn = deepEqual, ...rest } = options;
-  return atomFamily(param => {
+  return atomFamily<Param, Data, void>(param => {
     const queryKey = [key, param];
     const dataAtom = atomWithQuery(get => {
       return {
@@ -57,12 +57,12 @@ export const atomFamilyWithQuery = <Param, Data>(
       get => get(dataAtom),
       async get => {
         const queryClient = get(queryClientAtom);
-        await queryClient.refetchQueries({
+        await queryClient?.refetchQueries({
           queryKey,
         });
       }
     );
     anAtom.debugLabel = `atomFamilyWithQuery/${JSON.stringify(queryKey)}`;
-    return anAtom;
-  }, deepEqual);
+    return anAtom as any;
+  }, deepEqual) as any;
 };
