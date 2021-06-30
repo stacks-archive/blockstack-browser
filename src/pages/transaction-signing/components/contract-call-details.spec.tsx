@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import { ProviderWithWalletAndRequestToken } from '../../../../tests/state-utils';
 import { ContractCallDetails } from './contract-call-details';
-import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '../../../../tests/mocks';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { cvToString, deserializeCV } from '@stacks/transactions';
-import { mockHeystackData } from '../../../../tests/mocks/heystack';
+
+import { ProviderWithWalletAndRequestToken } from '../../../../tests/state-utils';
+import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '../../../../tests/mocks';
+import { setupHeystackEnv } from '../../../../tests/mocks/heystack';
 
 const truncatedContractAddress = truncateMiddle(HEYSTACK_HEY_TX_REQUEST_DECODED.contractAddress, 4);
 const truncatedContractId = `${truncatedContractAddress}.${HEYSTACK_HEY_TX_REQUEST_DECODED.contractName}`;
@@ -19,7 +20,7 @@ const message = getStringValueFromHexCv(HEYSTACK_HEY_TX_REQUEST_DECODED.function
 const giphyUrl = getStringValueFromHexCv(HEYSTACK_HEY_TX_REQUEST_DECODED.functionArgs[1]);
 
 describe('<ContractCallDetails />', () => {
-  mockHeystackData();
+  setupHeystackEnv();
   it('correctly displays the contract address and function name', async () => {
     const { getByText } = render(
       <ProviderWithWalletAndRequestToken>

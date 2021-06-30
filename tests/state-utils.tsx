@@ -1,5 +1,5 @@
 // This is a wrapper component to provide default/mock data to various atoms
-import React from 'react';
+import React, { StrictMode, Suspense } from 'react';
 import { Provider } from 'jotai';
 import { walletState } from '@store/wallet';
 import { TEST_WALLET, HEYSTACK_HEY_TX_REQUEST } from './mocks';
@@ -17,6 +17,15 @@ export const ProviderWithWalletAndRequestToken: React.FC = ({ children }) => (
   >
     {children}
   </Provider>
+);
+
+// This is a wrapper component to provide default/mock data to various atoms
+export const ProviderWithTestWallet: React.FC = ({ children }) => (
+  <StrictMode>
+    <Suspense fallback="loading">
+      <Provider initialValues={[[walletState, TEST_WALLET] as const]}>{children}</Provider>
+    </Suspense>
+  </StrictMode>
 );
 
 export function mockLocalStorage() {

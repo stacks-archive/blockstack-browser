@@ -49,7 +49,9 @@ export const postRequests: Record<string, string> = {
   [PostRequests.heyTokenGetDecimals]: TOKEN_GET_DECIMALS_DATA,
 };
 
-export function mockHeystackData() {
+export function setupHeystackEnv() {
+  let mockLocalStorage: Record<string, string> = {};
+
   const getPaths = Object.keys(getRequests).map(path => {
     return rest.get(path, async (_req, res, ctx) => {
       await delay(100);
@@ -63,18 +65,28 @@ export function mockHeystackData() {
     });
   });
 
-  // declare which API requests to mock
-  const server = setupServer(
-    // capture "GET /greeting" requests
-    ...getPaths,
-    ...postPaths
-  );
+  const server = setupServer(...getPaths, ...postPaths);
 
-  // establish API mocking before all tests
-  beforeAll(() => server.listen());
-  // reset any request handlers that are declared as a part of our tests
-  // (i.e. for testing one-time error scenarios)
-  afterEach(() => server.resetHandlers());
-  // clean up once the tests are done
-  afterAll(() => server.close());
+  beforeAll(() => {
+    server.listen();
+    global.Storage.prototype.setItem = jest.fn((key, value) => {
+      mockLocalStorage[key] = value;
+    });
+    global.Storage.prototype.getItem = jest.fn(key => mockLocalStorage[key]);
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
+    jest.clearAllMocks();
+  });
+
+  beforeEach(() => {
+    mockLocalStorage = {};
+  });
+
+  afterAll(() => {
+    server.close();
+    (global.Storage.prototype.setItem as jest.Mock).mockReset();
+    (global.Storage.prototype.getItem as jest.Mock).mockReset();
+  });
 }

@@ -34,7 +34,7 @@ export const contractInterfaceResponseState = atomFamilyWithQuery<
     // for a given contract interface, it does not change once deployed so we should cache it
     return setLocalData(keyParams, data);
   } catch (e) {
-    console.log('contractInterfaceResponseState error', e);
+    console.debug('contractInterfaceResponseState error', e);
     return null;
   }
 });

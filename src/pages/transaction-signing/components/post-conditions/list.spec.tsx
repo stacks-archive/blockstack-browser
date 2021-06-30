@@ -4,7 +4,7 @@ import { PostConditions } from './list';
 
 import { delay } from '@common/utils';
 import { ProviderWithWalletAndRequestToken } from '../../../../../tests/state-utils';
-import { mockHeystackData } from '../../../../../tests/mocks/heystack';
+import { setupHeystackEnv } from '../../../../../tests/mocks/heystack';
 
 const message = 'You will transfer exactly 1 HEY or the transaction will abort.';
 const from = 'From ST2P…ZE7Z';
@@ -12,7 +12,7 @@ const firstTokenName = 'hey-token';
 const sip10Name = 'Heystack Token';
 
 describe('<PostConditions />', () => {
-  mockHeystackData();
+  setupHeystackEnv();
   it('has correct message around transfer and principal', async () => {
     const { getByText } = render(
       <ProviderWithWalletAndRequestToken>
