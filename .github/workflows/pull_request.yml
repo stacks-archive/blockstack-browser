@@ -1,5 +1,5 @@
 name: Pull Request
-on: [ pull_request, workflow_dispatch ]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   pre_run:
@@ -23,7 +23,7 @@ jobs:
 
       - uses: wagoid/commitlint-github-action@v1
 
-  code_checks:
+  update-pull-request-body:
     name: Code checks
     runs-on: ubuntu-latest
     needs:
@@ -40,25 +40,6 @@ jobs:
         with:
           header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}).'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 12.21.0
-
-      - name: Restore cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Code Checks
-        uses: ./.github/actions/code-checks
-
-      - name: Check exact versions
-        uses: ./.github/actions/check-version-lock
 
   integration_tests:
     name: Integration tests

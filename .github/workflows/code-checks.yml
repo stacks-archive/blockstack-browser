@@ -46,6 +46,16 @@ jobs:
       - name: Check dependency rules
         run: yarn check:deps
 
+  locked-versions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/provision
+
+      - name: Check exact versions
+        uses: ./.github/actions/check-version-lock
+
   test:
     runs-on: ubuntu-latest
 
