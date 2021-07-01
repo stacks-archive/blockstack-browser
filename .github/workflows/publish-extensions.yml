@@ -135,5 +135,5 @@ jobs:
     steps:
       - name: Publish Statuses
         run: |
-          echo "::warning::Firefox Publish Status: $([[ ${{ needs.publish_firefox_extension.outputs.publish_status }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
-          echo "::warning::Chrome Publish Status: $([[ ${{ needs.publish_chrome_extension.outputs.publish_status }} = 0 ]] && echo 'SUCCESS' || echo 'FAILED')"
+          echo "::warning::Firefox Publish Status: $([[ "${{ needs.publish_firefox_extension.outputs.publish_status }}" = "0" ]] && echo 'SUCCESS' || echo 'FAILED')"
+          echo "::warning::Chrome Publish Status: $([[ "${{ needs.publish_chrome_extension.outputs.publish_status }}" = "0" ]] && echo 'SUCCESS' || echo 'FAILED')"
