@@ -91,6 +91,7 @@ export const SettingsPopover: React.FC = () => {
             <>
               {wallet && wallet?.accounts?.length > 1 && (
                 <MenuItem
+                  data-test={SettingsSelectors.SwitchAccount}
                   onClick={wrappedCloseCallback(() => {
                     setAccountStep(AccountStep.Switch);
                     setShowAccounts(true);

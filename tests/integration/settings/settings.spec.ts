@@ -8,6 +8,7 @@ jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);
 
 describe(`Settings integration tests`, () => {
+  const BEFORE_ALL_TIMEOUT = 20000;
   let browser: BrowserDriver;
   let wallet: WalletPage;
 
@@ -15,7 +16,7 @@ describe(`Settings integration tests`, () => {
     browser = await setupBrowser();
     wallet = await WalletPage.init(browser, ScreenPaths.INSTALLED);
     await wallet.signUp();
-  }, 20000);
+  }, BEFORE_ALL_TIMEOUT);
 
   afterAll(async () => {
     try {

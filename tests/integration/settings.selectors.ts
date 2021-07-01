@@ -1,6 +1,7 @@
 export enum SettingsSelectors {
   NetworkListItem = 'network-list-item',
   ChangeNetworkAction = 'settings-change-network',
+  SwitchAccount = 'switch-account',
   CurrentNetwork = 'current-network',
   BtnCreateAccount = 'settings-create-account-button',
   BtnCreateAccountDone = 'create-account-done-button',
@@ -9,4 +10,5 @@ export enum SettingsSelectors {
   BtnCopyKeyToClipboard = 'copy-key-to-clipboard',
   SignOutListItem = 'settings-sign-out',
   LockListItem = 'settings-lock',
+  AccountIndex = 'switch-account-item-[index]',
 }

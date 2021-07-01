@@ -29,6 +29,8 @@ export class WalletPage {
   $settingsButton = createTestSelector('menu-button');
   $settingsViewSecretKey = createTestSelector('settings-view-secret-key');
   $homePageBalancesList = createTestSelector(HomePageSelectors.BalancesList);
+  $createAccountButton = createTestSelector('settings-create-an-account')
+  $createAccountDone = createTestSelector('create-account-done-button');
   page: Page;
 
   constructor(page: Page) {
