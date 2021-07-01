@@ -17,7 +17,7 @@ jobs:
   publish_chrome_extension:
     name: Publish Chrome extension
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, 'Version Packages')"
+    if: github.event.pusher.name == 'blockstack-devops' && github.event.head_commit.message == 'Version Packages'
     needs:
       - pre_run
     outputs:
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MINIFY_PRODUCTION_BUILD: true
-    if: "contains(github.event.head_commit.message, 'Version Packages')"
+    if: github.event.pusher.name == 'blockstack-devops' && github.event.head_commit.message == 'Version Packages'
     needs:
       - pre_run
     outputs:
