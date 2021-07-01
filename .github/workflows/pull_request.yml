@@ -1,5 +1,5 @@
 name: Pull Request
-on: [pull_request, workflow_dispatch]
+on: [ pull_request, workflow_dispatch ]
 
 jobs:
   pre_run:
@@ -106,8 +106,8 @@ jobs:
       - pre_run
     env:
       MINIFY_PRODUCTION_BUILD: true
-    # Don't run on forks
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    # only run on Version Packages
+    if: github.event.pull_request.head.repo.full_name == github.repository && contains(github.event.head_commit.message, 'Version Packages')
     steps:
       - name: Checkout
         uses: actions/checkout@v2
