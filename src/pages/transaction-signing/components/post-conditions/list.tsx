@@ -6,12 +6,12 @@ import { stacksValue } from '@common/stacks-utils';
 import { IconLock } from '@tabler/icons';
 import { Body } from '@components/typography';
 import { truncateMiddle } from '@stacks/ui-utils';
-import { postConditionsState } from '@store/transactions';
 
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { TransactionEventCard } from '../event-card';
 import { PostConditionComponent } from './single';
 import { useAtomValue } from 'jotai/utils';
+import { postConditionsState } from '@store/transactions/post-conditions';
 
 function StxPostcondition() {
   const pendingTransaction = useTransactionRequest();

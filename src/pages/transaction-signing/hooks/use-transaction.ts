@@ -1,10 +1,11 @@
 import { useAtomValue } from 'jotai/utils';
-import { postConditionsState, signedTransactionState } from '@store/transactions';
+import { signedTransactionState } from '@store/transactions';
 import {
   transactionContractInterfaceState,
   transactionContractSourceState,
   transactionFunctionsState,
 } from '@store/transactions/contract-call';
+import { postConditionsState } from '@store/transactions/post-conditions';
 
 export function useTransactionContractInterface() {
   return useAtomValue(transactionContractInterfaceState);

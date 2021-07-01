@@ -5,15 +5,18 @@ import { walletState } from '@store/wallet';
 import { TEST_WALLET, HEYSTACK_HEY_TX_REQUEST } from './mocks';
 import { requestTokenState } from '@store/transactions/requests';
 import Mock = jest.Mock;
+import { selectedAssetIdState } from '@store/assets/asset-search';
 
 export const ProviderWithWalletAndRequestToken: React.FC = ({ children }) => (
   <Provider
-    initialValues={
+    initialValues={[
+      [walletState, TEST_WALLET] as const,
+      [requestTokenState, HEYSTACK_HEY_TX_REQUEST] as const,
       [
-        [walletState, TEST_WALLET],
-        [requestTokenState, HEYSTACK_HEY_TX_REQUEST],
-      ] as const
-    }
+        selectedAssetIdState,
+        'ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N.hey-token::hey-token',
+      ] as const,
+    ]}
   >
     {children}
   </Provider>

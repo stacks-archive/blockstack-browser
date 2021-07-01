@@ -5,32 +5,13 @@ import { AuthType, ChainID, TransactionVersion } from '@stacks/transactions';
 
 import { currentNetworkState, currentStacksNetworkState } from '@store/networks';
 import { correctNonceState } from '@store/accounts/nonce';
-import { currentAccountState, currentAccountStxAddressState } from '@store/accounts';
+import { currentAccountState } from '@store/accounts';
 import { requestTokenPayloadState } from '@store/transactions/requests';
 
 import { generateSignedTransaction } from '@common/transactions/transactions';
-import { getPostCondition, handlePostConditions } from '@common/transactions/postcondition-utils';
 import { TransactionPayload } from '@stacks/connect';
 import { stacksTransactionToHex } from '@common/transactions/transaction-utils';
-
-export const postConditionsState = atom(get => {
-  const { payload, address } = get(
-    waitForAll({
-      payload: requestTokenPayloadState,
-      address: currentAccountStxAddressState,
-    })
-  );
-
-  if (!payload || !address) return;
-
-  if (payload.postConditions) {
-    if (payload.stxAddress)
-      return handlePostConditions(payload.postConditions, payload.stxAddress, address);
-
-    return payload.postConditions.map(getPostCondition);
-  }
-  return [];
-});
+import { postConditionsState } from '@store/transactions/post-conditions';
 
 export const pendingTransactionState = atom(get => {
   const { payload, postConditions, network } = get(
