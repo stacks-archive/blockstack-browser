@@ -7,6 +7,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { FiCopy } from 'react-icons/fi';
 import { CurrentUserAvatar } from '@features/current-user/current-user-avatar';
 import { CurrentUsername } from '@features/current-user/current-user-name';
+import { UserAreaSelectors } from '../../../../tests/integration/user-area.selectors';
 
 const UserAddress = memo((props: StackProps) => {
   const currentAccount = useCurrentAccount();
@@ -21,6 +22,7 @@ const UserAddress = memo((props: StackProps) => {
           onClick={onCopy}
           size="12px"
           color={color('text-caption')}
+          data-test={UserAreaSelectors.AccountCopyAddress}
           as={FiCopy}
         />
       </Stack>

@@ -50,6 +50,8 @@ export async function setupBrowser(verbose?: boolean) {
     args: launchArgs,
     headless: false,
   })) as ChromiumBrowserContext;
+
+  await context.grantPermissions(['clipboard-read']);
   const backgroundPage = await getBackgroundPage(context);
   backgroundPage.on('pageerror', event => {
     console.error('Error in background script of extension.');

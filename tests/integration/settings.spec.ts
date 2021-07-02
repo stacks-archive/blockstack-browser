@@ -13,7 +13,7 @@ describe(`Settings integration tests`, () => {
     browser = await setupBrowser();
     wallet = await WalletPage.init(browser, ScreenPaths.INSTALLED);
     await wallet.signUp();
-  }, 10000);
+  }, 20000);
 
   afterAll(async () => {
     try {
