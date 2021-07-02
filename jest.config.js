@@ -9,7 +9,7 @@ Object.keys(compilerOptions.paths).forEach(key => {
     return;
   }
   if (path.startsWith('../')) {
-    pathNames[key] = `<rootDir>/${path.slice(3)}`;
+    pathNames[key.replace(/\*/g, '(.*)')] = `<rootDir>/${path.slice(3).replace(/\*/g, '$1')}`;
     return;
   } else {
     pathNames[key.replace(/\*/g, '(.*)')] = `<rootDir>/src/${path.replace(/\*/g, '$1')}`;

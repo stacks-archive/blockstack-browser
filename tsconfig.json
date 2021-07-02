@@ -33,7 +33,8 @@
       "@inpage/*": ["inpage/*"],
       "@pages/*": ["pages/*"],
       "@features/*": ["features/*"],
-      "@tests/*": ["../tests/*"]
+      "@tests/*": ["../tests/*"],
+      "@tests": ["../tests"]
     },
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
