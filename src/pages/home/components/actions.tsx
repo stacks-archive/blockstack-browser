@@ -4,7 +4,7 @@ import React, { memo, useCallback, useRef } from 'react';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { IconArrowUp, IconQrcode } from '@tabler/icons';
 import { useTransferableAssets } from '@common/hooks/use-assets';
-import { WalletPageSelectors } from '../../../../tests/integration/page-objects/wallet.selectors';
+import { WalletPageSelectors } from '@tests/integration/page-objects/wallet.selectors';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';

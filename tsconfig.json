@@ -32,7 +32,8 @@
       "@content-scripts/*": ["content-scripts/*"],
       "@inpage/*": ["inpage/*"],
       "@pages/*": ["pages/*"],
-      "@features/*": ["features/*"]
+      "@features/*": ["features/*"],
+      "@tests/*": ["../tests/*"]
     },
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,

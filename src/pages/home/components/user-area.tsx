@@ -7,7 +7,7 @@ import { truncateMiddle } from '@stacks/ui-utils';
 import { FiCopy } from 'react-icons/fi';
 import { CurrentUserAvatar } from '@features/current-user/current-user-avatar';
 import { CurrentUsername } from '@features/current-user/current-user-name';
-import { UserAreaSelectors } from '../../../../tests/integration/user-area.selectors';
+import { UserAreaSelectors } from '@tests/integration/user-area.selectors';
 
 const UserAddress = memo((props: StackProps) => {
   const currentAccount = useCurrentAccount();
