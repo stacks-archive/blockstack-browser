@@ -5,7 +5,7 @@ import { ProviderWithWalletAndRequestToken } from '../../../tests/state-utils';
 import { makeFungibleTokenTransferState } from '@store/transactions/fungible-token-transfer';
 import { setupHeystackEnv } from '../../../tests/mocks/heystack';
 
-describe('makeFungibleTokenTransferState', () => {
+describe(makeFungibleTokenTransferState.debugLabel || 'makeFungibleTokenTransferState', () => {
   setupHeystackEnv();
   it('correctly generates the expected values', async () => {
     const { result, waitForNextUpdate } = renderHook(
