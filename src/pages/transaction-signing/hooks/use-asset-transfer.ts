@@ -51,7 +51,9 @@ export function useMakeAssetTransfer() {
   return useAtomCallback<StacksTransaction | undefined, AssetTransferOptions>(
     useCallback(async (get, _set, arg) => {
       const { amount, recipient, memo } = arg;
-      const assetTransferState = get(makeFungibleTokenTransferState);
+      // unstable_async option @see https://github.com/pmndrs/jotai/blob/master/src/core/atom.ts#L8
+      // allows you to await a get
+      const assetTransferState = await get(makeFungibleTokenTransferState, true);
       const selectedAsset = get(selectedAssetStore);
       if (!assetTransferState || !selectedAsset) return;
       const {

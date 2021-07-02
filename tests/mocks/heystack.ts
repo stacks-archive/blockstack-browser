@@ -24,6 +24,7 @@ enum GetRequests {
   tokenContractInfo = 'https://stacks-node-api.regtest.stacks.co/extended/v1/contract/ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N.hey-token',
   heyContractInterface = 'https://stacks-node-api.regtest.stacks.co/v2/contracts/interface/ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N/hey-final',
   heyContractInfo = 'https://stacks-node-api.regtest.stacks.co/extended/v1/contract/ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N.hey-final',
+  fees = 'https://stacks-node-api.regtest.stacks.co/v2/fees/transfer',
 }
 
 enum PostRequests {
@@ -41,6 +42,7 @@ export const getRequests: Record<string, string> = {
   [GetRequests.tokenContractInfo]: TOKEN_CONTRACT_INFO_DATA,
   [GetRequests.heyContractInfo]: HEY_CONTRACT_INFO,
   [GetRequests.heyContractInterface]: HEY_CONTRACT_INTERFACE,
+  [GetRequests.fees]: '1',
 };
 
 export const postRequests: Record<string, string> = {
