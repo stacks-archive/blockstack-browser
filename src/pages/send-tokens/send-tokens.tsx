@@ -19,6 +19,7 @@ import { MemoField } from '@pages/send-tokens/components/memo-field';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
+import { SendFormSelectors } from '../../../tests/integration/page-objects/send-form.selectors';
 
 type Amount = number | '';
 
@@ -91,7 +92,13 @@ const SendForm = (props: SendFormProps) => {
               <Text textStyle="caption">{assetError}</Text>
             </ErrorLabel>
           )}
-          <Button borderRadius="12px" width="100%" onClick={onSubmit} isDisabled={!hasValues}>
+          <Button
+            borderRadius="12px"
+            width="100%"
+            onClick={onSubmit}
+            isDisabled={!hasValues}
+            data-test={SendFormSelectors.BtnPreviewSendTx}
+          >
             Preview
           </Button>
         </Box>

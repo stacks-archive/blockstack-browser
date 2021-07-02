@@ -6,9 +6,9 @@ import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { ErrorLabel } from '@components/error-label';
 
-import { SendFormSelectors } from '../../../../tests/integration/page-objects/send-form.selectors';
 import { useSendAmountFieldActions } from '../hooks/use-send-form';
 import { SendMaxWithSuspense } from './send-max-button';
+import { SendFormSelectors } from '../../../../tests/integration/page-objects/send-form.selectors';
 
 interface AmountFieldProps extends StackProps {
   value: number;
@@ -59,7 +59,7 @@ export const AmountField = memo((props: AmountFieldProps) => {
         </Box>
       </InputGroup>
       {error && (
-        <ErrorLabel>
+        <ErrorLabel data-test={SendFormSelectors.InputAmountFieldErrorLabel}>
           <Text textStyle="caption">{error}</Text>
         </ErrorLabel>
       )}

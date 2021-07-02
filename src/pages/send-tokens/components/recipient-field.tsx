@@ -1,6 +1,7 @@
 import { Input, InputGroup, Stack, StackProps, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import React, { memo } from 'react';
+import { SendFormSelectors } from '../../../../tests/integration/page-objects/send-form.selectors';
 
 interface RecipientField extends StackProps {
   value: string;
@@ -31,10 +32,11 @@ export const RecipientField = memo(({ value, onChange, error, ...rest }: Recipie
           onChange={onChange}
           placeholder="Enter an address"
           autoComplete="off"
+          data-test={SendFormSelectors.InputRecipientField}
         />
       </InputGroup>
       {error && (
-        <ErrorLabel>
+        <ErrorLabel data-test={SendFormSelectors.InputRecipientFieldErrorLabel}>
           <Text textStyle="caption">{error}</Text>
         </ErrorLabel>
       )}
