@@ -20,12 +20,13 @@ export function useMakeStxTransfer() {
   return useAtomCallback<undefined | StacksTransaction, TokenTransferParams>(
     useCallback(async (get, _set, arg) => {
       const { amount, recipient, memo } = arg;
-      const { network, account, nonce } = get(
+      const { network, account, nonce } = await get(
         waitForAll({
           network: currentStacksNetworkState,
           account: currentAccountState,
           nonce: correctNonceState,
-        })
+        }),
+        true
       );
 
       if (!account) return;
