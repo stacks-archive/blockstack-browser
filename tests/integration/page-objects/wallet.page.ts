@@ -32,40 +32,12 @@ export class WalletPage {
     this.page = page;
   }
 
-  static async getAuthPopup(browser: BrowserDriver) {
-    const page = await this.recursiveGetAuthPopup(browser);
-    if (!page) {
-      await browser.context
-        .pages()[0]
-        .screenshot({ path: `tests/screenshots/no-auth-page-found.png` });
-      throw new Error('Unable to get auth page popup');
-    }
-    const installPage = new this(page);
-    return installPage;
-  }
-
-  /**
-   * Due to flakiness of getting the pop-up page, this has some 'retry' logic
-   */
-  static async recursiveGetAuthPopup(browser: BrowserDriver, attempt = 1): Promise<Page> {
-    const pages = browser.context.pages();
-    const page = pages.find(p => p.url().startsWith('chrome-extension://'));
-    if (!page) {
-      if (attempt > 3) {
-        throw new Error('Unable to get auth page popup');
-      }
-      await wait(250);
-      return this.recursiveGetAuthPopup(browser, attempt + 1);
-    }
-    return page;
-  }
-
   static async init(browser: BrowserDriver, path?: ScreenPaths) {
     const background = browser.context.backgroundPages()[0];
     const pageUrl: string = await background.evaluate(`openOptionsPage("${path || ''}")`);
     const page = await browser.context.newPage();
     await page.goto(pageUrl);
-    page.on('pageerror', event => {
+    page.on('pageerror', (event: { message: any }) => {
       console.log('Error in wallet:', event.message);
     });
     return new this(page);
@@ -144,10 +116,6 @@ export class WalletPage {
 
   async goToSendForm() {
     await this.page.click(this.sendTokenBtnSelector);
-  }
-
-  chooseAccount(username: string, index: number) {
-    return this.page.click(`[data-test="account-${username}-${index}"]`);
   }
 
   /** Sign up with a randomly generated seed phrase */

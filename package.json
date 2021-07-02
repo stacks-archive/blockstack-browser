@@ -17,7 +17,7 @@
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
-    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" \"*.{js,json}\"",
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\" *.js",
     "prod:ext": "yarn build",
     "prod:analyze": "cross-env NODE_ENV=production ANALYZE=true webpack -p",

@@ -68,22 +68,22 @@ export async function setupBrowser(verbose?: boolean) {
     console.log('[DEBUG]: Launched playwright browser');
   }
   await setupMocks(context);
-  const demoPageConsoleLogs: string[] = [];
-  const demoPage = await DemoPage.init(context);
-  demoPage.page.on('pageerror', event => {
+  const demoConsoleLogs: string[] = [];
+  const demo = await DemoPage.init(context);
+  demo.page.on('pageerror', event => {
     if (verbose) {
       console.log('Demo page error:', event.message);
     }
   });
-  demoPage.page.on('console', event => {
+  demo.page.on('console', event => {
     if (verbose) {
       console.log('Test app console.log', event.text());
     }
-    demoPageConsoleLogs.push(event.text());
+    demoConsoleLogs.push(event.text());
   });
   return {
-    demoPageConsoleLogs,
-    demoPage,
+    demoConsoleLogs,
+    demo,
     backgroundPage,
     context,
   };

@@ -31,7 +31,8 @@
       "@components/*": ["./components/*"],
       "@containers/*": ["./containers/*"],
       "@common/*": ["./common/*"],
-      "@cards/*": ["./components/cards/*"]
+      "@cards/*": ["./components/cards/*"],
+      "@tests/*": ["../../tests/*"]
     },
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,

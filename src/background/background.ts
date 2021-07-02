@@ -19,6 +19,14 @@ import { vaultMessageHandler } from '@background/vault';
 
 const IS_TEST_ENV = process.env.TEST_ENV === 'true';
 
+// Playwright does not currently support Chrome extension popup testing:
+// https://github.com/microsoft/playwright/issues/5593
+async function openRequestInFullPage(path: string, urlParams: URLSearchParams) {
+  await chrome.tabs.create({
+    url: chrome.runtime.getURL(`full-page.html#${path}?${urlParams.toString()}`),
+  });
+}
+
 // Listen for install event
 chrome.runtime.onInstalled.addListener(async details => {
   if (details.reason === 'install' && !IS_TEST_ENV) {
@@ -32,7 +40,7 @@ chrome.runtime.onInstalled.addListener(async details => {
 chrome.runtime.onConnect.addListener(port => {
   // Listen for auth and transaction events
   if (port.name === CONTENT_SCRIPT_PORT) {
-    port.onMessage.addListener((message: MessageFromContentScript, port) => {
+    port.onMessage.addListener(async (message: MessageFromContentScript, port) => {
       const { payload } = message;
       switch (message.method) {
         case ExternalMethods.authenticationRequest: {
@@ -44,7 +52,11 @@ chrome.runtime.onConnect.addListener(port => {
           const path = ScreenPaths.GENERATION;
           const urlParams = new URLSearchParams();
           urlParams.set('authRequest', payload);
-          popupCenter({ url: `/popup.html#${path}?${urlParams.toString()}` });
+          if (IS_TEST_ENV) {
+            await openRequestInFullPage(path, urlParams);
+          } else {
+            popupCenter({ url: `/popup.html#${path}?${urlParams.toString()}` });
+          }
           break;
         }
         case ExternalMethods.transactionRequest: {
@@ -56,7 +68,11 @@ chrome.runtime.onConnect.addListener(port => {
           const path = ScreenPaths.TRANSACTION_POPUP;
           const urlParams = new URLSearchParams();
           urlParams.set('request', payload);
-          popupCenter({ url: `/popup.html#${path}?${urlParams.toString()}` });
+          if (IS_TEST_ENV) {
+            await openRequestInFullPage(path, urlParams);
+          } else {
+            popupCenter({ url: `/popup.html#${path}?${urlParams.toString()}` });
+          }
           break;
         }
         default:

@@ -13,6 +13,7 @@ import { useTransactionError } from '../hooks/use-transaction-error';
 import { TransactionErrorReason } from './transaction-error';
 import { useAtomValue } from 'jotai/utils';
 import { LoadingRectangle } from '@components/loading-rectangle';
+import { TransactionsSelectors } from '@tests/integration/transactions.selectors';
 
 const MinimalErrorMessageSuspense = memo((props: StackProps) => {
   const error = useTransactionError();
@@ -39,7 +40,15 @@ const MinimalErrorMessageSuspense = memo((props: StackProps) => {
     return null;
   };
   return (
-    <Stack alignItems="center" bg="#FCEEED" p="base" borderRadius="12px" isInline {...props}>
+    <Stack
+      data-test={TransactionsSelectors.TransactionErrorMessage}
+      alignItems="center"
+      bg="#FCEEED"
+      p="base"
+      borderRadius="12px"
+      isInline
+      {...props}
+    >
       <Box color={color('feedback-error')} strokeWidth={2} as={FiAlertTriangle} />
       <Caption color={color('feedback-error')}>{getTitle()}</Caption>
     </Stack>
@@ -64,7 +73,7 @@ const SubmitActionSuspense = (props: ButtonProps) => {
   const handleBroadcastTransaction = useTransactionBroadcast();
   const error = useTransactionError();
   const { setIsLoading, setIsIdle, isLoading } = useLoading(LOADING_KEYS.SUBMIT_TRANSACTION);
-  //
+
   const isDisabled = !!error;
 
   const handleSubmit = useCallback(async () => {
@@ -75,6 +84,7 @@ const SubmitActionSuspense = (props: ButtonProps) => {
 
   return (
     <BaseConfirmButton
+      data-test={TransactionsSelectors.BtnConfirmTransaction}
       onClick={handleSubmit}
       isLoading={isLoading}
       isDisabled={isDisabled}

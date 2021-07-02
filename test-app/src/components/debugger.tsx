@@ -23,6 +23,7 @@ import {
   tupleCV,
   someCV,
 } from '@stacks/transactions';
+import { TransactionsSelectors } from '@tests/integration/transactions.selectors';
 import { ExplorerLink } from './explorer-link';
 import BN from 'bn.js';
 
@@ -310,7 +311,7 @@ export const Debugger = () => {
 
       <Box>
         <ButtonGroup spacing={4} my="base">
-          <Button mt={3} onClick={callFaker}>
+          <Button data-test={TransactionsSelectors.BtnContractCall} mt={3} onClick={callFaker}>
             Contract call
           </Button>
           <Button mt={3} onClick={() => stxTransfer('102')}>
