@@ -4,6 +4,7 @@ import React, { memo, useCallback, useRef } from 'react';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
 import { IconArrowUp, IconQrcode } from '@tabler/icons';
 import { useTransferableAssets } from '@common/hooks/use-assets';
+import { WalletPageSelectors } from '../../../../tests/integration/page-objects/wallet.selectors';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
@@ -52,7 +53,14 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
 const SendButtonSuspense = () => {
   const assets = useTransferableAssets();
   const isDisabled = !assets || assets?.length === 0;
-  return <TxButton isDisabled={isDisabled} path={ScreenPaths.POPUP_SEND} kind="send" />;
+  return (
+    <TxButton
+      isDisabled={isDisabled}
+      path={ScreenPaths.POPUP_SEND}
+      data-test={WalletPageSelectors.BtnSendTokens}
+      kind="send"
+    />
+  );
 };
 const SendButtonFallback = memo(() => (
   <TxButton isDisabled path={ScreenPaths.POPUP_SEND} kind="send" />

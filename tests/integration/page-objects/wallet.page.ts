@@ -2,6 +2,7 @@ import { ScreenPaths } from '@common/types';
 import { Page } from 'playwright-core';
 import { createTestSelector, wait, BrowserDriver } from '../utils';
 import { USERNAMES_ENABLED } from '@common/constants';
+import { WalletPageSelectors } from './wallet.selectors';
 
 export class WalletPage {
   static url = 'http://localhost:8081/index.html#';
@@ -15,6 +16,7 @@ export class WalletPage {
   setUsernameDone = createTestSelector('username-button');
   usernameInput = createTestSelector('username-input');
   saveKeyButton = createTestSelector('save-key');
+  sendTokenBtnSelector = createTestSelector(WalletPageSelectors.BtnSendTokens);
   confirmSavedKey = createTestSelector('confirm-saved-key');
   eightCharactersErrMsg =
     'text="Your username should be at least 8 characters, with a maximum of 37 characters."';
@@ -138,6 +140,10 @@ export class WalletPage {
       await this.page.fill(this.usernameInput, username);
       await this.page.click(this.setUsernameDone);
     }
+  }
+
+  async goToSendForm() {
+    await this.page.click(this.sendTokenBtnSelector);
   }
 
   chooseAccount(username: string, index: number) {

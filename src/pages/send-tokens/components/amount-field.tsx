@@ -6,6 +6,7 @@ import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { ErrorLabel } from '@components/error-label';
 
+import { SendFormSelectors } from '../../../../tests/integration/page-objects/send-form.selectors';
 import { useSendAmountFieldActions } from '../hooks/use-send-form';
 import { SendMaxWithSuspense } from './send-max-button';
 
@@ -47,6 +48,7 @@ export const AmountField = memo((props: AmountFieldProps) => {
             onChange={onChange}
             autoComplete="off"
             name="amount"
+            data-test={SendFormSelectors.InputAmountField}
           />
           {balances && selectedAsset ? (
             <SendMaxWithSuspense

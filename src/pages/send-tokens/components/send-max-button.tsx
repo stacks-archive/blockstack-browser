@@ -1,6 +1,7 @@
 import React, { FC, Suspense } from 'react';
 import { Box, color, ButtonProps } from '@stacks/ui';
 import { useCurrentFee } from '@common/hooks/use-current-fee';
+import { SendFormSelectors } from '../../../../tests/integration/page-objects/send-form.selectors';
 
 const SendMaxButton: FC<ButtonProps> = props => (
   <Box
@@ -27,7 +28,13 @@ interface SendMaxProps extends ButtonProps {
 }
 function SendMax({ onSetMax, ...props }: SendMaxProps) {
   const fee = useCurrentFee();
-  return <SendMaxButton onClick={() => onSetMax(fee)} {...props} />;
+  return (
+    <SendMaxButton
+      onClick={() => onSetMax(fee)}
+      data-test={SendFormSelectors.BtnSendMaxBalance}
+      {...props}
+    />
+  );
 }
 
 interface SendMaxWithSuspense extends SendMaxProps {
