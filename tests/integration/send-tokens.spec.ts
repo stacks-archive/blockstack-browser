@@ -32,5 +32,6 @@ describe(`Send tokens flow`, () => {
 
     expect(amount).toEqual('');
     expect(amount).not.toEqual('-0.00018');
+    expect(Number(amount)).not.toBeLessThan(0);
   });
 });

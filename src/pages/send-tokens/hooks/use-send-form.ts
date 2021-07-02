@@ -26,6 +26,7 @@ export function useSendAmountFieldActions({
           new BigNumber(fee ?? 1).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES).toString()
         );
         const stx = microStxToStx(availableBalance.toString()).minus(txFee);
+        if (stx.isLessThanOrEqualTo(0)) return;
         setFieldValue('amount', stx.toNumber());
       } else {
         if (balance) setFieldValue('amount', removeCommas(balance));
