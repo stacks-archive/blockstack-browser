@@ -13,7 +13,7 @@ import { Caption, Title } from '@components/typography';
 import { getUrlHostname } from '@common/utils';
 import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 import { IconCloudOff } from '@tabler/icons';
-import { SettingsSelectors } from '../../../tests/integration/settings.selectors';
+import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();

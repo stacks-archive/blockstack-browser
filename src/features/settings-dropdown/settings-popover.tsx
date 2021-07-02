@@ -10,7 +10,7 @@ import { AccountStep } from '@store/ui';
 import { Divider } from '@components/divider';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { forwardRefWithAs } from '@stacks/ui-core';
-import { SettingsSelectors } from '../../../tests/integration/settings.selectors';
+import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
 const MenuWrapper = forwardRefWithAs((props, ref) => (
   <Box

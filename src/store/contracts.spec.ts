@@ -6,10 +6,11 @@ import {
   contractSourceResponseState,
   contractSourceState,
 } from './contracts';
-import { ProviderWithWalletAndRequestToken } from '../../tests/state-utils';
+
 import * as utils from '@store/common/utils';
-import { setupHeystackEnv } from '../../tests/mocks/heystack';
-import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '../../tests/mocks';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
+import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '@tests/mocks';
 
 const params = {
   contractAddress: HEYSTACK_HEY_TX_REQUEST_DECODED.contractAddress,

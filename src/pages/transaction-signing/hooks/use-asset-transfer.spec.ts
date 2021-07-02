@@ -6,9 +6,9 @@ import {
   StacksTransaction,
 } from '@stacks/transactions';
 import { useMakeAssetTransfer } from '@pages/transaction-signing/hooks/use-asset-transfer';
-import { setupHeystackEnv } from '../../../../tests/mocks/heystack';
-import { ProviderWithWalletAndRequestToken } from '../../../../tests/state-utils';
-import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '../../../../tests/mocks';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
+import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '@tests/mocks';
 
 const MEMO = 'hello world';
 const AMOUNT = 25;

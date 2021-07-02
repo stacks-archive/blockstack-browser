@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useAtomValue } from 'jotai/utils';
-import { ProviderWithWalletAndRequestToken } from '../../../tests/state-utils';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
 
-import { setupHeystackEnv } from '../../../tests/mocks/heystack';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
 import { postConditionsState } from '@store/transactions/post-conditions';
 import { FungibleConditionCode, parsePrincipalString } from '@stacks/transactions';
-import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '../../../tests/mocks';
+import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '@tests/mocks';
 
 describe('Post conditions', () => {
   setupHeystackEnv();

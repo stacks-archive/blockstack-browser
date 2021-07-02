@@ -1,13 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useAtomValue } from 'jotai/utils';
-import { ProviderWithWalletAndRequestToken } from '../../../tests/state-utils';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
 
 import {
   transactionContractInterfaceState,
   transactionContractSourceState,
   transactionFunctionsState,
 } from '@store/transactions/contract-call';
-import { setupHeystackEnv } from '../../../tests/mocks/heystack';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
 
 const functionName = 'send-message';
 

@@ -5,8 +5,8 @@ import {
   StacksTransaction,
   TokenTransferPayload,
 } from '@stacks/transactions';
-import { setupHeystackEnv } from '../../../../tests/mocks/heystack';
-import { ProviderWithWalletAndRequestToken } from '../../../../tests/state-utils';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
 import { useMakeStxTransfer } from '@pages/transaction-signing/hooks/use-make-stx-transfer';
 import { stxToMicroStx } from '@common/stacks-utils';
 

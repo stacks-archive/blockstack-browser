@@ -7,7 +7,7 @@ import { CollectibleAssets } from '@components/popup/collectible-assets';
 import { useAccountBalances } from '@common/hooks/account/use-account-balances';
 import { NoAssetsEmptyIllustration } from '@components/vector/no-assets';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
-import { UserAreaSelectors } from '../../../tests/integration/user-area.selectors';
+import { UserAreaSelectors } from '@tests/integration/user-area.selectors';
 
 function FungibleAssets(props: StackProps) {
   const fungibleTokens = useFungibleTokenState();

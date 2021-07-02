@@ -19,7 +19,7 @@ import { MemoField } from '@pages/send-tokens/components/memo-field';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
-import { SendFormSelectors } from '../../../tests/integration/page-objects/send-form.selectors';
+import { SendFormSelectors } from '@tests/integration/page-objects/send-form.selectors';
 
 type Amount = number | '';
 

@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useAtomValue } from 'jotai/utils';
-import { ProviderWithWalletAndRequestToken } from '../../../tests/state-utils';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
 
 import { makeFungibleTokenTransferState } from '@store/transactions/fungible-token-transfer';
-import { setupHeystackEnv } from '../../../tests/mocks/heystack';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
 
 describe(makeFungibleTokenTransferState.debugLabel || 'makeFungibleTokenTransferState', () => {
   setupHeystackEnv();

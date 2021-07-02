@@ -5,9 +5,9 @@ import { ContractCallDetails } from './contract-call-details';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { cvToString, deserializeCV } from '@stacks/transactions';
 
-import { ProviderWithWalletAndRequestToken } from '../../../../tests/state-utils';
-import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '../../../../tests/mocks';
-import { setupHeystackEnv } from '../../../../tests/mocks/heystack';
+import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
+import { HEYSTACK_HEY_TX_REQUEST_DECODED } from '@tests/mocks';
+import { setupHeystackEnv } from '@tests/mocks/heystack';
 
 const truncatedContractAddress = truncateMiddle(HEYSTACK_HEY_TX_REQUEST_DECODED.contractAddress, 4);
 const truncatedContractId = `${truncatedContractAddress}.${HEYSTACK_HEY_TX_REQUEST_DECODED.contractName}`;
