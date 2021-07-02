@@ -6,20 +6,23 @@ import { TEST_WALLET, HEYSTACK_HEY_TX_REQUEST } from './mocks';
 import { requestTokenState } from '@store/transactions/requests';
 import Mock = jest.Mock;
 import { selectedAssetIdState } from '@store/assets/asset-search';
+import { HashRouter as Router } from 'react-router-dom';
 
 export const ProviderWithWalletAndRequestToken: React.FC = ({ children }) => (
-  <Provider
-    initialValues={[
-      [walletState, TEST_WALLET] as const,
-      [requestTokenState, HEYSTACK_HEY_TX_REQUEST] as const,
-      [
-        selectedAssetIdState,
-        'ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N.hey-token::hey-token',
-      ] as const,
-    ]}
-  >
-    {children}
-  </Provider>
+  <Router>
+    <Provider
+      initialValues={[
+        [walletState, TEST_WALLET] as const,
+        [requestTokenState, HEYSTACK_HEY_TX_REQUEST] as const,
+        [
+          selectedAssetIdState,
+          'ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N.hey-token::hey-token',
+        ] as const,
+      ]}
+    >
+      {children}
+    </Provider>
+  </Router>
 );
 
 // This is a wrapper component to provide default/mock data to various atoms

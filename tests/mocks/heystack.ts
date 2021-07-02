@@ -15,7 +15,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { delay } from '@common/utils';
 
-enum GetRequests {
+export enum GetRequests {
   v1Address = 'https://stacks-node-api.regtest.stacks.co/extended/v1/address/ST2PHCPANVT8DVPSY5W2ZZ81M285Q5Z8Y6DQMZE7Z/balances',
   v2Accounts = 'https://stacks-node-api.regtest.stacks.co/v2/accounts/ST2PHCPANVT8DVPSY5W2ZZ81M285Q5Z8Y6DQMZE7Z',
   addressTxs = 'https://stacks-node-api.regtest.stacks.co/extended/v1/address/ST2PHCPANVT8DVPSY5W2ZZ81M285Q5Z8Y6DQMZE7Z/transactions',
@@ -27,10 +27,11 @@ enum GetRequests {
   fees = 'https://stacks-node-api.regtest.stacks.co/v2/fees/transfer',
 }
 
-enum PostRequests {
+export enum PostRequests {
   heyTokenGetName = 'https://stacks-node-api.regtest.stacks.co/v2/contracts/call-read/ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N/hey-token/get-name',
   heyTokenGetSymbol = 'https://stacks-node-api.regtest.stacks.co/v2/contracts/call-read/ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N/hey-token/get-symbol',
   heyTokenGetDecimals = 'https://stacks-node-api.regtest.stacks.co/v2/contracts/call-read/ST21FTC82CCKE0YH9SK5SJ1D4XEMRA069FKV0VJ8N/hey-token/get-decimals',
+  broadcastTransaction = 'https://stacks-node-api.regtest.stacks.co/v2/transactions',
 }
 
 export const getRequests: Record<string, string> = {
@@ -49,20 +50,25 @@ export const postRequests: Record<string, string> = {
   [PostRequests.heyTokenGetName]: TOKEN_GET_NAME_DATA,
   [PostRequests.heyTokenGetSymbol]: TOKEN_GET_SYMBOL_DATA,
   [PostRequests.heyTokenGetDecimals]: TOKEN_GET_DECIMALS_DATA,
+  [PostRequests.broadcastTransaction]: 'null',
 };
 
-export function setupHeystackEnv() {
+export function setupHeystackEnv(
+  handleRequest?: Record<string, (req: any, res: any, ctx: any) => void>
+) {
   let mockLocalStorage: Record<string, string> = {};
 
   const getPaths = Object.keys(getRequests).map(path => {
-    return rest.get(path, async (_req, res, ctx) => {
+    return rest.get(path, async (req, res, ctx) => {
       await delay(100);
+      if (handleRequest && handleRequest[path]) return handleRequest[path](req, res, ctx);
       return res(ctx.json(JSON.parse(getRequests[path] as any)));
     });
   });
   const postPaths = Object.keys(postRequests).map(path => {
-    return rest.post(path, async (_req, res, ctx) => {
+    return rest.post(path, async (req, res, ctx) => {
       await delay(100);
+      if (handleRequest && handleRequest[path]) return handleRequest[path](req, res, ctx);
       return res(ctx.json(JSON.parse(postRequests[path] as any)));
     });
   });
