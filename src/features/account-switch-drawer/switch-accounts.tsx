@@ -86,7 +86,7 @@ const AccountListItem = memo(
         }}
         cursor="pointer"
         py="base"
-        px="loose"
+        px="extra-loose"
         onClick={handleClick}
         position="relative"
       >
