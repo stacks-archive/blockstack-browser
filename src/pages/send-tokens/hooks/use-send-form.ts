@@ -37,7 +37,8 @@ export function useSendAmountFieldActions({
 
   const handleOnKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
-      const hasDecimals = typeof selectedAsset?.meta?.decimals === 'number';
+      const hasDecimals =
+        typeof selectedAsset?.meta?.decimals === 'number' && selectedAsset?.meta.decimals !== 0;
       const { key } = event;
       const value = event.currentTarget.value;
       // leading zeros
