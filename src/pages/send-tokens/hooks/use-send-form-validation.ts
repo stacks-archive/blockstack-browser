@@ -51,6 +51,11 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
             errors.amount = `Insufficient balance. Your available balance is ${availableBalance.toString()} STX`;
           }
         }
+        const assetBalance = new BigNumber(selectedAsset.balance);
+        const assetAmountToTransfer = new BigNumber(amount);
+        if (assetAmountToTransfer.isGreaterThan(assetBalance)) {
+          errors.amount = 'Cannot transfer more than balance';
+        }
       }
     } else {
       setAssetError('You must select a valid token to transfer');
