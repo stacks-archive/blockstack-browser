@@ -15,6 +15,10 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
   const { currentNetwork, currentAccountStxAddress } = useWallet();
   const balances = useFetchBalances();
   const { selectedAsset } = useSelectedAsset();
+  const isStx = selectedAsset?.type === 'stx';
+  const selectedAssetHasDecimals =
+    isStx ||
+    (typeof selectedAsset?.meta?.decimals === 'number' && selectedAsset?.meta.decimals !== 0);
 
   return async ({ recipient, amount }: { recipient: string; amount: string | number }) => {
     const errors: FormikErrors<FormValues> = {};
@@ -31,6 +35,10 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
       errors.amount = 'Must be more than zero';
     }
     if (selectedAsset) {
+      const valueHasDecimals = typeof amount === 'string' && amount.includes('.');
+      if (!selectedAssetHasDecimals && valueHasDecimals)
+        errors.amount = 'This token does not support decimal places.';
+
       if (balances) {
         const amountBN = new BigNumber(amount);
         if (selectedAsset.type === 'stx') {
