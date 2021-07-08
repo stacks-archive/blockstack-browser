@@ -3,11 +3,12 @@ import { Page } from 'playwright-core';
 import { createTestSelector, wait, BrowserDriver } from '../integration/utils';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { WalletPageSelectors } from './wallet.selectors';
+import { InitialPageSelectors } from '@tests/integration/initial-page.selectors';
 
 export class WalletPage {
   static url = 'http://localhost:8081/index.html#';
-  $signUpButton = createTestSelector('sign-up');
-  $signInButton = createTestSelector('sign-in');
+  $signUpButton = createTestSelector(InitialPageSelectors.SignUp);
+  $signInButton = createTestSelector(InitialPageSelectors.SignIn);
   homePage = createTestSelector('home-page');
   $textareaReadOnlySeedPhrase = `${createTestSelector('textarea-seed-phrase')}[data-loaded="true"]`;
   $buttonSignInKeyContinue = createTestSelector('sign-in-key-continue');
@@ -57,6 +58,10 @@ export class WalletPage {
 
   async waitForHomePage() {
     await this.page.waitForSelector(this.homePage, { timeout: 30000 });
+  }
+
+  async waitForLoginPage() {
+    await this.page.waitForSelector(this.$signInButton, { timeout: 3000 });
   }
 
   async loginWithPreviousSecretKey(secretKey: string) {

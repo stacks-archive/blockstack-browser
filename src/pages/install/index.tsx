@@ -8,6 +8,7 @@ import { PopupContainer } from '@components/popup/container';
 import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { Title, Body } from '@components/typography';
 import { Header } from '@components/header';
+import { InitialPageSelectors } from '@tests/integration/initial-page.selectors';
 
 const Actions: React.FC<StackProps> = props => {
   const { doMakeWallet } = useWallet();
@@ -25,10 +26,17 @@ const Actions: React.FC<StackProps> = props => {
 
   return (
     <Stack justifyContent="center" spacing="loose" textAlign="center" {...props}>
-      <Button onClick={register} isLoading={isCreatingWallet} data-testid="sign-up">
+      <Button
+        onClick={register}
+        isLoading={isCreatingWallet}
+        data-testid={InitialPageSelectors.SignUp}
+      >
         I'm new to Stacks
       </Button>
-      <Link onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)} data-testid="sign-in">
+      <Link
+        onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)}
+        data-testid={InitialPageSelectors.SignIn}
+      >
         Sign in with Secret Key
       </Link>
     </Stack>

@@ -31,11 +31,16 @@ describe(`Authentication integration tests`, () => {
     expect(secretKey.split(' ').length).toEqual(24);
   });
 
-  it('should be able to login from authentication page', async () => {
+  it('should be able to login from authentication page then logout', async () => {
     await wallet.clickSignIn();
     await wallet.loginWithPreviousSecretKey(SECRET_KEY);
     await wallet.waitForHomePage();
     const secretKey = await wallet.getSecretKey();
     expect(secretKey).toEqual(SECRET_KEY);
+    await wallet.clickSettingsButton();
+    const signoutBtn = await wallet.page.$('text=Sign Out');
+    expect(signoutBtn).toBeTruthy();
+    await wallet.page.click('text=Sign Out');
+    await wallet.waitForLoginPage();
   });
 });
