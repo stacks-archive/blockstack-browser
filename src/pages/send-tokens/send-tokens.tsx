@@ -20,7 +20,6 @@ import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
 import { SendFormSelectors } from '@tests/integration/page-objects/send-form.selectors';
-import { SendTokensSelectors } from '@tests/utils/send-tokens.selectors';
 
 type Amount = number | '';
 
@@ -81,26 +80,11 @@ const SendForm = (props: SendFormProps) => {
       <Stack spacing="loose" flexDirection="column" flexGrow={1} shouldWrapChildren>
         <AssetSearch onItemClick={onItemClick} />
         <Suspense fallback={<></>}>
-          <AmountField
-            data-testid={SendTokensSelectors.AmountField}
-            value={values.amount || 0}
-            onChange={onChange}
-            error={errors.amount}
-          />
+          <AmountField value={values.amount || 0} onChange={onChange} error={errors.amount} />
         </Suspense>
-        <RecipientField
-          data-testid={SendTokensSelectors.RecipientField}
-          error={errors.recipient}
-          value={values.recipient}
-          onChange={onChange}
-        />
+        <RecipientField error={errors.recipient} value={values.recipient} onChange={onChange} />
         {selectedAsset?.hasMemo && (
-          <MemoField
-            data-testid={SendTokensSelectors.MemoField}
-            value={values.memo}
-            error={errors.memo}
-            onChange={onChange}
-          />
+          <MemoField value={values.memo} error={errors.memo} onChange={onChange} />
         )}
         <Box mt="auto">
           {assetError && (
