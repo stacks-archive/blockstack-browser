@@ -42,4 +42,23 @@ describe('Send form tests', () => {
     userEvent.click(previewBtn);
     await findByText('This token does not support decimal places.');
   });
+
+  it('shows an error message when user tries to send more than their balance', async () => {
+    const { getByTestId, findByText } = render(
+      <React.Suspense fallback={<>loading</>}>
+        <ProviderWitHeySelectedAsset>
+          <SendTokensForm />
+        </ProviderWitHeySelectedAsset>
+      </React.Suspense>
+    );
+    await findByText('Preview');
+    const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
+    const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
+    const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
+
+    userEvent.paste(amountField, '999999999');
+    userEvent.paste(recipientField, 'ST1P72Z3704VMT3DMHPP2CB8TGQWGDBHD3RD69GE2');
+    userEvent.click(previewBtn);
+    await findByText('Cannot transfer more than balance');
+  });
 });
