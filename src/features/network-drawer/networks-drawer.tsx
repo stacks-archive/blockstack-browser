@@ -69,7 +69,7 @@ const NetworkList: React.FC<FlexProps> = memo(props => {
     <Flex flexWrap="wrap" flexDirection="column" {...props}>
       {items.map(item => (
         <React.Suspense fallback={<>Loading</>}>
-          <NetworkListItem data-test={SettingsSelectors.NetworkListItem} item={item} key={item} />
+          <NetworkListItem data-testid={SettingsSelectors.NetworkListItem} item={item} key={item} />
         </React.Suspense>
       ))}
     </Flex>

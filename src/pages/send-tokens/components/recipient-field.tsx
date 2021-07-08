@@ -32,11 +32,11 @@ export const RecipientField = memo(({ value, onChange, error, ...rest }: Recipie
           onChange={onChange}
           placeholder="Enter an address"
           autoComplete="off"
-          data-test={SendFormSelectors.InputRecipientField}
+          data-testid={SendFormSelectors.InputRecipientField}
         />
       </InputGroup>
       {error && (
-        <ErrorLabel data-test={SendFormSelectors.InputRecipientFieldErrorLabel}>
+        <ErrorLabel data-testid={SendFormSelectors.InputRecipientFieldErrorLabel}>
           <Text textStyle="caption">{error}</Text>
         </ErrorLabel>
       )}

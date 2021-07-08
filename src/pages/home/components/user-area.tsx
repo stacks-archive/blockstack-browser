@@ -22,7 +22,7 @@ const UserAddress = memo((props: StackProps) => {
           onClick={onCopy}
           size="12px"
           color={color('text-caption')}
-          data-test={UserAreaSelectors.AccountCopyAddress}
+          data-testid={UserAreaSelectors.AccountCopyAddress}
           as={FiCopy}
         />
       </Stack>

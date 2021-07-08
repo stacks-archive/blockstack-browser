@@ -57,7 +57,7 @@ const SendButtonSuspense = () => {
     <TxButton
       isDisabled={isDisabled}
       path={ScreenPaths.POPUP_SEND}
-      data-test={WalletPageSelectors.BtnSendTokens}
+      data-testid={WalletPageSelectors.BtnSendTokens}
       kind="send"
     />
   );

@@ -24,7 +24,7 @@ export const SecretKeyCard: React.FC<BoxProps> = props => {
   const { secretKey } = useWallet();
   return (
     <Card title="Your Secret Key" {...props}>
-      <Body data-test="textarea-seed-phrase" data-loaded={String(!!secretKey)}>
+      <Body data-testid="textarea-seed-phrase" data-loaded={String(!!secretKey)}>
         {secretKey}
       </Body>
     </Card>
@@ -40,7 +40,7 @@ export const SecretKeyActions: React.FC<{ handleNext?: () => void } & StackProps
   return (
     <Stack spacing="base" {...rest}>
       <Button
-        data-test="copy-key-to-clipboard"
+        data-testid="copy-key-to-clipboard"
         width="100%"
         border="1px solid"
         borderColor={color('border')}
@@ -51,7 +51,7 @@ export const SecretKeyActions: React.FC<{ handleNext?: () => void } & StackProps
         {hasCopied ? 'Copied!' : 'Copy to clipboard'}
       </Button>
       {handleNext && (
-        <Button width="100%" onClick={handleNext} data-test="confirm-saved-key">
+        <Button width="100%" onClick={handleNext} data-testid="confirm-saved-key">
           I've saved it
         </Button>
       )}

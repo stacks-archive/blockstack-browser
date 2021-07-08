@@ -29,7 +29,7 @@ export const InstalledSignIn: React.FC = () => {
                   textAlign="left"
                   textStyle="caption"
                   color={color('feedback-error')}
-                  data-test="sign-in-seed-error"
+                  data-testid="sign-in-seed-error"
                 >
                   {error}
                 </Text>
@@ -56,7 +56,7 @@ export const InstalledSignIn: React.FC = () => {
             width="100%"
             isLoading={isLoading}
             isDisabled={isLoading}
-            data-test="sign-in-key-continue"
+            data-testid="sign-in-key-continue"
             type="submit"
           >
             Continue

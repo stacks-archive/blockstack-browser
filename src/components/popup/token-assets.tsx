@@ -48,7 +48,7 @@ function NoAssets(props: StackProps) {
         color={color('brand')}
         borderRadius="12px"
         onClick={onCopy}
-        data-test={UserAreaSelectors.AccountBalancesCopyAddress}
+        data-testid={UserAreaSelectors.AccountBalancesCopyAddress}
       >
         {hasCopied ? 'Copied!' : 'Copy address'}
       </Button>

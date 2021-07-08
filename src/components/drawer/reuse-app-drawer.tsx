@@ -79,7 +79,7 @@ export const ReuseAppDrawer: React.FC<ReuseAppDrawerProps> = ({
             Go back
           </Button>
           <Button
-            data-test="confirm-continue-app"
+            data-testid="confirm-continue-app"
             flexGrow={1}
             isLoading={loading}
             onClick={async () => {

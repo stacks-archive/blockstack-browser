@@ -20,6 +20,7 @@ import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
 import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
 import { SendFormSelectors } from '@tests/integration/page-objects/send-form.selectors';
+import { SendTokensSelectors } from '@tests/utils/send-tokens.selectors';
 
 type Amount = number | '';
 
@@ -80,11 +81,26 @@ const SendForm = (props: SendFormProps) => {
       <Stack spacing="loose" flexDirection="column" flexGrow={1} shouldWrapChildren>
         <AssetSearch onItemClick={onItemClick} />
         <Suspense fallback={<></>}>
-          <AmountField value={values.amount || 0} onChange={onChange} error={errors.amount} />
+          <AmountField
+            data-testid={SendTokensSelectors.AmountField}
+            value={values.amount || 0}
+            onChange={onChange}
+            error={errors.amount}
+          />
         </Suspense>
-        <RecipientField error={errors.recipient} value={values.recipient} onChange={onChange} />
+        <RecipientField
+          data-testid={SendTokensSelectors.RecipientField}
+          error={errors.recipient}
+          value={values.recipient}
+          onChange={onChange}
+        />
         {selectedAsset?.hasMemo && (
-          <MemoField value={values.memo} error={errors.memo} onChange={onChange} />
+          <MemoField
+            data-testid={SendTokensSelectors.MemoField}
+            value={values.memo}
+            error={errors.memo}
+            onChange={onChange}
+          />
         )}
         <Box mt="auto">
           {assetError && (
@@ -97,7 +113,7 @@ const SendForm = (props: SendFormProps) => {
             width="100%"
             onClick={onSubmit}
             isDisabled={!hasValues}
-            data-test={SendFormSelectors.BtnPreviewSendTx}
+            data-testid={SendFormSelectors.BtnPreviewSendTx}
           >
             Preview
           </Button>
@@ -129,7 +145,7 @@ export const SendTokensForm: React.FC = memo(() => {
     >
       {form => (
         <>
-          <React.Suspense fallback={<Box background="blue">lkjsdflksjdflksjdflsjdlfjlk</Box>}>
+          <React.Suspense fallback={<></>}>
             <ConfirmSendDrawer
               onClose={() => {
                 setShowing(false);
@@ -140,7 +156,7 @@ export const SendTokensForm: React.FC = memo(() => {
               isShowing={isShowing}
             />
           </React.Suspense>
-          <React.Suspense fallback={<Box background="red">lkjsdflksjdflksjdflsjdlfjlk</Box>}>
+          <React.Suspense fallback={<></>}>
             <SendForm setAssetError={setAssetError} assetError={assetError} />
           </React.Suspense>
         </>

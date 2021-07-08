@@ -25,10 +25,10 @@ const Actions: React.FC<StackProps> = props => {
 
   return (
     <Stack justifyContent="center" spacing="loose" textAlign="center" {...props}>
-      <Button onClick={register} isLoading={isCreatingWallet} data-test="sign-up">
+      <Button onClick={register} isLoading={isCreatingWallet} data-testid="sign-up">
         I'm new to Stacks
       </Button>
-      <Link onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)} data-test="sign-in">
+      <Link onClick={() => doChangeScreen(ScreenPaths.SIGN_IN_INSTALLED)} data-testid="sign-in">
         Sign in with Secret Key
       </Link>
     </Stack>

@@ -100,7 +100,7 @@ export const SettingsPopover: React.FC = () => {
                 </MenuItem>
               )}
               <MenuItem
-                data-test="settings-create-an-account"
+                data-testid="settings-create-an-account"
                 onClick={wrappedCloseCallback(() => {
                   setAccountStep(AccountStep.Create);
                   setShowAccounts(true);
@@ -109,7 +109,7 @@ export const SettingsPopover: React.FC = () => {
                 Create an Account
               </MenuItem>
               <MenuItem
-                data-test="settings-view-secret-key"
+                data-testid="settings-view-secret-key"
                 onClick={wrappedCloseCallback(() => {
                   doChangeScreen(ScreenPaths.SETTINGS_KEY);
                 })}
@@ -133,14 +133,14 @@ export const SettingsPopover: React.FC = () => {
           ) : null}
           {isSignedIn ? <Divider /> : null}
           <MenuItem
-            data-test={SettingsSelectors.ChangeNetworkAction}
+            data-testid={SettingsSelectors.ChangeNetworkAction}
             onClick={wrappedCloseCallback(() => {
               setShowNetworks(true);
             })}
           >
             <Flex width="100%" alignItems="center" justifyContent="space-between">
               <Box>Change Network</Box>
-              <Caption data-test={SettingsSelectors.CurrentNetwork}>{currentNetworkKey}</Caption>
+              <Caption data-testid={SettingsSelectors.CurrentNetwork}>{currentNetworkKey}</Caption>
             </Flex>
           </MenuItem>
           {encryptedSecretKey && (
@@ -152,7 +152,7 @@ export const SettingsPopover: React.FC = () => {
                     void doLockWallet();
                     doChangeScreen(ScreenPaths.POPUP_HOME);
                   })}
-                  data-test="settings-lock"
+                  data-testid="settings-lock"
                 >
                   Lock
                 </MenuItem>
@@ -162,7 +162,7 @@ export const SettingsPopover: React.FC = () => {
                   void doSignOut();
                   doChangeScreen(ScreenPaths.INSTALLED);
                 })}
-                data-test="settings-sign-out"
+                data-testid="settings-sign-out"
               >
                 Sign Out
               </MenuItem>

@@ -10,7 +10,7 @@ import { memoWithAs } from '@stacks/ui-core';
 
 const UsernameTitle = (props: BoxProps) => (
   <Title
-    data-test="home-current-display-name"
+    data-testid="home-current-display-name"
     as="h1"
     lineHeight="1rem"
     fontSize={4}

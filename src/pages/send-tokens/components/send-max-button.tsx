@@ -31,7 +31,7 @@ function SendMax({ onSetMax, ...props }: SendMaxProps) {
   return (
     <SendMaxButton
       onClick={() => onSetMax(fee)}
-      data-test={SendFormSelectors.BtnSendMaxBalance}
+      data-testid={SendFormSelectors.BtnSendMaxBalance}
       {...props}
     />
   );

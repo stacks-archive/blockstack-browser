@@ -10,7 +10,7 @@ import { DemoPage } from './page-objects/demo.page';
 const makeTmpDir = promisify(mkdtemp);
 
 export function createTestSelector(name: string) {
-  return `[data-test="${name}"]`;
+  return `[data-testid="${name}"]`;
 }
 
 export function randomString(len: number) {

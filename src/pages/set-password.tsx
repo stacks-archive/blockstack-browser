@@ -119,7 +119,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
                   key="password-input"
                   width="100%"
                   type="password"
-                  data-test="set-password"
+                  data-testid="set-password"
                   autoFocus
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -129,7 +129,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
                   width="100%"
                   isLoading={loading || formik.isSubmitting}
                   isDisabled={loading}
-                  data-test="set-password-done"
+                  data-testid="set-password-done"
                 >
                   Done
                 </Button>

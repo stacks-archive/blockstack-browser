@@ -54,7 +54,7 @@ export const Username: React.FC = () => {
             }
             onKeyPress={buildEnterKeyEvent(onSubmit)}
             name="username"
-            data-test="username-input"
+            data-testid="username-input"
           />
         </Box>
         <Box position="relative">
@@ -79,7 +79,7 @@ export const Username: React.FC = () => {
             mode="primary"
             onClick={onSubmit}
             isLoading={loading}
-            data-test="username-button"
+            data-testid="username-button"
           >
             Add username
           </Button>

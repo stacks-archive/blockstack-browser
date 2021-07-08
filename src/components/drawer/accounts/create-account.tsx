@@ -40,7 +40,7 @@ export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
             onClick={close}
             isLoading={isSetting}
             isDisabled={isSetting}
-            data-test={isSetting ? undefined : 'create-account-done-button'}
+            data-testid={isSetting ? undefined : 'create-account-done-button'}
           >
             Done
           </Button>

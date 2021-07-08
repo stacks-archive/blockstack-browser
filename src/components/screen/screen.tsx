@@ -33,7 +33,7 @@ export const Screen: React.FC<ScreenBodyProps> = ({
         style={{ pointerEvents: isLoading ? 'none' : 'unset' }}
         as={onSubmit ? 'form' : 'main'}
         onSubmit={handleSubmit}
-        data-test="screen"
+        data-testid="screen"
         maxHeight="100vh"
         overflow="auto"
         {...rest}

@@ -48,7 +48,7 @@ export const AmountField = memo((props: AmountFieldProps) => {
             onChange={onChange}
             autoComplete="off"
             name="amount"
-            data-test={SendFormSelectors.InputAmountField}
+            data-testid={SendFormSelectors.InputAmountField}
           />
           {balances && selectedAsset ? (
             <SendMaxWithSuspense
@@ -59,7 +59,7 @@ export const AmountField = memo((props: AmountFieldProps) => {
         </Box>
       </InputGroup>
       {error && (
-        <ErrorLabel data-test={SendFormSelectors.InputAmountFieldErrorLabel}>
+        <ErrorLabel data-testid={SendFormSelectors.InputAmountFieldErrorLabel}>
           <Text textStyle="caption">{error}</Text>
         </ErrorLabel>
       )}

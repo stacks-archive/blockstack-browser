@@ -38,7 +38,7 @@ const Form: React.FC<StackProps> = memo(props => {
               textAlign="left"
               textStyle="caption"
               color="feedback.error"
-              data-test="sign-in-seed-error"
+              data-testid="sign-in-seed-error"
             >
               {error}
             </Text>
@@ -50,7 +50,7 @@ const Form: React.FC<StackProps> = memo(props => {
           width="100%"
           isLoading={isLoading}
           isDisabled={isLoading}
-          data-test="decrypt-recovery-button"
+          data-testid="decrypt-recovery-button"
           type="submit"
         >
           Continue

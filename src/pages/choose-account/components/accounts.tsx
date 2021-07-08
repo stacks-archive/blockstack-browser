@@ -43,7 +43,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({ selectedAddress, accou
 
   return (
     <Box
-      data-test={`account-${slugify(cleanUsername(name))}-${account.index}`}
+      data-testid={`account-${slugify(cleanUsername(name))}-${account.index}`}
       onClick={() => handleOnClick()}
       {...bind}
       {...rest}

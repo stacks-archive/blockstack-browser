@@ -41,7 +41,7 @@ const MinimalErrorMessageSuspense = memo((props: StackProps) => {
   };
   return (
     <Stack
-      data-test={TransactionsSelectors.TransactionErrorMessage}
+      data-testid={TransactionsSelectors.TransactionErrorMessage}
       alignItems="center"
       bg="#FCEEED"
       p="base"
@@ -84,7 +84,7 @@ const SubmitActionSuspense = (props: ButtonProps) => {
 
   return (
     <BaseConfirmButton
-      data-test={TransactionsSelectors.BtnConfirmTransaction}
+      data-testid={TransactionsSelectors.BtnConfirmTransaction}
       onClick={handleSubmit}
       isLoading={isLoading}
       isDisabled={isDisabled}

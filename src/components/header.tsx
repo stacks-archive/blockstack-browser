@@ -19,7 +19,7 @@ const MenuButton: React.FC<BoxProps> = memo(props => {
       pointerEvents={showSettings ? 'none' : 'all'}
       color={color('text-caption')}
       _hover={{ color: color('text-title') }}
-      data-test="menu-button"
+      data-testid="menu-button"
       icon={IconDots}
       {...props}
     />

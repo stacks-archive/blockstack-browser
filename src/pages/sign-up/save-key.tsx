@@ -43,7 +43,7 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
             setLoading(true);
             next();
           }}
-          data-test="button-has-saved-seed-phrase"
+          data-testid="button-has-saved-seed-phrase"
         >
           {"I've saved it"}
         </Button>

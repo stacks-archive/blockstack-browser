@@ -15,7 +15,7 @@ const PageTop = () => (
 
 export const PopupHome = () => (
   <PopupContainer header={<Header />} requestType="auth">
-    <Stack data-test="home-page" flexGrow={1} spacing="loose">
+    <Stack data-testid="home-page" flexGrow={1} spacing="loose">
       <PageTop />
       <BalancesAndActivity />
     </Stack>
