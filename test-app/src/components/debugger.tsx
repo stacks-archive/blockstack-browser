@@ -311,7 +311,7 @@ export const Debugger = () => {
 
       <Box>
         <ButtonGroup spacing={4} my="base">
-          <Button data-test={TransactionsSelectors.BtnContractCall} mt={3} onClick={callFaker}>
+          <Button data-testid={TransactionsSelectors.BtnContractCall} mt={3} onClick={callFaker}>
             Contract call
           </Button>
           <Button mt={3} onClick={() => stxTransfer('102')}>

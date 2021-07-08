@@ -10,7 +10,7 @@ export const Auth: React.FC = () => {
         Sign in with your Stacks Wallet to try out a demo of the Stacks 2.0 blockchain.
       </Text>
       <ButtonGroup spacing={'base'} mt={'base-loose'}>
-        <Button size="lg" mode="primary" onClick={() => doOpenAuth()} data-test="sign-up">
+        <Button size="lg" mode="primary" onClick={() => doOpenAuth()} data-testid="sign-up">
           Sign up
         </Button>
       </ButtonGroup>
