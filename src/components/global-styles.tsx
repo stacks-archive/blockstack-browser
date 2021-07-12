@@ -29,6 +29,10 @@ const SizeStyles = css`
       min-height: 600px !important;
       min-width: 392px !important;
       overflow: hidden;
+      main.main-content {
+        flex-grow: 1;
+        max-width: 392px;
+      }
     }
   }
 

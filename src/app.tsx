@@ -9,32 +9,33 @@ import { VaultLoader } from '@components/vault-loader';
 import { AccountsDrawer } from '@features/accounts-drawer/accounts-drawer';
 import { NetworksDrawer } from '@features/network-drawer/networks-drawer';
 import { Routes } from './routes';
-import { Devtools } from '@features/devtool/devtools';
+
 import { SettingsPopover } from '@features/settings-dropdown/settings-popover';
+import { AppErrorBoundary } from '@features/errors/app-error-boundary';
 
 export const App: React.FC = () => {
   useEffect(() => {
     (window as any).__APP_VERSION__ = VERSION;
   }, []);
+
   return (
-    <>
-      <Devtools />
-      <ThemeProvider theme={theme}>
-        <ColorModeProvider defaultMode="light">
-          <>
-            <GlobalStyles />
-            <VaultLoader />
-            <Router>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <ColorModeProvider defaultMode="light">
+        <>
+          <Router>
+            <AppErrorBoundary>
+              <VaultLoader />
               <Routes />
               <AccountsDrawer />
               <NetworksDrawer />
               <SettingsPopover />
-            </Router>
+            </AppErrorBoundary>
             <Toaster position="bottom-center" toastOptions={{ style: { fontSize: '14px' } }} />
-          </>
-        </ColorModeProvider>
-      </ThemeProvider>
-    </>
+          </Router>
+        </>
+      </ColorModeProvider>
+    </ThemeProvider>
   );
 };
 

@@ -118,14 +118,8 @@ export const currentAccountPrivateKeyState = atom<string | undefined>(
 // this is our react-query atom, with a refresh interval set to QUICK
 const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccountData | undefined>(
   AccountQueryKeys.ALL_ACCOUNT_DATA,
-  async (_get, [address, networkUrl]) => {
-    try {
-      return fetchAllAccountData(networkUrl)(address);
-    } catch (error) {
-      console.error(error);
-      console.error(`Unable to fetch account data from ${networkUrl}`);
-      return;
-    }
+  async function accountDataResponseQueryFn(_get, [address, networkUrl]) {
+    return fetchAllAccountData(networkUrl)(address);
   },
   { refetchInterval: QueryRefreshRates.MEDIUM }
 );
@@ -147,7 +141,7 @@ export const accountInfoResponseState = atomFamilyWithQuery<
   { balance: BN; nonce: number }
 >(
   AccountQueryKeys.ACCOUNT_INFO_STATE,
-  async (get, [principal]) => {
+  async function accountInfoResponseQueryFn(get, [principal]) {
     const client = get(accountsApiClientState);
     const data = await client.getAccountInfo({
       principal,

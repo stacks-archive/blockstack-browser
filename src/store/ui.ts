@@ -30,6 +30,8 @@ export const showNetworksStore = atom(false);
 
 export const showSettingsStore = atom(false);
 
+export const errorStackTraceState = atom<string | null>(null);
+
 accountDrawerStep.debugLabel = 'accountDrawerStep';
 showAccountsStore.debugLabel = 'showAccountsStore';
 showNetworksStore.debugLabel = 'showNetworksStore';
