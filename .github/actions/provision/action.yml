@@ -4,5 +4,7 @@ runs:
   using: 'composite'
   steps:
     - name: Install yarn dependencies
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
       run: yarn --frozen-lockfile
       shell: bash

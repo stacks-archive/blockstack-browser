@@ -1,7 +1,7 @@
-import { BrowserDriver, createTestSelector, randomString, setupBrowser } from './utils';
-import { WalletPage } from './page-objects/wallet.page';
+import { BrowserDriver, createTestSelector, randomString, setupBrowser } from '../utils';
+import { WalletPage } from '../../page-objects/wallet.page';
 import { ScreenPaths } from '@common/types';
-import { SettingsSelectors } from './settings.selectors';
+import { SettingsSelectors } from '../settings.selectors';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);
@@ -71,11 +71,11 @@ describe(`Settings integration tests`, () => {
       createTestSelector(SettingsSelectors.NetworkListItem)
     );
     expect(networkListItems).toHaveLength(4);
-    await networkListItems[1].click();
+    await networkListItems[2].click(); // TODO: replace with testnet when regtest shuts down
     await wallet.clickSettingsButton();
     const newCurrentNetwork = await wallet.page.textContent(
       createTestSelector(SettingsSelectors.CurrentNetwork)
     );
-    expect(newCurrentNetwork).toContain('testnet');
+    expect(newCurrentNetwork).toContain('regtest');
   });
 });

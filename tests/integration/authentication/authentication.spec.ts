@@ -1,6 +1,6 @@
-import { BrowserDriver, setupBrowser } from './utils';
-import { SECRET_KEY } from '../mocks';
-import { WalletPage } from './page-objects/wallet.page';
+import { BrowserDriver, setupBrowser } from '../utils';
+import { SECRET_KEY } from '../../mocks';
+import { WalletPage } from '../../page-objects/wallet.page';
 import { ScreenPaths } from '@common/types';
 
 jest.setTimeout(30_000);

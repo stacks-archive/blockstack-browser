@@ -1,6 +1,6 @@
 import { ScreenPaths } from '@common/types';
 import { Page } from 'playwright-core';
-import { createTestSelector, wait, BrowserDriver } from '../utils';
+import { createTestSelector, wait, BrowserDriver } from '../integration/utils';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { WalletPageSelectors } from './wallet.selectors';
 

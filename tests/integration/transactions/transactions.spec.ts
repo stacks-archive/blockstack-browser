@@ -1,8 +1,9 @@
-import { BrowserDriver, createTestSelector, setupBrowser } from './utils';
-import { WalletPage } from './page-objects/wallet.page';
+import { BrowserDriver, createTestSelector, setupBrowser } from '../utils';
+import { WalletPage } from '../../page-objects/wallet.page';
 import { ScreenPaths } from '@common/types';
-import { DemoPage } from './page-objects/demo.page';
-import { TransactionsSelectors } from './transactions.selectors';
+import { DemoPage } from '../../page-objects/demo.page';
+import { TransactionsSelectors } from '@tests/integration/transactions.selectors';
+// import { TransactionsSelectors } from './transactions.selectors';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);
@@ -45,15 +46,15 @@ describe(`Transactions integration tests`, () => {
     );
     expect(buttonText).toContain('Contract call');
   });
-
-  it('validates against insufficient funds when performing a contract call', async () => {
-    const [popup] = await Promise.all([
-      browser.context.waitForEvent('page'),
-      demo.page.click(createTestSelector(TransactionsSelectors.BtnContractCall)),
-    ]);
-    const errorMsg = await popup.textContent(
-      createTestSelector(TransactionsSelectors.TransactionErrorMessage)
-    );
-    expect(errorMsg).toBeTruthy();
-  });
+  //
+  // it('validates against insufficient funds when performing a contract call', async () => {
+  //   const [popup] = await Promise.all([
+  //     browser.context.waitForEvent('page'),
+  //     demo.page.click(createTestSelector(TransactionsSelectors.BtnContractCall)),
+  //   ]);
+  //   const errorMsg = await popup.textContent(
+  //     createTestSelector(TransactionsSelectors.TransactionErrorMessage)
+  //   );
+  //   expect(errorMsg).toBeTruthy();
+  // });
 });

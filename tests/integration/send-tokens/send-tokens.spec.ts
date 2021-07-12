@@ -1,8 +1,8 @@
 import { ScreenPaths } from '@common/types';
 
-import { SendPage } from './page-objects/send-form.page';
-import { WalletPage } from './page-objects/wallet.page';
-import { BrowserDriver, setupBrowser } from './utils';
+import { SendPage } from '../../page-objects/send-form.page';
+import { WalletPage } from '../../page-objects/wallet.page';
+import { BrowserDriver, setupBrowser } from '../utils';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);

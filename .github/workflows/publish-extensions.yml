@@ -23,23 +23,22 @@ jobs:
     outputs:
       publish_status: ${{ steps.publish-chrome.outputs.publish_status }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Check out Git repository
+        uses: actions/checkout@v1
 
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
+      - uses: actions/cache@v2
+        id: cache-node-modules
         with:
-          node-version: 12.21.0
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
 
-      - name: Restore cache
-        uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          node-version: 16
 
-      - name: Install yarn dependencies
-        run: yarn --frozen-lockfile
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build project
         run: yarn build
@@ -70,23 +69,22 @@ jobs:
     outputs:
       publish_status: ${{ steps.publish-firefox.outputs.publish_status }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Check out Git repository
+        uses: actions/checkout@v1
 
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
+      - uses: actions/cache@v2
+        id: cache-node-modules
         with:
-          node-version: 12.21.0
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
 
-      - name: Restore cache
-        uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          node-version: 16
 
-      - name: Install yarn dependencies
-        run: yarn --frozen-lockfile
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build project
         run: yarn build

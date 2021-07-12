@@ -1,5 +1,5 @@
-import { BrowserDriver, createTestSelector, setupBrowser } from './utils';
-import { WalletPage } from './page-objects/wallet.page';
+import { BrowserDriver, createTestSelector, setupBrowser } from '../utils';
+import { WalletPage } from '../../page-objects/wallet.page';
 import { ScreenPaths } from '@common/types';
 
 jest.setTimeout(30_000);

@@ -5,7 +5,7 @@ import { mkdtemp } from 'fs';
 import { tmpdir } from 'os';
 import { promisify } from 'util';
 import { setupMocks } from '../mocks';
-import { DemoPage } from './page-objects/demo.page';
+import { DemoPage } from '../page-objects/demo.page';
 
 const makeTmpDir = promisify(mkdtemp);
 

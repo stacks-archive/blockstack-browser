@@ -1,4 +1,4 @@
-name: Pull Request
+name: Build beta extensions
 on: [ pull_request, workflow_dispatch ]
 
 jobs:
@@ -10,21 +10,8 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-  commitlint:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    needs:
-      - pre_run
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - uses: wagoid/commitlint-github-action@v1
-
   update-pull-request-body:
-    name: Code checks
+    name: Add links to built extensions
     runs-on: ubuntu-latest
     needs:
       - pre_run
@@ -41,40 +28,6 @@ jobs:
           header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}).'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  integration_tests:
-    name: Integration tests
-    runs-on: ubuntu-latest
-    needs:
-      - pre_run
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 12.21.0
-
-      - uses: microsoft/playwright-github-action@v1
-
-      - name: Restore cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Integration Tests
-        uses: ./.github/actions/integration-tests
-
-      - uses: actions/upload-artifact@v2
-        if: always()
-        name: Upload Screenshots
-        with:
-          name: integration-test-screenshots
-          path: tests/screenshots/
-
   build_chrome_extension:
     name: Build Chrome extension
     runs-on: ubuntu-latest
@@ -84,8 +37,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install yarn dependencies
-        run: yarn --frozen-lockfile
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build project
         run: yarn build
@@ -117,7 +81,7 @@ jobs:
       - name: Set Node Version
         uses: actions/setup-node@v2-beta
         with:
-          node-version: 12.21.0
+          node-version: 16
 
       - name: Restore cache
         uses: actions/cache@v2
@@ -128,7 +92,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install yarn dependencies
-        run: yarn --frozen-lockfile
+        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 yarn --frozen-lockfile
 
       - name: Build project
         run: yarn build

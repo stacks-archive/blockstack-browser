@@ -10,8 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Lint
         run: yarn lint
@@ -20,8 +34,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Audit
         run: yarn audit
@@ -30,8 +58,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Typecheck
         run: yarn typecheck
@@ -40,8 +82,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Check dependency rules
         run: yarn check:deps
@@ -51,20 +107,55 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Check exact versions
         uses: ./.github/actions/check-version-lock
 
-  test:
+  test-unit:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/cache@v1
+        name: Cache Jest cache
+        id: cache-jest-cache
+        with:
+          path: '.jest-cache'
+          key: ${{ runner.os }}--jest
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build
         run: yarn build
+
+
 
       - name: Test
         run: yarn test:unit
@@ -73,8 +164,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/provision
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install packages
+        uses: ./.github/actions/provision
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build
         run: yarn build

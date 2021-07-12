@@ -1,5 +1,5 @@
 import { Page, BrowserContext } from 'playwright-core';
-import { createTestSelector } from '../utils';
+import { createTestSelector } from '../integration/utils';
 
 export class DemoPage {
   static url = 'http://localhost:3001';

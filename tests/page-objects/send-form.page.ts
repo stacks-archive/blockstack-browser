@@ -1,5 +1,5 @@
 import { Page } from 'playwright-core';
-import { createTestSelector } from '../utils';
+import { createTestSelector } from '../integration/utils';
 import { SendFormSelectors } from './send-form.selectors';
 
 const selectors = {

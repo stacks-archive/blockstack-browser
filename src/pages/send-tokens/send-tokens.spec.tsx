@@ -4,7 +4,7 @@ import { setupHeystackEnv } from '@tests/mocks/heystack';
 import { ProviderWitHeySelectedAsset } from '@tests/state-utils';
 import { render } from '@testing-library/react';
 import { SendTokensForm } from '@pages/send-tokens/send-tokens';
-import { SendFormSelectors } from '@tests/integration/page-objects/send-form.selectors';
+import { SendFormSelectors } from '@tests/page-objects/send-form.selectors';
 
 describe('Send form tests', () => {
   setupHeystackEnv();
