@@ -34,7 +34,7 @@ enum AccountQueryKeys {
  * currentAccountStxAddressState - a selector for the address of the current account
  * accountDataState -- all external API data for the selected STX address
  * accountBalancesState - a selector for the balances from `accountDataState`
- * accountInfoStore - external API data from the `v2/accounts` endpoint, should be the most up-to-date
+ * accountInfoState - external API data from the `v2/accounts` endpoint, should be the most up-to-date
  */
 
 //--------------------------------------
@@ -179,8 +179,8 @@ export const allAccountDataRefreshState = atom(null, (get, set) => {
     })
   );
   if (!address) return;
-  set(accountInfoResponseState([address, network.url]), null);
-  set(accountDataResponseState([address, network.url]), null);
+  set(accountInfoResponseState([address, network.url]), { type: 'refetch' });
+  set(accountDataResponseState([address, network.url]), { type: 'refetch' });
 });
 
 const accountStxBalanceState = atom(get => get(accountInfoState)?.balance.toString(10));

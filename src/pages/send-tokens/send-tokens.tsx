@@ -17,7 +17,7 @@ import { AmountField } from '@pages/send-tokens/components/amount-field';
 import { RecipientField } from '@pages/send-tokens/components/recipient-field';
 import { MemoField } from '@pages/send-tokens/components/memo-field';
 import { useTransferableAssets } from '@common/hooks/use-assets';
-import { useRefreshAccountData } from '@common/hooks/account/use-refresh-account-data';
+import { useRefreshAllAccountData } from '@common/hooks/account/use-refresh-all-account-data';
 import { ConfirmSendDrawer } from '@pages/transaction-signing/components/confirm-send-drawer';
 import { SendFormSelectors } from '@tests/integration/page-objects/send-form.selectors';
 
@@ -45,7 +45,7 @@ const SendForm = (props: SendFormProps) => {
 
   const doChangeScreen = useDoChangeScreen();
   const { selectedAsset } = useSelectedAsset();
-  const refreshAccountData = useRefreshAccountData();
+  const refreshAllAccountData = useRefreshAllAccountData();
   const assets = useTransferableAssets();
 
   const { handleSubmit, handleChange, values, setErrors, setValues, errors } =
@@ -61,10 +61,10 @@ const SendForm = (props: SendFormProps) => {
 
   const onSubmit = useCallback(async () => {
     if (values.amount && values.recipient && selectedAsset) {
-      await refreshAccountData();
-      handleSubmit();
+      await handleSubmit();
+      await refreshAllAccountData(250);
     }
-  }, [refreshAccountData, handleSubmit, values, selectedAsset]);
+  }, [refreshAllAccountData, handleSubmit, values, selectedAsset]);
 
   const onItemClick = useCallback(() => {
     if (assets.length === 1) return;

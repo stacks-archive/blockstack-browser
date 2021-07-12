@@ -24,10 +24,10 @@ const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...
   const isActive = item === currentNetworkKey;
 
   const handleItemClick = useCallback(() => {
-    setShowNetworks(false);
+    setCurrentNetworkKey(item);
     setTimeout(() => {
-      setCurrentNetworkKey(item);
-    }, 5);
+      setShowNetworks(false);
+    }, 25);
   }, [setCurrentNetworkKey, item, setShowNetworks]);
 
   return (
@@ -84,7 +84,6 @@ export const NetworksDrawer: React.FC = memo(() => {
     setShowNetworks(false);
     doChangeScreen(ScreenPaths.ADD_NETWORK);
   }, [setShowNetworks, doChangeScreen]);
-
   return (
     <ControlledDrawer title="Select Network" state={showNetworksStore}>
       <NetworkList />

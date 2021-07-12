@@ -17,14 +17,15 @@ export function useTransactionBroadcast() {
   return useAtomCallback(
     useCallback(
       async (get, set) => {
-        const { account, signedTransaction, attachment, requestToken, network } = get(
+        const { account, signedTransaction, attachment, requestToken, network } = await get(
           waitForAll({
             signedTransaction: signedTransactionState,
             account: currentAccountState,
             attachment: transactionAttachmentState,
             requestToken: requestTokenState,
             network: currentNetworkState,
-          })
+          }),
+          true
         );
 
         if (!account || !requestToken || !signedTransaction) {
