@@ -1,6 +1,7 @@
-export function validateTxId(tx_id: string): boolean {
-  const value = !tx_id.startsWith('0x') ? `0x${tx_id}` : tx_id;
-  const regex = /0x[A-Fa-f0-9]{64}/;
-  const matches = regex.exec(value);
-  return matches?.[0] === value;
+import { with0x } from '@common/utils';
+
+export function validateTxId(txid: string): boolean {
+  const value = with0x(txid).toLowerCase();
+  if (value.length !== 66) return false;
+  return with0x(BigInt(value).toString(16).padStart(64, '0')) === value;
 }

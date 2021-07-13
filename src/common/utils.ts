@@ -335,3 +335,7 @@ export async function fetchWithTimeout(
 
   return response;
 }
+
+export function with0x(value: string): string {
+  return !value.startsWith('0x') ? `0x${value}` : value;
+}
