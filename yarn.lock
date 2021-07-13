@@ -3645,6 +3645,14 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
+"@types/jest-dev-server@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@types/jest-dev-server/-/jest-dev-server-4.2.1.tgz#0fd8923c400abfad48144fa5b5b74f17447bf357"
+  integrity sha512-hZYqCfhk9o9zOrTGeaFUaG4WTZsyoEzO4wd0U4/D8uz/gCRQNptHwRRw14hSksn0wFCgC1ZpzCQTagNwqdV5bg==
+  dependencies:
+    "@types/node" "*"
+    "@types/wait-on" "*"
+
 "@types/jest@*":
   version "26.0.23"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.23.tgz#a1b7eab3c503b80451d019efb588ec63522ee4e7"
@@ -3949,6 +3957,13 @@
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@types/valid-url/-/valid-url-1.0.3.tgz#a124389fb953559c7f889795a98620e91adb3687"
   integrity sha512-+33x29mg+ecU88ODdWpqaie2upIuRkhujVLA7TuJjM823cNMbeggfI6NhxewaRaRF8dy+g33e4uIg/m5Mb3xDQ==
+
+"@types/wait-on@*":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@types/wait-on/-/wait-on-5.3.1.tgz#bc5520d1d8b90b9caab1bef23315685ded73320d"
+  integrity sha512-2FFOKCF/YydrMUaqg+fkk49qf0e5rDgwt6aQsMzFQzbS419h2gNOXyiwp/o2yYy27bi/C1z+HgfncryjGzlvgQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/warning@^3.0.0":
   version "3.0.0"

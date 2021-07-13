@@ -1,9 +1,9 @@
-const { setup: setupDevServer } = require('jest-dev-server');
+import { setup } from 'jest-dev-server';
 
-module.exports = async function globalSetup() {
-  await setupDevServer({
+export default async function globalSetup() {
+  await setup({
     command: 'yarn test:serve',
     launchTimeout: 10000,
     port: 3001,
   });
-};
+}
