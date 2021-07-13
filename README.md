@@ -4,6 +4,8 @@
 [![Mozilla Add-on](https://img.shields.io/amo/stars/stacks-wallet?label=Firefox%20Add-on)](https://addons.mozilla.org/en-US/firefox/addon/stacks-wallet/)
 [![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet-web/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet-web/)
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/blockstack/stacks-wallet-web)
+
 Stacks Wallet is a browser extension for managing your digital assets and connecting to apps built with the Stacks blockchain.
 
 Source code is available on GitHub at https://github.com/blockstack/stacks-wallet-web/tree/main
