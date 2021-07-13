@@ -121,7 +121,12 @@ const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccoun
   async function accountDataResponseQueryFn(_get, [address, networkUrl]) {
     return fetchAllAccountData(networkUrl)(address);
   },
-  { refetchInterval: QueryRefreshRates.MEDIUM }
+  {
+    refetchInterval: QueryRefreshRates.MEDIUM,
+    refetchOnMount: 'always',
+    refetchOnReconnect: 'always',
+    refetchOnWindowFocus: 'always',
+  }
 );
 // external API data associated with the current account's address
 export const accountDataState = atom(get => {

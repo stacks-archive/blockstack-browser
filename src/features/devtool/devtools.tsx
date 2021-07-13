@@ -1,7 +1,15 @@
-import { useAtomDevtools } from 'jotai/devtools';
-import { walletState } from '@store/wallet';
+import React from 'react';
+
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClientProvider } from 'react-query';
+import { useAtomValue } from 'jotai/utils';
+import { getQueryClientAtom } from 'jotai/query';
 
 export function Devtools() {
-  useAtomDevtools(walletState);
-  return null;
+  const client = useAtomValue(getQueryClientAtom);
+  return client ? (
+    <QueryClientProvider client={client}>
+      <ReactQueryDevtools position={'top-left'} />
+    </QueryClientProvider>
+  ) : null;
 }
