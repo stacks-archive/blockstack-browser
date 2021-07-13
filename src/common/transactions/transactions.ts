@@ -6,6 +6,7 @@ import {
   generateSTXTransferTx,
 } from '@common/transactions/transaction-utils';
 import { Buffer } from 'buffer';
+import { validateTxId } from '@common/validation/validate-tx-id';
 
 interface BroadcastTransactionOptions {
   txRaw: string;
@@ -29,10 +30,14 @@ export async function handleBroadcastTransaction(options: BroadcastTransactionOp
   );
 
   if (typeof response === 'string') {
-    return {
-      txId: response,
-      txRaw,
-    };
+    const isValidTxId = validateTxId(response);
+    if (isValidTxId)
+      return {
+        txId: response,
+        txRaw,
+      };
+    console.error(`Error broadcasting raw transaction -- ${response}`);
+    throw new Error(response);
   } else {
     console.error('Error broadcasting raw transaction');
     const error = `${response.error} - ${response.reason}`;

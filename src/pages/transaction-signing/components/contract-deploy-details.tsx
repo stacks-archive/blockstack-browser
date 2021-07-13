@@ -24,6 +24,8 @@ function ContractCodeSection() {
 
   return (
     <CodeBlock
+      maxWidth="379px"
+      overflow="auto"
       border="4px solid"
       borderColor={color('border')}
       borderRadius="12px"
