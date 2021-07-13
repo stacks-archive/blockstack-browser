@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Flex, Button, Stack } from '@stacks/ui';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Body } from '@components/typography';
+import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
 interface CreateAccountProps {
   close: () => void;
@@ -40,7 +41,7 @@ export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
             onClick={close}
             isLoading={isSetting}
             isDisabled={isSetting}
-            data-testid={isSetting ? undefined : 'create-account-done-button'}
+            data-testid={isSetting ? undefined : SettingsSelectors.BtnCreateAccountDone}
           >
             Done
           </Button>

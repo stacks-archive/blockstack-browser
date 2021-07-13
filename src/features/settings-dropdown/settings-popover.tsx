@@ -100,7 +100,7 @@ export const SettingsPopover: React.FC = () => {
                 </MenuItem>
               )}
               <MenuItem
-                data-testid="settings-create-an-account"
+                data-testid={SettingsSelectors.BtnCreateAccount}
                 onClick={wrappedCloseCallback(() => {
                   setAccountStep(AccountStep.Create);
                   setShowAccounts(true);

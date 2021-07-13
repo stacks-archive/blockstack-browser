@@ -2,6 +2,7 @@ import { BrowserDriver, createTestSelector, randomString, setupBrowser } from '.
 import { WalletPage } from '../../page-objects/wallet.page';
 import { ScreenPaths } from '@common/types';
 import { SettingsSelectors } from '../settings.selectors';
+import { delay } from '@common/utils';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);
@@ -23,10 +24,11 @@ describe(`Settings integration tests`, () => {
 
   it('should be able to create a new account', async () => {
     await wallet.clickSettingsButton();
-    await wallet.page.click(createTestSelector('settings-create-an-account'));
-    await wallet.page.click(createTestSelector('create-account-done-button'));
+    await wallet.page.click(createTestSelector(SettingsSelectors.BtnCreateAccount));
+    await wallet.page.click(createTestSelector(SettingsSelectors.BtnCreateAccountDone));
+    await delay(500);
     const displayName = await wallet.page.textContent(
-      createTestSelector('home-current-display-name')
+      createTestSelector(SettingsSelectors.HomeCurrentAccountDisplayName)
     );
     expect(displayName).toEqual('Account 2');
   });
