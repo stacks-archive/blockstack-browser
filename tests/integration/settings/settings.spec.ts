@@ -6,6 +6,7 @@ import { delay } from '@common/utils';
 
 jest.setTimeout(30_000);
 jest.retryTimes(process.env.CI ? 2 : 0);
+
 describe(`Settings integration tests`, () => {
   let browser: BrowserDriver;
   let wallet: WalletPage;
@@ -35,10 +36,10 @@ describe(`Settings integration tests`, () => {
 
   it('should be able to view and save secret key to clipboard', async () => {
     await wallet.clickSettingsButton();
-    await wallet.page.click(createTestSelector('settings-view-secret-key'));
-    await wallet.page.click(createTestSelector('copy-key-to-clipboard'));
+    await wallet.page.click(createTestSelector(SettingsSelectors.ViewSecretKeyListItem));
+    await wallet.page.click(createTestSelector(SettingsSelectors.BtnCopyKeyToClipboard));
     const copySuccessMessage = await wallet.page.textContent(
-      createTestSelector('copy-key-to-clipboard')
+      createTestSelector(SettingsSelectors.BtnCopyKeyToClipboard)
     );
     expect(copySuccessMessage).toContain('Copied!');
   });
@@ -46,17 +47,17 @@ describe(`Settings integration tests`, () => {
   it('should be able to sign out, lock and unlock the extension', async () => {
     const secretKey = await wallet.getSecretKey();
     await wallet.clickSettingsButton();
-    await wallet.page.click(createTestSelector('settings-sign-out'));
+    await wallet.page.click(createTestSelector(SettingsSelectors.SignOutListItem));
 
     await wallet.clickSignIn();
     await wallet.enterSecretKey(secretKey);
     const password = randomString(15);
     await wallet.enterPassword(password);
     await wallet.clickSettingsButton();
-    await wallet.page.click(createTestSelector('settings-lock'));
+    await wallet.page.click(createTestSelector(SettingsSelectors.LockListItem));
     await wallet.enterPassword(password);
     const displayName = await wallet.page.textContent(
-      createTestSelector('home-current-display-name')
+      createTestSelector(SettingsSelectors.HomeCurrentAccountDisplayName)
     );
     expect(displayName).toEqual('Account 1');
   });
