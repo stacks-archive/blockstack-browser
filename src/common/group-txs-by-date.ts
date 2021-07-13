@@ -3,10 +3,14 @@ import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
 dayjs.extend(advancedFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type Tx = MempoolTransaction | Transaction;
 
@@ -17,7 +21,7 @@ function todaysIsoDate() {
 function groupTxsByDateMap(txs: Tx[]) {
   return txs.reduce((txsByDate, tx) => {
     if ('burn_block_time_iso' in tx && tx.burn_block_time_iso) {
-      const [date] = new Date(tx.burn_block_time_iso).toLocaleDateString().split('T');
+      const date = dayjs.tz(tx.burn_block_time_iso).format('YYYY-MM-DD');
       if (!txsByDate.has(date)) {
         txsByDate.set(date, []);
       }
