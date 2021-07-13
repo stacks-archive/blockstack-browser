@@ -14,7 +14,7 @@ import { useUpdateAtom } from 'jotai/utils';
 import { useAccounts } from '@common/hooks/account/use-accounts';
 import { AccountWithAddress } from '@store/accounts';
 import { useLoading } from '@common/hooks/use-loading';
-import { SettingsSelectors } from '../../../tests/integration/settings.selectors';
+import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
 interface SwitchAccountProps {
   close: () => void;
@@ -82,7 +82,7 @@ const AccountListItem = memo(
       <SpaceBetween
         width="100%"
         key={`account-${account.index}`}
-        data-test={SettingsSelectors.AccountIndex.replace('[index]', `${account.index}`)}
+        data-testid={SettingsSelectors.AccountIndex.replace('[index]', `${account.index}`)}
         _hover={{
           bg: color('bg-4'),
         }}
@@ -118,7 +118,7 @@ const AccountListItem = memo(
               strokeWidth={2.5}
               color={color('brand')}
               style={styles}
-              data-test={`account-checked-${account.index}`}
+              data-testid={`account-checked-${account.index}`}
             />
           )}
         </Fade>

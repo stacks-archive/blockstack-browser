@@ -5,6 +5,7 @@ import { USERNAMES_ENABLED } from '@common/constants';
 import { WalletPageSelectors } from './wallet.selectors';
 import { InitialPageSelectors } from '@tests/integration/initial-page.selectors';
 import { HomePageSelectors } from '@tests/page-objects/home-page.selectors';
+import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
 export class WalletPage {
   static url = 'http://localhost:8081/index.html#';
@@ -29,8 +30,8 @@ export class WalletPage {
   $settingsButton = createTestSelector('menu-button');
   $settingsViewSecretKey = createTestSelector('settings-view-secret-key');
   $homePageBalancesList = createTestSelector(HomePageSelectors.BalancesList);
-  $createAccountButton = createTestSelector('settings-create-an-account')
-  $createAccountDone = createTestSelector('create-account-done-button');
+  $createAccountButton = createTestSelector(SettingsSelectors.BtnCreateAccount);
+  $createAccountDone = createTestSelector(SettingsSelectors.BtnCreateAccountDone);
   page: Page;
 
   constructor(page: Page) {
