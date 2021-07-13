@@ -49,7 +49,7 @@ export const Debugger = () => {
     const args = [
       bufferCVFromString('id'), // namespace
       bufferCVFromString('stella'), // name
-      standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'), // recipient
+      standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'), // recipient
       noneCV(), // zonefile
     ];
     await doContractCall({
@@ -85,12 +85,12 @@ export const Debugger = () => {
       bufferCV(Buffer.from('hello, world')),
       stringAsciiCV('hey-ascii'),
       stringUtf8CV('hey-utf8'),
-      standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'),
+      standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'),
       trueCV(),
     ];
     await doContractCall({
       network,
-      contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
       contractName: 'faker',
       functionName: 'rawr',
       functionArgs: args,
@@ -102,11 +102,11 @@ export const Debugger = () => {
           new BN('100', 10)
         ),
         makeStandardFungiblePostCondition(
-          'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+          'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
           FungibleConditionCode.Equal,
           new BN(1234),
           createAssetInfo(
-            'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+            'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
             'connect-token',
             'connect-token'
           )
@@ -129,7 +129,7 @@ export const Debugger = () => {
       network,
       amount,
       memo: 'From demo app',
-      recipient: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+      recipient: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
       onFinish: data => {
         console.log('finished stx transfer!', data);
         setState('Stacks Transfer', data?.txId);
@@ -160,28 +160,10 @@ export const Debugger = () => {
     clearState();
     await doContractCall({
       network,
-      contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
       contractName: `connect-token-${new Date().getTime()}`,
       functionName: 'faucet',
       functionArgs: [],
-    });
-  };
-
-  const getFaucetTokens = async () => {
-    clearState();
-    await doContractCall({
-      network,
-      contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',
-      contractName: 'connect-token',
-      functionName: 'faucet',
-      functionArgs: [],
-      onFinish: data => {
-        console.log('finished faucet!', data);
-        setState('Token Faucet', data.txId);
-      },
-      onCancel: () => {
-        console.log('popup closed!');
-      },
     });
   };
 
@@ -189,8 +171,8 @@ export const Debugger = () => {
     clearState();
     await doContractCall({
       network,
-      contractAddress: 'ST33GW755MQQP6FZ58S423JJ23GBKK5ZKH3MGR55N',
-      contractName: 'rocket-token',
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'dull-sapphire-bird',
       functionName: 'buy',
       functionArgs: [uintCV(42)],
       postConditions: [
@@ -210,8 +192,8 @@ export const Debugger = () => {
     clearState();
     await doContractCall({
       network,
-      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
-      contractName: 'stella-final',
+      contractAddress: 'ST6G7N19FKNW24XH5JQ5P5WR1DN10QWMKQSPSTK7',
+      contractName: 'stella-the-cat',
       functionName: 'faucet',
       functionArgs: [],
       onFinish: data => {
@@ -228,13 +210,13 @@ export const Debugger = () => {
     clearState();
     await doContractCall({
       network,
-      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
-      contractName: 'stella-final',
+      contractAddress: 'ST6G7N19FKNW24XH5JQ5P5WR1DN10QWMKQSPSTK7',
+      contractName: 'stella-the-cat',
       functionName: 'transfer',
       functionArgs: [
         uintCV(1), // amount
         standardPrincipalCV(address || ''), // sender
-        standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'), // recipient
+        standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'), // recipient
         someCV(bufferCVFromString('meow')), // memo
       ],
       postConditions: [
@@ -243,8 +225,8 @@ export const Debugger = () => {
           FungibleConditionCode.Equal,
           new BN(1),
           createAssetInfo(
-            'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
-            'stella-final',
+            'ST6G7N19FKNW24XH5JQ5P5WR1DN10QWMKQSPSTK7',
+            'stella-the-cat',
             'stella-token'
           )
         ),
@@ -262,13 +244,13 @@ export const Debugger = () => {
     clearState();
     await doContractCall({
       network,
-      contractAddress: 'ST33GW755MQQP6FZ58S423JJ23GBKK5ZKH3MGR55N',
-      contractName: 'rocket-token',
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'dull-sapphire-bird',
       functionName: 'transfer',
       functionArgs: [
         uintCV(1), // amount
         standardPrincipalCV(address || ''), // sender
-        standardPrincipalCV('STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6'), // recipient
+        standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'), // recipient
       ],
       postConditions: [
         makeStandardFungiblePostCondition(
@@ -276,8 +258,8 @@ export const Debugger = () => {
           FungibleConditionCode.Equal,
           new BN(1),
           createAssetInfo(
-            'ST33GW755MQQP6FZ58S423JJ23GBKK5ZKH3MGR55N',
-            'rocket-token',
+            'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+            'dull-sapphire-bird',
             'rocket-token'
           )
         ),
@@ -334,9 +316,6 @@ export const Debugger = () => {
           </Button>
           <Button mt={3} onClick={sendRocketTokens}>
             Send Rocket tokens
-          </Button>
-          <Button mt={3} onClick={getFaucetTokens}>
-            Get connect tokens
           </Button>
           <Button mt={3} onClick={callNullContract}>
             Non-existent contract
