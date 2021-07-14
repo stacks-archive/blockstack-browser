@@ -60,7 +60,6 @@
     "@stacks/ui-utils": "7.5.0",
     "@stacks/wallet-sdk": "1.0.0-wallet-sdk.4",
     "@styled-system/theme-get": "5.1.2",
-    "@tabler/icons": "1.41.2",
     "@tippyjs/react": "4.2.5",
     "@vkontakte/vk-qr": "2.0.12",
     "are-passive-events-supported": "1.1.1",

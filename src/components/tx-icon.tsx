@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  IconArrowDown,
-  IconArrowUp,
-  IconCode,
-  IconLayoutList,
-  IconMoodSad,
-  IconPlus,
-} from '@tabler/icons';
+  FiArrowDown as IconArrowDown,
+  FiArrowUp as IconArrowUp,
+  FiCode as IconCode,
+  FiList as IconLayoutList,
+  FiAlertOctagon as IconMoodSad,
+  FiPlus as IconPlus,
+} from 'react-icons/fi';
 import { Box, BoxProps, Circle, color, DynamicColorCircle, StxNexus } from '@stacks/ui';
 import FunctionIcon from 'mdi-react/FunctionIcon';
 import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';

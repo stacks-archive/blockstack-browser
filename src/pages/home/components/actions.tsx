@@ -2,9 +2,10 @@ import { Box, Button, ButtonProps, Stack, StackProps } from '@stacks/ui';
 import { ScreenPaths } from '@common/types';
 import React, { memo, useCallback, useRef } from 'react';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';
-import { IconArrowUp, IconQrcode } from '@tabler/icons';
+import { FiArrowUp } from 'react-icons/fi';
 import { useTransferableAssets } from '@common/hooks/use-assets';
 import { WalletPageSelectors } from '@tests/page-objects/wallet.selectors';
+import { QrCodeIcon } from '@components/qr-code-icon';
 
 interface TxButtonProps extends ButtonProps {
   kind: 'send' | 'receive';
@@ -38,9 +39,10 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
         {...rest}
       >
         <Box
-          as={isSend ? IconArrowUp : IconQrcode}
+          as={isSend ? FiArrowUp : QrCodeIcon}
           transform={isSend ? 'unset' : 'scaleY(-1)'}
-          size="16px"
+          size={isSend ? '16px' : '14px'}
+          mr={isSend ? 0 : '2px'}
         />
         <Box as="span" ml="extra-tight" fontSize="14px">
           {label}

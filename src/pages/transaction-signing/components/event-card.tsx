@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, color, IconButton, Stack, Text } from '@stacks/ui';
 import { SpaceBetween } from '@components/space-between';
-import { IconDots } from '@tabler/icons';
+import { FiMoreHorizontal as IconDots } from 'react-icons/fi';
 import { Caption } from '@components/typography';
 import { AssetItem } from '@pages/transaction-signing/components/asset-item';
 

@@ -6,7 +6,7 @@ import { accountDrawerStep, AccountStep } from '@store/ui';
 import { getAccountDisplayName } from '@stacks/wallet-sdk';
 import { truncateMiddle } from '@stacks/ui-utils';
 import { SpaceBetween } from '@components/space-between';
-import { IconCheck } from '@tabler/icons';
+import { FiCheck as IconCheck } from 'react-icons/fi';
 import { AccountAvatar } from '@features/account-avatar/account-avatar';
 import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 import { useSwitchAccount } from '@common/hooks/account/use-switch-account';

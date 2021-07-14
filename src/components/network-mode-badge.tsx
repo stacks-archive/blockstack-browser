@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from 'react';
-import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
 import { ChainID } from '@stacks/transactions';
-import { IconFlask } from '@tabler/icons';
 import { useDrawers } from '@common/hooks/use-drawers';
 import { useCurrentNetwork } from '@common/hooks/use-current-network';
 
@@ -27,7 +26,6 @@ export const NetworkModeBadge: React.FC<FlexProps> = memo(props => {
       onClick={() => setShowNetworks(true)}
       {...props}
     >
-      <Box as={IconFlask} mr="extra-tight" color={color('brand')} size="16px" />
       <Text fontSize="11px" fontWeight="500">
         Testnet mode
       </Text>

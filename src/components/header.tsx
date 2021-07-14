@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Box, BoxProps, color, Flex, FlexProps, IconButton, Stack } from '@stacks/ui';
-import { IconArrowLeft, IconDots } from '@tabler/icons';
+import { FiMoreHorizontal as IconDots, FiArrowLeft as IconArrowLeft } from 'react-icons/fi';
 
 import { StacksWalletLogo } from '@components/stacks-wallet-logo';
 import { useDoChangeScreen } from '@common/hooks/use-do-change-screen';

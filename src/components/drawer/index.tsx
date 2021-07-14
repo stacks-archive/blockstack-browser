@@ -1,6 +1,6 @@
 import React, { useRef, useCallback, memo } from 'react';
 import { Flex, useEventListener, IconButton, color, transition } from '@stacks/ui';
-import { IconX } from '@tabler/icons';
+import { FiX as IconX } from 'react-icons/fi';
 import useOnClickOutside from '@common/hooks/use-onclickoutside';
 import { Title } from '@components/typography';
 

@@ -12,7 +12,7 @@ import { useDrawers } from '@common/hooks/use-drawers';
 import { Caption, Title } from '@components/typography';
 import { getUrlHostname } from '@common/utils';
 import { useAtomValue, useUpdateAtom } from 'jotai/utils';
-import { IconCloudOff } from '@tabler/icons';
+import { FiCloudOff as IconCloudOff } from 'react-icons/fi';
 import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
 const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {

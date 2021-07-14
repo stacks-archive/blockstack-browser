@@ -3,7 +3,7 @@ import { Box, Circle, color, Flex, Stack } from '@stacks/ui';
 
 import { TransactionTypes } from '@stacks/connect';
 import { stacksValue } from '@common/stacks-utils';
-import { IconLock } from '@tabler/icons';
+import { FiLock as IconLock } from 'react-icons/fi';
 import { Body } from '@components/typography';
 import { truncateMiddle } from '@stacks/ui-utils';
 
