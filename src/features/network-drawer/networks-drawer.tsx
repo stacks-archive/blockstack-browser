@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import { Box, Flex, Button, Stack, color, FlexProps, BoxProps } from '@stacks/ui';
 import { ControlledDrawer } from '@components/drawer/controlled';
@@ -15,7 +15,7 @@ import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 import { FiCloudOff as IconCloudOff } from 'react-icons/fi';
 import { SettingsSelectors } from '@tests/integration/settings.selectors';
 
-const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...props }) => {
+const NetworkListItem: React.FC<{ item: string } & BoxProps> = ({ item, ...props }) => {
   const { setShowNetworks } = useDrawers();
   const { networks, currentNetworkKey } = useWallet();
   const setCurrentNetworkKey = useUpdateAtom(currentNetworkKeyState);
@@ -65,24 +65,24 @@ const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...
       </Flex>
     </Box>
   );
-});
+};
 
-const NetworkList: React.FC<FlexProps> = memo(props => {
+const NetworkList: React.FC<FlexProps> = props => {
   const { networks } = useWallet();
 
   const items = Object.keys(networks);
   return (
     <Flex flexWrap="wrap" flexDirection="column" {...props}>
       {items.map(item => (
-        <React.Suspense fallback={<>Loading</>}>
-          <NetworkListItem data-testid={SettingsSelectors.NetworkListItem} item={item} key={item} />
+        <React.Suspense key={item} fallback={<>Loading</>}>
+          <NetworkListItem data-testid={SettingsSelectors.NetworkListItem} item={item} />
         </React.Suspense>
       ))}
     </Flex>
   );
-});
+};
 
-export const NetworksDrawer: React.FC = memo(() => {
+export const NetworksDrawer: React.FC = () => {
   const { setShowNetworks } = useDrawers();
   const doChangeScreen = useDoChangeScreen();
 
@@ -98,4 +98,4 @@ export const NetworksDrawer: React.FC = memo(() => {
       </Box>
     </ControlledDrawer>
   );
-});
+};
