@@ -1,6 +1,6 @@
 import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { Account, getStxAddress } from '@stacks/wallet-sdk';
-import { atomWithDefault, waitForAll } from 'jotai/utils';
+import { atomWithDefault } from 'jotai/utils';
 import { atom } from 'jotai';
 import BN from 'bn.js';
 
@@ -76,12 +76,8 @@ export const hasSwitchedAccountsState = atom<boolean>(false);
 // if there is a pending transaction that has a stxAccount param
 // find the index from the accounts atom and return it
 export const transactionAccountIndexState = atom<number | undefined>(get => {
-  const { accounts, txAddress } = get(
-    waitForAll({
-      accounts: accountsWithAddressState,
-      txAddress: transactionRequestStxAddressState,
-    })
-  );
+  const accounts = get(accountsWithAddressState);
+  const txAddress = get(transactionRequestStxAddressState);
 
   if (txAddress && accounts) {
     return accounts.findIndex(account => account.address === txAddress); // selected account
@@ -93,14 +89,11 @@ export const transactionAccountIndexState = atom<number | undefined>(get => {
 // could be the account associated with an in-process transaction request
 // or the last selected / first account of the user
 export const currentAccountState = atom<AccountWithAddress | undefined>(get => {
-  const { accountIndex, txIndex, hasSwitched, accounts } = get(
-    waitForAll({
-      accountIndex: currentAccountIndexState,
-      txIndex: transactionAccountIndexState,
-      hasSwitched: hasSwitchedAccountsState,
-      accounts: accountsWithAddressState,
-    })
-  );
+  const accountIndex = get(currentAccountIndexState);
+  const txIndex = get(transactionAccountIndexState);
+  const hasSwitched = get(hasSwitchedAccountsState);
+  const accounts = get(accountsWithAddressState);
+
   if (!accounts) return undefined;
   if (typeof txIndex === 'number' && !hasSwitched) return accounts[txIndex];
   return accounts[accountIndex];
@@ -130,12 +123,8 @@ const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccoun
 );
 // external API data associated with the current account's address
 export const accountDataState = atom(get => {
-  const { network, address } = get(
-    waitForAll({
-      network: currentNetworkState,
-      address: currentAccountStxAddressState,
-    })
-  );
+  const network = get(currentNetworkState);
+  const address = get(currentAccountStxAddressState);
   if (!address) return;
   return get(accountDataResponseState([address, network.url]));
 });
@@ -157,37 +146,27 @@ export const accountInfoResponseState = atomFamilyWithQuery<
       nonce: data.nonce,
     };
   },
-  { refetchInterval: QueryRefreshRates.MEDIUM }
+  { refetchInterval: QueryRefreshRates.MEDIUM, refetchOnMount: true }
 );
 export const accountInfoState = atom(get => {
-  const { network, address } = get(
-    waitForAll({
-      network: currentNetworkState,
-      address: currentAccountStxAddressState,
-    })
-  );
+  const network = get(currentNetworkState);
+  const address = get(currentAccountStxAddressState);
   if (!address) return;
   return get(accountInfoResponseState([address, network.url]));
 });
 
 export const allAccountDataRefreshState = atom(null, (get, set) => {
-  const { network, address } = get(
-    waitForAll({
-      network: currentNetworkState,
-      address: currentAccountStxAddressState,
-    })
-  );
+  const network = get(currentNetworkState);
+  const address = get(currentAccountStxAddressState);
   if (!address) return;
   set(accountInfoResponseState([address, network.url]), { type: 'refetch' });
   set(accountDataResponseState([address, network.url]), { type: 'refetch' });
 });
 
-const accountStxBalanceState = atom(get => get(accountInfoState)?.balance.toString(10));
-
 // the balances of the current account's address
 export const accountBalancesState = atom<AllAccountData['balances'] | undefined>(get => {
   const balances = get(accountDataState)?.balances;
-  const stxBalance = get(accountStxBalanceState);
+  const stxBalance = get(accountInfoState)?.balance.toString(10);
   return balances
     ? {
         ...balances,

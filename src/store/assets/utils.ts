@@ -134,7 +134,7 @@ export async function getSip10Status(params: {
 export const getMatchingFunction = (name: MetaDataNames) => (func: ContractInterfaceFunction) =>
   (func.name === `get-${name}` || func.name === name) && func.access === 'read_only';
 
-export function transformAssets(balances: AddressBalanceResponse) {
+export function transformAssets(balances?: AddressBalanceResponse) {
   const _assets: Asset[] = [];
   if (!balances) return _assets;
   _assets.push({
