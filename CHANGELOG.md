@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.2
+
+### Patch Changes
+
+- [#1445](https://github.com/blockstack/stacks-wallet-web/pull/1445) [`e3b6062f`](https://github.com/blockstack/stacks-wallet-web/commit/e3b6062f7dbaec369486cd83a49751e6aa63ca4f) Thanks [@aulneau](https://github.com/aulneau)! - This change removes our dependency on @tabler/icons and uses `react-icons/fi` for all our icon needs, which matches our figma designs. Additionally, this reduces our minified package from over 4mb to under 3.5mb
+
 ## 2.12.1
 
 ### Patch Changes
