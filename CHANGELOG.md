@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.1
+
+### Patch Changes
+
+- [#1442](https://github.com/blockstack/stacks-wallet-web/pull/1442) [`1ec4c001`](https://github.com/blockstack/stacks-wallet-web/commit/1ec4c0014b3e0eb70dbde8499240626ef418c445) Thanks [@aulneau](https://github.com/aulneau)! - This fixes an issue with our publishing scripts
+
 ## 2.12.0
 
 ### Minor Changes
