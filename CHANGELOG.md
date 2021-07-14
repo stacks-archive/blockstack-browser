@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.12.0
+
+### Minor Changes
+
+- [#1420](https://github.com/blockstack/stacks-wallet-web/pull/1420) [`0097c7bb`](https://github.com/blockstack/stacks-wallet-web/commit/0097c7bbd31272c0ca9a7d3460dfec363c602a99) Thanks [@aulneau](https://github.com/aulneau)! - This update fixes a visual bug that caused the network drawer to persist longer than expected, and adds in a global app error boundary to capture run time errors and provide a way for users to report issues.
+
+* [#1326](https://github.com/blockstack/stacks-wallet-web/pull/1326) [`f1382d1b`](https://github.com/blockstack/stacks-wallet-web/commit/f1382d1b5f849a19ebe8d2b24ecfce6433de187d) Thanks [@aulneau](https://github.com/aulneau)! - This update replaces our use of recoil for state management to jotai. This gives us tighter integrations with tools such as react-query and rxjs.
+
+### Patch Changes
+
+- [#1301](https://github.com/blockstack/stacks-wallet-web/pull/1301) [`9c24f96e`](https://github.com/blockstack/stacks-wallet-web/commit/9c24f96ef7c3fb6b1dc175ceac7fc9f1f387b9b7) Thanks [@kyranjamie](https://github.com/kyranjamie)! - Adds [dependency-cruiser](https://github.com/sverweij/dependency-cruiser), a tool which can both visualize and validate import dependencies in the Stacks Wallet. This PR adds a single rule stating that the `src/components` folder cannot import from `src/pages`
+
+* [#1408](https://github.com/blockstack/stacks-wallet-web/pull/1408) [`dcca229f`](https://github.com/blockstack/stacks-wallet-web/commit/dcca229f9efe52136a3b6fde878d901d502cf4e9) Thanks [@aulneau](https://github.com/aulneau)! - This fixes the logic used to allow or disallow the usage of decimals in the send field. Previously SIP 10 compliant tokens that defined a value of "0" would pass the condition, thus allowing users to incorrectly try to send a decimal value of a token which uses no decimal places.
+
+- [#1437](https://github.com/blockstack/stacks-wallet-web/pull/1437) [`df71881e`](https://github.com/blockstack/stacks-wallet-web/commit/df71881e8b0d28e2b5f31e00f2967cb3fa6950b4) Thanks [@aulneau](https://github.com/aulneau)! - This fixes a bug where if a user switched accounts while on a page like the receive or view secret key, and navigated home, their balances would show stale data related to the previous account they were on.
+
+* [#1386](https://github.com/blockstack/stacks-wallet-web/pull/1386) [`cf687aa7`](https://github.com/blockstack/stacks-wallet-web/commit/cf687aa74dca474c560d088cdde1751da78f5672) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This sets up the ability to perform integration tests in full page rather than in the extension popup for transactions.
+
+- [#1294](https://github.com/blockstack/stacks-wallet-web/pull/1294) [`d40af091`](https://github.com/blockstack/stacks-wallet-web/commit/d40af091dc872ed7f21626d0c0738bea86984065) Thanks [@aulneau](https://github.com/aulneau)! - This update adds the current version number next to the logo for better debugging and information display.
+
+* [#1333](https://github.com/blockstack/stacks-wallet-web/pull/1333) [`b6c9a5b8`](https://github.com/blockstack/stacks-wallet-web/commit/b6c9a5b808f4306c2bf6c9cd835070db93e012ca) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This updates connect version packages to capture changes to the intro modal in the test-app.
+
+- [#1222](https://github.com/blockstack/stacks-wallet-web/pull/1222) [`08fe3e99`](https://github.com/blockstack/stacks-wallet-web/commit/08fe3e996428f23e7ede969d9ab03004ed0be6d0) Thanks [@kyranjamie](https://github.com/kyranjamie)! - Removes unused old code once used in the authenticator
+
+* [#1365](https://github.com/blockstack/stacks-wallet-web/pull/1365) [`8bc31589`](https://github.com/blockstack/stacks-wallet-web/commit/8bc31589e5b696b5b2ec6020313f4b8318729ecb) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This adds integration tests for the wallet settings menu.
+
+- [#1431](https://github.com/blockstack/stacks-wallet-web/pull/1431) [`07b79809`](https://github.com/blockstack/stacks-wallet-web/commit/07b79809ec1115d5c5655e726aaecad416e99951) Thanks [@aulneau](https://github.com/aulneau)! - This update does a minor refactor to how we were fetching BNS names for a given address, and improves the performance of the application by removing the use of the jotai util `waitForAll` from the names atom.
+
+* [#1434](https://github.com/blockstack/stacks-wallet-web/pull/1434) [`ff55f99c`](https://github.com/blockstack/stacks-wallet-web/commit/ff55f99c74e4904d7cf8795e466fe8e602dc3d5d) Thanks [@aulneau](https://github.com/aulneau)! - This update adds better error handling for when a transaction is failed to broadcast. Sometimes the endpoint returns a string as an error message, and previously that was accepted because there was no validation happening on the string. The string is now validated to be a correct txid, and if it fails, the UI will display the correct error message.
+
+- [#1285](https://github.com/blockstack/stacks-wallet-web/pull/1285) [`859d9a64`](https://github.com/blockstack/stacks-wallet-web/commit/859d9a64260be58a096a95b2e685b3658a9a9caf) Thanks [@kyranjamie](https://github.com/kyranjamie)! - Fixes issue where the fee wasn't subtracted from the maximum amount you can send, as well as using the principal's available balance, rather than total.
+
+* [#1404](https://github.com/blockstack/stacks-wallet-web/pull/1404) [`af763d56`](https://github.com/blockstack/stacks-wallet-web/commit/af763d5655948a414ccf7078b835de75061565d9) Thanks [@kyranjamie](https://github.com/kyranjamie)! - Adds validation to prevent a user from being able to send more than their SIP-10 balance. Fixes #1400
+
+- [#1433](https://github.com/blockstack/stacks-wallet-web/pull/1433) [`a895107f`](https://github.com/blockstack/stacks-wallet-web/commit/a895107f3da2a9a3eed543c29f63575b74be5f7c) Thanks [@aulneau](https://github.com/aulneau)! - This update enables quicker and more responsive refreshing of an accounts remote data
+
 ## 2.11.1
 
 ### Patch Changes
