@@ -1,5 +1,4 @@
 import { atom } from 'jotai';
-import { waitForAll } from 'jotai/utils';
 import { getPayloadFromToken } from '@store/transactions/utils';
 import { walletState } from '@store/wallet';
 import { verifyTxRequest } from '@common/transactions/requests';
@@ -25,13 +24,9 @@ export const requestTokenOriginState = atom(get => {
 });
 
 export const transactionRequestValidationState = atom(async get => {
-  const { requestToken, wallet, origin } = get(
-    waitForAll({
-      requestToken: requestTokenState,
-      wallet: walletState,
-      origin: requestTokenOriginState,
-    })
-  );
+  const requestToken = get(requestTokenState);
+  const wallet = get(walletState);
+  const origin = get(requestTokenOriginState);
   if (!origin || !wallet || !requestToken) return;
   try {
     const valid = await verifyTxRequest({

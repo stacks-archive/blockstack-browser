@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { atomFamily, atomWithStorage, waitForAll } from 'jotai/utils';
+import { atomFamily, atomWithStorage } from 'jotai/utils';
 
 import { accountDataState, currentAccountStxAddressState, accountInfoState } from '@store/accounts';
 import { currentNetworkState } from '@store/networks';
@@ -11,12 +11,8 @@ export const localNoncesState = atomFamily<[string, string], number, number>(
 );
 
 export const latestNonceState = atom(get => {
-  const { network, address } = get(
-    waitForAll({
-      network: currentNetworkState,
-      address: currentAccountStxAddressState,
-    })
-  );
+  const network = get(currentNetworkState);
+  const address = get(currentAccountStxAddressState);
   return get(localNoncesState([network.url, address || '']));
 });
 

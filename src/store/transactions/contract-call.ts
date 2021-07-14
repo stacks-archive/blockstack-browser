@@ -1,10 +1,10 @@
 import { atom } from 'jotai';
-import { waitForAll } from 'jotai/utils';
 import { requestTokenPayloadState } from '@store/transactions/requests';
 import { TransactionTypes } from '@stacks/connect';
 import { ContractInterfaceResponse } from '@stacks/blockchain-api-client';
 import { ContractInterfaceFunction } from '@stacks/rpc-client';
 import { contractInterfaceState, contractSourceState } from '@store/contracts';
+import { waitForAll } from 'jotai/utils';
 
 type ContractInterfaceResponseWithFunctions = Omit<ContractInterfaceResponse, 'functions'> & {
   functions: ContractInterfaceFunction[];

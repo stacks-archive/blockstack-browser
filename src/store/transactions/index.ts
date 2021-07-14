@@ -1,5 +1,4 @@
 import { atom } from 'jotai';
-import { waitForAll } from 'jotai/utils';
 
 import { AuthType, ChainID, TransactionVersion } from '@stacks/transactions';
 
@@ -14,13 +13,10 @@ import { stacksTransactionToHex } from '@common/transactions/transaction-utils';
 import { postConditionsState } from '@store/transactions/post-conditions';
 
 export const pendingTransactionState = atom(get => {
-  const { payload, postConditions, network } = get(
-    waitForAll({
-      payload: requestTokenPayloadState,
-      postConditions: postConditionsState,
-      network: currentStacksNetworkState,
-    })
-  );
+  const payload = get(requestTokenPayloadState);
+  const postConditions = get(postConditionsState);
+  const network = get(currentStacksNetworkState);
+
   if (!payload) return;
   return { ...payload, postConditions, network };
 });
@@ -28,13 +24,9 @@ export const pendingTransactionState = atom(get => {
 export const transactionAttachmentState = atom(get => get(pendingTransactionState)?.attachment);
 
 export const signedStacksTransactionState = atom(get => {
-  const { account, txData, nonce } = get(
-    waitForAll({
-      account: currentAccountState,
-      txData: pendingTransactionState,
-      nonce: correctNonceState,
-    })
-  );
+  const account = get(currentAccountState);
+  const txData = get(pendingTransactionState);
+  const nonce = get(correctNonceState);
   if (!account || !txData) return;
   return generateSignedTransaction({
     senderKey: account.stxPrivateKey,

@@ -1,16 +1,11 @@
 import { atom } from 'jotai';
-import { waitForAll } from 'jotai/utils';
 import { requestTokenPayloadState } from '@store/transactions/requests';
 import { currentAccountStxAddressState } from '@store/accounts';
 import { getPostCondition, handlePostConditions } from '@common/transactions/postcondition-utils';
 
 export const postConditionsState = atom(get => {
-  const { payload, address } = get(
-    waitForAll({
-      payload: requestTokenPayloadState,
-      address: currentAccountStxAddressState,
-    })
-  );
+  const payload = get(requestTokenPayloadState);
+  const address = get(currentAccountStxAddressState);
 
   if (!payload || !address) return;
 

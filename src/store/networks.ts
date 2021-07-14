@@ -1,4 +1,4 @@
-import { atomWithStorage, waitForAll } from 'jotai/utils';
+import { atomWithStorage } from 'jotai/utils';
 import { atom } from 'jotai';
 import { ChainID } from '@stacks/transactions';
 import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
@@ -18,12 +18,9 @@ export const networksState = atomWithStorage<Networks>('networks', defaultNetwor
 const localCurrentNetworkKeyState = atomWithStorage('networkKey', 'mainnet');
 export const currentNetworkKeyState = atom<string, string>(
   get => {
-    const { networks, txNetwork } = get(
-      waitForAll({
-        networks: networksState,
-        txNetwork: transactionRequestNetwork,
-      })
-    );
+    const networks = get(networksState);
+    const txNetwork = get(transactionRequestNetwork);
+
     // if txNetwork, default to this always, users cannot currently change networks when signing a transaction
     // @see https://github.com/blockstack/stacks-wallet-web/issues/1281
     if (txNetwork) {
@@ -39,15 +36,7 @@ export const currentNetworkKeyState = atom<string, string>(
 );
 
 // the `Network` object for the current key selected
-export const currentNetworkState = atom(get => {
-  const { networks, key } = get(
-    waitForAll({
-      networks: networksState,
-      key: currentNetworkKeyState,
-    })
-  );
-  return networks[key];
-});
+export const currentNetworkState = atom(get => get(networksState)[get(currentNetworkKeyState)]);
 
 // a `StacksNetwork` instance using the current network
 export const currentStacksNetworkState = atom<StacksNetwork>(get => {
