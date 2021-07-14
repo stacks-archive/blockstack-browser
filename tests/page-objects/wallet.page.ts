@@ -4,6 +4,7 @@ import { createTestSelector, wait, BrowserDriver } from '../integration/utils';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { WalletPageSelectors } from './wallet.selectors';
 import { InitialPageSelectors } from '@tests/integration/initial-page.selectors';
+import { HomePageSelectors } from '@tests/page-objects/home-page.selectors';
 
 export class WalletPage {
   static url = 'http://localhost:8081/index.html#';
@@ -27,6 +28,7 @@ export class WalletPage {
   password = 'mysecretreallylongpassword';
   $settingsButton = createTestSelector('menu-button');
   $settingsViewSecretKey = createTestSelector('settings-view-secret-key');
+  $homePageBalancesList = createTestSelector(HomePageSelectors.BalancesList);
   page: Page;
 
   constructor(page: Page) {
@@ -57,7 +59,7 @@ export class WalletPage {
   }
 
   async waitForHomePage() {
-    await this.page.waitForSelector(this.homePage, { timeout: 30000 });
+    await this.page.waitForSelector(this.$homePageBalancesList, { timeout: 30000 });
   }
 
   async waitForLoginPage() {

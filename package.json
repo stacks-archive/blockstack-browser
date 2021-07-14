@@ -82,7 +82,7 @@
     "history": "5.0.0",
     "http-server": "0.12.3",
     "jotai": "1.1.3",
-    "jotai-query-toolkit": "0.1.2",
+    "jotai-query-toolkit": "0.1.3",
     "jsontokens": "3.0.0",
     "mdi-react": "7.5.0",
     "object-hash": "2.2.0",

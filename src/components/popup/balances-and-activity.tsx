@@ -11,6 +11,7 @@ import { useAccountActivity } from '@common/hooks/account/use-account-activity';
 import { useHomeTabs } from '@common/hooks/use-home-tabs';
 import { createTxDateFormatList } from '@common/group-txs-by-date';
 import { TransactionList } from './transaction-list';
+import { HomePageSelectors } from '@tests/page-objects/home-page.selectors';
 
 function EmptyActivity() {
   return (
@@ -62,7 +63,14 @@ export function BalancesAndActivity(props: StackProps) {
         <React.Suspense fallback={<Loading />}>
           <SlideFade in={activeTab === 0}>
             {styles => (
-              <TokenAssets position="absolute" top={0} left={0} width="100%" style={styles} />
+              <TokenAssets
+                data-testid={HomePageSelectors.BalancesList}
+                position="absolute"
+                top={0}
+                left={0}
+                width="100%"
+                style={styles}
+              />
             )}
           </SlideFade>
           <SlideFade in={activeTab === 1}>
