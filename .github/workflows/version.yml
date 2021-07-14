@@ -18,44 +18,9 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-  upload-extension:
-    name: Upload extension
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'Version Packages')"
-    needs:
-      - pre-run
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v1
-
-      - uses: actions/cache@v2
-        id: cache-node-modules
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: Install packages
-        uses: ./.github/actions/provision
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-
-      - name: Check exact versions
-        uses: ./.github/actions/check-version-lock
-
-      - uses: actions/upload-artifact@v2
-        name: Upload Chrome Extension Zip
-        with:
-          name: stacks-wallet-chromium
-          path: stacks-wallet-chromium.zip
-
   version:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'Version Packages')"
-    needs:
-      - upload-extension
+    if: github.event.head_commit.message != 'Version release'
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
@@ -76,5 +41,8 @@ jobs:
 
       - name: Create Release Pull Request
         uses: changesets/action@640c4a5d646991720131ef3b6e0e63220de5dddf
+        with:
+          title: "[RELEASE] Version extension"
+          commit: 'Version release'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}

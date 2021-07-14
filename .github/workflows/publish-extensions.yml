@@ -17,7 +17,7 @@ jobs:
   publish_chrome_extension:
     name: Publish Chrome extension
     runs-on: ubuntu-latest
-    if: github.actor == 'github-actions[bot]' && github.event.head_commit.message == 'Version Packages'
+    if: github.event.head_commit.message == 'Version release'
     needs:
       - pre_run
     outputs:
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MINIFY_PRODUCTION_BUILD: true
-    if: github.actor == 'github-actions[bot]' && github.event.head_commit.message == 'Version Packages'
+    if: github.event.head_commit.message == 'Version release'
     needs:
       - pre_run
     outputs:

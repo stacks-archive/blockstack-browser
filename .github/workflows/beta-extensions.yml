@@ -70,8 +70,8 @@ jobs:
       - pre_run
     env:
       MINIFY_PRODUCTION_BUILD: true
-    # only run on Version Packages
-    if: github.event.pull_request.head.repo.full_name == github.repository && contains(github.event.head_commit.message, 'Version Packages')
+    # only run on commits with message 'Version release'
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.head_commit.message == 'Version release'
     steps:
       - name: Checkout
         uses: actions/checkout@v2

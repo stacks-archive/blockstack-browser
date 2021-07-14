@@ -1,11 +1,5 @@
 # Changelog
 
-## 2.12.1
-
-### Patch Changes
-
-- [#1440](https://github.com/blockstack/stacks-wallet-web/pull/1440) [`c587eb44`](https://github.com/blockstack/stacks-wallet-web/commit/c587eb44b2481cada9999ace201c5ba8690049a5) Thanks [@aulneau](https://github.com/aulneau)! - This fixes an issue with our github actions deployment process.
-
 ## 2.12.0
 
 ### Minor Changes
