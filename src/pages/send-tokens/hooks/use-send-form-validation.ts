@@ -11,6 +11,18 @@ import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
 interface UseSendFormValidationArgs {
   setAssetError: (error: string) => void;
 }
+
+export enum SendFormErrorMessages {
+  IncorrectAddressMode = 'The address is for the incorrect Stacks network',
+  InvalidAddress = 'The address you provided is not valid',
+  SameAddress = 'Cannot send to yourself',
+  AmountRequired = 'You must specify an amount',
+  MustNotBeZero = 'Must be more than zero',
+  DoesNotSupportDecimals = 'This token does not support decimal places',
+  InsufficientBalance = 'Insufficient balance. Your available balance is:',
+  MustSelectAsset = 'You must select a valid token to transfer',
+}
+
 export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationArgs) => {
   const { currentNetwork, currentAccountStxAddress } = useWallet();
   const balances = useFetchBalances();
@@ -22,22 +34,22 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
 
   return async ({ recipient, amount }: { recipient: string; amount: string | number }) => {
     const errors: FormikErrors<FormValues> = {};
-    if (!validateAddressChain(recipient, currentNetwork)) {
-      errors.recipient = 'The address is for the incorrect Stacks network';
-    } else if (!validateStacksAddress(recipient)) {
-      errors.recipient = 'The address you provided is not valid';
+    if (!validateStacksAddress(recipient)) {
+      errors.recipient = SendFormErrorMessages.InvalidAddress;
+    } else if (!validateAddressChain(recipient, currentNetwork)) {
+      errors.recipient = SendFormErrorMessages.IncorrectAddressMode;
     } else if (recipient === currentAccountStxAddress) {
-      errors.recipient = 'Cannot send to yourself';
+      errors.recipient = SendFormErrorMessages.SameAddress;
     }
     if (amount === '') {
-      errors.amount = 'You must specify an amount';
+      errors.amount = SendFormErrorMessages.AmountRequired;
     } else if (amount <= 0) {
-      errors.amount = 'Must be more than zero';
+      errors.amount = SendFormErrorMessages.MustNotBeZero;
     }
     if (selectedAsset) {
       const valueHasDecimals = typeof amount === 'string' && amount.includes('.');
       if (!selectedAssetHasDecimals && valueHasDecimals)
-        errors.amount = 'This token does not support decimal places.';
+        errors.amount = SendFormErrorMessages.DoesNotSupportDecimals;
 
       if (balances) {
         const amountBN = new BigNumber(amount);
@@ -48,17 +60,19 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
             .minus(lockedBalance)
             .minus(microStxToStx(STX_TRANSFER_TX_SIZE_BYTES));
           if (availableBalance.lt(amountBN)) {
-            errors.amount = `Insufficient balance. Your available balance is ${availableBalance.toString()} STX`;
+            errors.amount = `${
+              SendFormErrorMessages.InsufficientBalance
+            } ${availableBalance.toString()} STX`;
           }
         }
         const assetBalance = new BigNumber(selectedAsset.balance);
         const assetAmountToTransfer = new BigNumber(amount);
         if (assetAmountToTransfer.isGreaterThan(assetBalance)) {
-          errors.amount = 'Cannot transfer more than balance';
+          errors.amount = `${SendFormErrorMessages.InsufficientBalance} ${selectedAsset.balance} ${selectedAsset.meta?.symbol}`;
         }
       }
     } else {
-      setAssetError('You must select a valid token to transfer');
+      setAssetError(SendFormErrorMessages.MustSelectAsset);
     }
     return errors;
   };
