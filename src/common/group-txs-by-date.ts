@@ -1,27 +1,12 @@
 import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
-import dayjs from 'dayjs';
-import isToday from 'dayjs/plugin/isToday';
-import isYesterday from 'dayjs/plugin/isYesterday';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-
-dayjs.extend(isToday);
-dayjs.extend(isYesterday);
-dayjs.extend(advancedFormat);
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { todaysIsoDate, isoDateToLocalDate, displayDate } from '@common/date-utils';
 
 type Tx = MempoolTransaction | Transaction;
-
-function todaysIsoDate() {
-  return new Date().toISOString().split('T')[0];
-}
 
 function groupTxsByDateMap(txs: Tx[]) {
   return txs.reduce((txsByDate, tx) => {
     if ('burn_block_time_iso' in tx && tx.burn_block_time_iso) {
-      const date = dayjs.tz(tx.burn_block_time_iso).format('YYYY-MM-DD');
+      const date = isoDateToLocalDate(tx.burn_block_time_iso);
       if (!txsByDate.has(date)) {
         txsByDate.set(date, []);
       }
@@ -33,16 +18,6 @@ function groupTxsByDateMap(txs: Tx[]) {
     }
     return txsByDate;
   }, new Map<string, Tx[]>());
-}
-
-function displayDate(txDate: string) {
-  const date = dayjs(txDate);
-  if (date.isToday()) return 'Today';
-  if (date.isYesterday()) return 'Yesterday';
-  if (dayjs().isSame(date, 'year')) {
-    return date.format('MMM Do');
-  }
-  return date.format('MMM Do, YYYY');
 }
 
 function formatTxDateMapAsList(txMap: Map<string, Tx[]>) {
