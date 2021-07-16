@@ -50,7 +50,13 @@ const NetworkListItem: React.FC<{ item: string } & BoxProps> = memo(({ item, ...
     >
       <Flex width="100%" justifyContent="space-between" alignItems="center">
         <Stack>
-          <Title fontWeight={400} lineHeight="1rem" fontSize={2} display="block">
+          <Title
+            fontWeight={400}
+            lineHeight="1rem"
+            fontSize={2}
+            display="block"
+            fontFamily="'Inter'"
+          >
             {network.name}
           </Title>
           <Caption>{getUrlHostname(network.url)}</Caption>

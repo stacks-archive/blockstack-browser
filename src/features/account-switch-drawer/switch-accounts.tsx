@@ -28,7 +28,7 @@ const AccountNameSuspense = memo(({ account }: WithAccount) => {
   const name = useAccountDisplayName(account);
 
   return (
-    <Title fontSize={2} lineHeight="1rem" fontWeight="400">
+    <Title fontSize={2} lineHeight="1rem" fontWeight="400" fontFamily="'Inter'">
       {name}
     </Title>
   );
