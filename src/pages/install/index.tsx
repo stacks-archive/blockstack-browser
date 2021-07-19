@@ -49,7 +49,7 @@ export const Installed: React.FC = memo(() => (
     <Stack spacing="extra-loose" flexGrow={1} justifyContent="center">
       <Stack width="100%" spacing="loose" textAlign="center" alignItems="center">
         <Title as="h1" fontWeight={500}>
-          Stacks Wallet is installed
+          Hiro Wallet is installed
         </Title>
         <Body maxWidth="28ch">Are you new to Stacks or do you already have a Secret Key?</Body>
       </Stack>

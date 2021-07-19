@@ -2,26 +2,20 @@
   "name": "<% NAME %>",
   "author": "Hiro PBC",
   "version": "<% VERSION %>",
-  "description": "Stacks Wallet. Use the Stacks blockchain to access privacy-friendly apps, and keep data in your control.",
+  "description": "Hiro Wallet. Use the Stacks blockchain to access privacy-friendly apps, and keep data in your control.",
   "icons": {
     "128": "assets/connect-logo/Stacks128w.png",
     "256": "assets/connect-logo/Stacks256w.png",
     "512": "assets/connect-logo/Stacks512w.png"
   },
   "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src <% DEV_OBJECT_SRC %>; frame-src 'none'; frame-ancestors 'none';",
-  "permissions": [
-    "activeTab"
-  ],
+  "permissions": ["activeTab"],
   "manifest_version": 2,
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "scripts": ["background.js"],
     "persistent": true
   },
-  "web_accessible_resources": [
-    "inpage.js"
-  ],
+  "web_accessible_resources": ["inpage.js"],
   "browser_action": {
     "default_title": "Stacks",
     "default_icon": "assets/connect-logo/Stacks128w.png",
@@ -42,12 +36,8 @@
   },
   "content_scripts": [
     {
-      "js": [
-        "content-script.js"
-      ],
-      "matches": [
-        "*://*/*"
-      ]
+      "js": ["content-script.js"],
+      "matches": ["*://*/*"]
     }
   ],
   "browser_specific_settings": {

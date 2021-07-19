@@ -30,11 +30,11 @@ export const openGithubIssue = ({
   PLEASE READ:
   Thanks for creating an issue. Please include as much detail as possible,
   including screenshots, operating system, browser, and steps to recreate.
-  
+
   Please make sure to update the TITLE of this issue.
 -->
 
-An error occurred while using Stacks Wallet for Web (\`${VERSION}\`).
+An error occurred while using Hiro Wallet for Web (\`${VERSION}\`).
 
 ### Error
 > ${message}

@@ -29,7 +29,7 @@ export const StacksWalletLogo: React.FC<StackProps> = memo(props => {
     >
       <HiroSvg size="23px" />
       <Title lineHeight="1rem" fontSize={2} fontWeight={500}>
-        Stacks Wallet
+        Hiro Wallet
       </Title>
     </Stack>
   );

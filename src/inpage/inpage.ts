@@ -110,7 +110,7 @@ const provider: StacksProvider = {
   getProductInfo() {
     return {
       version: VERSION,
-      name: 'Stacks Wallet for Web',
+      name: 'Hiro Wallet for Web',
       meta: {
         tag: BRANCH,
         commit: COMMIT_SHA,

@@ -1,4 +1,4 @@
-# Stacks Wallet for Web
+# Hiro Wallet for Web
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/ldinpeekobnhjjdofggfgjlcehhmanlj?label=Chrome%20Web%20Store)](https://chrome.google.com/webstore/detail/stacks-wallet/ldinpeekobnhjjdofggfgjlcehhmanlj)
 [![Mozilla Add-on](https://img.shields.io/amo/stars/stacks-wallet?label=Firefox%20Add-on)](https://addons.mozilla.org/en-US/firefox/addon/stacks-wallet/)
@@ -6,7 +6,7 @@
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/blockstack/stacks-wallet-web)
 
-Stacks Wallet is a browser extension for managing your digital assets and connecting to apps built with the Stacks blockchain.
+Hiro Wallet is a browser extension for managing your digital assets and connecting to apps built with the Stacks blockchain.
 
 Source code is available on GitHub at https://github.com/blockstack/stacks-wallet-web/tree/main
 
@@ -73,7 +73,7 @@ yarn dev:test-app
 
 ### Add extension to your browser
 
-After starting development mode, you'll have to add it to your browser of choice. Stacks Wallet for web currently only
+After starting development mode, you'll have to add it to your browser of choice. Hiro Wallet for web currently only
 supports chromium and firefox browsers. When you run `yarn dev`, it will compile the application to the `/dist` folder
 within the project.
 
@@ -114,6 +114,7 @@ sh build-ext.sh
 Alternatively, run the following if you've downloaded the source code as a zip file from GitHub:
 
 #### Optional: Use docker
+
 ```
 docker build -f Dockerfile -t stacks-wallet-web . \
   && docker run -d --name stacks-wallet-web stacks-wallet-web \
@@ -155,7 +156,6 @@ Please note this email is strictly for reporting security vulnerabilities. For s
 
 ### Audit Report
 
-In Q1 2021, Hiro partnered with [Least Authority](https://leastauthority.com/), a leading security consultancy with experience in the crypto space, to audit Hiro's Stacks Wallet for Web. On April 29th 2021, after addressing the major concerns described in the initial findings, as well as a concluding sign off from the Least Authority team, a final report was delivered.
+In Q1 2021, Hiro partnered with [Least Authority](https://leastauthority.com/), a leading security consultancy with experience in the crypto space, to audit Hiro Wallet for Web. On April 29th 2021, after addressing the major concerns described in the initial findings, as well as a concluding sign off from the Least Authority team, a final report was delivered.
 
-[Download and read the full report here](https://github.com/blockstack/stacks-wallet-web/blob/main/public/docs/least-authority-security-audit-report.pdf
-)
+[Download and read the full report here](https://github.com/blockstack/stacks-wallet-web/blob/main/public/docs/least-authority-security-audit-report.pdf)

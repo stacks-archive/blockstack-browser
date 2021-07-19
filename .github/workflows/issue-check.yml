@@ -13,7 +13,7 @@ jobs:
         uses: peter-evans/close-issue@v1
         with:
           comment: |
-            First, check to make sure you're using the latest version of Stacks Wallet for Web,
+            First, check to make sure you're using the latest version of Hiro Wallet for Web,
             which can be found at https://www.hiro.so/wallet/install-web
 
             If you're using the latest version, please make sure to include more relevant information about

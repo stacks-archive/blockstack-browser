@@ -1,6 +1,6 @@
 {
   "name": "@stacks/wallet-web",
-  "description": "The Stacks Wallet is browser extension for interacting with Stacks apps.",
+  "description": "The Hiro Wallet is browser extension for interacting with Stacks apps.",
   "private": true,
   "scripts": {
     "dev": "node webpack/dev-server.js",

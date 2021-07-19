@@ -135,7 +135,7 @@ export const UnauthorizedErrorMessage = memo(props => {
         >
           <ErrorMessage
             title="Unauthorized request"
-            body="The transaction request was not properly authorized by any of your accounts. If you've logged in to this app before, then you might need to re-authenticate into this application before attempting to sign a transaction with the Stacks Wallet."
+            body="The transaction request was not properly authorized by any of your accounts. If you've logged in to this app before, then you might need to re-authenticate into this application before attempting to sign a transaction with the Hiro Wallet."
             border={'1px solid'}
             borderColor={color('border')}
             boxShadow="high"

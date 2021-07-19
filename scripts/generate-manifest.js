@@ -5,7 +5,7 @@ const IS_DEV = process.env.NODE_ENV === 'development';
 const manifest = {
   author: 'Hiro PBC',
   description:
-    'Stacks Wallet. Use the Stacks blockchain to access privacy-friendly apps, and keep data in your control.',
+    'Hiro Wallet. Use the Stacks blockchain to access privacy-friendly apps, and keep data in your control.',
   permissions: ['activeTab'],
   manifest_version: 2,
   background: {
@@ -44,7 +44,7 @@ const manifest = {
 };
 
 const devManifest = {
-  name: 'Stacks Wallet Dev',
+  name: 'Hiro Wallet Dev',
   content_security_policy:
     "script-src 'self' 'unsafe-eval'; object-src 'self'; frame-src 'none'; frame-ancestors 'none';",
   icons: {
@@ -58,7 +58,7 @@ const devManifest = {
 };
 
 const prodManifest = {
-  name: 'Stacks Wallet',
+  name: 'Hiro Wallet',
   content_security_policy:
     "script-src 'self' 'wasm-eval'; object-src 'none'; frame-src 'none'; frame-ancestors 'none';",
   icons: {

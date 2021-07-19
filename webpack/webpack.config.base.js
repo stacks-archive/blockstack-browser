@@ -43,7 +43,7 @@ const smp = new SpeedMeasurePlugin({
   granularLoaderData: true,
 });
 
-const APP_TITLE = 'Stacks Wallet for Web';
+const APP_TITLE = 'Hiro Wallet for Web';
 
 const HTML_OPTIONS = {
   inject: 'body',
