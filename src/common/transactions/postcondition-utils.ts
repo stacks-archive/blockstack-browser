@@ -89,16 +89,14 @@ export function handlePostConditions(
   const payloadPrincipal = parsePrincipalString(payloadAddress);
   const currentAddressPrincipal = parsePrincipalString(currentAddress);
 
-  console.debug('Setting up post conditions for transaction request');
-  return postConditions.map((postCondition, index) => {
-    const { principal, ...payload } = getPostCondition(postCondition);
+  return postConditions.map(postCondition => {
+    const formattedPostCondition = getPostCondition(postCondition);
+    // if it's a contract principal, do nothing
+    if ('contractName' in formattedPostCondition.principal) return formattedPostCondition;
+    const { principal, ...payload } = formattedPostCondition;
     const sameType = payloadPrincipal.address.type === principal.address.type;
     const sameHash = payloadPrincipal.address.hash160 === principal.address.hash160;
     const isOriginatorAddress = sameHash && sameType;
-    console.debug(
-      `[Post Conditions #${index + 1}]: address: ${addressToString(principal.address)}`
-    );
-    console.debug(`[Post Conditions #${index + 1}]: isOriginatorAddress: ${isOriginatorAddress}`);
     return {
       ...payload,
       principal: isOriginatorAddress ? currentAddressPrincipal : principal,
