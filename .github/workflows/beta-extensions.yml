@@ -70,7 +70,8 @@ jobs:
       - pre_run
     env:
       MINIFY_PRODUCTION_BUILD: true
-    # only run on commits with message 'Version release'
+    # only run on commits with message 'Version release' because this will often fail on PRs 
+    # due to reasons out of our control in the Firefox submission process
     if: github.event.pull_request.head.repo.full_name == github.repository && github.event.head_commit.message == 'Version release'
     steps:
       - name: Checkout
