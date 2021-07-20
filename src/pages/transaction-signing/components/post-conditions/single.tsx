@@ -30,10 +30,12 @@ export const PostConditionFallbackComponent: React.FC<PostConditionProps> = ({ p
   const ticker = getSymbolFromPostCondition(pc);
   const amount = getAmountFromPostCondition(pc);
   const name = getNameFromPostCondition(pc);
+  const contractName = 'contractName' in pc.principal && pc.principal.contractName.content;
   const address = addressToString(pc.principal.address);
   const isSending = address === currentAccount?.address;
 
   const isContractPrincipal =
+    !!contractName ||
     (pendingTransaction?.txType == TransactionTypes.ContractCall &&
       pendingTransaction.contractAddress === address) ||
     address.includes('.');
@@ -54,10 +56,9 @@ export const PostConditionFallbackComponent: React.FC<PostConditionProps> = ({ p
           isContractPrincipal ? 'The contract ' : isSending ? 'You ' : 'Another address '
         } ${title}`}
         left={name}
-        right={`${isSending ? 'From' : 'To'} ${truncateMiddle(
-          addressToString(pc.principal.address),
-          4
-        )}`}
+        right={`${truncateMiddle(addressToString(pc.principal.address), 4)}${
+          contractName ? `.${contractName}` : ''
+        }`}
         amount={amount}
         ticker={ticker}
         icon={iconString}
@@ -77,6 +78,7 @@ export const PostConditionComponentSuspense: React.FC<PostConditionProps> = ({ p
   const _ticker = getSymbolFromPostCondition(pc);
   const _amount = getAmountFromPostCondition(pc);
   const name = getNameFromPostCondition(pc);
+  const contractName = 'contractName' in pc.principal && pc.principal.contractName.content;
   const address = addressToString(pc.principal.address);
   const isSending = address === currentAccount?.address;
 
@@ -86,6 +88,7 @@ export const PostConditionComponentSuspense: React.FC<PostConditionProps> = ({ p
   const ticker = asset?.meta?.symbol || _ticker;
 
   const isContractPrincipal =
+    !!contractName ||
     (pendingTransaction?.txType == TransactionTypes.ContractCall &&
       pendingTransaction.contractAddress === address) ||
     address.includes('.');
@@ -106,10 +109,9 @@ export const PostConditionComponentSuspense: React.FC<PostConditionProps> = ({ p
           isContractPrincipal ? 'The contract ' : isSending ? 'You ' : 'Another address '
         } ${title}`}
         left={asset?.meta?.name || name}
-        right={`${isSending ? 'From' : 'To'} ${truncateMiddle(
-          addressToString(pc.principal.address),
-          4
-        )}`}
+        right={`${truncateMiddle(addressToString(pc.principal.address), 4)}${
+          contractName ? `.${contractName}` : ''
+        }`}
         amount={amount}
         ticker={asset?.meta?.symbol || ticker}
         icon={iconString}

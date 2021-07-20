@@ -7,7 +7,7 @@ import { ProviderWithWalletAndRequestToken } from '@tests/state-utils';
 import { setupHeystackEnv } from '@tests/mocks/heystack';
 
 const message = 'You will transfer exactly 1 HEY or the transaction will abort.';
-const from = 'From ST2P…ZE7Z';
+const from = 'ST2P…ZE7Z';
 const firstTokenName = 'hey-token';
 const sip10Name = 'Heystack Token';
 
