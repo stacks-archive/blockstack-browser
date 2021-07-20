@@ -101,7 +101,6 @@ export const titleStyles = (as: Headings) => {
 export const Title = forwardRefWithAs<BoxProps, Headings>((props, ref) => (
   <BaseText
     userSelect="none"
-    fontFeatureSettings={`'ss01' on`}
     letterSpacing="-0.01em"
     fontFamily="'Open Sauce One'"
     color={color('text-title')}
@@ -129,7 +128,6 @@ export const Pretitle = (props: BoxProps) => (
 
 export const Text = forwardRefWithAs<BoxProps, 'span'>((props, ref) => (
   <BaseText
-    fontFeatureSettings={`'ss01' on`}
     letterSpacing="-0.01em"
     color={color('text-body')}
     display="block"
@@ -144,7 +142,6 @@ export const Body: React.FC<BoxProps> = props => <Text css={c1} {...props} />;
 export const Caption = forwardRefWithAs<{ variant?: 'c1' | 'c2' | 'c3' } & BoxProps, 'span'>(
   ({ variant, ...props }, ref) => (
     <BaseText
-      fontFeatureSettings={`'ss01' on`}
       letterSpacing="-0.01em"
       css={captionStyles(variant)}
       color={color('text-caption')}
