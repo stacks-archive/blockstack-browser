@@ -32,7 +32,7 @@ describe(handlePostConditions.name, function () {
     expect(transformedPostCondition[0]).toEqual(postCondition);
   });
 
-  it('should not modify a post condition addresses are all the same', () => {
+  it('should not modify a post condition when all addresses are the same (sender, current address, and postcondition principal)', () => {
     const postCondition = makeStandardNonFungiblePostCondition(
       SENDER_ADDRESS,
       NonFungibleConditionCode.DoesNotOwn,
