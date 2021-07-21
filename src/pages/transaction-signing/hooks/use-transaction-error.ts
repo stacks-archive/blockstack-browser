@@ -11,6 +11,7 @@ import { transactionBroadcastErrorState } from '@store/transactions';
 import { useOrigin } from '@common/hooks/use-origin';
 import { transactionRequestValidationState } from '@store/transactions/requests';
 import { useAtomValue } from 'jotai/utils';
+import { validateStacksAddress } from '@common/stacks-utils';
 
 export function useTransactionError() {
   const transactionRequest = useTransactionRequest();
@@ -31,8 +32,11 @@ export function useTransactionError() {
     if (!transactionRequest || !balances || !currentAccount) {
       return TransactionErrorReason.Generic;
     }
-    if (transactionRequest.txType === TransactionTypes.ContractCall && !contractInterface)
-      return TransactionErrorReason.NoContract;
+    if (transactionRequest.txType === TransactionTypes.ContractCall) {
+      if (!validateStacksAddress(transactionRequest.contractAddress))
+        return TransactionErrorReason.InvalidContractAddress;
+      if (!contractInterface) return TransactionErrorReason.NoContract;
+    }
     if (broadcastError) return TransactionErrorReason.BroadcastError;
 
     if (balances) {

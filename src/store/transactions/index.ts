@@ -36,17 +36,23 @@ export const signedStacksTransactionState = atom(get => {
 });
 
 export const signedTransactionState = atom(get => {
-  const signedTransaction = get(signedStacksTransactionState);
-  if (!signedTransaction) return;
-  const serialized = signedTransaction.serialize();
-  const txRaw = stacksTransactionToHex(signedTransaction);
-  return {
-    serialized,
-    isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
-    nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
-    fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
-    txRaw,
-  };
+  try {
+    const signedTransaction = get(signedStacksTransactionState);
+    if (!signedTransaction) return;
+    const serialized = signedTransaction.serialize();
+    const txRaw = stacksTransactionToHex(signedTransaction);
+    return {
+      serialized,
+      isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
+      nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
+      fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
+      txRaw,
+    };
+  } catch (e) {
+    // can catch due to incorrect stacks address
+    console.error(e);
+    return;
+  }
 });
 
 export const transactionFeeState = atom(get => {

@@ -90,7 +90,7 @@ export const Debugger = () => {
     ];
     await doContractCall({
       network,
-      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHG3NHN3',
       contractName: 'faker',
       functionName: 'rawr',
       functionArgs: args,

@@ -4,6 +4,7 @@ import {
   BroadcastErrorMessage,
   ExpiredRequestErrorMessage,
   FeeInsufficientFundsErrorMessage,
+  IncorrectContractAddressMessage,
   NoContractErrorMessage,
   StxTransferInsufficientFundsErrorMessage,
   UnauthorizedErrorMessage,
@@ -17,6 +18,7 @@ export enum TransactionErrorReason {
   Unauthorized = 5,
   NoContract = 6,
   ExpiredRequest = 7,
+  InvalidContractAddress = 8,
 }
 
 export const TransactionErrorSuspense = memo(() => {
@@ -25,6 +27,8 @@ export const TransactionErrorSuspense = memo(() => {
   switch (reason) {
     case TransactionErrorReason.NoContract:
       return <NoContractErrorMessage />;
+    case TransactionErrorReason.InvalidContractAddress:
+      return <IncorrectContractAddressMessage />;
     case TransactionErrorReason.StxTransferInsufficientFunds:
       return <StxTransferInsufficientFundsErrorMessage />;
     case TransactionErrorReason.BroadcastError:

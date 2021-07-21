@@ -98,6 +98,21 @@ export const NoContractErrorMessage = memo(props => {
     />
   );
 });
+export const IncorrectContractAddressMessage = memo(props => {
+  const pendingTransaction = useTransactionRequest();
+
+  if (!pendingTransaction || pendingTransaction.txType !== TransactionTypes.ContractCall)
+    return null;
+  return (
+    <ErrorMessage
+      title="Invalid contract address"
+      body={`The contract address (${truncateMiddle(
+        pendingTransaction.contractAddress
+      )}) that you are trying to call is not a valid Stacks address.`}
+      {...props}
+    />
+  );
+});
 
 export const UnauthorizedErrorMessage = memo(props => {
   useScrollLock(true);

@@ -28,6 +28,8 @@ const MinimalErrorMessageSuspense = memo((props: StackProps) => {
           return 'Unauthorized request';
         case TransactionErrorReason.NoContract:
           return 'Contract not found';
+        case TransactionErrorReason.InvalidContractAddress:
+          return 'Invalid contract address';
         case TransactionErrorReason.StxTransferInsufficientFunds:
         case TransactionErrorReason.FeeInsufficientFunds:
           return 'Insufficient balance';
