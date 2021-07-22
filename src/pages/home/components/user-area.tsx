@@ -15,7 +15,7 @@ const UserAddress = memo((props: StackProps) => {
   return currentAccount ? (
     <Tooltip placement="right-end" label={hasCopied ? 'Copied!' : 'Copy address'}>
       <Stack isInline {...props}>
-        <Caption>{truncateMiddle(currentAccount.address)}</Caption>
+        <Caption>{truncateMiddle(currentAccount.address, 4)}</Caption>
 
         <Box
           _hover={{ cursor: 'pointer' }}

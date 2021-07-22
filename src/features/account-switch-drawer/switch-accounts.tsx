@@ -96,7 +96,7 @@ const AccountListItem = memo(
           <AccountAvatarItem account={account} />
           <Stack spacing="base-tight">
             <AccountName account={account} />
-            <Caption>{truncateMiddle(account.address)}</Caption>
+            <Caption>{truncateMiddle(account.address, 4)}</Caption>
           </Stack>
         </Stack>
         <Fade in={isLoading}>

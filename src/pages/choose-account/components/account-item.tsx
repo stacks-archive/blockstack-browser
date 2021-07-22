@@ -17,7 +17,7 @@ export const AccountItem = memo(({ account, ...rest }: { account: AccountWithAdd
         <Title fontSize={2} lineHeight="1rem" fontWeight="400">
           {name}
         </Title>
-        <Caption>{truncateMiddle(account.address, 9)}</Caption>
+        <Caption>{truncateMiddle(account.address, 4)}</Caption>
       </Stack>
     </Stack>
   );

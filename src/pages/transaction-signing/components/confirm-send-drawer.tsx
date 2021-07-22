@@ -50,9 +50,9 @@ const TransactionDetails: React.FC<
         ticker={ticker || 'STX'}
         title="You will transfer exactly"
         left={
-          currentAccount?.address ? `From ${truncateMiddle(currentAccount?.address)}` : undefined
+          currentAccount?.address ? `From ${truncateMiddle(currentAccount?.address, 4)}` : undefined
         }
-        right={`To ${truncateMiddle(recipient)}`}
+        right={`To ${truncateMiddle(recipient, 4)}`}
       />
     </Flex>
   );

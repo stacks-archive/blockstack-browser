@@ -66,7 +66,7 @@ export const PopupReceive: React.FC = () => {
         )}
         <Box>
           <Tooltip interactive placement="bottom" label={address}>
-            <Caption userSelect="none">{truncateMiddle(address, 8)}</Caption>
+            <Caption userSelect="none">{truncateMiddle(address, 4)}</Caption>
           </Tooltip>
         </Box>
       </Stack>

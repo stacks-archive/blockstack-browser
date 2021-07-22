@@ -27,7 +27,7 @@ function StxPostcondition() {
       left="Stacks Token"
       right={
         pendingTransaction.txType === TransactionTypes.STXTransfer
-          ? `To ${truncateMiddle(pendingTransaction.recipient, 6)}`
+          ? `To ${truncateMiddle(pendingTransaction.recipient, 4)}`
           : undefined
       }
     />

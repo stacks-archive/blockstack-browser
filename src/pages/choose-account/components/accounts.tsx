@@ -61,7 +61,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({ selectedAddress, accou
               {name}
             </Title>
             <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
-              {truncateMiddle(account.address)}
+              {truncateMiddle(account.address, 4)}
             </Caption>
           </Stack>
           {isLoading && <Spinner width={4} height={4} {...loadingProps} />}
