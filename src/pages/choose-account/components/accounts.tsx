@@ -19,6 +19,7 @@ import { FiPlusCircle } from 'react-icons/fi';
 import { accountDrawerStep, AccountStep, showAccountsStore } from '@store/ui';
 import { useLoading } from '@common/hooks/use-loading';
 import { useAtomValue, useUpdateAtom } from 'jotai/utils';
+import { AccountBalanceCaption } from '@features/account-balance-caption';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -60,9 +61,14 @@ export const AccountItem: React.FC<AccountItemProps> = ({ selectedAddress, accou
             >
               {name}
             </Title>
-            <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
-              {truncateMiddle(account.address, 4)}
-            </Caption>
+            <Stack alignItems="center" spacing="6px" isInline>
+              <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
+                {truncateMiddle(account.address, 4)}
+              </Caption>
+              <React.Suspense fallback={<></>}>
+                <AccountBalanceCaption address={account.address} />
+              </React.Suspense>
+            </Stack>
           </Stack>
           {isLoading && <Spinner width={4} height={4} {...loadingProps} />}
         </SpaceBetween>

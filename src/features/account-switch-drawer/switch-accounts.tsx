@@ -15,6 +15,7 @@ import { useAccounts } from '@common/hooks/account/use-accounts';
 import { AccountWithAddress } from '@store/accounts';
 import { useLoading } from '@common/hooks/use-loading';
 import { SettingsSelectors } from '@tests/integration/settings.selectors';
+import { AccountBalanceCaption } from '@features/account-balance-caption';
 
 interface SwitchAccountProps {
   close: () => void;
@@ -96,7 +97,12 @@ const AccountListItem = memo(
           <AccountAvatarItem account={account} />
           <Stack spacing="base-tight">
             <AccountName account={account} />
-            <Caption>{truncateMiddle(account.address, 4)}</Caption>
+            <Stack alignItems="center" spacing="6px" isInline>
+              <Caption>{truncateMiddle(account.address, 4)}</Caption>
+              <React.Suspense fallback={<></>}>
+                <AccountBalanceCaption address={account.address} />
+              </React.Suspense>
+            </Stack>
           </Stack>
         </Stack>
         <Fade in={isLoading}>

@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import deepEqual from 'fast-deep-equal';
 import { atomFamily, waitForAll } from 'jotai/utils';
-import { accountBalancesState, accountDataState } from '@store/accounts';
+import { accountBalancesState, currentAccountDataState } from '@store/accounts';
 import { transformAssets } from '@store/assets/utils';
 import { Asset, AssetWithMeta, ContractPrincipal } from '@common/asset-types';
 import { assetMetaDataState } from '@store/assets/fungible-tokens';
@@ -55,7 +55,7 @@ const assetItemState = atomFamily<Asset, AssetWithMeta>(asset => {
 }, deepEqual);
 
 export const assetsState = atom(get =>
-  get(waitForAll(transformAssets(get(accountDataState)?.balances).map(assetItemState)))
+  get(waitForAll(transformAssets(get(currentAccountDataState)?.balances).map(assetItemState)))
 );
 
 export const transferableAssetsState = atom(get =>

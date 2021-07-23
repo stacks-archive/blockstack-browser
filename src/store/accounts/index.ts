@@ -1,6 +1,6 @@
 import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { Account, getStxAddress } from '@stacks/wallet-sdk';
-import { atomWithDefault } from 'jotai/utils';
+import { atomFamily, atomWithDefault } from 'jotai/utils';
 import { atom } from 'jotai';
 import BN from 'bn.js';
 
@@ -121,8 +121,16 @@ const accountDataResponseState = atomFamilyWithQuery<[string, string], AllAccoun
     refetchOnWindowFocus: 'always',
   }
 );
+
+export const accountDataState = atomFamily<string, AllAccountData | undefined>(address =>
+  atom(get => {
+    const network = get(currentNetworkState);
+    return get(accountDataResponseState([address, network.url]));
+  })
+);
+
 // external API data associated with the current account's address
-export const accountDataState = atom(get => {
+export const currentAccountDataState = atom(get => {
   const network = get(currentNetworkState);
   const address = get(currentAccountStxAddressState);
   if (!address) return;
@@ -165,7 +173,7 @@ export const allAccountDataRefreshState = atom(null, (get, set) => {
 
 // the balances of the current account's address
 export const accountBalancesState = atom<AllAccountData['balances'] | undefined>(get => {
-  const balances = get(accountDataState)?.balances;
+  const balances = get(currentAccountDataState)?.balances;
   const stxBalance = get(accountInfoState)?.balance.toString(10);
   return balances
     ? {
@@ -180,7 +188,7 @@ export const accountBalancesState = atom<AllAccountData['balances'] | undefined>
 
 // combo of pending and confirmed transactions for the current address
 export const accountTransactionsState = atom<(MempoolTransaction | Transaction)[]>(get => {
-  const data = get(accountDataState);
+  const data = get(currentAccountDataState);
   const transactions = data?.transactions?.results || [];
   const pending = data?.pendingTransactions || [];
   return [...pending, ...transactions];

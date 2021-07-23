@@ -1,7 +1,11 @@
 import { atom } from 'jotai';
 import { atomFamily, atomWithStorage } from 'jotai/utils';
 
-import { accountDataState, currentAccountStxAddressState, accountInfoState } from '@store/accounts';
+import {
+  currentAccountDataState,
+  currentAccountStxAddressState,
+  accountInfoState,
+} from '@store/accounts';
 import { currentNetworkState } from '@store/networks';
 import deepEqual from 'fast-deep-equal';
 
@@ -18,7 +22,7 @@ export const latestNonceState = atom(get => {
 
 export const correctNonceState = atom(get => {
   const account = get(accountInfoState);
-  const accountData = get(accountDataState);
+  const accountData = get(currentAccountDataState);
   const address = get(currentAccountStxAddressState);
   const lastLocalNonce = get(latestNonceState);
 
