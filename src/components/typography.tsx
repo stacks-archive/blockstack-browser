@@ -103,6 +103,7 @@ export const Title = forwardRefWithAs<BoxProps, Headings>((props, ref) => (
     userSelect="none"
     letterSpacing="-0.01em"
     fontFamily="'Open Sauce One'"
+    fontWeight="500"
     color={color('text-title')}
     ref={ref}
     display="block"
