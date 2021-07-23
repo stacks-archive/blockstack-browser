@@ -35,7 +35,7 @@ const TxButton: React.FC<TxButtonProps> = memo(({ kind, path, ...rest }) => {
         position="relative"
         ref={ref}
         onClick={handleClick}
-        borderRadius="12px"
+        borderRadius="10px"
         {...rest}
       >
         <Box

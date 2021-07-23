@@ -71,7 +71,7 @@ export const PopupReceive: React.FC = () => {
         </Box>
       </Stack>
       <Box mt="auto">
-        <Button width="100%" onClick={onCopy}>
+        <Button width="100%" onClick={onCopy} borderRadius="10px">
           Copy your address
         </Button>
       </Box>

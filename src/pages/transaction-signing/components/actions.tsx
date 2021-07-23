@@ -66,7 +66,7 @@ export const MinimalErrorMessage = memo((props: StackProps) => {
 });
 
 const BaseConfirmButton = (props: ButtonProps) => (
-  <Button borderRadius="12px" py="base" width="100%" {...props}>
+  <Button borderRadius="10px" py="base" width="100%" {...props}>
     Confirm
   </Button>
 );

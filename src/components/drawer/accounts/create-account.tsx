@@ -40,6 +40,7 @@ export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
             width="100%"
             onClick={close}
             isLoading={isSetting}
+            borderRadius="10px"
             isDisabled={isSetting}
             data-testid={isSetting ? undefined : SettingsSelectors.BtnCreateAccountDone}
           >

@@ -57,6 +57,7 @@ export const Unlock: React.FC = () => {
           isDisabled={loading}
           onClick={submit}
           data-testid="set-password-done"
+          borderRadius="10px"
         >
           Unlock
         </Button>

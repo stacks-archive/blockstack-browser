@@ -46,12 +46,18 @@ export const SecretKeyActions: React.FC<{ handleNext?: () => void } & StackProps
         borderColor={color('border')}
         color={color(hasCopied ? 'text-caption' : 'brand')}
         mode="tertiary"
+        borderRadius="10px"
         onClick={hasCopied ? undefined : onCopy}
       >
         {hasCopied ? 'Copied!' : 'Copy to clipboard'}
       </Button>
       {handleNext && (
-        <Button width="100%" onClick={handleNext} data-testid="confirm-saved-key">
+        <Button
+          width="100%"
+          onClick={handleNext}
+          data-testid="confirm-saved-key"
+          borderRadius="10px"
+        >
           I've saved it
         </Button>
       )}

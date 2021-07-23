@@ -18,7 +18,7 @@ const MenuWrapper = forwardRefWithAs((props, ref) => (
     position="absolute"
     top="60px"
     right="extra-loose"
-    borderRadius="8px"
+    borderRadius="10px"
     width="296px"
     boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08);"
     zIndex={2000}

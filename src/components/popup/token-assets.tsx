@@ -46,7 +46,7 @@ function NoAssets(props: StackProps) {
         bg="#EEF2FB"
         _hover={{ bg: '#E5EBFA' }}
         color={color('brand')}
-        borderRadius="12px"
+        borderRadius="10px"
         onClick={onCopy}
         data-testid={UserAreaSelectors.AccountBalancesCopyAddress}
       >

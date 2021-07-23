@@ -58,6 +58,7 @@ export const InstalledSignIn: React.FC = () => {
             isDisabled={isLoading}
             data-testid="sign-in-key-continue"
             type="submit"
+            borderRadius="10px"
           >
             Continue
           </Button>

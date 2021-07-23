@@ -130,6 +130,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({
                   isLoading={loading || formik.isSubmitting}
                   isDisabled={loading}
                   data-testid="set-password-done"
+                  borderRadius="10px"
                 >
                   Done
                 </Button>

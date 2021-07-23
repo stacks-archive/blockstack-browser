@@ -94,7 +94,9 @@ export const NetworksDrawer: React.FC = () => {
     <ControlledDrawer title="Select Network" state={showNetworksStore}>
       <NetworkList />
       <Box pb="loose" width="100%" px="loose" mt="base">
-        <Button onClick={handleAddNetworkClick}>Add a network</Button>
+        <Button borderRadius="10px" onClick={handleAddNetworkClick}>
+          Add a network
+        </Button>
       </Box>
     </ControlledDrawer>
   );

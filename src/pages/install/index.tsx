@@ -30,6 +30,7 @@ const Actions: React.FC<StackProps> = props => {
         onClick={register}
         isLoading={isCreatingWallet}
         data-testid={InitialPageSelectors.SignUp}
+        borderRadius="10px"
       >
         I'm new to Stacks
       </Button>
