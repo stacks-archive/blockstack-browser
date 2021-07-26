@@ -8,9 +8,10 @@ import { currentAccountState } from '@store/accounts';
 import { requestTokenPayloadState } from '@store/transactions/requests';
 
 import { generateSignedTransaction } from '@common/transactions/transactions';
-import { TransactionPayload } from '@stacks/connect';
+import { TransactionPayload, TransactionTypes } from '@stacks/connect';
 import { stacksTransactionToHex } from '@common/transactions/transaction-utils';
 import { postConditionsState } from '@store/transactions/post-conditions';
+import { validateStacksAddress } from '@common/stacks-utils';
 
 export const pendingTransactionState = atom(get => {
   const payload = get(requestTokenPayloadState);
@@ -28,6 +29,12 @@ export const signedStacksTransactionState = atom(get => {
   const txData = get(pendingTransactionState);
   const nonce = get(correctNonceState);
   if (!account || !txData) return;
+  if (
+    txData.txType === TransactionTypes.ContractCall &&
+    !validateStacksAddress(txData.contractAddress)
+  )
+    return;
+
   return generateSignedTransaction({
     senderKey: account.stxPrivateKey,
     nonce,
@@ -36,23 +43,17 @@ export const signedStacksTransactionState = atom(get => {
 });
 
 export const signedTransactionState = atom(get => {
-  try {
-    const signedTransaction = get(signedStacksTransactionState);
-    if (!signedTransaction) return;
-    const serialized = signedTransaction.serialize();
-    const txRaw = stacksTransactionToHex(signedTransaction);
-    return {
-      serialized,
-      isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
-      nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
-      fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
-      txRaw,
-    };
-  } catch (e) {
-    // can catch due to incorrect stacks address
-    console.error(e);
-    return;
-  }
+  const signedTransaction = get(signedStacksTransactionState);
+  if (!signedTransaction) return;
+  const serialized = signedTransaction.serialize();
+  const txRaw = stacksTransactionToHex(signedTransaction);
+  return {
+    serialized,
+    isSponsored: signedTransaction?.auth?.authType === AuthType.Sponsored,
+    nonce: signedTransaction?.auth.spendingCondition?.nonce.toNumber(),
+    fee: signedTransaction?.auth.spendingCondition?.fee?.toNumber(),
+    txRaw,
+  };
 });
 
 export const transactionFeeState = atom(get => {
