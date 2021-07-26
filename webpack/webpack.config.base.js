@@ -20,6 +20,7 @@ const IS_DEV = NODE_ENV === 'development';
 const IS_PROD = !IS_DEV;
 const TEST_ENV = !!process.env.TEST_ENV;
 const ANALYZE_BUNDLE = process.env.ANALYZE === 'true';
+const IS_PUBLISHING = !!process.env.IS_PUBLISHING;
 const MAIN_BRANCH = 'refs/heads/main';
 const GITHUB_REF = process.env.GITHUB_REF;
 const GITHUB_SHA = process.env.GITHUB_SHA;
@@ -28,7 +29,7 @@ const GITHUB_SHA = process.env.GITHUB_SHA;
  * For non main branch builds, we add a random number after the patch version.
  */
 const getVersion = ref => {
-  if (ref === MAIN_BRANCH || !ref) return _version;
+  if (ref === MAIN_BRANCH || !ref || IS_PUBLISHING) return _version;
   return `${_version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
 };
 

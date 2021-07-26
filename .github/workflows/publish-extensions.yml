@@ -43,6 +43,8 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build project
+        env:
+          IS_PUBLISHING: true
         run: yarn build
 
       - name: Build extension
@@ -89,6 +91,8 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Build project
+        env:
+          IS_PUBLISHING: true
         run: yarn build
 
       - name: Build extension
