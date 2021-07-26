@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Get tag version
         id: release_info
