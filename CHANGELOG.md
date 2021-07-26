@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.12.4
+
+### Patch Changes
+
+- [#1491](https://github.com/blockstack/stacks-wallet-web/pull/1491) [`52ee7587`](https://github.com/blockstack/stacks-wallet-web/commit/52ee758737925bef3458953cd0f6e37410218945) Thanks [@beguene](https://github.com/beguene)! - Change wording of the select asset dropdown.
+
+* [#1494](https://github.com/blockstack/stacks-wallet-web/pull/1494) [`12821cd0`](https://github.com/blockstack/stacks-wallet-web/commit/12821cd06f0eb591b71aaa1836c3c5c0fd453cc4) Thanks [@aulneau](https://github.com/aulneau)! - This fixes an issue where a promise was caught when it should not have been.
+
 ## 2.12.3
 
 ### Patch Changes
