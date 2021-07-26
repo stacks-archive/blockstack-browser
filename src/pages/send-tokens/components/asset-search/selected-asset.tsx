@@ -90,7 +90,7 @@ export const SelectedAsset: React.FC<{ hideArrow?: boolean } & StackProps> = mem
       <Stack spacing="base-loose" flexDirection="column" {...rest}>
         <Stack spacing="tight">
           <Text display="block" fontSize={1} fontWeight="500" mb="tight">
-            Token
+            Choose an asset
           </Text>
           <SelectedAssetItem hideArrow={hideArrow} />
         </Stack>
