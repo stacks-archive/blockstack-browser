@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.12.3
+
+### Patch Changes
+
+- [#1487](https://github.com/blockstack/stacks-wallet-web/pull/1487) [`f00fa93f`](https://github.com/blockstack/stacks-wallet-web/commit/f00fa93f6ce7bc04b7436af45bfc4cc2e7042d52) Thanks [@beguene](https://github.com/beguene)! - Fix button border-radius to be consistent. Set it to 10px.
+
+* [#1481](https://github.com/blockstack/stacks-wallet-web/pull/1481) [`211990f5`](https://github.com/blockstack/stacks-wallet-web/commit/211990f56b89a047e6485fee95bc4deb170b9eed) Thanks [@beguene](https://github.com/beguene)! - Some addresses were displayed with 6 or 4 char on both side of the ellipsis. This makes it consistent with 4 char.
+
+- [#1456](https://github.com/blockstack/stacks-wallet-web/pull/1456) [`fa37093c`](https://github.com/blockstack/stacks-wallet-web/commit/fa37093c987af77e78dca2a49042f8a9e2e1aa30) Thanks [@beguene](https://github.com/beguene)! - Some text are displayed with font-feature ss01 on, some off. This removes all those font-features to keep the font display consistent across pages.
+
+* [#1468](https://github.com/blockstack/stacks-wallet-web/pull/1468) [`a8abb466`](https://github.com/blockstack/stacks-wallet-web/commit/a8abb466d73bb12488d55d8eb89e0135a8b2c4bd) Thanks [@aulneau](https://github.com/aulneau)! - This fixes a bug where the principal contained in a postcondition would be incorrectly changed when it was a contract principal.
+
+- [#1467](https://github.com/blockstack/stacks-wallet-web/pull/1467) [`0532be11`](https://github.com/blockstack/stacks-wallet-web/commit/0532be1109aa8e0a99162bb6d109dae30fb69495) Thanks [@aulneau](https://github.com/aulneau)! - This adds validation and error messaging for when a contract call has been initiated with an invalid stacks address passed for the contract address
+
+* [#1489](https://github.com/blockstack/stacks-wallet-web/pull/1489) [`7110398a`](https://github.com/blockstack/stacks-wallet-web/commit/7110398a270116c0872ca74f939b6b57bff7a8be) Thanks [@aulneau](https://github.com/aulneau)! - When selecting an account to authenticate an application, you can now see the balances for each account.
+
+- [#1485](https://github.com/blockstack/stacks-wallet-web/pull/1485) [`662bb4c8`](https://github.com/blockstack/stacks-wallet-web/commit/662bb4c88a532408b99ac7d58d101ba828b6ba42) Thanks [@beguene](https://github.com/beguene)! - Make all our Open Sauce titles consistent with their font-weight. Set it to medium
+
+* [#1448](https://github.com/blockstack/stacks-wallet-web/pull/1448) [`45e7d207`](https://github.com/blockstack/stacks-wallet-web/commit/45e7d20752d75f459c21a898032da73f9daeff98) Thanks [@aulneau](https://github.com/aulneau)! - This update attempts to fix when sometimes network requests fail due to a CORS related issues. Additionally, this fixes a runtime react key warning.
+
 ## 2.12.2
 
 ### Patch Changes
