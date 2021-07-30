@@ -1,7 +1,11 @@
 import { atom } from 'jotai';
 import deepEqual from 'fast-deep-equal';
 import { atomFamily, waitForAll } from 'jotai/utils';
-import { currentAccountAvailableStxBalanceState, currentAccountDataState } from '@store/accounts';
+import {
+  currentAccountAvailableStxBalanceState
+  accountUnanchoredBalancesState,
+  currentAccountDataState,
+} from '@store/accounts';
 import { transformAssets } from '@store/assets/utils';
 import { Asset, AssetWithMeta, ContractPrincipal } from '@common/asset-types';
 import { assetMetaDataState } from '@store/assets/fungible-tokens';
@@ -58,24 +62,84 @@ export const assetsState = atom(get =>
   get(waitForAll(transformAssets(get(currentAccountDataState)?.balances).map(assetItemState)))
 );
 
+export const assetsUnanchoredState = atom(get =>
+  get(
+    waitForAll(
+      transformAssets(get(currentAccountDataState)?.unanchoredBalances).map(assetItemState)
+    )
+  )
+);
+
 export const transferableAssetsState = atom(get =>
   get(assetsState)?.filter(asset => asset.canTransfer)
 );
 
-export const fungibleTokensState = atom(get => {
-  const assets = get(assetsState);
-  return assets?.filter(asset => asset.type === 'ft');
-});
+const calculateBalanceByType = atomFamily((assetType: string) =>
+  atom(get => {
+    const assets: AssetWithMeta[] = get(assetsState);
+    const assetMap = new Map();
+    // Merge both balances (unanchored and anchored)
+    assets.forEach(
+      asset =>
+        asset.type === assetType &&
+        assetMap.set(asset.subtitle, { ...asset, ...{ subBalance: '0' } })
+    );
+    const unanchoredAssets: AssetWithMeta[] = get(assetsUnanchoredState);
+    unanchoredAssets.forEach(asset => {
+      if (asset.type !== assetType) return;
+      if (!assetMap.has(asset.subtitle)) {
+        asset.subBalance = asset.balance;
+        asset.balance = '0';
+        assetMap.set(asset.subtitle, asset);
+      } else {
+        assetMap.get(asset.subtitle).subBalance = asset.balance;
+      }
+    });
+    return [...assetMap.values()];
+  })
+);
+
+export const fungibleTokensState = calculateBalanceByType('ft');
+
 export const nonFungibleTokensState = atom(get => {
-  const assets = get(assetsState);
-  return assets?.filter(asset => asset.type !== 'nft');
+  const balances = get(currentAccountDataState)?.balances;
+  const unanchoredBalances = get(currentAccountDataState)?.unanchoredBalances;
+  const anchoredNfts = balances?.non_fungible_tokens || {};
+  const unanchoredNfts = unanchoredBalances?.non_fungible_tokens || {};
+  const noCollectibles =
+    Object.keys(anchoredNfts).length === 0 && Object.keys(unanchoredNfts).length === 0;
+
+  if (noCollectibles) return [];
+
+  const assets = Object.keys(anchoredNfts);
+  const assetMap = new Map();
+  // Merge both balances (unanchored and anchored)
+  assets.forEach(asset =>
+    assetMap.set(asset, { ...anchoredNfts[asset], ...{ subCount: '0', key: asset } })
+  );
+
+  Object.keys(unanchoredNfts).forEach(key => {
+    const asset = unanchoredNfts[key];
+    if (!assetMap.has(key)) {
+      assetMap.set(key, { ...asset, ...{ subCount: asset.count, count: '0', key } });
+    } else {
+      assetMap.get(key).subCount = asset.count;
+    }
+  });
+
+  return [...assetMap.values()];
 });
+
 export const stxTokenState = atom(get => {
-  const availableStxBalance = get(currentAccountAvailableStxBalanceState);
+  const balances = get(currentAccountAvailableStxBalanceState);
+  const unanchoredBalances = get(accountUnanchoredBalancesState);
+
+  if (!balances || balances.stx.balance.isEqualTo(0) || !unanchoredBalances || unanchoredBalances.isEqualTo(0)) return;
   return {
     type: 'stx',
     contractAddress: '',
-    balance: availableStxBalance || 0,
+    balance: new BigNumber(balances.stx.balance),
+    subBalance: new BigNumber(unanchoredBalances.stx.balance),
     subtitle: 'STX',
     name: 'Stacks Token',
   } as AssetWithMeta;

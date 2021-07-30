@@ -18,6 +18,7 @@ export const KEBAB_REGEX = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g;
 
 export const POPUP_WIDTH = 442;
 export const POPUP_HEIGHT = 646;
+export const MICROBLOCKS_ENABLED = true;
 
 export const SIP_010 = {
   mainnet: {
@@ -48,11 +49,13 @@ export type Networks = Record<string, Network>;
 export const defaultNetworks: Networks = {
   mainnet: {
     url: 'https://stacks-node-api.mainnet.stacks.co',
+    // TOREMOVE
+    // url: 'https://stacks-node-api-microblocks.stacks.co'
     name: 'Mainnet',
     chainId: ChainID.Mainnet,
   },
   testnet: {
-    url: 'https://stacks-node-api.testnet.stacks.co',
+    url: 'https://stacks-node-api-microblocks.testnet.stacks.co',
     name: 'Testnet',
     chainId: ChainID.Testnet,
   },

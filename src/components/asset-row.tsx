@@ -12,18 +12,22 @@ interface AssetRowProps extends StackProps {
 }
 export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, ref) => {
   const { asset, ...rest } = props;
-  const { name, contractAddress, contractName, type, meta, subtitle, balance } = asset;
+  const { name, contractAddress, contractName, type, meta, subtitle, balance, subBalance } = asset;
   const availableStxBalance = useCurrentAccountAvailableStxBalance();
 
   const friendlyName =
     type === 'ft' ? meta?.name || (name.includes('::') ? getAssetName(name) : name) : name;
   const symbol = type === 'ft' ? meta?.symbol || getTicker(friendlyName) : subtitle;
-  const value =
+
+  const valueFromBalance = (balance: string) =>
     type === 'ft'
       ? ftDecimals(balance, meta?.decimals || 0)
       : type === 'stx'
       ? stacksValue({ value: availableStxBalance || 0, withTicker: false })
       : balance.toString();
+
+  const value = valueFromBalance(balance.toString());
+  const subAmount = subBalance && valueFromBalance(subBalance);
 
   return (
     <AssetItem
@@ -38,6 +42,7 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
       title={friendlyName}
       caption={symbol}
       amount={value}
+      subAmount={subAmount}
       {...rest}
     />
   );

@@ -3,16 +3,36 @@ import { todaysIsoDate, isoDateToLocalDate, displayDate } from '@common/date-uti
 
 type Tx = MempoolTransaction | Transaction;
 
+const isoDateToLocalDateSafe = (isoDate: string) => {
+  let result;
+  try {
+    result = isoDateToLocalDate(isoDate);
+  } catch (e) {
+    console.log(isoDate);
+    console.log(e);
+  }
+  return result;
+};
+
+const txHasTime = (tx: Tx) =>
+  !!(
+    ('burn_block_time_iso' in tx && tx.burn_block_time_iso) ||
+    ('parent_burn_block_time_iso' in tx && tx.parent_burn_block_time_iso)
+  );
+
 function groupTxsByDateMap(txs: Tx[]) {
   return txs.reduce((txsByDate, tx) => {
-    if ('burn_block_time_iso' in tx && tx.burn_block_time_iso) {
-      const date = isoDateToLocalDate(tx.burn_block_time_iso);
+    let time =
+      ('burn_block_time_iso' in tx && tx.burn_block_time_iso) ||
+      ('parent_burn_block_time_iso' in tx && tx.parent_burn_block_time_iso);
+    const date = time ? isoDateToLocalDateSafe(time) : undefined;
+    if (date && txHasTime(tx)) {
       if (!txsByDate.has(date)) {
         txsByDate.set(date, []);
       }
       txsByDate.set(date, [...(txsByDate.get(date) || []), tx]);
     }
-    if (!('burn_block_time_iso' in tx)) {
+    if (!txHasTime(tx)) {
       const today = todaysIsoDate();
       txsByDate.set(today, [...(txsByDate.get(today) || []), tx]);
     }

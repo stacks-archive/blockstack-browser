@@ -14,6 +14,7 @@ import {
   trueCV,
   makeStandardSTXPostCondition,
   makeStandardFungiblePostCondition,
+  PostConditionMode,
   createAssetInfo,
   FungibleConditionCode,
   bufferCVFromString,
@@ -72,6 +73,28 @@ export const Debugger = () => {
       ],
       onFinish: data => {
         console.log('finished bns call!', data);
+        setState('Contract Call', data.txId);
+      },
+    });
+  };
+
+  const callAnimalTransfer = async () => {
+    clearState();
+    const args = [
+      uintCV(1),
+      standardPrincipalCV('ST3K6AFDAW05G6Z9FWZD61RBRN6WV1J2N4MJG43JJ'), // sender
+      standardPrincipalCV('ST9VQ21ZEGG54JDFE39B99ZBTSFSWMEC323MENFG'), // recipient
+    ];
+    await doContractCall({
+      network,
+      contractAddress: 'ST9VQ21ZEGG54JDFE39B99ZBTSFSWMEC323MENFG',
+      contractName: 'animal',
+      functionName: 'transfer',
+      functionArgs: args,
+      postConditionMode: PostConditionMode.Allow,
+      postConditions: [],
+      onFinish: data => {
+        console.log('finished nft transfer!', data);
         setState('Contract Call', data.txId);
       },
     });
@@ -301,6 +324,9 @@ export const Debugger = () => {
           </Button>
           <Button mt={3} onClick={callBnsTransfer}>
             NFT with postconditions (will fail)
+          </Button>
+          <Button mt={3} onClick={callAnimalTransfer}>
+            transfer Animal NFT
           </Button>
           <Button mt={3} onClick={deployContract}>
             Contract deploy

@@ -20,6 +20,7 @@ export interface Asset {
   balance: BigNumber;
   canTransfer?: boolean;
   hasMemo?: boolean;
+  subBalance?: string;
 }
 
 export interface FungibleTokenOptions {

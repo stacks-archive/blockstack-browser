@@ -11,7 +11,14 @@ export const fetchBalances =
   (apiServer: string) =>
   (principal: string): Promise<AddressBalanceResponse> => {
     const path = `/address/${principal}/balances`;
-    return fetchFromSidecar(apiServer)(path);
+    return fetchFromSidecar(apiServer)(path, {}, false);
+  };
+
+export const fetchUnanchoredBalances =
+  (apiServer: string) =>
+  (principal: string): Promise<AddressBalanceResponse> => {
+    const path = `/address/${principal}/balances`;
+    return fetchFromSidecar(apiServer)(path, {}, true);
   };
 
 export const fetchTransactions =
@@ -23,6 +30,7 @@ export const fetchTransactions =
 
 export interface AllAccountData {
   balances: AddressBalanceResponse;
+  unanchoredBalances: AddressBalanceResponse;
   transactions: TransactionResults;
   pendingTransactions: MempoolTransaction[];
 }
@@ -30,11 +38,12 @@ export interface AllAccountData {
 export const fetchAllAccountData =
   (apiServer: string) =>
   async (principal: string): Promise<AllAccountData> => {
-    const [balances, transactions, pendingTransactions] = await Promise.all([
+    const [balances, unanchoredBalances, transactions, pendingTransactions] = await Promise.all([
       fetchBalances(apiServer)(principal),
+      fetchUnanchoredBalances(apiServer)(principal),
       fetchTransactions(apiServer)(principal),
       fetchPendingTxs(apiServer)({ query: principal }),
     ]);
 
-    return { balances, transactions, pendingTransactions };
+    return { balances, unanchoredBalances, transactions, pendingTransactions };
   };

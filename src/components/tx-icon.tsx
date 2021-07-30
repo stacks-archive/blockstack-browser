@@ -7,28 +7,40 @@ import {
   FiAlertOctagon as IconMoodSad,
   FiPlus as IconPlus,
 } from 'react-icons/fi';
-import { Box, BoxProps, Circle, color, DynamicColorCircle } from '@stacks/ui';
+import { Box, BoxProps, Circle, color,ColorsStringLiteral, DynamicColorCircle } from '@stacks/ui';
 import FunctionIcon from 'mdi-react/FunctionIcon';
-import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { StxIcon } from './icons/stx-icon';
-
-type Tx = MempoolTransaction | Transaction;
+import { MicroblockIcon } from '@components/icons/microblock';
+import { Tx, Statuses, statusFromTx } from '@common/api/transactions';
 
 interface TypeIconWrapperProps extends BoxProps {
   icon: React.FC<any>;
-  status: Tx['tx_status'];
+  bg: any;
 }
 
-const TypeIconWrapper: React.FC<TypeIconWrapperProps> = ({ status, icon: Icon, ...rest }) => (
+type statusColorMap = {
+  [key in Statuses]: ColorsStringLiteral;
+};
+
+const colorFromTx = (tx: Tx): ColorsStringLiteral => {
+  const colorMap: statusColorMap = {
+    pending: 'feedback-alert',
+    success_microblock: 'invert',
+    success_anchor_block: 'brand',
+    failed: 'feedback-error',
+  };
+
+  return colorMap[statusFromTx(tx)] ?? 'feedback-error';
+};
+
+export const TypeIconWrapper: React.FC<TypeIconWrapperProps> = ({ bg, icon: Icon, ...rest }) => (
   <Circle
     bottom="-2px"
     right="-9px"
     position="absolute"
     size="21px"
-    bg={color(
-      status === 'pending' ? 'feedback-alert' : status !== 'success' ? 'feedback-error' : 'brand'
-    )}
+    bg={color(bg)}
     color={color('bg')}
     border="2px solid"
     borderColor={color('bg')}
@@ -38,39 +50,51 @@ const TypeIconWrapper: React.FC<TypeIconWrapperProps> = ({ status, icon: Icon, .
   </Circle>
 );
 
+const iconForTx = (tx: Tx, currentAccountStxAddress: string | undefined) => {
+  const isSent = tx.sender_address === currentAccountStxAddress;
+
+  const tokenTransferIcon = (tx: Tx) => {
+    return 'is_unanchored' in tx && tx.is_unanchored
+      ? () => (
+          <MicroblockIcon
+            size="13px"
+            fill={color('bg')}
+            borderColor={color('invert')}
+            bg={color(colorFromTx(tx))}
+          />
+        )
+      : isSent
+      ? IconArrowUp
+      : IconArrowDown;
+  };
+
+  const iconMap = {
+    coinbase: IconPlus,
+    smart_contract: IconCode,
+    token_transfer: tokenTransferIcon(tx),
+    contract_call: () => <FunctionIcon size="14px" />,
+    poison_microblock: null,
+  };
+  return iconMap[tx.tx_type];
+};
+
 const TypeIcon: React.FC<
   {
     transaction: Tx;
   } & BoxProps
 > = ({ transaction, ...rest }) => {
   const { currentAccountStxAddress } = useWallet();
+  const icon = iconForTx(transaction, currentAccountStxAddress);
 
-  switch (transaction.tx_type) {
-    case 'coinbase':
-      return <TypeIconWrapper icon={IconPlus} status={transaction.tx_status} {...rest} />;
-    case 'smart_contract':
-      return <TypeIconWrapper icon={IconCode} status={transaction.tx_status} {...rest} />;
-    case 'token_transfer': {
-      const isSent = transaction.sender_address === currentAccountStxAddress;
-      return (
-        <TypeIconWrapper
-          icon={isSent ? IconArrowUp : IconArrowDown}
-          status={transaction.tx_status}
-          {...rest}
-        />
-      );
-    }
-    case 'contract_call':
-      return (
-        <TypeIconWrapper
-          icon={() => <FunctionIcon size="14px" />}
-          status={transaction.tx_status}
-          {...rest}
-        />
-      );
-    default:
-      return null;
+  if (
+    ['coinbase', 'smart_contract', 'token_transfer', 'contract_call'].includes(
+      transaction.tx_type
+    ) &&
+    icon
+  ) {
+    return <TypeIconWrapper icon={icon} bg={colorFromTx(transaction)} {...rest} />;
   }
+  return null;
 };
 
 const ItemIconWrapper: React.FC<

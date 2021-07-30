@@ -4,7 +4,6 @@ import { accountInfoState } from '@store/accounts';
 
 export function useAccountBalances() {
   const accountData = useFetchAccountData();
-
   return accountData?.balances;
 }
 
