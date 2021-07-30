@@ -91,7 +91,7 @@ within the project.
 2. Click on **"This Firefox"**
 3. Click on: **"Load Temporary Add-on…"**
 4. Navigate to the `stacks-wallet-web` project directory
-5. Select the `manifest.json` file.
+5. Select the `manifest.json` file from the `stacks-wallet-web/dist` directory.
 
 ### Adding a Changeset
 
