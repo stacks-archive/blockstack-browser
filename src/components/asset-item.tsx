@@ -23,7 +23,7 @@ export const AssetItem = memo(
         avatar: string;
         title: string;
         caption?: string;
-        amount: string;
+        amount: string | undefined;
       } & StackProps,
       ref
     ) => {
@@ -58,10 +58,10 @@ export const AssetItem = memo(
                 <Box>
                   <Tooltip
                     placement="left-start"
-                    label={formatted.isAbbreviated ? amount : undefined}
+                    label={formatted?.isAbbreviated ? amount : undefined}
                   >
                     <Text fontVariantNumeric="tabular-nums" textAlign="right">
-                      {formatted.value}
+                      {formatted?.value}
                     </Text>
                   </Tooltip>
                 </Box>

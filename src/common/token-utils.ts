@@ -66,13 +66,15 @@ export function isSip10Transfer(contractInterface: ContractInterface): SIP010Tra
   }
 }
 
-export function removeCommas(amountWithCommas: string) {
+export function removeCommas(amountWithCommas: string | undefined) {
+  if (!amountWithCommas) return;
   return amountWithCommas.replace(/,/g, '');
 }
 
-export function getFormattedAmount(amount: string) {
+export function getFormattedAmount(amount: string | undefined) {
   const noCommas = removeCommas(amount);
-  const number = noCommas.includes('.') ? parseFloat(noCommas) : parseInt(noCommas);
+  if (!noCommas) return;
+  const number = noCommas?.includes('.') ? parseFloat(noCommas) : parseInt(noCommas);
   return number > 10000
     ? {
         isAbbreviated: true,
