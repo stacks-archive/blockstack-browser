@@ -126,8 +126,12 @@ export const TxItem: React.FC<TxItemProps & BoxProps> = ({ transaction, ...rest 
         <TxItemIcon transaction={transaction} />
         <Stack flexGrow={1} spacing="base-tight">
           <SpaceBetween>
-            <Title as="h3">{getTxTitle(transaction as any)}</Title>
-            <Title as="h3">{getTxValue(transaction, isOriginator)}</Title>
+            <Title as="h3" fontWeight="normal">
+              {getTxTitle(transaction as any)}
+            </Title>
+            <Title as="h3" fontWeight="normal">
+              {getTxValue(transaction, isOriginator)}
+            </Title>
           </SpaceBetween>
           <Stack isInline>
             <Status transaction={transaction} />
