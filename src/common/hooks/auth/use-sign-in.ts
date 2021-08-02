@@ -77,8 +77,8 @@ export function useSignIn() {
   );
 
   const handleSetSeed = useCallback(
-    async (value: string) => {
-      const trimmed = value.trim();
+    async (value: string, trim?: boolean) => {
+      const trimmed = trim ? value.trim() : value;
       const isEmpty = JSON.stringify(trimmed) === '' || trimmed === '' || !trimmed;
       if (trimmed === seed) return;
       if (isEmpty) {
@@ -106,7 +106,7 @@ export function useSignIn() {
   const onPaste = useCallback(
     async (event: React.ClipboardEvent) => {
       const value = extractPhraseFromPasteEvent(event);
-      await handleSetSeed(value);
+      await handleSetSeed(value, true);
       await handleSubmit(value);
     },
     [handleSetSeed, handleSubmit]
