@@ -28,7 +28,7 @@ export const AssetItem = memo(
       ref
     ) => {
       const [component, bind] = usePressable(isPressable);
-      const formatted = getFormattedAmount(amount);
+      const formatted = getFormattedAmount(amount.toString());
       return (
         <Box
           as={isPressable ? 'button' : 'div'}

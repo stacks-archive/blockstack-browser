@@ -1,3 +1,5 @@
+import type BigNumber from 'bignumber.js';
+
 export interface ContractPrincipal {
   contractName: string;
   contractAddress: string;
@@ -15,7 +17,7 @@ export interface Asset {
   contractName: string;
   subtitle: string;
   type: 'stx' | 'nft' | 'ft';
-  balance: string;
+  balance: BigNumber;
   canTransfer?: boolean;
   hasMemo?: boolean;
 }

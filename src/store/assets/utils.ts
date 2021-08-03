@@ -6,6 +6,7 @@ import { fetcher } from '@common/api/wrapped-fetch';
 import type { AddressBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { getAssetStringParts, truncateMiddle } from '@stacks/ui-utils';
 import { Asset, FtMeta, FungibleTokenOptions, MetaDataNames } from '@common/asset-types';
+import BigNumber from 'bignumber.js';
 
 async function callReadOnlyFunction({
   contractName,
@@ -141,16 +142,16 @@ export function transformAssets(balances?: AddressBalanceResponse) {
     type: 'stx',
     contractAddress: '',
     contractName: '',
-    balance: balances.stx.balance,
+    balance: new BigNumber(balances.stx.balance),
     subtitle: 'STX',
     name: 'Stacks Token',
     canTransfer: true,
     hasMemo: true,
   });
   Object.keys(balances.fungible_tokens).forEach(key => {
-    const { balance } = balances.fungible_tokens[key];
+    const balance = new BigNumber(balances.fungible_tokens[key].balance);
     const { address, contractName, assetName } = getAssetStringParts(key);
-    if (balance === '0') return; // tokens users have traded will persist in the api response even if they don't have a balance
+    if (balance.isEqualTo(0)) return; // tokens users have traded will persist in the api response even if they don't have a balance
     _assets.push({
       type: 'ft',
       subtitle: `${truncateMiddle(address)}.${contractName}`,

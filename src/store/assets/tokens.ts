@@ -8,6 +8,7 @@ import { assetMetaDataState } from '@store/assets/fungible-tokens';
 import { contractInterfaceState } from '@store/contracts';
 import { isSip10Transfer } from '@common/token-utils';
 import { currentNetworkState } from '@store/networks';
+import BigNumber from 'bignumber.js';
 
 const transferDataState = atomFamily<ContractPrincipal, any>(
   ({ contractAddress, contractName }) => {
@@ -72,11 +73,11 @@ export const nonFungibleTokensState = atom(get => {
 });
 export const stxTokenState = atom(get => {
   const balances = get(accountBalancesState);
-  if (!balances || balances.stx.balance === '0') return;
+  if (!balances || balances.stx.balance.isEqualTo(0)) return;
   return {
     type: 'stx',
     contractAddress: '',
-    balance: balances.stx.balance,
+    balance: new BigNumber(balances.stx.balance),
     subtitle: 'STX',
     name: 'Stacks Token',
   } as AssetWithMeta;

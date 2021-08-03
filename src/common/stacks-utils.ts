@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import { Network, STX_DECIMALS } from './constants';
-import { abbreviateNumber } from '@common/utils';
+import { abbreviateNumber, initBigNumber } from '@common/utils';
 
 export const stacksValue = ({
   value,
@@ -11,7 +11,7 @@ export const stacksValue = ({
   withTicker = true,
   abbreviate = false,
 }: {
-  value: number | string;
+  value: number | string | BigNumber;
   fixedDecimals?: boolean;
   withTicker?: boolean;
   abbreviate?: boolean;
@@ -27,25 +27,25 @@ export const stacksValue = ({
   }${withTicker ? ' STX' : ''}`;
 };
 
-export const microStxToStx = (mStx: number | string) => {
-  const microStacks = new BigNumber(mStx);
+export const microStxToStx = (mStx: number | string | BigNumber) => {
+  const microStacks = initBigNumber(mStx);
   return microStacks.shiftedBy(-STX_DECIMALS);
 };
 
-export const ftDecimals = (value: number | string, decimals: number) => {
-  const amount = new BigNumber(value);
+export const ftDecimals = (value: number | string | BigNumber, decimals: number) => {
+  const amount = initBigNumber(value);
   return amount
     .shiftedBy(-decimals)
     .toNumber()
     .toLocaleString('en-US', { maximumFractionDigits: decimals });
 };
-export const ftUnshiftDecimals = (value: number | string, decimals: number) => {
-  const amount = new BigNumber(value);
+export const ftUnshiftDecimals = (value: number | string | BigNumber, decimals: number) => {
+  const amount = initBigNumber(value);
   return amount.shiftedBy(decimals).toString(10);
 };
 
-export const stxToMicroStx = (stx: number | string) => {
-  const stxBN = new BigNumber(stx);
+export const stxToMicroStx = (stx: number | string | BigNumber) => {
+  const stxBN = initBigNumber(stx);
   return stxBN.shiftedBy(STX_DECIMALS);
 };
 

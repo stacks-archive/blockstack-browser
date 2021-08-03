@@ -15,6 +15,7 @@ import {
 import { KEBAB_REGEX, Network } from '@common/constants';
 import { StacksNetwork } from '@stacks/network';
 import { fetcher } from '@common/api/wrapped-fetch';
+import BigNumber from 'bignumber.js';
 
 function kebabCase(str: string) {
   return str.replace(KEBAB_REGEX, match => '-' + match.toLowerCase());
@@ -338,4 +339,8 @@ export async function fetchWithTimeout(
 
 export function with0x(value: string): string {
   return !value.startsWith('0x') ? `0x${value}` : value;
+}
+
+export function initBigNumber(num: string | number | BigNumber) {
+  return BigNumber.isBigNumber(num) ? num : new BigNumber(num);
 }

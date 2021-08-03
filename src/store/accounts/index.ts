@@ -3,6 +3,7 @@ import { Account, getStxAddress } from '@stacks/wallet-sdk';
 import { atomFamily, atomWithDefault } from 'jotai/utils';
 import { atom } from 'jotai';
 import BN from 'bn.js';
+import BigNumber from 'bignumber.js';
 
 import type { AllAccountData } from '@common/api/accounts';
 import { fetchAllAccountData } from '@common/api/accounts';
@@ -172,7 +173,7 @@ export const allAccountDataRefreshState = atom(null, (get, set) => {
 });
 
 // the balances of the current account's address
-export const accountBalancesState = atom<AllAccountData['balances'] | undefined>(get => {
+export const accountBalancesState = atom(get => {
   const balances = get(currentAccountDataState)?.balances;
   const stxBalance = get(accountInfoState)?.balance.toString(10);
   return balances
@@ -180,7 +181,7 @@ export const accountBalancesState = atom<AllAccountData['balances'] | undefined>
         ...balances,
         stx: {
           ...balances.stx,
-          balance: stxBalance || balances.stx.balance,
+          balance: new BigNumber(stxBalance || balances.stx.balance),
         },
       }
     : undefined;
