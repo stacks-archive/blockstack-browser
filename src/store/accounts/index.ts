@@ -12,8 +12,8 @@ import { currentNetworkState } from '@store/networks';
 import { walletState } from '@store/wallet';
 import { transactionNetworkVersionState } from '@store/transactions';
 import { atomFamilyWithQuery } from '@store/query';
-import { accountsApiClientState } from '@store/common/api-clients';
 import { QueryRefreshRates } from '@common/constants';
+import { apiClientState } from '@store/common/api-clients';
 
 enum AccountQueryKeys {
   ALL_ACCOUNT_DATA = 'ALL_ACCOUNT_DATA',
@@ -144,8 +144,8 @@ export const accountInfoResponseState = atomFamilyWithQuery<
 >(
   AccountQueryKeys.ACCOUNT_INFO_STATE,
   async function accountInfoResponseQueryFn(get, [principal]) {
-    const client = get(accountsApiClientState);
-    const data = await client.getAccountInfo({
+    const { accountsApi } = get(apiClientState);
+    const data = await accountsApi.getAccountInfo({
       principal,
       proof: 0,
     });

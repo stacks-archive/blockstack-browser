@@ -1,6 +1,6 @@
 import { atomFamilyWithQuery } from '@store/query';
 import { ContractPrincipal } from '@common/asset-types';
-import { smartContractClientState } from '@store/common/api-clients';
+import { apiClientState } from '@store/common/api-clients';
 import { atomFamily } from 'jotai/utils';
 import { atom } from 'jotai';
 import { currentNetworkState } from '@store/networks';
@@ -18,10 +18,10 @@ export const contractInterfaceResponseState = atomFamilyWithQuery<
   ContractPrincipal,
   ContractInterface | null
 >(ContractQueryKeys.ContractInterface, async (get, { contractAddress, contractName }) => {
-  const client = get(smartContractClientState);
+  const { smartContractsApi } = get(apiClientState);
   const network = get(currentNetworkState);
   try {
-    const data = (await client.getContractInterface({
+    const data = (await smartContractsApi.getContractInterface({
       contractAddress,
       contractName,
     })) as ContractInterface;
@@ -63,9 +63,9 @@ export const contractSourceResponseState = atomFamilyWithQuery<
   ContractPrincipal,
   ContractSourceResponse
 >(ContractQueryKeys.ContractSource, async (get, { contractAddress, contractName }) => {
-  const client = get(smartContractClientState);
+  const { smartContractsApi } = get(apiClientState);
   const network = get(currentNetworkState);
-  const data = await client.getContractSource({
+  const data = await smartContractsApi.getContractSource({
     contractAddress,
     contractName,
   });

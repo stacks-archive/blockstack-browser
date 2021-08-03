@@ -74,3 +74,5 @@ export enum QueryRefreshRates {
   MEDIUM = 10_000,
   FAST = 3_500,
 }
+
+export const MICROBLOCKS_ENABLED = false;

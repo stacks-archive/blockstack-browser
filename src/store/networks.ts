@@ -5,8 +5,8 @@ import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
 import { transactionRequestNetwork } from '@store/transactions/requests';
 import { fetchWithTimeout, findMatchingNetworkKey } from '@common/utils';
 import { defaultNetworks, Networks, QueryRefreshRates } from '@common/constants';
-import { blocksApiClientState, infoApiClientState } from '@store/common/api-clients';
 import { atomFamilyWithQuery } from '@store/query';
+import { apiClientState } from '@store/common/api-clients';
 
 // Our root networks list, users can add to this list and it will persist to localstorage
 export const networksState = atomWithStorage<Networks>('networks', defaultNetworks);
@@ -50,12 +50,12 @@ export const currentStacksNetworkState = atom<StacksNetwork>(get => {
 
 // external data, the most recent block height of the selected network
 export const latestBlockHeightState = atom(async get => {
-  const client = get(blocksApiClientState);
-  return (await client.getBlockList({}))?.results?.[0]?.height;
+  const { blocksApi } = get(apiClientState);
+  return (await blocksApi.getBlockList({}))?.results?.[0]?.height;
 });
 
 // external data, `v2/info` endpoint of the selected network
-export const networkInfoState = atom(get => get(infoApiClientState).getCoreApiInfo());
+export const networkInfoState = atom(get => get(apiClientState).infoApi.getCoreApiInfo());
 
 export const networkOnlineStatusState = atomFamilyWithQuery<string, boolean>(
   'NETWORK_ONLINE',
