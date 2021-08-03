@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { PopupHeader } from '@pages/transaction-signing/components/popup-header';
 import { PopupContainer } from '@components/popup/container';
 import { TransactionsActions } from '@pages/transaction-signing/components/actions';
@@ -10,10 +10,20 @@ import { PostConditions } from '@pages/transaction-signing/components/post-condi
 import { StxTransferDetails } from '@pages/transaction-signing/components/stx-transfer-details';
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { Stack } from '@stacks/ui';
+import { useUpdateAtom } from 'jotai/utils';
+import { transactionBroadcastErrorState } from '@store/transactions';
 
 export const TransactionPage = memo(() => {
   const transactionRequest = useTransactionRequest();
+  const setBroadcastError = useUpdateAtom(transactionBroadcastErrorState);
   if (!transactionRequest) return null;
+
+  useEffect(() => {
+    return () => {
+      setBroadcastError(null);
+    };
+  }, [setBroadcastError]);
+
   return (
     <PopupContainer header={<PopupHeader />}>
       <Stack spacing="loose">
