@@ -2713,10 +2713,10 @@
     jsontokens "^3.0.0"
     query-string "^6.13.1"
 
-"@stacks/blockchain-api-client@0.62.1":
-  version "0.62.1"
-  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.62.1.tgz#a4ce9b9480d467ac29afb11c063af7106f64c672"
-  integrity sha512-kqPdWsORBbjsTmALBDoZcKbRhip/zZYU1nNGiXtfwRGdca+dOAZFpORT/pqW72LGwjopeHG7DXi+0DQZl+Hh/g==
+"@stacks/blockchain-api-client@0.63.0-beta.0":
+  version "0.63.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.63.0-beta.0.tgz#398aa5326b88c341bc39870e7d2ed69100301511"
+  integrity sha512-oc7m0AHYjGyK+WmfMfu0C/1NkRs9CYKzERh9xTDqMfpenfQUG07wIb6mUSTfPiMBhKZB6nSfdM9EgJN2TlPdTw==
   dependencies:
     "@stacks/stacks-blockchain-api-types" "*"
     "@types/ws" "^7.4.0"

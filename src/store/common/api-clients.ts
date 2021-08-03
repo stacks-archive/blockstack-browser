@@ -10,12 +10,12 @@ import {
   TransactionsApi,
   BlocksApi,
   FaucetsApi,
-  BnsApi,
+  BNSApi,
   BurnchainApi,
   FeesApi,
   SearchApi,
   RosettaApi,
-  // MicroblocksApi,
+  MicroblocksApi,
 } from '@stacks/blockchain-api-client';
 
 import type { Middleware, RequestContext } from '@stacks/blockchain-api-client';
@@ -30,10 +30,10 @@ export function apiClients(config: Configuration) {
   const accountsApi = new AccountsApi(config);
   const infoApi = new InfoApi(config);
   const transactionsApi = new TransactionsApi(config);
-  // const microblocksApi = new MicroblocksApi(config);
+  const microblocksApi = new MicroblocksApi(config);
   const blocksApi = new BlocksApi(config);
   const faucetsApi = new FaucetsApi(config);
-  const bnsApi = new BnsApi(config);
+  const bnsApi = new BNSApi(config);
   const burnchainApi = new BurnchainApi(config);
   const feesApi = new FeesApi(config);
   const searchApi = new SearchApi(config);
@@ -44,7 +44,7 @@ export function apiClients(config: Configuration) {
     accountsApi,
     infoApi,
     transactionsApi,
-    // microblocksApi,
+    microblocksApi,
     blocksApi,
     faucetsApi,
     bnsApi,
