@@ -57,12 +57,12 @@ function NoAssets(props: StackProps) {
 }
 
 export const TokenAssets: React.FC<StackProps> = ({ ...props }) => {
-  const stxTokens = useStxTokenState();
+  const stxToken = useStxTokenState();
   const balances = useAccountBalances();
   if (!balances) return null;
 
   const noAssets =
-    !stxTokens &&
+    !stxToken.balance &&
     Object.keys(balances.fungible_tokens).length === 0 &&
     Object.keys(balances.non_fungible_tokens).length === 0;
 
@@ -70,7 +70,7 @@ export const TokenAssets: React.FC<StackProps> = ({ ...props }) => {
     <NoAssets {...props} />
   ) : (
     <Stack pb="extra-loose" spacing="extra-loose" {...props}>
-      {stxTokens && <AssetRow asset={stxTokens} />}
+      {stxToken.balance && <AssetRow asset={stxToken} />}
       <FungibleAssets />
       <CollectibleAssets spacing="extra-loose" />
     </Stack>

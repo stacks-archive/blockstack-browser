@@ -1,11 +1,11 @@
+import { useCallback, useMemo } from 'react';
+import BigNumber from 'bignumber.js';
+import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 import { selectedAssetIdState, selectedAssetStore } from '@store/assets/asset-search';
 import { AssetWithMeta } from '@common/asset-types';
 import { getTicker } from '@common/utils';
-import { useCallback, useMemo } from 'react';
 import { ftDecimals, stacksValue } from '@common/stacks-utils';
-import BigNumber from 'bignumber.js';
-import { useAtomValue, useUpdateAtom } from 'jotai/utils';
-import { stxTokenState } from '@store/assets/tokens';
+import { useStxTokenState } from '@common/hooks/use-assets';
 
 export function getFullyQualifiedAssetName(asset?: AssetWithMeta) {
   return asset ? `${asset.contractAddress}.${asset.contractName}::${asset.name}` : undefined;
@@ -14,7 +14,7 @@ export function getFullyQualifiedAssetName(asset?: AssetWithMeta) {
 export function useSelectedAsset() {
   const selectedAsset = useAtomValue(selectedAssetStore);
   const setSelectedAsset = useUpdateAtom(selectedAssetIdState);
-  const stxToken = useAtomValue(stxTokenState);
+  const stxToken = useStxTokenState();
   const handleUpdateSelectedAsset = useCallback(
     (asset: AssetWithMeta | undefined) => {
       setSelectedAsset(getFullyQualifiedAssetName(asset) || undefined);
@@ -31,14 +31,12 @@ export function useSelectedAsset() {
 
   const balance = useMemo<string | undefined>(() => {
     if (!selectedAsset) return;
-    if (selectedAsset.type === 'stx') {
-      if (!stxToken) return;
-      return stacksValue({ value: stxToken?.balance, withTicker: false });
-    }
+    if (selectedAsset.type === 'stx')
+      return stacksValue({ value: stxToken.balance, withTicker: false });
     if (selectedAsset?.meta?.decimals)
       return ftDecimals(selectedAsset.balance, selectedAsset.meta?.decimals);
     return new BigNumber(selectedAsset.balance).toFormat();
-  }, [selectedAsset, stxToken]);
+  }, [selectedAsset, stxToken.balance]);
   const hasDecimals = isStx || (selectedAsset?.meta?.decimals && selectedAsset?.meta?.decimals > 0);
   const placeholder = selectedAsset
     ? `0${

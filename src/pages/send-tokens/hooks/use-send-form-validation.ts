@@ -1,12 +1,11 @@
 import { FormikErrors } from 'formik';
 import BigNumber from 'bignumber.js';
-
 import { useWallet } from '@common/hooks/use-wallet';
-import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { microStxToStx, validateAddressChain, validateStacksAddress } from '@common/stacks-utils';
 import { FormValues } from '@pages/send-tokens/send-tokens';
 import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
+import { useStxTokenState } from '@common/hooks/use-assets';
 
 interface UseSendFormValidationArgs {
   setAssetError: (error: string) => void;
@@ -25,8 +24,8 @@ export enum SendFormErrorMessages {
 
 export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationArgs) => {
   const { currentNetwork, currentAccountStxAddress } = useWallet();
-  const balances = useFetchBalances();
-  const { selectedAsset } = useSelectedAsset();
+  const stxToken = useStxTokenState();
+  const { selectedAsset, balance } = useSelectedAsset();
   const isStx = selectedAsset?.type === 'stx';
   const selectedAssetHasDecimals =
     isStx ||
@@ -50,24 +49,19 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
       const valueHasDecimals = typeof amount === 'string' && amount.includes('.');
       if (!selectedAssetHasDecimals && valueHasDecimals)
         errors.amount = SendFormErrorMessages.DoesNotSupportDecimals;
+      const assetBalance = balance && new BigNumber(balance);
+      const assetAmountToTransfer = new BigNumber(amount);
 
-      if (balances) {
-        const amountBN = new BigNumber(amount);
-        if (selectedAsset.type === 'stx') {
-          const curBalance = microStxToStx(balances.stx.balance);
-          const lockedBalance = microStxToStx(balances.stx.locked);
-          const availableBalance = curBalance
-            .minus(lockedBalance)
-            .minus(microStxToStx(STX_TRANSFER_TX_SIZE_BYTES));
-          if (availableBalance.lt(amountBN)) {
-            errors.amount = `${
-              SendFormErrorMessages.InsufficientBalance
-            } ${availableBalance.toString()} STX`;
-          }
+      if (isStx && stxToken.balance) {
+        const curBalance = microStxToStx(stxToken.balance);
+        const availableBalance = curBalance.minus(microStxToStx(STX_TRANSFER_TX_SIZE_BYTES));
+        if (availableBalance.lt(assetAmountToTransfer)) {
+          errors.amount = `${SendFormErrorMessages.InsufficientBalance} ${
+            availableBalance.lt(0) ? '0' : availableBalance.toString()
+          } STX`;
         }
-        const assetBalance = new BigNumber(selectedAsset.balance);
-        const assetAmountToTransfer = new BigNumber(amount);
-        if (assetAmountToTransfer.isGreaterThan(assetBalance)) {
+      } else {
+        if (assetBalance && assetBalance.lt(assetAmountToTransfer)) {
           errors.amount = `${SendFormErrorMessages.InsufficientBalance} ${selectedAsset.balance} ${selectedAsset.meta?.symbol}`;
         }
       }

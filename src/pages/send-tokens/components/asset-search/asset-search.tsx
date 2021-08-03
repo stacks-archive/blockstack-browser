@@ -6,7 +6,7 @@ import { useCombobox } from 'downshift';
 import { searchInputStore } from '@store/assets/asset-search';
 
 import { SelectedAsset } from './selected-asset';
-import { useTransferableAssets } from '@common/hooks/use-assets';
+import { useStxTokenState, useTransferableAssets } from '@common/hooks/use-assets';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { AssetRow } from '@components/asset-row';
 import { AssetWithMeta } from '@common/asset-types';
@@ -23,6 +23,7 @@ const AssetSearchResults = forwardRef(
   ({ isOpen, highlightedIndex, getItemProps, ...props }: AssetSearchResultsProps, ref) => {
     const assets = useTransferableAssets();
     const searchInput = useAtomValue(searchInputStore);
+    const stxToken = useStxTokenState();
 
     const items = useMemo(
       () =>
@@ -53,16 +54,20 @@ const AssetSearchResults = forwardRef(
             ref={ref}
             {...props}
           >
-            {items?.map((asset, index) => (
-              <AssetRow
-                isPressable
-                asset={asset}
-                index={index}
-                key={`${asset.contractAddress || asset.name}__${index}`}
-                highlighted={highlightedIndex === index}
-                {...getItemProps({ item: asset, index })}
-              />
-            ))}
+            {items?.map((asset, index) => {
+              const isStx = asset.type === 'stx';
+              if (isStx && !stxToken.balance) return null;
+              return (
+                <AssetRow
+                  isPressable
+                  asset={asset}
+                  index={index}
+                  key={`${asset.contractAddress || asset.name}__${index}`}
+                  highlighted={highlightedIndex === index}
+                  {...getItemProps({ item: asset, index })}
+                />
+              );
+            })}
           </Stack>
         )}
       </Fade>
