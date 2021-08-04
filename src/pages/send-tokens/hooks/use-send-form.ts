@@ -7,12 +7,13 @@ import { microStxToStx } from '@common/stacks-utils';
 import { FormValues } from '@pages/send-tokens/send-tokens';
 import { removeCommas } from '@common/token-utils';
 import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
-import { useAssets, useStxTokenState } from '@common/hooks/use-assets';
+import { useAssets } from '@common/hooks/use-assets';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 export function useSendAmountFieldActions({
   setFieldValue,
 }: Pick<FormikProps<FormValues>, 'setFieldValue'>) {
-  const stxToken = useStxTokenState();
+  const availableStxBalance = useCurrentAccountAvailableStxBalance();
   const { selectedAsset, balance } = useSelectedAsset();
   const isStx = selectedAsset?.type === 'stx';
 
@@ -23,14 +24,14 @@ export function useSendAmountFieldActions({
         const txFee = microStxToStx(
           new BigNumber(fee ?? 1).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES).toString()
         );
-        const stx = microStxToStx(stxToken.balance.toString()).minus(txFee);
+        const stx = microStxToStx(availableStxBalance?.toString() || 0).minus(txFee);
         if (stx.isLessThanOrEqualTo(0)) return;
         setFieldValue('amount', stx.toNumber());
       } else {
         if (balance) setFieldValue('amount', removeCommas(balance));
       }
     },
-    [selectedAsset, balance, isStx, setFieldValue, stxToken]
+    [selectedAsset, balance, isStx, setFieldValue, availableStxBalance]
   );
 
   const handleOnKeyDown = useCallback(

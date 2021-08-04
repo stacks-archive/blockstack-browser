@@ -5,7 +5,7 @@ import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { microStxToStx, validateAddressChain, validateStacksAddress } from '@common/stacks-utils';
 import { FormValues } from '@pages/send-tokens/send-tokens';
 import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
-import { useStxTokenState } from '@common/hooks/use-assets';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 interface UseSendFormValidationArgs {
   setAssetError: (error: string) => void;
@@ -24,7 +24,7 @@ export enum SendFormErrorMessages {
 
 export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationArgs) => {
   const { currentNetwork, currentAccountStxAddress } = useWallet();
-  const stxToken = useStxTokenState();
+  const availableStxBalance = useCurrentAccountAvailableStxBalance();
   const { selectedAsset, balance } = useSelectedAsset();
   const isStx = selectedAsset?.type === 'stx';
   const selectedAssetHasDecimals =
@@ -52,8 +52,8 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
       const assetBalance = balance && new BigNumber(balance);
       const assetAmountToTransfer = new BigNumber(amount);
 
-      if (isStx && stxToken.balance) {
-        const curBalance = microStxToStx(stxToken.balance);
+      if (isStx && availableStxBalance) {
+        const curBalance = microStxToStx(availableStxBalance.toString());
         const availableBalance = curBalance.minus(microStxToStx(STX_TRANSFER_TX_SIZE_BYTES));
         if (availableBalance.lt(assetAmountToTransfer)) {
           errors.amount = `${SendFormErrorMessages.InsufficientBalance} ${

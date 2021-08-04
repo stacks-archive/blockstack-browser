@@ -18,7 +18,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const element: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
     userEvent.type(element, '0.123');
     expect((element as HTMLInputElement).value).toEqual('123');
@@ -32,7 +32,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
     const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
     const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
@@ -52,7 +52,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
     const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
     const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
@@ -71,7 +71,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
     const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
     const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
@@ -90,7 +90,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
     const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
     const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
@@ -109,7 +109,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
     const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
     const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);
@@ -128,7 +128,7 @@ describe('Send form tests', () => {
         </ProviderWitHeySelectedAsset>
       </React.Suspense>
     );
-    await findByText('Preview');
+    await findByText('Amount');
     const recipientField: HTMLElement = getByTestId(SendFormSelectors.InputRecipientField);
     const previewBtn: HTMLElement = getByTestId(SendFormSelectors.BtnPreviewSendTx);
     const amountField: HTMLElement = getByTestId(SendFormSelectors.InputAmountField);

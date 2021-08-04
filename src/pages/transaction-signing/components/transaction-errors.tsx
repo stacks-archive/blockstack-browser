@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
+import { useAtomValue } from 'jotai/utils';
 import { useCurrentAccount } from '@common/hooks/account/use-current-account';
 import { color, Stack, useClipboard, Fade, Flex } from '@stacks/ui';
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
-import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { Caption } from '@components/typography';
 import { SpaceBetween } from '@components/space-between';
 import { stacksValue } from '@common/stacks-utils';
@@ -14,7 +14,7 @@ import { useDrawers } from '@common/hooks/use-drawers';
 
 import { transactionBroadcastErrorState } from '@store/transactions';
 import { useScrollLock } from '@common/hooks/use-scroll-lock';
-import { useAtomValue } from 'jotai/utils';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 export const FeeInsufficientFundsErrorMessage = memo(props => {
   const currentAccount = useCurrentAccount();
@@ -35,7 +35,7 @@ export const FeeInsufficientFundsErrorMessage = memo(props => {
 
 export const StxTransferInsufficientFundsErrorMessage = memo(props => {
   const pendingTransaction = useTransactionRequest();
-  const balances = useFetchBalances();
+  const availableStxBalance = useCurrentAccountAvailableStxBalance();
   const currentAccount = useCurrentAccount();
   const { setShowAccounts } = useDrawers();
   const { onCopy, hasCopied } = useClipboard(currentAccount?.address || '');
@@ -53,9 +53,9 @@ export const StxTransferInsufficientFundsErrorMessage = memo(props => {
             <SpaceBetween>
               <Caption>Current balance</Caption>
               <Caption>
-                {balances?.stx?.balance
+                {availableStxBalance
                   ? stacksValue({
-                      value: balances?.stx?.balance,
+                      value: availableStxBalance.toString(),
                       withTicker: true,
                     })
                   : '--'}

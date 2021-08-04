@@ -5,7 +5,7 @@ import { selectedAssetIdState, selectedAssetStore } from '@store/assets/asset-se
 import { AssetWithMeta } from '@common/asset-types';
 import { getTicker } from '@common/utils';
 import { ftDecimals, stacksValue } from '@common/stacks-utils';
-import { useStxTokenState } from '@common/hooks/use-assets';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 export function getFullyQualifiedAssetName(asset?: AssetWithMeta) {
   return asset ? `${asset.contractAddress}.${asset.contractName}::${asset.name}` : undefined;
@@ -14,7 +14,7 @@ export function getFullyQualifiedAssetName(asset?: AssetWithMeta) {
 export function useSelectedAsset() {
   const selectedAsset = useAtomValue(selectedAssetStore);
   const setSelectedAsset = useUpdateAtom(selectedAssetIdState);
-  const stxToken = useStxTokenState();
+  const availableStxBalance = useCurrentAccountAvailableStxBalance();
   const handleUpdateSelectedAsset = useCallback(
     (asset: AssetWithMeta | undefined) => {
       setSelectedAsset(getFullyQualifiedAssetName(asset) || undefined);
@@ -32,11 +32,11 @@ export function useSelectedAsset() {
   const balance = useMemo<string | undefined>(() => {
     if (!selectedAsset) return;
     if (selectedAsset.type === 'stx')
-      return stacksValue({ value: stxToken.balance, withTicker: false });
+      return stacksValue({ value: availableStxBalance?.toString() || 0, withTicker: false });
     if (selectedAsset?.meta?.decimals)
       return ftDecimals(selectedAsset.balance, selectedAsset.meta?.decimals);
     return new BigNumber(selectedAsset.balance).toFormat();
-  }, [selectedAsset, stxToken.balance]);
+  }, [selectedAsset, availableStxBalance]);
   const hasDecimals = isStx || (selectedAsset?.meta?.decimals && selectedAsset?.meta?.decimals > 0);
   const placeholder = selectedAsset
     ? `0${

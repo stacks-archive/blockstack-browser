@@ -6,10 +6,11 @@ import { useCombobox } from 'downshift';
 import { searchInputStore } from '@store/assets/asset-search';
 
 import { SelectedAsset } from './selected-asset';
-import { useStxTokenState, useTransferableAssets } from '@common/hooks/use-assets';
+import { useTransferableAssets } from '@common/hooks/use-assets';
 import { useSelectedAsset } from '@common/hooks/use-selected-asset';
 import { AssetRow } from '@components/asset-row';
 import { AssetWithMeta } from '@common/asset-types';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 function principalHasOnlyOneAsset(assets: AssetWithMeta[]) {
   return assets.length === 1;
@@ -23,7 +24,7 @@ const AssetSearchResults = forwardRef(
   ({ isOpen, highlightedIndex, getItemProps, ...props }: AssetSearchResultsProps, ref) => {
     const assets = useTransferableAssets();
     const searchInput = useAtomValue(searchInputStore);
-    const stxToken = useStxTokenState();
+    const availableStxBalance = useCurrentAccountAvailableStxBalance();
 
     const items = useMemo(
       () =>
@@ -56,7 +57,7 @@ const AssetSearchResults = forwardRef(
           >
             {items?.map((asset, index) => {
               const isStx = asset.type === 'stx';
-              if (isStx && !stxToken.balance) return null;
+              if (isStx && !availableStxBalance) return null;
               return (
                 <AssetRow
                   isPressable

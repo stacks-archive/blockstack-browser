@@ -5,7 +5,7 @@ import type { AssetWithMeta } from '@common/asset-types';
 import { getAssetName } from '@stacks/ui-utils';
 import { AssetItem } from '@components/asset-item';
 import { getTicker } from '@common/utils';
-import { useStxTokenState } from '@common/hooks/use-assets';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 interface AssetRowProps extends StackProps {
   asset: AssetWithMeta;
@@ -13,7 +13,7 @@ interface AssetRowProps extends StackProps {
 export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, ref) => {
   const { asset, ...rest } = props;
   const { name, contractAddress, contractName, type, meta, subtitle, balance } = asset;
-  const stxToken = useStxTokenState();
+  const availableStxBalance = useCurrentAccountAvailableStxBalance();
 
   const friendlyName =
     type === 'ft' ? meta?.name || (name.includes('::') ? getAssetName(name) : name) : name;
@@ -22,7 +22,7 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
     type === 'ft'
       ? ftDecimals(balance, meta?.decimals || 0)
       : type === 'stx'
-      ? stxToken && stacksValue({ value: stxToken?.balance, withTicker: false })
+      ? stacksValue({ value: availableStxBalance?.toString() || 0, withTicker: false })
       : balance.toString();
 
   return (

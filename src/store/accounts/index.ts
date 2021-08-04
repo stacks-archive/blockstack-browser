@@ -33,7 +33,9 @@ enum AccountQueryKeys {
  * transactionAccountIndexState - if `stxAccount` is passed with a transaction request, this is the index of that address
  * currentAccountState - the current active account, either the account associated with a pending transaction request, or the one selected by the user
  * currentAccountStxAddressState - a selector for the address of the current account
- * accountDataState -- all external API data for the selected STX address
+ * currentAccountAvailableStxBalanceState - the available STX balance of the current account
+ * accountDataState - all external API data for the selected STX address
+ * accountAvailableStxBalanceState - the available STX balance for the STX address
  * accountBalancesState - a selector for the balances from `accountDataState`
  * accountInfoState - external API data from the `v2/accounts` endpoint, should be the most up-to-date
  */
@@ -104,6 +106,7 @@ export const currentAccountState = atom<AccountWithAddress | undefined>(get => {
 export const currentAccountStxAddressState = atom<string | undefined>(
   get => get(currentAccountState)?.address
 );
+
 // gets the private key of the current account
 export const currentAccountPrivateKeyState = atom<string | undefined>(
   get => get(currentAccountState)?.stxPrivateKey
@@ -130,12 +133,32 @@ export const accountDataState = atomFamily<string, AllAccountData | undefined>(a
   })
 );
 
+export const accountAvailableStxBalanceState = atomFamily<string, BigNumber | undefined>(address =>
+  atom(get => {
+    const accountData = get(accountDataState(address));
+    if (!accountData) return;
+    const stx = new BigNumber(accountData.balances.stx.balance);
+    const lockedStx = new BigNumber(accountData.balances.stx.locked);
+    const curBalance = stx.minus(lockedStx);
+    return curBalance;
+  })
+);
+
 // external API data associated with the current account's address
 export const currentAccountDataState = atom(get => {
   const network = get(currentNetworkState);
   const address = get(currentAccountStxAddressState);
   if (!address) return;
   return get(accountDataResponseState([address, network.url]));
+});
+
+export const currentAccountAvailableStxBalanceState = atom(get => {
+  const currentAccountData = get(currentAccountDataState);
+  if (!currentAccountData) return;
+  const stx = new BigNumber(currentAccountData.balances.stx.balance);
+  const lockedStx = new BigNumber(currentAccountData.balances.stx.locked);
+  const curBalance = stx.minus(lockedStx);
+  return curBalance;
 });
 
 // the raw account info from the `v2/accounts` endpoint, should be most up-to-date info (compared to the extended API)
@@ -157,6 +180,7 @@ export const accountInfoResponseState = atomFamilyWithQuery<
   },
   { refetchInterval: QueryRefreshRates.MEDIUM, refetchOnMount: true }
 );
+
 export const accountInfoState = atom(get => {
   const network = get(currentNetworkState);
   const address = get(currentAccountStxAddressState);

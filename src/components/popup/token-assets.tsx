@@ -62,7 +62,7 @@ export const TokenAssets: React.FC<StackProps> = ({ ...props }) => {
   if (!balances) return null;
 
   const noAssets =
-    !stxToken.balance &&
+    stxToken.balance.isEqualTo(0) &&
     Object.keys(balances.fungible_tokens).length === 0 &&
     Object.keys(balances.non_fungible_tokens).length === 0;
 
@@ -70,7 +70,7 @@ export const TokenAssets: React.FC<StackProps> = ({ ...props }) => {
     <NoAssets {...props} />
   ) : (
     <Stack pb="extra-loose" spacing="extra-loose" {...props}>
-      {stxToken.balance && <AssetRow asset={stxToken} />}
+      {stxToken.balance.isGreaterThanOrEqualTo(0) && <AssetRow asset={stxToken} />}
       <FungibleAssets />
       <CollectibleAssets spacing="extra-loose" />
     </Stack>

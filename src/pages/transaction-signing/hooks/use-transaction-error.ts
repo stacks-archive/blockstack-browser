@@ -1,7 +1,6 @@
 import { useTransactionContractInterface } from '@pages/transaction-signing/hooks/use-transaction';
 import { useTransactionRequest } from '@common/hooks/use-transaction-request';
 import { useWallet } from '@common/hooks/use-wallet';
-import { useFetchBalances } from '@common/hooks/account/use-account-info';
 import { useMemo } from 'react';
 import { TransactionErrorReason } from '@pages/transaction-signing/components/transaction-error';
 import BigNumber from 'bignumber.js';
@@ -12,6 +11,7 @@ import { useOrigin } from '@common/hooks/use-origin';
 import { transactionRequestValidationState } from '@store/transactions/requests';
 import { useAtomValue } from 'jotai/utils';
 import { validateStacksAddress } from '@common/stacks-utils';
+import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 
 export function useTransactionError() {
   const transactionRequest = useTransactionRequest();
@@ -22,14 +22,14 @@ export function useTransactionError() {
   const origin = useOrigin();
 
   const { currentAccount } = useWallet();
-  const balances = useFetchBalances();
+  const availableStxBalance = useCurrentAccountAvailableStxBalance();
 
   // return null;
   return useMemo<TransactionErrorReason | void>(() => {
     if (origin === false) return TransactionErrorReason.ExpiredRequest;
     if (isValidTransaction === false) return TransactionErrorReason.Unauthorized;
 
-    if (!transactionRequest || !balances || !currentAccount) {
+    if (!transactionRequest || !availableStxBalance || !currentAccount) {
       return TransactionErrorReason.Generic;
     }
     if (transactionRequest.txType === TransactionTypes.ContractCall) {
@@ -39,8 +39,8 @@ export function useTransactionError() {
     }
     if (broadcastError) return TransactionErrorReason.BroadcastError;
 
-    if (balances) {
-      const stxBalance = new BigNumber(balances.stx.balance);
+    if (availableStxBalance) {
+      const stxBalance = new BigNumber(availableStxBalance);
       const zeroBalance = stxBalance.toNumber() === 0;
       if (transactionRequest.txType === TransactionTypes.STXTransfer) {
         if (zeroBalance) return TransactionErrorReason.StxTransferInsufficientFunds;
@@ -60,7 +60,7 @@ export function useTransactionError() {
     fee,
     broadcastError,
     contractInterface,
-    balances,
+    availableStxBalance,
     currentAccount,
     transactionRequest,
     isValidTransaction,

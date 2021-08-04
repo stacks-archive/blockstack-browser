@@ -73,11 +73,10 @@ export const nonFungibleTokensState = atom(get => {
 });
 export const stxTokenState = atom(get => {
   const balances = get(accountBalancesState);
-  const stxBalance = balances?.stx.balance;
   return {
     type: 'stx',
     contractAddress: '',
-    balance: stxBalance ? new BigNumber(stxBalance) : 0,
+    balance: balances?.stx.balance ? new BigNumber(balances?.stx.balance) : 0,
     subtitle: 'STX',
     name: 'Stacks Token',
   } as AssetWithMeta;
