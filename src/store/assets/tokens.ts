@@ -2,12 +2,12 @@ import { atom } from 'jotai';
 import deepEqual from 'fast-deep-equal';
 import { atomFamily, waitForAll } from 'jotai/utils';
 import {
-  currentAccountAvailableStxBalanceState
+  currentAccountAvailableStxBalanceState,
   accountUnanchoredBalancesState,
   currentAccountDataState,
 } from '@store/accounts';
 import { transformAssets } from '@store/assets/utils';
-import { Asset, AssetWithMeta, ContractPrincipal } from '@common/asset-types';
+import { Asset, AssetWithMeta, ContractPrincipal, NftMeta } from '@common/asset-types';
 import { assetMetaDataState } from '@store/assets/fungible-tokens';
 import { contractInterfaceState } from '@store/contracts';
 import { isSip10Transfer } from '@common/token-utils';
@@ -74,43 +74,41 @@ export const transferableAssetsState = atom(get =>
   get(assetsState)?.filter(asset => asset.canTransfer)
 );
 
+export const mergeAssetBalances = (
+  assets: AssetWithMeta[],
+  unanchoredAssets: AssetWithMeta[],
+  assetType: string
+) => {
+  const assetMap = new Map();
+  // Merge both balances (unanchored and anchored)
+  assets.forEach(
+    asset =>
+      asset.type === assetType && assetMap.set(asset.subtitle, { ...asset, ...{ subBalance: '0' } })
+  );
+  unanchoredAssets.forEach(asset => {
+    if (asset.type !== assetType) return;
+    if (!assetMap.has(asset.subtitle)) {
+      assetMap.set(asset.subtitle, { ...asset, ...{ subBalance: asset.balance, balance: '0' } });
+    } else {
+      assetMap.get(asset.subtitle).subBalance = asset.balance;
+    }
+  });
+  return [...assetMap.values()];
+};
+
 const calculateBalanceByType = atomFamily((assetType: string) =>
   atom(get => {
     const assets: AssetWithMeta[] = get(assetsState);
-    const assetMap = new Map();
-    // Merge both balances (unanchored and anchored)
-    assets.forEach(
-      asset =>
-        asset.type === assetType &&
-        assetMap.set(asset.subtitle, { ...asset, ...{ subBalance: '0' } })
-    );
     const unanchoredAssets: AssetWithMeta[] = get(assetsUnanchoredState);
-    unanchoredAssets.forEach(asset => {
-      if (asset.type !== assetType) return;
-      if (!assetMap.has(asset.subtitle)) {
-        asset.subBalance = asset.balance;
-        asset.balance = '0';
-        assetMap.set(asset.subtitle, asset);
-      } else {
-        assetMap.get(asset.subtitle).subBalance = asset.balance;
-      }
-    });
-    return [...assetMap.values()];
+    return mergeAssetBalances(assets, unanchoredAssets, assetType);
   })
 );
 
 export const fungibleTokensState = calculateBalanceByType('ft');
 
-export const nonFungibleTokensState = atom(get => {
-  const balances = get(currentAccountDataState)?.balances;
-  const unanchoredBalances = get(currentAccountDataState)?.unanchoredBalances;
-  const anchoredNfts = balances?.non_fungible_tokens || {};
-  const unanchoredNfts = unanchoredBalances?.non_fungible_tokens || {};
-  const noCollectibles =
-    Object.keys(anchoredNfts).length === 0 && Object.keys(unanchoredNfts).length === 0;
+export type NftMetaRecord = Record<string, NftMeta>;
 
-  if (noCollectibles) return [];
-
+export const mergeNftBalances = (anchoredNfts: NftMetaRecord, unanchoredNfts: NftMetaRecord) => {
   const assets = Object.keys(anchoredNfts);
   const assetMap = new Map();
   // Merge both balances (unanchored and anchored)
@@ -128,13 +126,31 @@ export const nonFungibleTokensState = atom(get => {
   });
 
   return [...assetMap.values()];
+};
+
+export const nonFungibleTokensState = atom(get => {
+  const balances = get(currentAccountDataState)?.balances;
+  const unanchoredBalances = get(currentAccountDataState)?.unanchoredBalances;
+  const anchoredNfts = balances?.non_fungible_tokens || {};
+  const unanchoredNfts = unanchoredBalances?.non_fungible_tokens || {};
+  const noCollectibles =
+    Object.keys(anchoredNfts).length === 0 && Object.keys(unanchoredNfts).length === 0;
+
+  if (noCollectibles) return [];
+  return mergeNftBalances(anchoredNfts, unanchoredNfts);
 });
 
 export const stxTokenState = atom(get => {
   const balances = get(currentAccountAvailableStxBalanceState);
   const unanchoredBalances = get(accountUnanchoredBalancesState);
 
-  if (!balances || balances.stx.balance.isEqualTo(0) || !unanchoredBalances || unanchoredBalances.isEqualTo(0)) return;
+  if (
+    !balances ||
+    balances.stx.balance.isEqualTo(0) ||
+    !unanchoredBalances ||
+    unanchoredBalances.stx.balance.isEqualTo(0)
+  )
+    return;
   return {
     type: 'stx',
     contractAddress: '',

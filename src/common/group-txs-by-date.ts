@@ -3,7 +3,7 @@ import { todaysIsoDate, isoDateToLocalDate, displayDate } from '@common/date-uti
 
 type Tx = MempoolTransaction | Transaction;
 
-const isoDateToLocalDateSafe = (isoDate: string) => {
+function isoDateToLocalDateSafe(isoDate: string) {
   let result;
   try {
     result = isoDateToLocalDate(isoDate);
@@ -12,13 +12,14 @@ const isoDateToLocalDateSafe = (isoDate: string) => {
     console.log(e);
   }
   return result;
-};
+}
 
-const txHasTime = (tx: Tx) =>
-  !!(
+function txHasTime(tx: Tx) {
+  return !!(
     ('burn_block_time_iso' in tx && tx.burn_block_time_iso) ||
     ('parent_burn_block_time_iso' in tx && tx.parent_burn_block_time_iso)
   );
+}
 
 function groupTxsByDateMap(txs: Tx[]) {
   return txs.reduce((txsByDate, tx) => {

@@ -20,7 +20,7 @@ export interface Asset {
   balance: BigNumber;
   canTransfer?: boolean;
   hasMemo?: boolean;
-  subBalance?: string;
+  subBalance?: BigNumber;
 }
 
 export interface FungibleTokenOptions {
@@ -34,6 +34,14 @@ export interface FtMeta {
   symbol: string;
   decimals: number;
   ftTrait?: boolean | null;
+}
+
+export interface NftMeta {
+  count: string;
+  subCount?: string;
+  key?: string;
+  total_sent: string;
+  total_received: string;
 }
 
 export type AssetWithMeta = Asset & { meta?: FtMeta };

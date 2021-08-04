@@ -12,19 +12,17 @@ import FunctionIcon from 'mdi-react/FunctionIcon';
 import { useWallet } from '@common/hooks/use-wallet';
 import { StxIcon } from './icons/stx-icon';
 import { MicroblockIcon } from '@components/icons/microblock';
-import { Tx, Statuses, statusFromTx } from '@common/api/transactions';
+import { Tx, Status, statusFromTx } from '@common/api/transactions';
 
 interface TypeIconWrapperProps extends BoxProps {
   icon: React.FC<any>;
   bg: any;
 }
 
-type statusColorMap = {
-  [key in Statuses]: ColorsStringLiteral;
-};
+type StatusColorMap = Record<Status, ColorsStringLiteral>;
 
 const colorFromTx = (tx: Tx): ColorsStringLiteral => {
-  const colorMap: statusColorMap = {
+  const colorMap: StatusColorMap = {
     pending: 'feedback-alert',
     success_microblock: 'invert',
     success_anchor_block: 'brand',

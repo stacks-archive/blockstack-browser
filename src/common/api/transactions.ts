@@ -20,9 +20,9 @@ export function fetchPendingTxs(apiServer: string) {
   };
 }
 
-export type Statuses = 'success_microblock' | 'success_anchor_block' | 'pending' | 'failed';
+export type Status = 'success_microblock' | 'success_anchor_block' | 'pending' | 'failed';
 
-export const statusFromTx = (tx: Tx): Statuses => {
+export const statusFromTx = (tx: Tx): Status => {
   let { tx_status } = tx;
   if (tx_status === 'pending') return 'pending';
   if (tx_status === 'success')

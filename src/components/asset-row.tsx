@@ -27,7 +27,7 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
       : balance.toString();
 
   const value = valueFromBalance(balance.toString());
-  const subAmount = subBalance && valueFromBalance(subBalance);
+  const subAmount = subBalance && valueFromBalance(subBalance.toString());
 
   return (
     <AssetItem

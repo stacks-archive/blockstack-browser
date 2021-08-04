@@ -210,9 +210,7 @@ export const accountBalancesState = atom(get => {
     : undefined;
 });
 
-export const accountUnanchoredBalancesState = atom<
-  AllAccountData['unanchoredBalances'] | undefined
->(get => {
+export const accountUnanchoredBalancesState = atom(get => {
   const balances = get(currentAccountDataState)?.unanchoredBalances;
   const stxBalance = balances ? balances.stx.balance : '';
   return balances

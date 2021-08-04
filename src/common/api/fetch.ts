@@ -11,7 +11,7 @@ export const appendUrlParam = (url: string, key: string, value: string) => {
   return baseUrl + '?' + urlSearchParams.toString();
 };
 
-export const fetchFromSidecar =
+export const fetchFromBlockchainApi =
   (apiServer: string) =>
   async (path: string, opts = {}, unanchored?: boolean) => {
     const newPath = MICROBLOCKS_ENABLED

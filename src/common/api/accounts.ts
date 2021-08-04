@@ -5,27 +5,27 @@ import type {
 } from '@stacks/stacks-blockchain-api-types';
 
 import { fetchPendingTxs } from '@common/api/transactions';
-import { fetchFromSidecar } from '@common/api/fetch';
+import { fetchFromBlockchainApi } from '@common/api/fetch';
 
 export const fetchBalances =
   (apiServer: string) =>
   (principal: string): Promise<AddressBalanceResponse> => {
     const path = `/address/${principal}/balances`;
-    return fetchFromSidecar(apiServer)(path, {}, false);
+    return fetchFromBlockchainApi(apiServer)(path, {}, false);
   };
 
 export const fetchUnanchoredBalances =
   (apiServer: string) =>
   (principal: string): Promise<AddressBalanceResponse> => {
     const path = `/address/${principal}/balances`;
-    return fetchFromSidecar(apiServer)(path, {}, true);
+    return fetchFromBlockchainApi(apiServer)(path, {}, true);
   };
 
 export const fetchTransactions =
   (apiServer: string) =>
   (principal: string): Promise<TransactionResults> => {
     const path = `/address/${principal}/transactions?limit=50`;
-    return fetchFromSidecar(apiServer)(path);
+    return fetchFromBlockchainApi(apiServer)(path);
   };
 
 export interface AllAccountData {
