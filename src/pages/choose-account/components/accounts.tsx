@@ -1,5 +1,5 @@
 import React, { useCallback, memo } from 'react';
-import { Box, color, FlexProps, Spinner, Stack } from '@stacks/ui';
+import { Box, BoxProps, color, FlexProps, Spinner, Stack } from '@stacks/ui';
 import { Caption, Text, Title } from '@components/typography';
 
 import { useWallet } from '@common/hooks/use-wallet';
@@ -9,10 +9,9 @@ import { useOnboardingState } from '@common/hooks/auth/use-onboarding-state';
 import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 
 import { accountsWithAddressState, AccountWithAddress } from '@store/accounts';
-import { AccountAvatar } from '@features/account-avatar/account-avatar';
+import { AccountAvatarWithName } from '@features/account-avatar/account-avatar';
 import { SpaceBetween } from '@components/space-between';
 
-import { cleanUsername, slugify } from '@common/utils';
 import { usePressable } from '@components/item-hover';
 import { FiPlusCircle } from 'react-icons/fi';
 
@@ -20,6 +19,7 @@ import { accountDrawerStep, AccountStep, showAccountsStore } from '@store/ui';
 import { useLoading } from '@common/hooks/use-loading';
 import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 import { AccountBalanceCaption } from '@features/account-balance-caption';
+import { cleanUsername, slugify } from '@common/utils';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -29,12 +29,33 @@ interface AccountItemProps extends FlexProps {
   account: AccountWithAddress;
 }
 
+const AccountTitlePlaceholder = ({
+  account,
+  ...rest
+}: { account: AccountWithAddress } & BoxProps) => {
+  const name =
+    (account?.username && cleanUsername(account.username)) || `Account ${account?.index + 1}`;
+  return (
+    <Title fontSize={2} lineHeight="1rem" fontWeight="400" {...rest}>
+      {name}
+    </Title>
+  );
+};
+
+const AccountTitle = ({ account, ...rest }: { account: AccountWithAddress } & BoxProps) => {
+  const name = useAccountDisplayName(account);
+  return (
+    <Title fontSize={2} lineHeight="1rem" fontWeight="400" {...rest}>
+      {name}
+    </Title>
+  );
+};
+
 export const AccountItem: React.FC<AccountItemProps> = ({ selectedAddress, account, ...rest }) => {
   const [component, bind] = usePressable(true);
   const { isLoading, setIsLoading } = useLoading(`CHOOSE_ACCOUNT__${account.address}`);
   const { doFinishSignIn } = useWallet();
   const { decodedAuthRequest } = useOnboardingState();
-  const name = useAccountDisplayName(account);
 
   const showLoadingProps = !!selectedAddress || !decodedAuthRequest;
   const handleOnClick = useCallback(async () => {
@@ -42,25 +63,26 @@ export const AccountItem: React.FC<AccountItemProps> = ({ selectedAddress, accou
     await doFinishSignIn(account.index);
   }, [setIsLoading, doFinishSignIn, account]);
 
+  const accountSlug = slugify(`Account ${account?.index + 1}`);
+
   return (
     <Box
-      data-testid={`account-${slugify(cleanUsername(name))}-${account.index}`}
+      data-testid={`account-${accountSlug}-${account.index}`}
       onClick={() => handleOnClick()}
       {...bind}
       {...rest}
     >
       <Stack spacing="base" isInline>
-        <AccountAvatar flexGrow={0} account={account} name={name} />
+        <AccountAvatarWithName flexGrow={0} account={account} />
         <SpaceBetween width="100%" alignItems="center">
           <Stack textAlign="left" spacing="base-tight">
-            <Title
-              {...getLoadingProps(showLoadingProps)}
-              fontSize={2}
-              lineHeight="1rem"
-              fontWeight="400"
+            <React.Suspense
+              fallback={
+                <AccountTitlePlaceholder {...getLoadingProps(showLoadingProps)} account={account} />
+              }
             >
-              {name}
-            </Title>
+              <AccountTitle {...getLoadingProps(showLoadingProps)} account={account} />
+            </React.Suspense>
             <Stack alignItems="center" spacing="6px" isInline>
               <Caption fontSize={0} {...getLoadingProps(showLoadingProps)}>
                 {truncateMiddle(account.address, 4)}

@@ -4,6 +4,7 @@ import { Account, getAccountDisplayName } from '@stacks/wallet-sdk';
 
 import { useAccountGradient } from '@common/hooks/account/use-account-gradient';
 import { AccountWithAddress } from '@store/accounts';
+import { useAccountDisplayName } from '@common/hooks/account/use-account-names';
 
 export const AccountAvatar: React.FC<
   { account: AccountWithAddress | Account; name?: string } & BoxProps
@@ -18,3 +19,19 @@ export const AccountAvatar: React.FC<
     </Circle>
   );
 };
+
+export const AccountAvatarWithNameInner: React.FC<
+  { account: AccountWithAddress | Account } & BoxProps
+> = ({ account, ...props }) => {
+  const name = useAccountDisplayName(account);
+  return <AccountAvatar account={account} name={name} {...props} />;
+};
+
+export const AccountAvatarWithName: React.FC<{ account: AccountWithAddress | Account } & BoxProps> =
+  ({ account, ...props }) => {
+    return (
+      <React.Suspense fallback={<AccountAvatar account={account} {...props} />}>
+        <AccountAvatarWithNameInner account={account} {...props} />
+      </React.Suspense>
+    );
+  };
