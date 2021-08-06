@@ -8,7 +8,7 @@ export const AccountBalanceCaption = ({ address }: { address: string }) => {
   const availableStxBalance = useAccountAvailableStxBalance(address);
 
   const balance = stacksValue({
-    value: availableStxBalance?.toString() || 0,
+    value: availableStxBalance || 0,
     withTicker: true,
     abbreviate: true,
   });

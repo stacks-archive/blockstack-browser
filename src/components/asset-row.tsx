@@ -22,7 +22,7 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
     type === 'ft'
       ? ftDecimals(balance, meta?.decimals || 0)
       : type === 'stx'
-      ? stacksValue({ value: availableStxBalance?.toString() || 0, withTicker: false })
+      ? stacksValue({ value: availableStxBalance || 0, withTicker: false })
       : balance.toString();
 
   return (

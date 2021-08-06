@@ -40,19 +40,18 @@ export function useTransactionError() {
     if (broadcastError) return TransactionErrorReason.BroadcastError;
 
     if (availableStxBalance) {
-      const stxBalance = new BigNumber(availableStxBalance);
-      const zeroBalance = stxBalance.toNumber() === 0;
+      const zeroBalance = availableStxBalance.toNumber() === 0;
       if (transactionRequest.txType === TransactionTypes.STXTransfer) {
         if (zeroBalance) return TransactionErrorReason.StxTransferInsufficientFunds;
 
         const transferAmount = new BigNumber(transactionRequest.amount);
-        if (transferAmount.gte(stxBalance))
+        if (transferAmount.gte(availableStxBalance))
           return TransactionErrorReason.StxTransferInsufficientFunds;
       }
       if (zeroBalance) return TransactionErrorReason.FeeInsufficientFunds;
       if (fee && !fee.isSponsored && fee.amount) {
         const feeAmount = new BigNumber(fee.amount);
-        if (feeAmount.gte(stxBalance)) return TransactionErrorReason.FeeInsufficientFunds;
+        if (feeAmount.gte(availableStxBalance)) return TransactionErrorReason.FeeInsufficientFunds;
       }
     }
     return;

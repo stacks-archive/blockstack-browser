@@ -70,7 +70,7 @@ export const TokenAssets: React.FC<StackProps> = ({ ...props }) => {
     <NoAssets {...props} />
   ) : (
     <Stack pb="extra-loose" spacing="extra-loose" {...props}>
-      {stxToken.balance.isGreaterThanOrEqualTo(0) && <AssetRow asset={stxToken} />}
+      {stxToken.balance.isGreaterThan(0) && <AssetRow asset={stxToken} />}
       <FungibleAssets />
       <CollectibleAssets spacing="extra-loose" />
     </Stack>

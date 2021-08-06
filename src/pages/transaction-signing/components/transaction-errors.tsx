@@ -55,7 +55,7 @@ export const StxTransferInsufficientFundsErrorMessage = memo(props => {
               <Caption>
                 {availableStxBalance
                   ? stacksValue({
-                      value: availableStxBalance.toString(),
+                      value: availableStxBalance,
                       withTicker: true,
                     })
                   : '--'}

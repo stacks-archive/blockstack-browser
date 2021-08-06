@@ -53,7 +53,7 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
       const assetAmountToTransfer = new BigNumber(amount);
 
       if (isStx && availableStxBalance) {
-        const curBalance = microStxToStx(availableStxBalance.toString());
+        const curBalance = microStxToStx(availableStxBalance);
         const availableBalance = curBalance.minus(microStxToStx(STX_TRANSFER_TX_SIZE_BYTES));
         if (availableBalance.lt(assetAmountToTransfer)) {
           errors.amount = `${SendFormErrorMessages.InsufficientBalance} ${

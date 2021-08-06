@@ -32,7 +32,7 @@ export function useSelectedAsset() {
   const balance = useMemo<string | undefined>(() => {
     if (!selectedAsset) return;
     if (selectedAsset.type === 'stx')
-      return stacksValue({ value: availableStxBalance?.toString() || 0, withTicker: false });
+      return stacksValue({ value: availableStxBalance || 0, withTicker: false });
     if (selectedAsset?.meta?.decimals)
       return ftDecimals(selectedAsset.balance, selectedAsset.meta?.decimals);
     return new BigNumber(selectedAsset.balance).toFormat();
