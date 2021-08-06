@@ -209,6 +209,7 @@
     "**/**/dns-packet": "5.2.2",
     "**/**/browserslist": "4.16.5",
     "**/**/prismjs": "1.24.0",
+    "**/**/xmldom": "github:xmldom/xmldom#0.7.0",
     "@stacks/connect-ui": "5.1.5",
     "@tabler/icons": "1.41.2",
     "bn.js": "5.2.0",
