@@ -151,6 +151,7 @@
     "@types/zxcvbn": "4.4.1",
     "@typescript-eslint/eslint-plugin": "4.28.3",
     "@typescript-eslint/parser": "4.28.3",
+    "audit-ci": "4.1.0",
     "babel-loader": "8.2.2",
     "base64-loader": "1.0.0",
     "bip39": "3.0.4",

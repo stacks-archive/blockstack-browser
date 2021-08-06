@@ -52,7 +52,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
 
       - name: Audit
-        run: yarn audit
+        run: yarn audit-ci --high
 
   typecheck:
     runs-on: ubuntu-latest
