@@ -16,8 +16,11 @@ import {
 import type { VaultActions } from '@background/vault-types';
 import { popupCenter } from '@background/popup';
 import { vaultMessageHandler } from '@background/vault';
+import { initContextMenuActions } from '@background/init-context-menus';
 
 const IS_TEST_ENV = process.env.TEST_ENV === 'true';
+
+initContextMenuActions();
 
 // Playwright does not currently support Chrome extension popup testing:
 // https://github.com/microsoft/playwright/issues/5593
