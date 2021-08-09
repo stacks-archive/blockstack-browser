@@ -136,6 +136,8 @@ export const accountDataState = atomFamily<string, AllAccountData | undefined>(a
 export const accountAvailableStxBalanceState = atomFamily<string, BigNumber | undefined>(address =>
   atom(get => {
     const accountData = get(accountDataState(address));
+    // we need to 'get' this atom to make it a dependency and cause it to mount when this atom is in use
+    get(accountInfoState);
     if (!accountData) return;
     const stx = new BigNumber(accountData.balances.stx.balance);
     const lockedStx = new BigNumber(accountData.balances.stx.locked);
@@ -153,12 +155,9 @@ export const currentAccountDataState = atom(get => {
 });
 
 export const currentAccountAvailableStxBalanceState = atom(get => {
-  const currentAccountData = get(currentAccountDataState);
-  if (!currentAccountData) return;
-  const stx = new BigNumber(currentAccountData.balances.stx.balance);
-  const lockedStx = new BigNumber(currentAccountData.balances.stx.locked);
-  const curBalance = stx.minus(lockedStx);
-  return curBalance;
+  const principal = get(currentAccountStxAddressState);
+  if (!principal) return;
+  return get(accountAvailableStxBalanceState(principal));
 });
 
 // the raw account info from the `v2/accounts` endpoint, should be most up-to-date info (compared to the extended API)

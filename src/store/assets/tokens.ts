@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import deepEqual from 'fast-deep-equal';
 import { atomFamily, waitForAll } from 'jotai/utils';
-import { accountBalancesState, currentAccountDataState } from '@store/accounts';
+import { currentAccountAvailableStxBalanceState, currentAccountDataState } from '@store/accounts';
 import { transformAssets } from '@store/assets/utils';
 import { Asset, AssetWithMeta, ContractPrincipal } from '@common/asset-types';
 import { assetMetaDataState } from '@store/assets/fungible-tokens';
@@ -71,11 +71,11 @@ export const nonFungibleTokensState = atom(get => {
   return assets?.filter(asset => asset.type !== 'nft');
 });
 export const stxTokenState = atom(get => {
-  const balances = get(accountBalancesState);
+  const availableStxBalance = get(currentAccountAvailableStxBalanceState);
   return {
     type: 'stx',
     contractAddress: '',
-    balance: balances?.stx.balance || 0,
+    balance: availableStxBalance || 0,
     subtitle: 'STX',
     name: 'Stacks Token',
   } as AssetWithMeta;
