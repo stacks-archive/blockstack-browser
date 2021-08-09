@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.12.5
+
+### Patch Changes
+
+- [#1521](https://github.com/blockstack/stacks-wallet-web/pull/1521) [`77a33488`](https://github.com/blockstack/stacks-wallet-web/commit/77a334883bcb4c191ca3757aa40930f994ac0d89) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This fixes inconsistent balances shown in the send form when a user has locked STX. It also fixes an inaccurate validation error shown when sending max STX.
+
+* [#1512](https://github.com/blockstack/stacks-wallet-web/pull/1512) [`b7952eae`](https://github.com/blockstack/stacks-wallet-web/commit/b7952eaeab8b51dc8cb1934485622588742e2265) Thanks [@beguene](https://github.com/beguene)! - Fix font-weight issue in activity list.
+
+- [#1455](https://github.com/blockstack/stacks-wallet-web/pull/1455) [`b882838e`](https://github.com/blockstack/stacks-wallet-web/commit/b882838e2bd8995fe4fc2fbbe06e424640019dea) Thanks [@fbwoolf](https://github.com/fbwoolf)! - This updates the wallet name in all places to Hiro Wallet.
+
+* [#1522](https://github.com/blockstack/stacks-wallet-web/pull/1522) [`cc6741bb`](https://github.com/blockstack/stacks-wallet-web/commit/cc6741bbdbef3a6291fcd027adcac60a10513e9b) Thanks [@aulneau](https://github.com/aulneau)! - This update refactors the way we implement the helper library `@stacks/blockchain-api-client`.
+
 ## 2.12.4
 
 ### Patch Changes
