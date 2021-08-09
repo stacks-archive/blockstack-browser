@@ -4,7 +4,7 @@ import { AuthType, ChainID, TransactionVersion } from '@stacks/transactions';
 
 import { currentNetworkState, currentStacksNetworkState } from '@store/networks';
 import { correctNonceState } from '@store/accounts/nonce';
-import { currentAccountState } from '@store/accounts';
+import { currentAccountState, currentAccountStxAddressState } from '@store/accounts';
 import { requestTokenPayloadState } from '@store/transactions/requests';
 
 import { generateSignedTransaction } from '@common/transactions/transactions';
@@ -27,8 +27,9 @@ export const transactionAttachmentState = atom(get => get(pendingTransactionStat
 export const signedStacksTransactionState = atom(get => {
   const account = get(currentAccountState);
   const txData = get(pendingTransactionState);
-  const nonce = get(correctNonceState);
-  if (!account || !txData) return;
+  const stxAddress = get(currentAccountStxAddressState);
+  if (!account || !txData || !stxAddress) return;
+  const nonce = get(correctNonceState(stxAddress));
   if (
     txData.txType === TransactionTypes.ContractCall &&
     !validateStacksAddress(txData.contractAddress)

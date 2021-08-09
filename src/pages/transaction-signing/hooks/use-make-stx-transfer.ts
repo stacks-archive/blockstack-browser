@@ -1,6 +1,6 @@
 import { useAtomCallback, waitForAll } from 'jotai/utils';
 import { currentStacksNetworkState } from '@store/networks';
-import { currentAccountState } from '@store/accounts';
+import { currentAccountState, currentAccountStxAddressState } from '@store/accounts';
 import { correctNonceState } from '@store/accounts/nonce';
 import { AnchorMode, makeSTXTokenTransfer, StacksTransaction } from '@stacks/transactions';
 import BN from 'bn.js';
@@ -20,11 +20,13 @@ export function useMakeStxTransfer() {
   return useAtomCallback<undefined | StacksTransaction, TokenTransferParams>(
     useCallback(async (get, _set, arg) => {
       const { amount, recipient, memo } = arg;
+      const address = get(currentAccountStxAddressState);
+      if (!address) return;
       const { network, account, nonce } = await get(
         waitForAll({
           network: currentStacksNetworkState,
           account: currentAccountState,
-          nonce: correctNonceState,
+          nonce: correctNonceState(address),
         }),
         true
       );

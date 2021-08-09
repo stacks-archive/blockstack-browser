@@ -14,7 +14,8 @@ export const makeFungibleTokenTransferState = atom(get => {
   const network = get(currentStacksNetworkState);
   const balances = get(accountBalancesState);
   const stxAddress = get(currentAccountStxAddressState);
-  const nonce = get(correctNonceState);
+  if (!stxAddress) return;
+  const nonce = get(correctNonceState(stxAddress));
 
   if (asset && currentAccount && stxAddress) {
     const { contractName, contractAddress, name: assetName } = asset;
