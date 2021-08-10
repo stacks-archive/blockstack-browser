@@ -7,6 +7,7 @@ import { FormValues } from '@pages/send-tokens/send-tokens';
 import { STX_TRANSFER_TX_SIZE_BYTES } from '@common/constants';
 import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
 import { countDecimals } from '@common/utils';
+import { isTxMemoValid } from '@common/validation/validate-memo';
 
 interface UseSendFormValidationArgs {
   setAssetError: (error: string) => void;
@@ -22,13 +23,12 @@ export enum SendFormErrorMessages {
   InsufficientBalance = 'Insufficient balance. Your available balance is:',
   MustSelectAsset = 'You must select a valid token to transfer',
   TooMuchPrecision = '{token} can only have {decimals} decimals',
+  MemoExceedsLimit = 'Memo must be less than 34-bytes',
 }
 
 function formatPrecisionError(symbol: string, decimals: number) {
-  return SendFormErrorMessages.TooMuchPrecision.replace('{token}', symbol).replace(
-    '{decimals}',
-    String(decimals)
-  );
+  const error = SendFormErrorMessages.TooMuchPrecision;
+  return error.replace('{token}', symbol).replace('{decimals}', String(decimals));
 }
 
 export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationArgs) => {
@@ -40,7 +40,15 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
     isSendingStx ||
     (typeof selectedAsset?.meta?.decimals === 'number' && selectedAsset?.meta.decimals !== 0);
 
-  return async ({ recipient, amount }: { recipient: string; amount: string | number }) => {
+  return async ({
+    recipient,
+    amount,
+    memo,
+  }: {
+    recipient: string;
+    amount: string | number;
+    memo: string;
+  }) => {
     const errors: FormikErrors<FormValues> = {};
     if (!validateStacksAddress(recipient)) {
       errors.recipient = SendFormErrorMessages.InvalidAddress;
@@ -93,6 +101,9 @@ export const useSendFormValidation = ({ setAssetError }: UseSendFormValidationAr
       }
     } else {
       setAssetError(SendFormErrorMessages.MustSelectAsset);
+    }
+    if (!isTxMemoValid(memo)) {
+      errors.memo = SendFormErrorMessages.MemoExceedsLimit;
     }
     return errors;
   };

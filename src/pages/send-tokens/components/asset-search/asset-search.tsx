@@ -64,7 +64,7 @@ const AssetSearchResults = forwardRef(
                   asset={asset}
                   index={index}
                   key={`${asset.contractAddress || asset.name}__${index}`}
-                  highlighted={highlightedIndex === index}
+                  // highlighted={highlightedIndex === index}
                   {...getItemProps({ item: asset, index })}
                 />
               );

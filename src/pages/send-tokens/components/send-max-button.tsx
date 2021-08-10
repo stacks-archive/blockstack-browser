@@ -42,7 +42,7 @@ interface SendMaxWithSuspense extends SendMaxProps {
 }
 export function SendMaxWithSuspense({ showButton, onSetMax, ...props }: SendMaxWithSuspense) {
   return (
-    <Suspense fallback={<SendMaxButton isDisabled />}>
+    <Suspense fallback={<SendMaxButton />}>
       {showButton ? <SendMax onSetMax={fee => onSetMax(fee)} {...props} /> : null}
     </Suspense>
   );
