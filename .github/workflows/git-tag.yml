@@ -30,7 +30,8 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          body: ${{ steps.release_info.outputs.release_body }}
+          body: |
+            ${{ steps.release_info.outputs.release_body }}
           commit: ${{ github.sha }}
           tag: v${{ steps.release_info.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
