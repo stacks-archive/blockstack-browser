@@ -344,3 +344,11 @@ export function with0x(value: string): string {
 export function initBigNumber(num: string | number | BigNumber) {
   return BigNumber.isBigNumber(num) ? num : new BigNumber(num);
 }
+
+export function countDecimals(num: string | number | BigNumber) {
+  const LARGE_NUMBER_OF_DECIMALS = 100;
+  BigNumber.config({ DECIMAL_PLACES: LARGE_NUMBER_OF_DECIMALS });
+  const amount = initBigNumber(num);
+  const decimals = amount.toString(10).split('.')[1];
+  return decimals ? decimals.length : 0;
+}

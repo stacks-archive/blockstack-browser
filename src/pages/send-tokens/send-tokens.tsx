@@ -48,28 +48,20 @@ const SendForm = (props: SendFormProps) => {
   const refreshAllAccountData = useRefreshAllAccountData();
   const assets = useTransferableAssets();
 
-  const { handleSubmit, handleChange, values, setErrors, setValues, errors } =
-    useFormikContext<FormValues>();
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<any>) => {
-      setErrors({});
-      handleChange(e);
-    },
-    [setErrors, handleChange]
-  );
+  const { handleSubmit, values, setValues, errors, setFieldError } = useFormikContext<FormValues>();
 
   const onSubmit = useCallback(async () => {
     if (values.amount && values.recipient && selectedAsset) {
-      await handleSubmit();
+      handleSubmit();
       await refreshAllAccountData(250);
     }
   }, [refreshAllAccountData, handleSubmit, values, selectedAsset]);
 
-  const onItemClick = useCallback(() => {
+  const onItemSelect = useCallback(() => {
     if (assets.length === 1) return;
     setValues({ ...values, amount: '' });
-  }, [assets, setValues, values]);
+    setFieldError('amount', undefined);
+  }, [assets, setValues, values, setFieldError]);
 
   const hasValues = values.amount && values.recipient !== '';
 
@@ -78,14 +70,12 @@ const SendForm = (props: SendFormProps) => {
       header={<Header title="Send" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)} />}
     >
       <Stack spacing="loose" flexDirection="column" flexGrow={1} shouldWrapChildren>
-        <AssetSearch onItemClick={onItemClick} />
+        <AssetSearch onItemClick={onItemSelect} />
         <Suspense fallback={<></>}>
-          <AmountField value={values.amount || 0} onChange={onChange} error={errors.amount} />
+          <AmountField value={values.amount || 0} error={errors.amount} />
         </Suspense>
-        <RecipientField error={errors.recipient} value={values.recipient} onChange={onChange} />
-        {selectedAsset?.hasMemo && (
-          <MemoField value={values.memo} error={errors.memo} onChange={onChange} />
-        )}
+        <RecipientField error={errors.recipient} value={values.recipient} />
+        {selectedAsset?.hasMemo && <MemoField value={values.memo} error={errors.memo} />}
         <Box mt="auto">
           {assetError && (
             <ErrorLabel mb="base">
@@ -93,6 +83,7 @@ const SendForm = (props: SendFormProps) => {
             </ErrorLabel>
           )}
           <Button
+            type="submit"
             borderRadius="12px"
             width="100%"
             onClick={onSubmit}

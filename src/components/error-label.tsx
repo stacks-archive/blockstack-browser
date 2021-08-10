@@ -5,7 +5,7 @@ import { FiAlertTriangle as IconAlertTriangle } from 'react-icons/fi';
 export const ErrorLabel: React.FC<StackProps> = ({ children, ...rest }) => (
   <Stack spacing="tight" color={color('feedback-error')} isInline alignItems="flex-start" {...rest}>
     <Box
-      size="1.2rem"
+      size="1rem"
       color={color('feedback-error')}
       as={IconAlertTriangle}
       position="relative"

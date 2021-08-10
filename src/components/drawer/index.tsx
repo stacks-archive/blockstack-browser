@@ -55,9 +55,7 @@ const DrawerHeader = memo(
           iconSize="20px"
           onClick={onClose}
           color={color('text-caption')}
-          _hover={{
-            color: color('text-title'),
-          }}
+          _hover={{ color: color('text-title') }}
           icon={IconX}
         />
       </Flex>

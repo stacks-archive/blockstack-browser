@@ -13,17 +13,16 @@ import { SendFormSelectors } from '@tests/page-objects/send-form.selectors';
 interface AmountFieldProps extends StackProps {
   value: number;
   error?: string;
-  onChange?: any;
 }
 
 // TODO: this should use a new "Field" component (with inline label like in figma)
 export const AmountField = memo((props: AmountFieldProps) => {
-  const { onChange, value, error, ...rest } = props;
+  const { value, error, ...rest } = props;
 
   const assets = useAssets();
   const balances = useFetchBalances();
   const { selectedAsset, placeholder } = useSelectedAsset();
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, handleChange } = useFormikContext();
   const { handleOnKeyDown, handleSetSendMax } = useSendAmountFieldActions({
     setFieldValue,
   });
@@ -45,7 +44,7 @@ export const AmountField = memo((props: AmountFieldProps) => {
             autoFocus={assets?.length === 1}
             value={value === 0 ? '' : value}
             onKeyDown={handleOnKeyDown}
-            onChange={onChange}
+            onChange={handleChange}
             autoComplete="off"
             name="amount"
             data-testid={SendFormSelectors.InputAmountField}

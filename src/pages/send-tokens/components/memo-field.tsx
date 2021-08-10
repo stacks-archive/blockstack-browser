@@ -1,14 +1,16 @@
+import React, { memo } from 'react';
+import { useFormikContext } from 'formik';
 import { Input, InputGroup, Stack, StackProps, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
-import React, { memo } from 'react';
 
 interface FieldProps extends StackProps {
   value: string;
-  onChange?: any;
   error?: string;
 }
 // TODO: this should use a new "Field" component (with inline label like in figma)
-export const MemoField = memo(({ value, onChange, error, ...props }: FieldProps) => {
+export const MemoField = memo(({ value, error, ...props }: FieldProps) => {
+  const { handleChange } = useFormikContext();
+
   return (
     <Stack width="100%" {...props}>
       <InputGroup flexDirection="column">
@@ -21,7 +23,7 @@ export const MemoField = memo(({ value, onChange, error, ...props }: FieldProps)
           width="100%"
           name="memo"
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Enter an message (optional)"
           autoComplete="off"
         />

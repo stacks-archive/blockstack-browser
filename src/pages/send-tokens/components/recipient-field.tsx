@@ -2,14 +2,15 @@ import { Input, InputGroup, Stack, StackProps, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import React, { memo } from 'react';
 import { SendFormSelectors } from '@tests/page-objects/send-form.selectors';
+import { useFormikContext } from 'formik';
 
 interface RecipientField extends StackProps {
   value: string;
-  onChange?: any;
   error?: string;
 }
 // TODO: this should use a new "Field" component (with inline label like in figma)
-export const RecipientField = memo(({ value, onChange, error, ...rest }: RecipientField) => {
+export const RecipientField = memo(({ value, error, ...rest }: RecipientField) => {
+  const { handleChange } = useFormikContext();
   return (
     <Stack width="100%" {...rest}>
       <InputGroup flexDirection="column">
@@ -29,7 +30,7 @@ export const RecipientField = memo(({ value, onChange, error, ...rest }: Recipie
           width="100%"
           name="recipient"
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Enter an address"
           autoComplete="off"
           data-testid={SendFormSelectors.InputRecipientField}
