@@ -34,4 +34,4 @@ jobs:
             ${{ steps.release_info.outputs.release_body }}
           commit: ${{ github.sha }}
           tag: v${{ steps.release_info.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
