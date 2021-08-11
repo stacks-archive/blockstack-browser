@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.13.0
+
+### Minor Changes
+
+- [#1540](https://github.com/blockstack/stacks-wallet-web/pull/1540) [`92f2cd26`](https://github.com/blockstack/stacks-wallet-web/commit/92f2cd26d946e0dcd066645c85140ff7aa022255) Thanks [@kyranjamie](https://github.com/kyranjamie)! - Adds a context menu that opens the wallet in full page mode
+
+### Patch Changes
+
+- [#1561](https://github.com/blockstack/stacks-wallet-web/pull/1561) [`5947b000`](https://github.com/blockstack/stacks-wallet-web/commit/5947b000e22040220148262256cd65d97b263aef) Thanks [@aulneau](https://github.com/aulneau)! - This fixes a bug where the overflow for the choose account screen was incorrectly set, thus preventing users from scrolling down to accounts that were off screen.
+
 ## 2.12.5
 
 ### Patch Changes
