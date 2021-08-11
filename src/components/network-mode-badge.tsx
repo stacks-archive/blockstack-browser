@@ -27,7 +27,7 @@ export const NetworkModeBadge: React.FC<FlexProps> = memo(props => {
       {...props}
     >
       <Text fontSize="11px" fontWeight="500">
-        Testnet mode
+        Testnet
       </Text>
     </Flex>
   ) : null;
