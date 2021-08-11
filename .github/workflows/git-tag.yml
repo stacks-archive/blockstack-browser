@@ -22,16 +22,13 @@ jobs:
         id: release_info
         run: |
           version="$(cat package.json | jq -r '.version')"
-          release_body="$(sed -n "/## ${version}/,/## [0-9]/p" CHANGELOG.md | sed \$d| sed 's/##/#/g')"
-
           echo "::set-output name=version::${version}"
-          echo "::set-output name=release_body::${release_body}"
+          sed -n "/## ${version}/,/## [0-9]/p" CHANGELOG.md | sed \$d | sed '1,2d' > release_body.md
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          body: |
-            ${{ steps.release_info.outputs.release_body }}
+          bodyFile: release_body.md
           commit: ${{ github.sha }}
           tag: v${{ steps.release_info.outputs.version }}
           token: ${{ secrets.GH_TOKEN }}

@@ -16,3 +16,4 @@ web-ext-artifacts/
 yalc.lock
 coverage
 .jest-cache
+release_body.md
