@@ -13,20 +13,21 @@ const UserAddress = memo((props: StackProps) => {
   const currentAccount = useCurrentAccount();
   const { onCopy, hasCopied } = useClipboard(currentAccount?.address || '');
   return currentAccount ? (
-    <Tooltip placement="right-end" label={hasCopied ? 'Copied!' : 'Copy address'}>
-      <Stack isInline {...props}>
-        <Caption>{truncateMiddle(currentAccount.address, 4)}</Caption>
-
-        <Box
-          _hover={{ cursor: 'pointer' }}
-          onClick={onCopy}
-          size="12px"
-          color={color('text-caption')}
-          data-testid={UserAreaSelectors.AccountCopyAddress}
-          as={FiCopy}
-        />
-      </Stack>
-    </Tooltip>
+    <Stack isInline {...props}>
+      <Caption>{truncateMiddle(currentAccount.address, 4)}</Caption>
+      <Tooltip placement="right" label={hasCopied ? 'Copied!' : 'Copy address'}>
+        <Stack>
+          <Box
+            _hover={{ cursor: 'pointer' }}
+            onClick={onCopy}
+            size="12px"
+            color={color('text-caption')}
+            data-testid={UserAreaSelectors.AccountCopyAddress}
+            as={FiCopy}
+          />
+        </Stack>
+      </Tooltip>
+    </Stack>
   ) : null;
 });
 
