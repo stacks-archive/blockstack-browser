@@ -4,8 +4,8 @@ import { BoxProps, Circle, color, DynamicColorCircle } from '@stacks/ui';
 
 export const StxAvatar: React.FC<BoxProps> = props => {
   return (
-    <Circle backgroundColor={color('invert')} {...props}>
-      <StxIcon size="12px" />
+    <Circle backgroundColor={color('accent')} {...props}>
+      <StxIcon />
     </Circle>
   );
 };

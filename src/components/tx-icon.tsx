@@ -7,10 +7,11 @@ import {
   FiAlertOctagon as IconMoodSad,
   FiPlus as IconPlus,
 } from 'react-icons/fi';
-import { Box, BoxProps, Circle, color, DynamicColorCircle, StxNexus } from '@stacks/ui';
+import { Box, BoxProps, Circle, color, DynamicColorCircle } from '@stacks/ui';
 import FunctionIcon from 'mdi-react/FunctionIcon';
 import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { useWallet } from '@common/hooks/use-wallet';
+import { StxIcon } from './icons/stx-icon';
 
 type Tx = MempoolTransaction | Transaction;
 
@@ -78,8 +79,8 @@ const ItemIconWrapper: React.FC<
     transaction: Tx;
   } & BoxProps
 > = ({ icon: Icon, transaction, ...rest }) => (
-  <Circle position="relative" size="36px" bg={color('invert')} color={color('bg')} {...rest}>
-    <Box size="20px" as={Icon} />
+  <Circle position="relative" size="36px" bg={color('accent')} color={color('bg')} {...rest}>
+    <Box as={Icon} />
     <TypeIcon transaction={transaction} />
   </Circle>
 );
@@ -113,7 +114,7 @@ export const TxItemIcon: React.FC<{ transaction: Tx }> = ({ transaction, ...rest
         </DynamicColorCircle>
       );
     case 'token_transfer':
-      return <ItemIconWrapper icon={StxNexus} transaction={transaction} {...rest} />;
+      return <ItemIconWrapper icon={StxIcon} transaction={transaction} {...rest} />;
     case 'poison_microblock':
       return <ItemIconWrapper icon={IconMoodSad} transaction={transaction} {...rest} />;
     default:
