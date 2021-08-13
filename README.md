@@ -1,7 +1,7 @@
 # Hiro Wallet for Web
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/ldinpeekobnhjjdofggfgjlcehhmanlj?label=Chrome%20Web%20Store)](https://chrome.google.com/webstore/detail/stacks-wallet/ldinpeekobnhjjdofggfgjlcehhmanlj)
-[![Mozilla Add-on](https://img.shields.io/amo/stars/stacks-wallet?label=Firefox%20Add-on)](https://addons.mozilla.org/en-US/firefox/addon/stacks-wallet/)
+[![Mozilla Add-on](https://img.shields.io/amo/stars/hiro-wallet?label=Firefox%20Add-on)](https://addons.mozilla.org/en-US/firefox/addon/hiro-wallet/)
 [![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet-web/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet-web/)
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/blockstack/stacks-wallet-web)
