@@ -44,22 +44,11 @@ export interface Network {
   chainId: ChainID;
 }
 
-// MICROBLOCKS TODO: Remove before deployment
-export const MAINNET_MICROBLOCKS_SERVER = 'https://stacks-node-api-microblocks.stacks.co';
-export const TESTNET_MICROBLOCKS_SERVER = 'https://stacks-node-api-microblocks.testnet.stacks.co';
-export const REGTEST_MICROBLOCKS_SERVER = 'https://stacks-node-api-microblocks.regtest.stacks.co';
+export const DEFAULT_TESTNET_SERVER = 'https://stacks-node-api.testnet.stacks.co';
 
-export const DEFAULT_TESTNET_SERVER = MICROBLOCKS_ENABLED
-  ? TESTNET_MICROBLOCKS_SERVER
-  : 'https://stacks-node-api.testnet.stacks.co';
+export const DEFAULT_REGTEST_SERVER = 'https://stacks-node-api.regtest.stacks.co';
 
-export const DEFAULT_REGTEST_SERVER = MICROBLOCKS_ENABLED
-  ? REGTEST_MICROBLOCKS_SERVER
-  : 'https://stacks-node-api.regtest.stacks.co';
-
-export const DEFAULT_MAINNET_SERVER = MICROBLOCKS_ENABLED
-  ? MAINNET_MICROBLOCKS_SERVER
-  : 'https://stacks-node-api.stacks.co';
+export const DEFAULT_MAINNET_SERVER = 'https://stacks-node-api.stacks.co';
 
 export type Networks = Record<string, Network>;
 

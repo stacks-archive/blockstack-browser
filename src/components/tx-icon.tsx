@@ -7,7 +7,7 @@ import {
   FiAlertOctagon as IconMoodSad,
   FiPlus as IconPlus,
 } from 'react-icons/fi';
-import { Box, BoxProps, Circle, color,ColorsStringLiteral, DynamicColorCircle } from '@stacks/ui';
+import { Box, BoxProps, Circle, color, ColorsStringLiteral, DynamicColorCircle } from '@stacks/ui';
 import FunctionIcon from 'mdi-react/FunctionIcon';
 import { useWallet } from '@common/hooks/use-wallet';
 import { StxIcon } from './icons/stx-icon';

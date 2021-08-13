@@ -12,6 +12,7 @@ import { assetMetaDataState } from '@store/assets/fungible-tokens';
 import { contractInterfaceState } from '@store/contracts';
 import { isSip10Transfer } from '@common/token-utils';
 import { currentNetworkState } from '@store/networks';
+import { BigNumber } from 'bignumber.js';
 
 const transferDataState = atomFamily<ContractPrincipal, any>(
   ({ contractAddress, contractName }) => {
@@ -90,7 +91,7 @@ export const mergeAssetBalances = (
     if (!assetMap.has(asset.subtitle)) {
       assetMap.set(asset.subtitle, { ...asset, ...{ subBalance: asset.balance, balance: '0' } });
     } else {
-      assetMap.get(asset.subtitle).subBalance = asset.balance;
+      assetMap.get(asset.subtitle).subBalance = asset?.balance;
     }
   });
   return [...assetMap.values()];
@@ -141,21 +142,16 @@ export const nonFungibleTokensState = atom(get => {
 });
 
 export const stxTokenState = atom(get => {
-  const balances = get(currentAccountAvailableStxBalanceState);
+  const balance = get(currentAccountAvailableStxBalanceState);
   const unanchoredBalances = get(accountUnanchoredBalancesState);
 
-  if (
-    !balances ||
-    balances.stx.balance.isEqualTo(0) ||
-    !unanchoredBalances ||
-    unanchoredBalances.stx.balance.isEqualTo(0)
-  )
-    return;
   return {
     type: 'stx',
     contractAddress: '',
-    balance: new BigNumber(balances.stx.balance),
-    subBalance: new BigNumber(unanchoredBalances.stx.balance),
+    balance: balance,
+    subBalance: unanchoredBalances?.stx?.balance
+      ? new BigNumber(unanchoredBalances.stx.balance)
+      : undefined,
     subtitle: 'STX',
     name: 'Stacks Token',
   } as AssetWithMeta;

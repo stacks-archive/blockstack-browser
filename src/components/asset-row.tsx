@@ -6,6 +6,7 @@ import { getAssetName } from '@stacks/ui-utils';
 import { AssetItem } from '@components/asset-item';
 import { getTicker } from '@common/utils';
 import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
+import { BigNumber } from 'bignumber.js';
 
 interface AssetRowProps extends StackProps {
   asset: AssetWithMeta;
@@ -19,15 +20,16 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
     type === 'ft' ? meta?.name || (name.includes('::') ? getAssetName(name) : name) : name;
   const symbol = type === 'ft' ? meta?.symbol || getTicker(friendlyName) : subtitle;
 
-  const valueFromBalance = (balance: string) =>
+  const valueFromBalance = (balance: BigNumber) =>
     type === 'ft'
       ? ftDecimals(balance, meta?.decimals || 0)
       : type === 'stx'
-      ? stacksValue({ value: availableStxBalance || 0, withTicker: false })
+      ? stacksValue({ value: balance || 0, withTicker: false })
       : balance.toString();
 
-  const value = valueFromBalance(balance.toString());
-  const subAmount = subBalance && valueFromBalance(subBalance.toString());
+  const correctBalance = availableStxBalance && type === 'stx' ? availableStxBalance : balance;
+  const amount = valueFromBalance(correctBalance);
+  const subAmount = subBalance && valueFromBalance(subBalance);
 
   return (
     <AssetItem
@@ -41,7 +43,7 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
       }
       title={friendlyName}
       caption={symbol}
-      amount={value}
+      amount={amount}
       subAmount={subAmount}
       {...rest}
     />

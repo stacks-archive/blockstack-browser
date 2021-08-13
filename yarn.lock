@@ -2713,10 +2713,10 @@
     jsontokens "^3.0.0"
     query-string "^6.13.1"
 
-"@stacks/blockchain-api-client@0.63.0-beta.0":
-  version "0.63.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.63.0-beta.0.tgz#398aa5326b88c341bc39870e7d2ed69100301511"
-  integrity sha512-oc7m0AHYjGyK+WmfMfu0C/1NkRs9CYKzERh9xTDqMfpenfQUG07wIb6mUSTfPiMBhKZB6nSfdM9EgJN2TlPdTw==
+"@stacks/blockchain-api-client@0.63.0":
+  version "0.63.0"
+  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.63.0.tgz#3d676fe0182949bcb20fc265e44ebe8fffb5062b"
+  integrity sha512-rdBSzZWL8kXz18NLFPCmd/HwP+mbHAvdkGfTCvtNsj40dSexEYlc93Xz710M843WxNjL1HWgVnrcAjnHH4WlSw==
   dependencies:
     "@stacks/stacks-blockchain-api-types" "*"
     "@types/ws" "^7.4.0"
@@ -2867,10 +2867,10 @@
   resolved "https://registry.yarnpkg.com/@stacks/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.62.1.tgz#68c5e284045669e7463075dc5b6d8890cc53c464"
   integrity sha512-VFrdHr/ufUT31gThPSZw72eEa+QATZa1Gh+QqT8Kb9ZG+BXQNNz4SlML8pW4MM38Khntxyv2jNN0pNqdGp6DRA==
 
-"@stacks/stacks-blockchain-api-types@0.63.0-beta.0":
-  version "0.63.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@stacks/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.63.0-beta.0.tgz#1fa08cb5f758913d1b028af34843cd44f34b9ee1"
-  integrity sha512-dOJ8gjUrnD3Fi2sKJrWwgQgXS/vgsbcxJ3hA2bPGzM0ouR9I2eG7EdamPZspzQMShKyIHvDcLjr5+1+2V2tjwQ==
+"@stacks/stacks-blockchain-api-types@0.63.0":
+  version "0.63.0"
+  resolved "https://registry.yarnpkg.com/@stacks/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.63.0.tgz#3f841ecc7a88ba95cd2b0ff4236a488d636e9a5c"
+  integrity sha512-XCiIIP6/3i0LC/zPQ5yqwH5oelzZPJidpbE48YBYHSNdWQ/b8Iob3z9heuk1DrXpuY+3Y8ZIqYY2+SnqOaHdsw==
 
 "@stacks/storage@^1.0.0-beta.20":
   version "1.3.3"

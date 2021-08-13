@@ -19,7 +19,7 @@ const iconItem = (isUnanchored = false) =>
 export const StxAvatar: React.FC<StxAvatarProps> = props => {
   return (
     <Circle position="relative" size="36px" bg={color('accent')} color={color('bg')} {...props}>
-      <StxIcon/>
+      <StxIcon />
       {iconItem(props.isUnanchored)}
     </Circle>
   );
@@ -37,6 +37,7 @@ interface StxAvatarProps extends BoxProps {
 
 export const AssetAvatar: React.FC<AssetProps> = ({
   useStx,
+  isUnanchored,
   gradientString,
   children,
   ...props
@@ -47,7 +48,7 @@ export const AssetAvatar: React.FC<AssetProps> = ({
   return (
     <DynamicColorCircle {...props} string={gradientString}>
       {children}
-      {iconItem(props.isUnanchored)}
+      {iconItem(isUnanchored)}
     </DynamicColorCircle>
   );
 };
