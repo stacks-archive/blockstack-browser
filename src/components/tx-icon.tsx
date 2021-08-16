@@ -24,7 +24,7 @@ type StatusColorMap = Record<Status, ColorsStringLiteral>;
 const colorFromTx = (tx: Tx): ColorsStringLiteral => {
   const colorMap: StatusColorMap = {
     pending: 'feedback-alert',
-    success_microblock: 'invert',
+    success_microblock: 'brand',
     success_anchor_block: 'brand',
     failed: 'feedback-error',
   };

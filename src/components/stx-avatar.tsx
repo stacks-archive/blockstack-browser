@@ -9,7 +9,7 @@ const microIcon = () => (
     size="13px"
     fill={color('bg')}
     borderColor={color('invert')}
-    bg={color('invert')}
+    bg={color('accent')}
   />
 );
 

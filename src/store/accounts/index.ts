@@ -140,7 +140,7 @@ export const accountAvailableStxBalanceState = atomFamily<string, BigNumber | un
     get(accountInfoState);
     if (!accountData) return;
     const stx = new BigNumber(accountData.balances.stx.balance);
-    const lockedStx = new BigNumber(accountData.balances.stx.locked); // TODO
+    const lockedStx = new BigNumber(accountData.balances.stx.locked);
     const curBalance = stx.minus(lockedStx);
     return curBalance;
   })
