@@ -20,8 +20,7 @@ const AssetCaption: React.FC<{ caption?: string; show?: boolean }> = ({ caption,
 
           <Tooltip placement="right-end" label={'Learn more about microblocks'}>
             <Stack isInline>
-              {/* TODO UPDATE */}
-              <a href="https://hiro.so" target="_blank">
+              <a href="https://docs.stacks.co/understand-stacks/microblocks" target="_blank">
                 <Box
                   _hover={{ cursor: 'pointer' }}
                   size="12px"
@@ -39,7 +38,7 @@ const AssetCaption: React.FC<{ caption?: string; show?: boolean }> = ({ caption,
     </Flex>
   ) : null;
 
-const SubBalance: React.FC<{ amount: string }> = ({ amount }) =>
+const SubBalance: React.FC<{ amount: string | undefined }> = ({ amount }) =>
   amount ? (
     <Text
       fontVariantNumeric="tabular-nums"
@@ -66,6 +65,8 @@ export const AssetItem = memo(
         caption,
         amount,
         subAmount,
+        isDifferent,
+        name,
         ...rest
       }: {
         isPressable?: boolean;
@@ -74,13 +75,14 @@ export const AssetItem = memo(
         caption?: string;
         amount: string;
         subAmount?: string;
+        isDifferent?: boolean;
+        name?: string;
       } & StackProps,
       ref
     ) => {
       const [component, bind] = usePressable(isPressable);
       const formatted = getFormattedAmount(amount.toString());
-      const subAmountFormatted = (subAmount && getFormattedAmount(subAmount)) ?? '';
-      const isDifferent = !!subAmountFormatted && formatted.value !== subAmountFormatted.value;
+
       return (
         <Box
           as={isPressable ? 'button' : 'div'}
@@ -117,12 +119,10 @@ export const AssetItem = memo(
                     label={formatted.isAbbreviated ? amount : undefined}
                   >
                     <Text fontVariantNumeric="tabular-nums" textAlign="right">
-                      {formatted.value}
+                      <span data-testid={name}>{formatted.value}</span>
                     </Text>
                   </Tooltip>
-                  {isDifferent ? (
-                    <SubBalance amount={subAmountFormatted && subAmountFormatted.value} />
-                  ) : null}
+                  {isDifferent ? <SubBalance amount={subAmount} /> : null}
                 </Box>
               </SpaceBetween>
             </Stack>

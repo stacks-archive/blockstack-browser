@@ -1,6 +1,12 @@
 import { ScreenPaths } from '@common/types';
 import { Page } from 'playwright-core';
-import { createTestSelector, wait, BrowserDriver } from '../integration/utils';
+import {
+  createTestSelector,
+  wait,
+  BrowserDriver,
+  randomString,
+  timeDifference
+} from '../integration/utils';
 import { USERNAMES_ENABLED } from '@common/constants';
 import { WalletPageSelectors } from './wallet.selectors';
 import { InitialPageSelectors } from '@tests/integration/initial-page.selectors';
@@ -63,6 +69,14 @@ export class WalletPage {
 
   async waitForHomePage() {
     await this.page.waitForSelector(this.$homePageBalancesList, { timeout: 30000 });
+  }
+
+  async waitForSetPassword() {
+    await this.page.waitForSelector(this.passwordInput, { timeout: 30000 });
+  }
+
+  async waitForMainHomePage() {
+    await this.page.waitForSelector(this.homePage, { timeout: 30000 });
   }
 
   async waitForLoginPage() {
@@ -133,5 +147,21 @@ export class WalletPage {
     await this.clickSignUp();
     await this.saveKey();
     await this.waitForHomePage();
+  }
+
+  async signIn(secretKey: string) {
+    await this.clickSignIn();
+    let startTime = new Date();
+    await this.enterSecretKey(secretKey);
+    await this.waitForSetPassword();
+    console.log(`Page load time for 12 or 24 word Secret Key: ${timeDifference(startTime, new Date())} seconds`);
+    const password = randomString(15);
+    startTime = new Date();
+    await this.enterPassword(password);
+    await this.waitForMainHomePage();
+    console.log(`Page load time for sign in with password: ${timeDifference(startTime, new Date())} seconds`);
+    startTime = new Date();
+    await this.waitForHomePage();
+    console.log(`Page load time for mainnet account: ${timeDifference(startTime, new Date())} seconds`);
   }
 }

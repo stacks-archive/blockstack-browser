@@ -6,6 +6,8 @@ import { tmpdir } from 'os';
 import { promisify } from 'util';
 import { setupMocks } from '../mocks';
 import { DemoPage } from '../page-objects/demo.page';
+import {WalletPage} from "@tests/page-objects/wallet.page";
+import {SettingsSelectors} from "@tests/integration/settings.selectors";
 
 const makeTmpDir = promisify(mkdtemp);
 
@@ -132,4 +134,21 @@ export const debug = async (page: Page) => {
     }
     stdin.on('data', onKeyPress);
   });
+};
+
+export const selectTestNet = async (wallet: WalletPage) => {
+  await wallet.clickSettingsButton();
+  await wallet.page.click(createTestSelector(SettingsSelectors.ChangeNetworkAction));
+  await wallet.page.waitForTimeout(1200);
+
+  const networkListItems = await wallet.page.$$(
+    createTestSelector(SettingsSelectors.NetworkListItem)
+  );
+  console.log(networkListItems[1].innerHTML());
+  await networkListItems[1].click();
+};
+
+export const timeDifference = (startDate: Date, endDate: Date) => {
+  const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+  return seconds;
 };

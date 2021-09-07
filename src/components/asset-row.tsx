@@ -5,7 +5,7 @@ import type { AssetWithMeta } from '@common/asset-types';
 import { getAssetName } from '@stacks/ui-utils';
 import { AssetItem } from '@components/asset-item';
 import { getTicker } from '@common/utils';
-import { useCurrentAccountAvailableStxBalance } from '@common/hooks/use-available-stx-balance';
+import { useCurrentAccountAvailableStxBalance } from '@store/accounts/account.hooks';
 import { BigNumber } from 'bignumber.js';
 
 interface AssetRowProps extends StackProps {
@@ -24,12 +24,13 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
     type === 'ft'
       ? ftDecimals(balance, meta?.decimals || 0)
       : type === 'stx'
-      ? stacksValue({ value: balance || 0, withTicker: false })
-      : balance.toString();
+        ? stacksValue({ value: balance || 0, withTicker: false })
+        : balance.toString();
 
   const correctBalance = availableStxBalance && type === 'stx' ? availableStxBalance : balance;
   const amount = valueFromBalance(correctBalance);
   const subAmount = subBalance && valueFromBalance(subBalance);
+  const isDifferent = subBalance && !correctBalance.isEqualTo(subBalance);
 
   return (
     <AssetItem
@@ -38,13 +39,15 @@ export const AssetRow = React.forwardRef<HTMLDivElement, AssetRowProps>((props, 
         name === 'stx'
           ? 'stx'
           : type === 'ft'
-          ? `${contractAddress}.${contractName}::${name}`
-          : name
+            ? `${contractAddress}.${contractName}::${name}`
+            : name
       }
       title={friendlyName}
       caption={symbol}
       amount={amount}
       subAmount={subAmount}
+      isDifferent={isDifferent}
+      name={name}
       {...rest}
     />
   );

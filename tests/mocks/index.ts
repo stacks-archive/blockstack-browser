@@ -150,3 +150,4 @@ export const TEST_ACCOUNTS_WITH_ADDRESS = [
     address: 'SP23C2PBK6PVQEW2M17JSB6S2K0VZ611PPJ0D20NH',
   },
 ];
+export const SECRET_KEY_2 = 'derive plug aerobic cook until crucial school fine cushion panda ready crew photo typical nuclear ride steel indicate cupboard potato ignore bamboo script galaxy';
