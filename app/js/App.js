@@ -20,7 +20,6 @@ import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
 import { selectLastUpdatedApps } from './store/apps/selectors'
-import i18n from './i18n'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
@@ -219,7 +218,6 @@ class AppContainer extends Component {
 
   render() {
     const { children, noHeader } = this.props
-    console.log('the translation props is', i18n.t('hi'))
     return (
       <div className={`body-main ${noHeader ? 'no-header' : ''}`}>
         <div className="wrapper footer-padding">{children}</div>

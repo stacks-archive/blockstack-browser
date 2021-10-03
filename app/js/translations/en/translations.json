@@ -1,3 +1,8 @@
-{"hi": "Hi",
-"top_apps": "Top Apps"
+{
+    "fetching_apps": "Fetching apps...",
+    "home": "Home",
+    "identity": "Identity",
+    "settings": "Settings",
+    "top_apps": "Top Apps",
+    "wallet": "Wallet"
 }

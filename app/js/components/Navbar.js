@@ -7,11 +7,12 @@ import { Hover, Focus } from 'react-powerplug'
 import { Box, Flex, Type } from 'blockstack-ui'
 import { Link, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
+import i18n from '../i18n'
 
 const navBarData = [
   [
     {
-      label: 'Home',
+      label: i18n.t('home'),
       icon: HomeIcon,
       path: '/',
       active: '/'
@@ -19,19 +20,19 @@ const navBarData = [
   ],
   [
     {
-      label: 'Identity',
+      label: i18n.t('identity'),
       icon: IDsIcon,
       path: '/profiles',
       active: 'profiles'
     },
     {
-      label: 'Wallet',
+      label: i18n.t('wallet'),
       icon: WalletIcon,
       path: '/wallet/receive',
       active: 'wallet'
     },
     {
-      label: 'Settings',
+      label: i18n.t('settings'),
       icon: SettingsIcon,
       path: '/account',
       active: 'account'
