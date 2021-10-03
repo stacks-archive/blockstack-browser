@@ -8,6 +8,7 @@ import { Box, Flex, Type } from 'blockstack-ui'
 import { Hover } from 'react-powerplug'
 import { Spinner } from '@components/ui/components/spinner'
 import { trackEventOnce } from './utils/server-utils'
+import { withTranslation} from 'react-i18next'
 
 const Loading = ({ ...rest }) => (
   <Flex
@@ -29,13 +30,14 @@ const Loading = ({ ...rest }) => (
   </Flex>
 )
 
-const Content = ({ topApps, allApps, ...rest }) => {
+const Content = ({ t, topApps, allApps, ...rest }) => {
+  // console.log('what is localization', t)
   if (!allApps) {
     return null
   }
   return (
     <Box maxWidth={1280} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
-      <AppsSection title="Top Apps" apps={topApps} limit={24} />
+      <AppsSection title={t('top_apps')} apps={topApps} limit={24} />
       {allApps
         .sort((a, b) => a.label.localeCompare(b.label))
         .map(category => {
@@ -191,6 +193,8 @@ class HomeScreenPage extends React.Component {
       this.props.apps.loading ||
       !this.props.apps.topApps ||
       !this.props.apps.topApps.length
+
+      const {t} = this.props
     return (
       <Box>
         <Navbar hideBackToHomeLink activeTab="home" />
@@ -199,6 +203,7 @@ class HomeScreenPage extends React.Component {
             <Loading />
           ) : (
             <Content
+            t={t}
               allApps={!loading && this.props.apps.appsByCategory}
               topApps={!loading && this.props.apps.topApps}
             />
@@ -210,6 +215,7 @@ class HomeScreenPage extends React.Component {
 }
 
 Content.propTypes = {
+  t:PropTypes.func.isRequired,
   topApps: PropTypes.array.isRequired,
   allApps: PropTypes.array.isRequired
 }
@@ -228,6 +234,7 @@ AppItem.propTypes = {
 }
 
 HomeScreenPage.propTypes = {
+  t:PropTypes.func.isRequired,
   apps: PropTypes.object.isRequired,
   refreshAppList: PropTypes.func.isRequired,
   doFetchApps: PropTypes.func.isRequired,
@@ -251,4 +258,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomeScreenPage)
+)(withTranslation()(HomeScreenPage))
