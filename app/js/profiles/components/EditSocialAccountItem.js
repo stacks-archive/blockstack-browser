@@ -5,7 +5,7 @@ import { debounce } from 'lodash'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import InputGroup from '@components/InputGroup'
-import VerificationInfo from '../components/VerificationInfo'
+import VerificationInfo from './VerificationInfo'
 
 import { getWebAccountTypes } from '../../utils'
 

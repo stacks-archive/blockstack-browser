@@ -450,14 +450,14 @@ function refreshBalances(balanceURL, addresses) {
             })
 
             if (results.length >= addresses.length) {
-              let balances = {}
+              const balances = {}
               let total = 0.0
 
               for (let i = 0; i < results.length; i++) {
                 const thisAddress = results[i].address
                 if (!balances.hasOwnProperty(thisAddress)) {
                   const balance = results[i].balance
-                  total = total + balance
+                  total += balance
                   balances[thisAddress] = balance
                 } else {
                   logger.error(

@@ -20,7 +20,6 @@ import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
 import { selectLastUpdatedApps } from './store/apps/selectors'
-
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
