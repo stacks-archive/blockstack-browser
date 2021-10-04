@@ -1,11 +1,11 @@
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
-import translationEn from './translations/en/translations.json'
-import translationFr from './translations/fr/translations.json'
+import en from './translations/en/translations.json'
+import fr from './translations/fr/translations.json'
 const resources = {
-  en: { translation: translationEn },
-  fr: { translation: translationFr }
+  en: { translation: en },
+  fr: { translation: fr }
 }
 /**
  * DESC
@@ -47,11 +47,11 @@ i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
-    lng: 'fr',
+    // lng: 'fr', //hardcoded
     compatibilityJSON: 'v2',
     fallbackLng: 'en',
     debug: false,
-    whitelist: ['en', 'fr'],
+    whitelist: ['en', 'fr'], // to be moved to config file, depends on the languages available
     load: 'languageOnly',
     detection: options,
     interpolation: {

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
-import VerificationInfo from '../components/VerificationInfo'
+import VerificationInfo from './VerificationInfo'
 import { openInNewTab, getWebAccountTypes } from '../../utils'
 
 const helpPages = {
